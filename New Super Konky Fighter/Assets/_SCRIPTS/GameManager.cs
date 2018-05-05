@@ -2,39 +2,105 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[UnitySingleton(UnitySingletonAttribute.Type.LoadedFromResources, false, "Managers/Level Manager")]
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 
-    #region Singleton
+    public float startDelay = 3f; // The delay between the start of RoundStarting and RoundPlaying phases.
+    public float endDelay = 3f;   // The delay between the end of RoundPlaying and RoundEnding phases.
+    public FighterDetails fighterPrefab;
+    public Transform[] spawnPoints;
 
-    private static StageManager _instance;
+    private WaitForSeconds startWait;         // Used to have a delay whilst the round starts.
+    private WaitForSeconds endWait;           // Used to have a delay whilst the round or game ends.
+    private List<FighterDetails> fighters;
 
-    public static StageManager Instance
+    private void Start ()
     {
-        get { return _instance; }
+
+        startWait = new WaitForSeconds(startDelay);
+        endWait = new WaitForSeconds(endDelay);
+
+        SpawnFighters();
+
+        StartCoroutine(GameLoop());
     }
 
-    private void Awake()
+    private void SpawnFighters()
     {
-        if (_instance != null && _instance != this)
+        var points = new List<Transform>(spawnPoints);
+
+        fighters = new List<FighterDetails>();
+
+        foreach (GameState.PlayerState state in GameState.Instance.players)
         {
-            Destroy(this.gameObject);
-            return;
-        }
+            var spawnPointIndex = Random.Range(0, points.Count);
 
-        _instance = this;
-        DontDestroyOnLoad(this.gameObject);
+            var tank = Instantiate(fighterPrefab);
+            tank.Setup(state, points[spawnPointIndex]);
+
+            points.RemoveAt(spawnPointIndex);
+
+            fighters.Add(tank);
+        }
     }
 
-    #endregion
+    private void Update ()
+    {
+		
+	}
 
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    private IEnumerator GameLoop()
+    {
+        // Start off by running the 'RoundStarting' coroutine but don't return until it's finished.
+        yield return StartCoroutine(RoundStarting());
+
+        // Once the 'RoundStarting' coroutine is finished, run the 'RoundPlaying' coroutine but don't return until it's finished.
+        yield return StartCoroutine(RoundPlaying());
+
+        // Once execution has returned here, run the 'RoundEnding' coroutine, again don't return until it's finished.
+        yield return StartCoroutine(RoundEnding());
+    }
+
+    private IEnumerator RoundStarting()
+    {
+        DisableFighterControl();
+
+        yield return startWait;
+    }
+
+
+    private IEnumerator RoundPlaying()
+    {
+        EnableFighterControl();
+
+        while (!GameSettings.Instance.ShouldFinishRound())
+        {
+            yield return null;
+        }
+    }
+
+    private IEnumerator RoundEnding()
+    {
+        yield return endWait;
+    }
+
+    private void EnableFighterControl()
+    {
+        for (int i = 0; i < fighters.Count; i++)
+        {
+            if (fighters[i])
+                fighters[i].enabled = true;
+        }
+    }
+
+
+    private void DisableFighterControl()
+    {
+        for (int i = 0; i < fighters.Count; i++)
+        {
+            if (fighters[i])
+                fighters[i].enabled = false;
+        }
+    }
+
 }
