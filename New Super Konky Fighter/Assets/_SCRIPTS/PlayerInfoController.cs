@@ -3,8 +3,11 @@ using System.Collections;
 
 public class PlayerInfoController : MonoBehaviour
 {
-    public int playerIndex;
-    public UnityEngine.UI.InputField playerName;
+    [SerializeField]
+    private UnityEngine.UI.InputField playerName;
+
+    [SerializeField]
+    private int playerIndex;
 
     private MainMenuController _mainMenu;
     private GameSettings.PlayerInfo _player;

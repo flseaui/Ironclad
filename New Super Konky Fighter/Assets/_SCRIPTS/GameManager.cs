@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField]
+    private FighterDetails fighterPrefab;
 
-    public float startDelay = 3f; // The delay between the start of RoundStarting and RoundPlaying phases.
-    public float endDelay = 3f;   // The delay between the end of RoundPlaying and RoundEnding phases.
-    public FighterDetails fighterPrefab;
-    public Transform[] spawnPoints;
+    [SerializeField]
+    private float startDelay = 3f; // The delay between the start of RoundStarting and RoundPlaying phases.
+
+    [SerializeField]
+    private float endDelay = 3f;   // The delay between the end of RoundPlaying and RoundEnding phases.
 
     private WaitForSeconds startWait;         // Used to have a delay whilst the round starts.
     private WaitForSeconds endWait;           // Used to have a delay whilst the round or game ends.
+
     private List<FighterDetails> fighters;
+
+    public Transform[] spawnPoints;
 
     private void Start ()
     {

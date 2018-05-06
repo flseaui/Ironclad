@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class FighterDetails : MonoBehaviour
 {
+    [SerializeField]
+    private FighterBase fighterBase;
 
-    public FighterBase fighterBase;
-
-    [NonSerialized] public GameState.PlayerState player;
+    [NonSerialized]
+    public GameState.PlayerState player;
 
     private void Awake()
     {

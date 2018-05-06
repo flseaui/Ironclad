@@ -37,7 +37,8 @@ public class GameState : ScriptableObject
 
     public List<PlayerState> players;
 
-    public int roundNumber;
+    [SerializeField]
+    private int roundNumber;
 
     public static void CreateFromSettings(GameSettings settings)
     {
