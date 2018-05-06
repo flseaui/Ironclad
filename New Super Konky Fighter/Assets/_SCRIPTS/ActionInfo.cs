@@ -5,13 +5,18 @@ using UnityEngine;
 [CreateAssetMenu]
 public class ActionInfo : ScriptableObject
 {
-    enum FrameType     { Startup, Active, Recovery, Buffer                }
-    enum BlockType     { Low, Mid, High, Unblockable                      }
+    enum FrameType { Startup, Active, Recovery, Buffer }
+    enum BlockType { Low, Mid, High, Unblockable }
     enum KnockdownType { None, Soft, Hard, SoftGB, HardGB, SoftWB, HardWB }
 
+    [SerializeField]
     private List<FrameType> frames;
 
+    [Space(10)]
+    [SerializeField]
     private BlockType blockType;
+
+    [SerializeField]
     private KnockdownType knockdownType;
 
     private bool infinite;
@@ -37,6 +42,11 @@ public class ActionInfo : ScriptableObject
         public Box(int id) : this (0, 0, 5, 5, 0, 0, new Vector2(), id) { }
     }
 
+    [SerializeField]
     private List<Box> hitboxes, hurtboxes;
 
+    public int getFrameCount()
+    {
+        return frames.Count;
+    }
 }

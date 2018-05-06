@@ -67,7 +67,7 @@ public class GameState : ScriptableObject
     }
 
 #if UNITY_EDITOR
-    [UnityEditor.MenuItem("Window/Game State")]
+    [UnityEditor.MenuItem("SKF/Game State")]
     public static void ShowGameState()
     {
         UnityEditor.Selection.activeObject = Instance;

@@ -87,7 +87,7 @@ public class GameSettings : ScriptableObject
     }
 
 #if UNITY_EDITOR
-    [UnityEditor.MenuItem("Window/Game Settings")]
+    [UnityEditor.MenuItem("SKF/Game Settings")]
     public static void ShowGameSettings()
     {
         UnityEditor.Selection.activeObject = Instance;
