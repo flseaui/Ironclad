@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Linq;
 
 public class ActionEditorWindow : EditorWindow
 {
     private ActionInfo targetAction;
-    private ActionInfo[] actions = new ActionInfo[0];
-    private string[] actionNames;
-    private int currentActionIndex = 0;
-    private int currentFrame = 0;
+    private ActionInfo[] actions = default(ActionInfo[]);
+    private List<string> actionNames;
+
+    private int currentActionIndex = default(int);
+    private int currentFrame = default(int);
+    private int numActions = default(int);
 
     [MenuItem("SKF/Action Editor")]
     public static void ShowWindow()
@@ -19,11 +22,19 @@ public class ActionEditorWindow : EditorWindow
 
     private void OnInspectorUpdate()
     {
-        actions = Resources.FindObjectsOfTypeAll<ActionInfo>();
-        actionNames = new string[actions.Length];
-        for (int i = 0; i < actions.Length; ++i)
+#if UNITY_EDITOR
+        actions = UnityEditor.AssetDatabase.FindAssets("t:ActionInfo", new string[] { "Assets/_SOS/_ACTIONS" })
+                            .Select(guid => UnityEditor.AssetDatabase.GUIDToAssetPath(guid))
+                            .Select(path => UnityEditor.AssetDatabase.LoadAssetAtPath<ActionInfo>(path))
+                            .Where(b => b).ToArray();
+#else
+					actions = Resources.FindObjectsOfTypeAll<ActionInfo>();
+#endif
+        if (actions.Length != numActions)
         {
-            actionNames[i] = actions[i].name;
+            numActions = actions.Length;
+            foreach (string action in actions.OfType<string>())
+                actionNames.Add(action);
         }
     }
 
@@ -32,8 +43,8 @@ public class ActionEditorWindow : EditorWindow
         EditorGUILayout.BeginVertical();
 
         EditorGUILayout.LabelField("Target Action");
-        currentActionIndex = EditorGUILayout.Popup(currentActionIndex, actionNames);
-        targetAction = actions[currentActionIndex];
+        currentActionIndex = EditorGUILayout.Popup(currentActionIndex, actionNames.ToArray() ?? new string[] { "no actions" });
+        targetAction = actions?[currentActionIndex];
         EditorGUILayout.EndVertical();
 
         //EditorGUI.DrawRect

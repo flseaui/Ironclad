@@ -23,11 +23,11 @@ public class ActionInfo : ScriptableObject
 
     private struct Box
     {
-        public Vector2 knockback;
+        public Vector2 knockbackAngle;
         public float x, y, width, height, damage, knockbackStrength;
         public int id;
 
-        public Box(float x, float y, float width, float height, float damage, float knockbackStrength, Vector2 knockback, int id)
+        public Box(float x, float y, float width, float height, float damage, float knockbackStrength, Vector2 knockbackAngle, int id)
         {
             this.x = x;
             this.y = y;
@@ -35,7 +35,7 @@ public class ActionInfo : ScriptableObject
             this.height = height;
             this.damage = damage;
             this.knockbackStrength = knockbackStrength;
-            this.knockback = knockback;
+            this.knockbackAngle = knockbackAngle;
             this.id = id;
         }
 
