@@ -1,1 +1,1 @@
-# New Super Konky Fighter
+# Platform Fighter
