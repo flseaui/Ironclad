@@ -1,6 +1,17 @@
 {
   "dependencies": {
-    "com.unity.textmeshpro": "1.2.2",
-    "com.unity.progrids": "3.0.2-preview"
-  }
+    "com.unity.2d.pixel-perfect": "1.0.0-preview",
+    "com.unity.ads": "exclude",
+    "com.unity.entities": "0.0.12-preview.5",
+    "com.unity.incrementalcompiler": "0.0.42-preview.1",
+    "com.unity.progrids": "3.0.3-preview.0",
+    "com.unity.textmeshpro": "1.2.3"
+  },
+  "registry": "https://packages.unity.com",
+  "testables": [
+    "com.unity.collections",
+    "com.unity.inputsystem",
+    "com.unity.entities",
+    "com.unity.jobs"
+  ]
 }
