@@ -21,14 +21,15 @@ namespace PlatformFighter
 			var entityManager = World.Active.GetOrCreateManager<EntityManager>();
 
 			PlayerArchetype = entityManager.CreateArchetype
-			(
+			(  
 				typeof(Position2D), typeof(PlayerInput), typeof(Health), typeof(SpriteRenderer), typeof(TransformMatrix), typeof(Animator)
 			);
+
         }
 
 		public static void NewGame()
 		{
-
+			World.Active.GetOrCreateManager<PlayerInputSystem>().CreateInputActions();
 			var entityManager = World.Active.GetOrCreateManager<EntityManager>();
 
 			Entity player = entityManager.CreateEntity(PlayerArchetype);
