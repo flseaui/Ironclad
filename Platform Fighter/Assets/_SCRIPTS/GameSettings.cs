@@ -6,8 +6,8 @@ namespace PlatformFighter
 {
     public class GameSettings : MonoBehaviour
     {
+		public CharacterControls controls;
         public half playerInitialHealth;
-        public InputAction walkAction;
 
     }
 }

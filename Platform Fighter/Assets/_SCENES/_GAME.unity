@@ -742,16 +742,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a92e02ca64825b84daa9b27aa208e100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkAction:
-    m_Name: Walk
-    m_SingletonActionBindings:
-    - name: 
-      path: <HID::Nintendo Co., Ltd. Pro Controller>/X
-      interactions: Hold
-      processors: 
-      groups: 
-      action: Walk
-      flags: 0
+  controls:
+    m_Asset: {fileID: 11400000, guid: b5344c1905660784fbde160235675510, type: 3}
 --- !u!1 &1803290823
 GameObject:
   m_ObjectHideFlags: 0

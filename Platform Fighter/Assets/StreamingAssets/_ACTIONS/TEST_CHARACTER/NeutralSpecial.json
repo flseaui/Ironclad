@@ -1,0 +1,13 @@
+{
+    "frames": [
+        0,
+        0
+    ],
+    "inputs": [
+        4
+    ],
+    "hitboxes": null,
+    "hurtboxes": null,
+    "infinite": true,
+    "name": "NeutralSpecial"
+}

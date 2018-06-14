@@ -30,6 +30,7 @@ namespace PlatformFighter
 		public static void NewGame()
 		{
 			World.Active.GetOrCreateManager<PlayerInputSystem>().CreateInputActions();
+			
 			var entityManager = World.Active.GetOrCreateManager<EntityManager>();
 
 			Entity player = entityManager.CreateEntity(PlayerArchetype);

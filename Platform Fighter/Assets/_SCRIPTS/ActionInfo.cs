@@ -16,7 +16,7 @@ namespace PlatformFighter
         public int FrameCount { get => frames.Count; }
 
         private List<InputType> inputs;
-        public int InputCount { get => inputs.Count; }
+        public int[] Inputs { get => Array.ConvertAll(inputs.ToArray(), value => (int) value); }
 
         public string name;
 

@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: b5344c1905660784fbde160235675510
+ScriptedImporter:
+  fileIDToRecycleName:
+    11400000: <root>
+    11400006: XInputGamepad/Idle
+    11400008: XInputGamepad/WalkLeft
+    11400010: XInputGamepad/WalkRight
+    11400012: XInputGamepad/RunLeft
+    11400014: XInputGamepad/RunRight
+    11400016: XInputGamepad/Jump
+    11400018: XInputGamepad/ShortHop
+    11400020: XInputGamepad/Crouch
+    11400022: XInputGamepad/Jab
+    11400024: XInputGamepad/NeutralSpecial
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: e2fdc6edf8744b38b702a2a5ee3541b2, type: 3}
+  generateWrapperCode: 1
+  wrapperCodePath: 
+  wrapperClassName: CharacterControls
+  wrapperCodeNamespace: PlatformFighter
