@@ -1,6 +1,7 @@
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Rendering;
+using UnityEngine;
 
 namespace PlatformFighter
 {
@@ -12,6 +13,11 @@ namespace PlatformFighter
                     shortHop, fullHop, 
                     neutral, special, shield, grab,
                     upC, downC, leftC, rightC;
+    }
+
+    public struct SpriteInfo : IComponentData
+    {
+        Sprite sprite;
     }
 
     public struct Health : IComponentData
