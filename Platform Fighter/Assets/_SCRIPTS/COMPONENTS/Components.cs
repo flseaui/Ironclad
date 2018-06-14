@@ -1,6 +1,5 @@
 using Unity.Entities;
 using Unity.Mathematics;
-using UnityEngine.Experimental.Input;
 using Unity.Rendering;
 
 namespace PlatformFighter

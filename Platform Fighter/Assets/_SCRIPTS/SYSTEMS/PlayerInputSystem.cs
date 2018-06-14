@@ -1,17 +1,17 @@
 ﻿using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Experimental.Input;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UnityEngine.Experimental.Input.Interactions;
+using Rewired;
 
 namespace PlatformFighter
 {
 	public class PlayerInputSystem : ComponentSystem
 	{
-		private List<InputAction> inputActions;
+		
+		private List<Player> playerControllers = new List<Player>();
 
 		struct PlayerData
 		{
@@ -35,55 +35,14 @@ namespace PlatformFighter
 		private void UpdatePlayerInput(int i, float dt)
 		{
 			var settings = Bootstrapper.Settings;
-
-			PlayerInput pi;
-
-			//Debug.Log(Gamepad.current.name);
-
-			pi.Move = Gamepad.current.leftStick.ReadValue();
-
-			players.Input[i] = pi;
+			Debug.Log(playerControllers[i].GetAxis("Walk"));
 		}
 
 		public void CreateInputActions()
 		{
-
+			playerControllers.Add(ReInput.players.GetPlayer(0));
 			foreach(var action in LoadActions())
 			{
-				switch (action.name)
-				{
-					case "Idle":
-						Bootstrapper.Settings.controls.XInputGamepad.Idle.performed += _ => LogAction(action);
-					break;
-					case "WalkLeft":
-						Bootstrapper.Settings.controls.XInputGamepad.WalkLeft.performed += _ => LogAction(action);
-					break;
-					case "WalkRight":
-						Bootstrapper.Settings.controls.XInputGamepad.WalkRight.performed += _ => LogAction(action);
-					case "RunLeft":
-						Bootstrapper.Settings.controls.XInputGamepad.RunLeft.performed += _ => LogAction(action);
-					break;
-					case "RunRight":
-						Bootstrapper.Settings.controls.XInputGamepad.RunRight.performed += _ => LogAction(action);
-					break;
-					case "ShortHop":
-						Bootstrapper.Settings.controls.XInputGamepad.ShortHop.performed += _ => LogAction(action);
-					break;
-					case "Jump":
-						Bootstrapper.Settings.controls.XInputGamepad.Jump.performed += _ => LogAction(action);
-					break;
-					case "Crouch":
-						Bootstrapper.Settings.controls.XInputGamepad.Crouch.performed += _ => LogAction(action);
-					break;
-					case "Jab":
-						Bootstrapper.Settings.controls.XInputGamepad.Jab.performed += _ => LogAction(action);
-					break;
-					case "NeutralSpecial":
-						Bootstrapper.Settings.controls.XInputGamepad.NeutralSpecial.performed += _ => LogAction(action);
-					break;
-				}
-				
-				Bootstrapper.Settings.controls.Enable();
 
 			}
 		}

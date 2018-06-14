@@ -4,7 +4,6 @@ using UnityEngine;
 using Unity.Rendering;
 using Unity.Transforms;
 using Unity.Transforms2D;
-using UnityEngine.Experimental.Input;
 
 namespace PlatformFighter
 {
@@ -30,7 +29,7 @@ namespace PlatformFighter
 		public static void NewGame()
 		{
 			World.Active.GetOrCreateManager<PlayerInputSystem>().CreateInputActions();
-			
+
 			var entityManager = World.Active.GetOrCreateManager<EntityManager>();
 
 			Entity player = entityManager.CreateEntity(PlayerArchetype);
