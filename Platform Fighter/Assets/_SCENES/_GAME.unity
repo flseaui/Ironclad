@@ -284,7 +284,7 @@ MonoBehaviour:
       force4WayHats: 0
       throttleCalibrationMode: 0
       deferControllerConnectedEventsOnStart: 0
-      logLevel: 7
+      logLevel: -1
       editorSettings:
         exportConsts_useParentClass: 0
         exportConsts_parentClassName: RewiredConsts
@@ -338,14 +338,77 @@ MonoBehaviour:
       _excludeFromControllerAutoAssignment: 0
     actions:
     - _id: 0
-      _name: Walk
+      _name: Move
       _type: 0
-      _descriptiveName: Walk
+      _descriptiveName: Move
       _positiveDescriptiveName: Walk Right
       _negativeDescriptiveName: Walk Left
       _behaviorId: 0
       _userAssignable: 1
       _categoryId: 1
+    - _id: 2
+      _name: Hop
+      _type: 1
+      _descriptiveName: Hop
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 1
+    - _id: 4
+      _name: Crouch
+      _type: 0
+      _descriptiveName: Crouch
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: Crouch
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 1
+    - _id: 5
+      _name: Neutral
+      _type: 1
+      _descriptiveName: Neutral
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 2
+    - _id: 16
+      _name: Strong
+      _type: 0
+      _descriptiveName: Strong
+      _positiveDescriptiveName: Up Strong
+      _negativeDescriptiveName: Down Strong
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 2
+    - _id: 19
+      _name: Special
+      _type: 1
+      _descriptiveName: Special
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 2
+    - _id: 22
+      _name: Shield
+      _type: 1
+      _descriptiveName: Shield
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 3
+    - _id: 23
+      _name: Grab
+      _type: 1
+      _descriptiveName: Grab
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 3
     actionCategories:
     - _name: Default
       _descriptiveName: Default
@@ -362,14 +425,21 @@ MonoBehaviour:
       _tag: 
       _id: 2
       _userAssignable: 1
+    - _name: DefensiveOptions
+      _descriptiveName: Defensive Options
+      _tag: 
+      _id: 3
+      _userAssignable: 1
     actionCategoryMap:
       list:
       - categoryId: 0
         actionIds: 
       - categoryId: 1
-        actionIds: 00000000
+        actionIds: 000000000200000004000000
       - categoryId: 2
-        actionIds: 
+        actionIds: 050000001300000010000000
+      - categoryId: 3
+        actionIds: 1600000017000000
     inputBehaviors:
     - _id: 0
       _name: Default
@@ -386,9 +456,9 @@ MonoBehaviour:
       _mouseOtherAxisSensitivity: 1
       _customControllerAxisSensitivity: 1
       _buttonDoublePressSpeed: 0.3
-      _buttonShortPressTime: 0.25
+      _buttonShortPressTime: 0
       _buttonShortPressExpiresIn: 0
-      _buttonLongPressTime: 1
+      _buttonLongPressTime: 0.1
       _buttonLongPressExpiresIn: 0
       _buttonDeadZone: 0.5
       _buttonDownBuffer: 0
@@ -437,6 +507,83 @@ MonoBehaviour:
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 4
+        _elementType: 0
+        _elementIdentifierId: 1
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 2
+        _elementType: 1
+        _elementIdentifierId: 8
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 2
+        _elementType: 1
+        _elementIdentifierId: 7
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 19
+        _elementType: 1
+        _elementIdentifierId: 4
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 5
+        _elementType: 1
+        _elementIdentifierId: 6
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 23
+        _elementType: 1
+        _elementIdentifierId: 10
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 22
+        _elementType: 1
+        _elementIdentifierId: 12
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
     keyboardMaps:
     - id: 0
       categoryId: 0
@@ -471,9 +618,9 @@ MonoBehaviour:
     customControllerMaps: []
     customControllers: []
     playerIdCounter: 2
-    actionIdCounter: 1
-    actionCategoryIdCounter: 3
-    inputBehaviorIdCounter: 1
+    actionIdCounter: 24
+    actionCategoryIdCounter: 4
+    inputBehaviorIdCounter: 5
     mapCategoryIdCounter: 1
     joystickLayoutIdCounter: 1
     keyboardLayoutIdCounter: 1

@@ -6,7 +6,12 @@ namespace PlatformFighter
 {
     public struct PlayerInput : IComponentData
     {
-        public float2 Move;
+        public int lightLeft, strongLeft,
+                    lightRight, strongRight,
+                    up, down,
+                    shortHop, fullHop, 
+                    neutral, special, shield, grab,
+                    upC, downC, leftC, rightC;
     }
 
     public struct Health : IComponentData

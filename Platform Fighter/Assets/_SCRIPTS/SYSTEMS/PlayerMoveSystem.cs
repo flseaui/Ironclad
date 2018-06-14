@@ -7,28 +7,34 @@ namespace PlatformFighter
 {
     public class PlayerMoveSystem : ComponentSystem
     {
-        public struct Data
+        public struct PlayerData
         {
             public int Length;
             public ComponentDataArray<Position2D> Position;
             public ComponentDataArray<PlayerInput> Input;
         }
 
-        [Inject] private Data data;
+        [Inject] private PlayerData players;
 
         protected override void OnUpdate()
         {
             float dt = Time.deltaTime;
-            for (int index = 0; index < data.Length; ++index)
+
+            for (int i = 0; i < players.Length; ++i)
             {
-                var position = data.Position[index].Value;
-                
-                var playerInput = data.Input[index];
+                PlayerInput input = players.Input[i];
+                // Action Debug 
+                if (input.lightLeft == 1)
+                    Debug.Log("Walking Left");
+                else if (input.strongLeft == 1)
+                    Debug.Log("Running Left");
 
-                position += dt * playerInput.Move;
+                if (input.lightRight == 1)
+                    Debug.Log("Walking Right");
+                else if (input.strongRight == 1)
+                    Debug.Log("Running Right");
+                 
 
-                data.Position[index] = new Position2D { Value = position };
-                data.Input[index] = playerInput;
             }
         }
     }
