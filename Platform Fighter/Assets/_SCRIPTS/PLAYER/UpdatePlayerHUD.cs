@@ -1,13 +1,11 @@
 using System;
-using Unity.Entities;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 namespace PlatformFighter
 {
-    [AlwaysUpdateSystem]
-    public class UpdatePlayerHUD : ComponentSystem
+    public class UpdatePlayerHUD : MonoBehaviour
     {
 
         public TextMeshProUGUI NameText;
@@ -17,7 +15,7 @@ namespace PlatformFighter
             NameText = GameObject.Find("NameText").GetComponent<TextMeshProUGUI>();
         }
 
-        protected override void OnUpdate()
+        private void Update()
         {
 
         }

@@ -1,11 +1,15 @@
 using UnityEngine;
-using Unity.Mathematics;
 
 namespace PlatformFighter
 {
-    public class GameSettings : MonoBehaviour
+    public class GameSettings : Singleton<GameSettings>
     {
-        public half playerInitialHealth;
-        public SpriteRenderer sr;
+        [SerializeField]
+        private float playerInitialHealth;
+
+        [Header("Input")]
+        public float runThreshold;
+        public float crouchThreshold;
+        public float upThreshold;
     }
 }

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Unity.Mathematics;
+using UnityEngine;
 
 namespace PlatformFighter
 {
@@ -31,10 +31,10 @@ namespace PlatformFighter
 
         private struct Box
         {
-            public float2 knockbackAngle;
+            public Vector2 knockbackAngle;
             public float x, y, width, height, damage, knockbackStrength;
 
-            public Box(float x, float y, float width, float height, float damage, float knockbackStrength, float2 knockbackAngle)
+            public Box(float x, float y, float width, float height, float damage, float knockbackStrength, Vector2 knockbackAngle)
             {
                 this.x = x;
                 this.y = y;
@@ -45,7 +45,7 @@ namespace PlatformFighter
                 this.knockbackAngle = knockbackAngle;
             }
 
-            public Box(Boolean baseBox) : this(0, 0, 5, 5, 0, 0, new float2()) { }
+            public Box(Boolean baseBox) : this(0, 0, 5, 5, 0, 0, new Vector2()) { }
         }
         
         private List<Box> hitboxes, hurtboxes;
