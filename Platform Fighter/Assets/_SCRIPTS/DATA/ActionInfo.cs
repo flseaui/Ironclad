@@ -7,18 +7,21 @@ using UnityEngine;
 namespace PlatformFighter
 {
     [Serializable]
-    internal class ActionInfo
+    public class ActionInfo
     {
         enum FrameType { Startup, Active, Recovery, Buffer }
         enum InputType { None, Up, Down, Left, Right, UpC, DownC, LeftC, RightC, Neutral, Special, Grab, Shield, Jump, Taunt }
 
         private List<FrameType> frames; 
+        
         public int FrameCount { get => frames.Count; }
 
         private List<InputType> inputs;
         public int[] Inputs { get => Array.ConvertAll(inputs.ToArray(), value => (int) value); }
 
         public string name;
+
+        public Types.ActionType type;
 
         private bool infinite;
 
