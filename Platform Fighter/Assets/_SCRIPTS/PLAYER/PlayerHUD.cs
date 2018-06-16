@@ -5,7 +5,7 @@ using TMPro;
 
 namespace PlatformFighter
 {
-    public class UpdatePlayerHUD : MonoBehaviour
+    public class PlayerHUD : MonoBehaviour
     {
 
         public TextMeshProUGUI NameText;
