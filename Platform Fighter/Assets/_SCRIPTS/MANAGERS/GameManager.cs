@@ -21,6 +21,7 @@ namespace PlatformFighter
 			
             for (int i = 0; i < playerCount; ++i)
             {
+                Debug.Log("d");
                 Instantiate(playerPrefab, spawnPoints[i].position, spawnPoints[i].rotation);
             }
         }
