@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-			// Action Debug 
+		// Action Debug 
 		if (input.lightLeft)
 			Debug.Log("Walking Left");
 		else if (input.strongLeft)

@@ -991,9 +991,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInitialHealth: 0
-  runThreshold: 0
-  crouchThreshold: 0
-  upThreshold: 0
+  runThreshold: 0.6
+  crouchThreshold: 0.4
+  upThreshold: 0.6
 --- !u!1 &1798523376
 GameObject:
   m_ObjectHideFlags: 0
