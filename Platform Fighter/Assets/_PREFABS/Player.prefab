@@ -20,12 +20,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4505511836996114}
   - component: {fileID: 212954989511865322}
-  - component: {fileID: 114029876112989074}
-  - component: {fileID: 114171752620211810}
   - component: {fileID: 50521002551280952}
   - component: {fileID: 61796601358515752}
   - component: {fileID: 114055364290308466}
   - component: {fileID: 114616302561703780}
+  - component: {fileID: 114150697777840334}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -91,33 +90,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.64, y: 0.64}
   m_EdgeRadius: 0
---- !u!114 &114029876112989074
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1110542900291582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a06db39b77ba16489ab1cbc73a75b91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lightLeft: 0
-  strongLeft: 0
-  lightRight: 0
-  strongRight: 0
-  up: 0
-  down: 0
-  shortHop: 0
-  fullHop: 0
-  neutral: 0
-  special: 0
-  shield: 0
-  grab: 0
-  upC: 0
-  downC: 0
-  leftC: 0
-  rightC: 0
 --- !u!114 &114055364290308466
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -132,25 +104,25 @@ MonoBehaviour:
   m_SceneId:
     m_Value: 0
   m_AssetId:
-    i0: 49
-    i1: 8
-    i2: 117
-    i3: 161
-    i4: 0
-    i5: 229
-    i6: 61
-    i7: 116
-    i8: 27
-    i9: 172
-    i10: 54
-    i11: 18
-    i12: 25
-    i13: 90
-    i14: 2
-    i15: 6
+    i0: 239
+    i1: 151
+    i2: 68
+    i3: 71
+    i4: 178
+    i5: 126
+    i6: 129
+    i7: 196
+    i8: 106
+    i9: 55
+    i10: 243
+    i11: 249
+    i12: 76
+    i13: 129
+    i14: 48
+    i15: 72
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &114171752620211810
+--- !u!114 &114150697777840334
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,9 +130,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1110542900291582}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b7fd4206ec33d1429c21b77721c3fb1, type: 3}
+  m_Script: {fileID: 11500000, guid: ab3a711c621204a4d9c00a7d2dca45e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &114616302561703780
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -217,7 +190,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d0a28a18692d92d46b65ca7231a7c9b2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5e5cdf7803c165545880fa1255a2d3bd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
