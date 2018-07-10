@@ -16,6 +16,7 @@ namespace Rewired.Editor {
 
         private void OnEnable() {
             internalEditor = new InputManagerInspector_Internal(this);
+           //while (internalEditor == null) {}
             internalEditor.OnEnable();
         }
     }

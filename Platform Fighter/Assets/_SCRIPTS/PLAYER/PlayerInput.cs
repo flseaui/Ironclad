@@ -50,22 +50,44 @@ public class PlayerInput : MonoBehaviour
 		leftC = false;
 		rightC = false;
 
-		if(player.GetAxis("Move") < -GameSettings.Instance.runThreshold)
-			strongLeft = true;
-		else if (player.GetAxis("Move") < 0)
-			lightLeft = true;
+	    if (player.controllers.hasKeyboard)
+	    {
+            if (player.GetAxis("Run") < -GameSettings.Instance.runThreshold)
+	            strongLeft = true;
+	        else if (player.GetAxis("Move") < 0)
+	            lightLeft = true;
 
-		if(player.GetAxis("Move") > GameSettings.Instance.runThreshold)
-			strongRight = true;
-		else if (player.GetAxis("Move") > 0)
-			lightRight = true;
+	        if (player.GetAxis("Run") > GameSettings.Instance.runThreshold)
+	            strongRight = true;
+	        else if (player.GetAxis("Move") > 0)
+	            lightRight = true;
 
-		if (player.GetAxis("Crouch") < GameSettings.Instance.crouchThreshold)
-			down = true;
-		else if (player.GetAxis("Crouch") > GameSettings.Instance.upThreshold)
-			up = true;
+	        if (player.GetAxis("Crouch") < GameSettings.Instance.crouchThreshold)
+	            down = true;
+	        else if (player.GetAxis("Crouch") > GameSettings.Instance.upThreshold)
+	            up = true;
 
-		if (player.GetButtonLongPressDown("Hop"))
+        }
+        else
+	    {
+	        if (player.GetAxis("Move") < -GameSettings.Instance.runThreshold)
+	            strongLeft = true;
+	        else if (player.GetAxis("Move") < 0)
+	            lightLeft = true;
+
+	        if (player.GetAxis("Move") > GameSettings.Instance.runThreshold)
+	            strongRight = true;
+	        else if (player.GetAxis("Move") > 0)
+	            lightRight = true;
+
+	        if (player.GetAxis("Crouch") < GameSettings.Instance.crouchThreshold)
+	            down = true;
+	        else if (player.GetAxis("Crouch") > GameSettings.Instance.upThreshold)
+	            up = true;
+
+        }
+
+        if (player.GetButtonLongPressDown("Hop"))
 			fullHop = true;
 		else if (player.GetButtonShortPressDown("Hop"))
 			shortHop = true;

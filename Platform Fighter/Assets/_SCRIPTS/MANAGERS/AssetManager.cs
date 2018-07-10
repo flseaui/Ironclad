@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using static Types;
 
 public class AssetManager : Singleton<AssetManager>
 {
-	private List<Dictionary<Types.ActionType, ActionInfo>> actionSets;
+	private List<Dictionary<ActionType, ActionInfo>> actionSets;
 
-	void Start ()
+    private void Start ()
 	{
-		actionSets = new List<Dictionary<Types.ActionType, ActionInfo>>();
+		actionSets = new List<Dictionary<ActionType, ActionInfo>>();
 	}
 
-	public ActionInfo GetAction(Types.Character characterType, Types.ActionType actionType)
+	public ActionInfo GetAction(Character characterType, ActionType actionType)
 	{
 		return actionSets[(int) characterType][actionType];
 	}
 
-	public void PopulateActions(Types.Character[] characters)
+	public void PopulateActions(Character[] characters)
 	{
 		foreach (var character in characters)
 		{
@@ -32,9 +33,9 @@ public class AssetManager : Singleton<AssetManager>
 	}
 
 	// reads in all of a characters actions and returns a list of them
-	private Dictionary<Types.ActionType, ActionInfo> LoadActions(Types.Character character = Types.Character.TEST_CHARACTER)
+	private Dictionary<ActionType, ActionInfo> LoadActions(Character character = Character.TEST_CHARACTER)
 	{
-		var actions = new Dictionary<Types.ActionType, ActionInfo>();
+		var actions = new Dictionary<ActionType, ActionInfo>();
 
 		var actionPath = Path.Combine(Application.streamingAssetsPath, $"_ACTIONS/{ character }/");
 

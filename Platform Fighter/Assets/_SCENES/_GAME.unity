@@ -142,6 +142,193 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &268460118
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.actions.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.players.Array.data[0]._defaultJoystickMaps.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.keyboardMaps.Array.data[0].actionElementMaps.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.actionCategoryMap.list.Array.data[1].actionIds.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4543412016032580, guid: 2a1200f66c4e3784d8c1c9b155c18f44, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4543412016032580, guid: 2a1200f66c4e3784d8c1c9b155c18f44, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4543412016032580, guid: 2a1200f66c4e3784d8c1c9b155c18f44, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4543412016032580, guid: 2a1200f66c4e3784d8c1c9b155c18f44, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4543412016032580, guid: 2a1200f66c4e3784d8c1c9b155c18f44, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4543412016032580, guid: 2a1200f66c4e3784d8c1c9b155c18f44, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4543412016032580, guid: 2a1200f66c4e3784d8c1c9b155c18f44, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4543412016032580, guid: 2a1200f66c4e3784d8c1c9b155c18f44, type: 2}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.keyboardMaps.Array.data[0].actionElementMaps.Array.data[2]._keyboardKeyCode
+      value: 97
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.keyboardMaps.Array.data[0].actionElementMaps.Array.data[3]._keyboardKeyCode
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.keyboardMaps.Array.data[0].actionElementMaps.Array.data[2]._actionId
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.keyboardMaps.Array.data[0].actionElementMaps.Array.data[3]._actionId
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.keyboardMaps.Array.data[0].actionElementMaps.Array.data[2]._modifierKey1
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.keyboardMaps.Array.data[0].actionElementMaps.Array.data[3]._modifierKey1
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.players.Array.data[0]._defaultJoystickMaps.Array.data[0]._enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.actionIdCounter
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.actions.Array.data[8]._name
+      value: Run
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.actions.Array.data[8]._descriptiveName
+      value: Run
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.actionCategoryMap.list.Array.data[1].actionIds.Array.data[2]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.actionCategoryMap.list.Array.data[1].actionIds.Array.data[3]
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.actionCategoryMap.list.Array.data[1].actionIds.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.actions.Array.data[8]._type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.actions.Array.data[8]._positiveDescriptiveName
+      value: Run Right
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.actions.Array.data[8]._negativeDescriptiveName
+      value: Run Left
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.actions.Array.data[8]._userAssignable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.keyboardMaps.Array.data[0].actionElementMaps.Array.data[2]._axisContribution
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.keyboardMaps.Array.data[0].actionElementMaps.Array.data[4]._keyboardKeyCode
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.keyboardMaps.Array.data[0].actionElementMaps.Array.data[4]._actionId
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.keyboardMaps.Array.data[0].actionElementMaps.Array.data[5]._keyboardKeyCode
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.keyboardMaps.Array.data[0].actionElementMaps.Array.data[5]._actionId
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.keyboardMaps.Array.data[0].actionElementMaps.Array.data[6]._keyboardKeyCode
+      value: 115
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.keyboardMaps.Array.data[0].actionElementMaps.Array.data[6]._actionId
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+        type: 2}
+      propertyPath: _userData.keyboardMaps.Array.data[0].actionElementMaps.Array.data[6]._axisContribution
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2a1200f66c4e3784d8c1c9b155c18f44, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &310940309
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,7 +372,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &310940313
 MonoBehaviour:
@@ -269,45 +456,16 @@ MonoBehaviour:
   matchSize: 4
   isNetworkActive: 0
   matchMaker: {fileID: 0}
---- !u!1 &452681642
+--- !u!1 &394471011
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 1649385856007678, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+    type: 2}
+  m_PrefabInternal: {fileID: 268460118}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 452681643}
-  m_Layer: 0
-  m_Name: SpawnPoints
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &452681643
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 452681642}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1129367199}
-  - {fileID: 1878549238}
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &463957153
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 463957155}
-  - component: {fileID: 463957154}
+  - component: {fileID: 394471013}
+  - component: {fileID: 394471012}
   m_Layer: 0
   m_Name: Rewired Input Manager
   m_TagString: Untagged
@@ -315,15 +473,16 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &463957154
+--- !u!114 &394471012
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 463957153}
+  m_CorrespondingSourceObject: {fileID: 114993403376853936, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+    type: 2}
+  m_PrefabInternal: {fileID: 268460118}
+  m_GameObject: {fileID: 394471011}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 581b3e3c96df0ef42aef16b63b27b87f, type: 3}
+  m_Script: {fileID: 11500000, guid: e0798c9388f94e668b2e1d04ba824d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroyOnLoad: 1
@@ -411,7 +570,7 @@ MonoBehaviour:
       force4WayHats: 0
       throttleCalibrationMode: 0
       deferControllerConnectedEventsOnStart: 0
-      logLevel: 7
+      logLevel: -1
       editorSettings:
         exportConsts_useParentClass: 0
         exportConsts_parentClassName: RewiredConsts
@@ -445,17 +604,137 @@ MonoBehaviour:
       _assignMouseOnStart: 1
       _assignKeyboardOnStart: 1
       _excludeFromControllerAutoAssignment: 1
-    actions: []
+    - _id: 1
+      _name: Player0
+      _descriptiveName: Player0
+      _startPlaying: 1
+      _defaultJoystickMaps:
+      - _enabled: 1
+        _categoryId: 0
+        _layoutId: 0
+      _defaultMouseMaps: []
+      _defaultKeyboardMaps:
+      - _enabled: 1
+        _categoryId: 0
+        _layoutId: 0
+      _defaultCustomControllerMaps: []
+      _startingCustomControllers: []
+      _assignMouseOnStart: 1
+      _assignKeyboardOnStart: 1
+      _excludeFromControllerAutoAssignment: 0
+    actions:
+    - _id: 0
+      _name: Move
+      _type: 0
+      _descriptiveName: Move
+      _positiveDescriptiveName: Walk Right
+      _negativeDescriptiveName: Walk Left
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 1
+    - _id: 2
+      _name: Hop
+      _type: 1
+      _descriptiveName: Hop
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 1
+    - _id: 4
+      _name: Crouch
+      _type: 0
+      _descriptiveName: Crouch
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: Crouch
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 1
+    - _id: 5
+      _name: Neutral
+      _type: 1
+      _descriptiveName: Neutral
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 2
+    - _id: 16
+      _name: Strong
+      _type: 0
+      _descriptiveName: Strong
+      _positiveDescriptiveName: Up Strong
+      _negativeDescriptiveName: Down Strong
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 2
+    - _id: 19
+      _name: Special
+      _type: 1
+      _descriptiveName: Special
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 2
+    - _id: 22
+      _name: Shield
+      _type: 1
+      _descriptiveName: Shield
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 3
+    - _id: 23
+      _name: Grab
+      _type: 1
+      _descriptiveName: Grab
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 3
+    - _id: 24
+      _name: Run
+      _type: 0
+      _descriptiveName: Run
+      _positiveDescriptiveName: Run Right
+      _negativeDescriptiveName: Run Left
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 1
     actionCategories:
     - _name: Default
       _descriptiveName: Default
       _tag: 
       _id: 0
       _userAssignable: 1
+    - _name: Movement
+      _descriptiveName: Movement Actions
+      _tag: 
+      _id: 1
+      _userAssignable: 1
+    - _name: Attacks
+      _descriptiveName: Attack Actions
+      _tag: 
+      _id: 2
+      _userAssignable: 1
+    - _name: DefensiveOptions
+      _descriptiveName: Defensive Options
+      _tag: 
+      _id: 3
+      _userAssignable: 1
     actionCategoryMap:
       list:
       - categoryId: 0
         actionIds: 
+      - categoryId: 1
+        actionIds: 00000000020000000400000018000000
+      - categoryId: 2
+        actionIds: 050000001300000010000000
+      - categoryId: 3
+        actionIds: 1600000017000000
     inputBehaviors:
     - _id: 0
       _name: Default
@@ -472,9 +751,9 @@ MonoBehaviour:
       _mouseOtherAxisSensitivity: 1
       _customControllerAxisSensitivity: 1
       _buttonDoublePressSpeed: 0.3
-      _buttonShortPressTime: 0.25
+      _buttonShortPressTime: 0
       _buttonShortPressExpiresIn: 0
-      _buttonLongPressTime: 1
+      _buttonLongPressTime: 0.1
       _buttonLongPressExpiresIn: 0
       _buttonDeadZone: 0.5
       _buttonDownBuffer: 0
@@ -504,39 +783,249 @@ MonoBehaviour:
     - _name: Default
       _descriptiveName: Default
       _id: 0
-    joystickMaps: []
-    keyboardMaps: []
+    joystickMaps:
+    - id: 0
+      categoryId: 0
+      layoutId: 0
+      name: 
+      hardwareGuidString: 83b427e4-086f-47f3-bb06-be266abd1ca5
+      customControllerUid: 0
+      actionElementMaps:
+      - _actionCategoryId: 0
+        _actionId: 0
+        _elementType: 0
+        _elementIdentifierId: 0
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 4
+        _elementType: 0
+        _elementIdentifierId: 1
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 2
+        _elementType: 1
+        _elementIdentifierId: 8
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 2
+        _elementType: 1
+        _elementIdentifierId: 7
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 19
+        _elementType: 1
+        _elementIdentifierId: 4
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 5
+        _elementType: 1
+        _elementIdentifierId: 6
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 23
+        _elementType: 1
+        _elementIdentifierId: 10
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 22
+        _elementType: 1
+        _elementIdentifierId: 12
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+    keyboardMaps:
+    - id: 0
+      categoryId: 0
+      layoutId: 0
+      name: 
+      hardwareGuidString: 
+      customControllerUid: 0
+      actionElementMaps:
+      - _actionCategoryId: 0
+        _actionId: 0
+        _elementType: 1
+        _elementIdentifierId: -1
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 1
+        _keyboardKeyCode: 97
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 0
+        _elementType: 1
+        _elementIdentifierId: -1
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 100
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 24
+        _elementType: 1
+        _elementIdentifierId: -1
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 1
+        _keyboardKeyCode: 97
+        _modifierKey1: 3
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 24
+        _elementType: 1
+        _elementIdentifierId: -1
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 100
+        _modifierKey1: 3
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 2
+        _elementType: 1
+        _elementIdentifierId: -1
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 119
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 2
+        _elementType: 1
+        _elementIdentifierId: -1
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 32
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 4
+        _elementType: 1
+        _elementIdentifierId: -1
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 1
+        _keyboardKeyCode: 115
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
     mouseMaps: []
     customControllerMaps: []
     customControllers: []
-    playerIdCounter: 1
-    actionIdCounter: 0
-    actionCategoryIdCounter: 1
-    inputBehaviorIdCounter: 1
+    playerIdCounter: 2
+    actionIdCounter: 25
+    actionCategoryIdCounter: 4
+    inputBehaviorIdCounter: 5
     mapCategoryIdCounter: 1
     joystickLayoutIdCounter: 1
     keyboardLayoutIdCounter: 1
     mouseLayoutIdCounter: 1
     customControllerLayoutIdCounter: 1
-    joystickMapIdCounter: 0
-    keyboardMapIdCounter: 0
+    joystickMapIdCounter: 1
+    keyboardMapIdCounter: 1
     mouseMapIdCounter: 0
     customControllerMapIdCounter: 0
     customControllerIdCounter: 0
   _controllerDataFiles: {fileID: 11400000, guid: d21d2b20df8369642b76aafbb2576ba7,
     type: 2}
---- !u!4 &463957155
+--- !u!4 &394471013
 Transform:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 463957153}
+  m_CorrespondingSourceObject: {fileID: 4543412016032580, guid: 2a1200f66c4e3784d8c1c9b155c18f44,
+    type: 2}
+  m_PrefabInternal: {fileID: 268460118}
+  m_GameObject: {fileID: 394471011}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &452681642
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 452681643}
+  m_Layer: 0
+  m_Name: SpawnPoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &452681643
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 452681642}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1129367199}
+  - {fileID: 1878549238}
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &748903480
 GameObject:
@@ -605,7 +1094,7 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
-  m_AllowMSAA: 1
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -639,7 +1128,7 @@ MonoBehaviour:
   m_RefResolutionX: 960
   m_RefResolutionY: 540
   m_UpscaleRT: 0
-  m_PixelSnapping: 1
+  m_PixelSnapping: 0
   m_CropFrameX: 0
   m_CropFrameY: 0
   m_StretchFill: 0
@@ -747,7 +1236,6 @@ MonoBehaviour:
   m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
-  m_isTextTruncated: 0
   m_enableKerning: 1
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
@@ -991,9 +1479,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInitialHealth: 0
-  runThreshold: 0
-  crouchThreshold: 0
-  upThreshold: 0
+  runThreshold: 0.6
+  crouchThreshold: -0.4
+  upThreshold: 0.6
 --- !u!1 &1798523376
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,7 +1542,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1803290823
 GameObject:

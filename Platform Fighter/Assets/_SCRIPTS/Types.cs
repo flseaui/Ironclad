@@ -4,8 +4,15 @@
 	{
 		TEST_CHARACTER
 	}
+    public enum Direction
+    {
+        LEFT,
+        RIGHT
+    }
 	public enum ActionType
 	{
+        NOTHING,
+        IDLE,
 		JAB,
 		FTILT,
 		DTILT,
@@ -18,6 +25,7 @@
 		DASHATK,
 		NSPECIAL,
 		FSPECIAL,
+        AIRFSPECIAL,
 		DSPECIAL,
 		USPECIAL,
 		GRAB,
@@ -35,5 +43,6 @@
 		RUN,
 		DASH,
 		ASSIST,		
+        TURN
 	}
 }
