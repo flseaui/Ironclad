@@ -4,7 +4,7 @@ using UnityEngine;
 using static Types;
 
 [RequireComponent(typeof(PlayerInput))]
-public class PlayerMovement : MonoBehaviour
+public class Tonky_Actions : MonoBehaviour
 {
     private PlayerInput _input;
 
@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Returns action that should be started this frame based on current inputs
     // Assumes neutral/idle state
-    private ActionType GetCurrentAction()
+    public ActionType GetCurrentAction()
     {
         if (_input.shortHop)
         {
