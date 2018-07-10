@@ -1,111 +1,96 @@
+using System;
 using Rewired.UI.ControlMapper;
 using UnityEngine;
+using static Types;
 
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerMovement : MonoBehaviour
 {
-    private PlayerInput input;
+    private PlayerInput _input;
 
     // TEMP VARIABLES WE ARE NOT USING THESE
 
     // (false - left, true - right)
-    private bool facing;
+    private Direction _direction = Direction.RIGHT;
 
-    private bool grounded;
+    private bool _grounded = true;
 
+    private ActionType currentAction;
 
     private void Start()
     {
-       input = GetComponent(typeof(PlayerInput)) as PlayerInput;
+       _input = GetComponent(typeof(PlayerInput)) as PlayerInput;
     }
 
     private void Update()
     {
-        Types.ActionType action;
+        //if (currentAction == ActionType.NOTHING)
+        //{
+            currentAction = GetCurrentAction();
+        //}
 
-        if (facing)
+        Debug.Log($"{currentAction} {_direction}");
+
+    }
+
+    // Returns action that should be started this frame based on current inputs
+    // Assumes neutral/idle state
+    private ActionType GetCurrentAction()
+    {
+        if (_input.shortHop)
         {
-            if (grounded)
+            return ActionType.SHOP;
+        }
+
+        if (_input.fullHop)
+        {
+            return ActionType.FHOP;
+        }
+        
+        if (_direction == Direction.RIGHT)
+        {
+            if (_grounded)
             {
-                
-                if (input.strongRight)
+                if (_input.lightRight)
                 {
-                    if (input.neutral)
-                    {
-                        action = Types.ActionType.DASHATK;
-                    }
+                    return ActionType.WALK;
                 }
-                else if (input.lightRight)
+
+                if (_input.strongRight)
                 {
-                    if (input.neutral)
-                    {
-                        action = Types.ActionType.FTILT;
-                    }
+                    return ActionType.RUN;
                 }
-                else if (input.lightRight || input.strongRight)
+
+                if (_input.lightLeft || _input.strongLeft)
                 {
-                    if (input.special)
-                    {
-                        action = Types.ActionType.FSPECIAL;
-                    }
-                    else if (input.shield)
-                    {
-                        action = Types.ActionType.SHIELD;
-                    }
-                }
-                if (input.lightLeft || input.strongLeft)
-                {
-                    if (input.neutral)
-                    {
-                        facing = false;
-                        action = Types.ActionType.FTILT;
-                    }
-                    else if (input.special)
-                    {
-                        facing = false;
-                        action = Types.ActionType.FSPECIAL;
-                    }
-                    else if (input.shield)
-                    {
-                        facing = false;
-                        action = Types.ActionType.SPOTDODGE;
-                    }
-                }
-            }
-            else
-            {
-                if (input.lightRight || input.strongRight)
-                {
-                    if (input.neutral)
-                    {
-                        action = Types.ActionType.FAIR;
-                    }
-                    else if (input.special)
-                    {
-                        action = Types.ActionType.AIRFSPECIAL;
-                    }
-                    else if (input.shield)
-                    {
-                        action = Types.ActionType.AIRDODGE;
-                    }
+                    _direction = Direction.LEFT;
+                    return ActionType.TURN;
                 }
             }
         }
-        else
+        else if (_direction == Direction.LEFT)
         {
-            
+            if (_grounded)
+            {
+                if (_input.lightLeft)
+                {
+                    return ActionType.WALK;
+                }
+
+                if (_input.strongLeft)
+                {
+                    return ActionType.RUN;
+                }
+
+                if (_input.lightRight || _input.strongRight)
+                {
+                    _direction = Direction.RIGHT;
+                    return ActionType.TURN;
+                }
+            }
         }
 
-		// Action Debug 
-		if (input.lightLeft)
-			Debug.Log("Walking Left");
-		else if (input.strongLeft)
-			Debug.Log("Running Left");
+        return ActionType.IDLE;
 
-		if (input.lightRight)
-			Debug.Log("Walking Right");
-		else if (input.strongRight)
-			Debug.Log("Running Right");
-            
     }
 }
