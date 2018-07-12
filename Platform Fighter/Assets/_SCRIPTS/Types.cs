@@ -1,48 +1,51 @@
-﻿public static class Types
+﻿namespace PlatFighter
 {
-	public enum Character
-	{
-		TEST_CHARACTER
-	}
-    public enum Direction
+    public static class Types
     {
-        LEFT,
-        RIGHT
+        public enum Character
+        {
+            TEST_CHARACTER
+        }
+        public enum Direction
+        {
+            LEFT,
+            RIGHT
+        }
+        public enum ActionType
+        {
+            NOTHING,
+            IDLE,
+            JAB,
+            FTILT,
+            DTILT,
+            UTILT,
+            NAIR,
+            FAIR,
+            DAIR,
+            UAIR,
+            BAIR,
+            DASHATK,
+            NSPECIAL,
+            FSPECIAL,
+            AIRFSPECIAL,
+            DSPECIAL,
+            USPECIAL,
+            GRAB,
+            FTHROW,
+            DTHROW,
+            UTHROW,
+            BTHROW,
+            SHIELD,
+            ROLL,
+            AIRDODGE,
+            SPOTDODGE,
+            FHOP,
+            SHOP,
+            WALK,
+            RUN,
+            DASH,
+            ASSIST,		
+            TURN
+        }
     }
-	public enum ActionType
-	{
-        NOTHING,
-        IDLE,
-		JAB,
-		FTILT,
-		DTILT,
-		UTILT,
-		NAIR,
-		FAIR,
-		DAIR,
-		UAIR,
-		BAIR,
-		DASHATK,
-		NSPECIAL,
-		FSPECIAL,
-        AIRFSPECIAL,
-		DSPECIAL,
-		USPECIAL,
-		GRAB,
-		FTHROW,
-		DTHROW,
-		UTHROW,
-		BTHROW,
-		SHIELD,
-		ROLL,
-		AIRDODGE,
-		SPOTDODGE,
-		FHOP,
-		SHOP,
-		WALK,
-		RUN,
-		DASH,
-		ASSIST,		
-        TURN
-	}
 }

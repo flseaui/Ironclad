@@ -1,30 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using static Types;
+﻿using UnityEngine;
 
-public class Behaviors : MonoBehaviour {
+namespace PlatFighter.PLAYER
+{
+    public class Behaviors : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+        // Use this for initialization
+        void Start () {
 	
-	}
+        }
 	
-	// Update is called once per frame
-	void Update () {
+        // Update is called once per frame
+        void Update () {
 		
-	}
-
-    public void ThatOneMethodThatWeReallyShouldNameButWeJustCantThinkOfAName (ActionType action) {
-        
-        switch (action) {
-            case (ActionType.WALK):
-                break;
-            case (ActionType.RUN):
-                break;
-
         }
 
+        public void ThatOneMethodThatWeReallyShouldNameButWeJustCantThinkOfAName (Types.ActionType action) {
+        
+            switch (action) {
+                case (Types.ActionType.WALK):
+                    break;
+                case (Types.ActionType.RUN):
+                    break;
 
+            }
+
+
+        }
     }
 }

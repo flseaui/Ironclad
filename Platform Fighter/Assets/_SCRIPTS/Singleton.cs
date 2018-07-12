@@ -1,26 +1,29 @@
 using UnityEngine;
 
-public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
+namespace PlatFighter
 {
-    protected static T instance;
-
-    //Returns the instance of this singleton.
-    public static T Instance
+    public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
-        get
+        protected static T instance;
+
+        //Returns the instance of this singleton.
+        public static T Instance
         {
-            if(instance == null)
+            get
             {
-                instance = (T) FindObjectOfType(typeof(T));
-
-                if (instance == null)
+                if(instance == null)
                 {
-                Debug.LogError("An instance of " + typeof(T) + 
-                    " is needed in the scene, but there is none.");
-                }
-            }
+                    instance = (T) FindObjectOfType(typeof(T));
 
-            return instance;
+                    if (instance == null)
+                    {
+                        Debug.LogError("An instance of " + typeof(T) + 
+                                       " is needed in the scene, but there is none.");
+                    }
+                }
+
+                return instance;
+            }
         }
     }
 }

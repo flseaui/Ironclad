@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-class PlayerInfo : NetworkBehaviour
+namespace PlatFighter.PLAYER
 {
-	[SyncVar]
-	public Color color;
+    class PlayerInfo : NetworkBehaviour
+    {
+        [SyncVar]
+        public Color color;
+    }
 }

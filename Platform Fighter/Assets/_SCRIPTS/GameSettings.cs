@@ -1,12 +1,15 @@
 using UnityEngine;
 
-public class GameSettings : Singleton<GameSettings>
+namespace PlatFighter
 {
-    [SerializeField]
-    private float playerInitialHealth;
+    public class GameSettings : Singleton<GameSettings>
+    {
+        [SerializeField]
+        private float playerInitialHealth;
 
-    [Header("Input")]
-    public float runThreshold;
-    public float crouchThreshold;
-    public float upThreshold;
+        [Header("Input")]
+        public float runThreshold;
+        public float crouchThreshold;
+        public float upThreshold;
+    }
 }

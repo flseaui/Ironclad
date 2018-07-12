@@ -1,26 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerScript : MonoBehaviour {
+namespace PlatFighter.PLAYER
+{
+    [RequireComponent(typeof(TonkyActions))]
+    public class PlayerScript : MonoBehaviour {
 
-    private double acceleration,
-                   terminal_velocity;
+        private double _acceleration,
+            _terminalVelocity;
 
-    private Tonky_Actions _action;
+        private TonkyActions _action;
 
-    Tonky_Behaviors behaviors = new Tonky_Behaviors();
+        TonkyBehaviors behaviors = new TonkyBehaviors();
 
-
-    // Use this for initialization
-    void Start () {
-        _action = GetComponent(typeof(Tonky_Actions)) as Tonky_Actions;
-    }
+        // Use this for initialization
+        private void Start () {
+            _action = GetComponent(typeof(TonkyActions)) as TonkyActions;
+        }
 	
-	// Update is called once per frame
-	void Update () {
+        // Update is called once per frame
+        void Update () {
 
-        behaviors.ThatOneMethodThatWeReallyShouldNameButWeJustCantThinkOfAName(_action.GetCurrentAction(), ref acceleration, ref terminal_velocity);
+            behaviors.ThatOneMethodThatWeReallyShouldNameButWeJustCantThinkOfAName(_action.GetCurrentAction(), ref _acceleration, ref _terminalVelocity);
 
-	}
+        }
+    }
 }
