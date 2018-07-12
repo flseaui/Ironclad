@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace PlatFighter
+namespace MISC
 {
     public class GameSettings : Singleton<GameSettings>
     {

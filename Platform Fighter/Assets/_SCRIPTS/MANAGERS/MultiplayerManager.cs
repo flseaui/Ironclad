@@ -1,8 +1,8 @@
-﻿using PlatFighter.PLAYER;
+﻿using PLAYER;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace PlatFighter.MANAGERS
+namespace MANAGERS
 {
     public class MultiplayerManager : NetworkManager
     {

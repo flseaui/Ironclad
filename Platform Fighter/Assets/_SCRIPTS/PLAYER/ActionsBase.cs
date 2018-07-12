@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using static DATA.Types;
 
-namespace PlatFighter.PLAYER
+namespace PLAYER
 {
     [RequireComponent(typeof(PlayerInput))]
     public class ActionsBase : MonoBehaviour
@@ -12,9 +13,9 @@ namespace PlatFighter.PLAYER
             _input = GetComponent(typeof(PlayerInput)) as PlayerInput;
         }
 
-        public Types.ActionType GetCurrentAction()
+        public ActionType GetCurrentAction()
         {
-            return Types.ActionType.NOTHING;
+            return ActionType.NOTHING;
         }
 
     }

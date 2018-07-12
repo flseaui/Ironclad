@@ -1,6 +1,7 @@
 using UnityEngine;
+using static DATA.Types;
 
-namespace PlatFighter.PLAYER
+namespace PLAYER
 {
     public class TonkyActions : ActionsBase
     {
@@ -9,11 +10,11 @@ namespace PlatFighter.PLAYER
         // TEMP VARIABLES WE ARE NOT USING THESE
 
         // (false - left, true - right)
-        private Types.Direction _direction = Types.Direction.RIGHT;
+        private Direction _direction = Direction.RIGHT;
 
         private bool _grounded = true;
 
-        private Types.ActionType currentAction;
+        private ActionType currentAction;
 
         private void Start()
         {
@@ -33,62 +34,62 @@ namespace PlatFighter.PLAYER
 
         // Returns action that should be started this frame based on current inputs
         // Assumes neutral/idle state
-        public Types.ActionType GetCurrentAction()
+        public new ActionType GetCurrentAction()
         {
             if (_input.shortHop)
             {
-                return Types.ActionType.SHOP;
+                return ActionType.SHOP;
             }
 
             if (_input.fullHop)
             {
-                return Types.ActionType.FHOP;
+                return ActionType.FHOP;
             }
         
-            if (_direction == Types.Direction.RIGHT)
+            if (_direction == Direction.RIGHT)
             {
                 if (_grounded)
                 {
                     if (_input.lightRight)
                     {
-                        return Types.ActionType.WALK;
+                        return ActionType.WALK;
                     }
 
                     if (_input.strongRight)
                     {
-                        return Types.ActionType.RUN;
+                        return ActionType.RUN;
                     }
 
                     if (_input.lightLeft || _input.strongLeft)
                     {
-                        _direction = Types.Direction.LEFT;
-                        return Types.ActionType.TURN;
+                        _direction = Direction.LEFT;
+                        return ActionType.TURN;
                     }
                 }
             }
-            else if (_direction == Types.Direction.LEFT)
+            else if (_direction == Direction.LEFT)
             {
                 if (_grounded)
                 {
                     if (_input.lightLeft)
                     {
-                        return Types.ActionType.WALK;
+                        return ActionType.WALK;
                     }
 
                     if (_input.strongLeft)
                     {
-                        return Types.ActionType.RUN;
+                        return ActionType.RUN;
                     }
 
                     if (_input.lightRight || _input.strongRight)
                     {
-                        _direction = Types.Direction.RIGHT;
-                        return Types.ActionType.TURN;
+                        _direction = Direction.RIGHT;
+                        return ActionType.TURN;
                     }
                 }
             }
 
-            return Types.ActionType.IDLE;
+            return ActionType.IDLE;
 
         }
     }

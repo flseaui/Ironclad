@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-namespace PlatFighter.PLAYER
+namespace PLAYER
 {
     class PlayerInfo : NetworkBehaviour
     {

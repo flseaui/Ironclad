@@ -1,28 +1,28 @@
 using UnityEngine;
 
-namespace PlatFighter
+namespace MISC
 {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
-        protected static T instance;
+        private static T _instance;
 
         //Returns the instance of this singleton.
         public static T Instance
         {
             get
             {
-                if(instance == null)
+                if(_instance == null)
                 {
-                    instance = (T) FindObjectOfType(typeof(T));
+                    _instance = (T) FindObjectOfType(typeof(T));
 
-                    if (instance == null)
+                    if (_instance == null)
                     {
                         Debug.LogError("An instance of " + typeof(T) + 
                                        " is needed in the scene, but there is none.");
                     }
                 }
 
-                return instance;
+                return _instance;
             }
         }
     }

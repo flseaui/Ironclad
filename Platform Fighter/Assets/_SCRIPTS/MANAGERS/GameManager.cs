@@ -1,6 +1,7 @@
+using MISC;
 using UnityEngine;
 
-namespace PlatFighter.MANAGERS
+namespace MANAGERS
 {
     public class GameManager : Singleton<GameManager>
     {

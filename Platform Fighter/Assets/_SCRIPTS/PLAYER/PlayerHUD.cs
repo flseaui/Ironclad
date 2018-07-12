@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace PlatFighter.PLAYER
+namespace PLAYER
 {
     public class PlayerHUD : MonoBehaviour
     {

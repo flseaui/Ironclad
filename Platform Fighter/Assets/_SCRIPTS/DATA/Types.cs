@@ -1,4 +1,4 @@
-﻿namespace PlatFighter
+﻿namespace DATA
 {
     public static class Types
     {

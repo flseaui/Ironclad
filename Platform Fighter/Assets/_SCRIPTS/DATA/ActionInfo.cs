@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PlatFighter.DATA
+namespace DATA
 {
     [Serializable]
     public class ActionInfo

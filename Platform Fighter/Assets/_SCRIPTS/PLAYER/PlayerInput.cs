@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using Rewired;
 using UnityEngine;
+using MISC;
 
-namespace PlatFighter.PLAYER
+namespace PLAYER
 {
     public class PlayerInput : MonoBehaviour
     {

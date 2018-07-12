@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace PlatFighter.PLAYER
+namespace PLAYER
 {
     [RequireComponent(typeof(TonkyActions))]
     public class PlayerScript : MonoBehaviour {

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using static DATA.Types;
 
-namespace PlatFighter.PLAYER
+namespace PLAYER
 {
     public class Behaviors : MonoBehaviour {
 
@@ -14,12 +15,12 @@ namespace PlatFighter.PLAYER
 		
         }
 
-        public void ThatOneMethodThatWeReallyShouldNameButWeJustCantThinkOfAName (Types.ActionType action) {
+        public void ThatOneMethodThatWeReallyShouldNameButWeJustCantThinkOfAName (ActionType action) {
         
             switch (action) {
-                case (Types.ActionType.WALK):
+                case (ActionType.WALK):
                     break;
-                case (Types.ActionType.RUN):
+                case (ActionType.RUN):
                     break;
 
             }

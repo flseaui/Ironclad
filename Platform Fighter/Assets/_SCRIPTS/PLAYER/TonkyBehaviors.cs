@@ -1,4 +1,6 @@
-﻿namespace PlatFighter.PLAYER
+﻿using DATA;
+
+namespace PLAYER
 {
     public class TonkyBehaviors
     {
