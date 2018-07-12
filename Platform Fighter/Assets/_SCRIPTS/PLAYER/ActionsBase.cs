@@ -3,20 +3,25 @@ using static DATA.Types;
 
 namespace PLAYER
 {
-    [RequireComponent(typeof(PlayerInput))]
-    public class ActionsBase : MonoBehaviour
+    [
+        RequireComponent(typeof(PlayerInput)), 
+        RequireComponent(typeof(PlayerData))
+    ]
+    public abstract class ActionsBase : MonoBehaviour
     {
-        protected PlayerInput _input;
+        protected PlayerInput Input { get; set; }
+
+        protected PlayerData Data { get; set; }
 
         private void Start()
         {
-            _input = GetComponent(typeof(PlayerInput)) as PlayerInput;
+            Input = GetComponent<PlayerInput>();
+            Data = GetComponent<PlayerData>();
         }
 
-        public ActionType GetCurrentAction()
-        {
-            return ActionType.NOTHING;
-        }
+        private void Update() => Data.CurrentAction = GetCurrentAction();
+
+        protected abstract ActionType GetCurrentAction();
 
     }
 }

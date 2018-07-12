@@ -3,8 +3,8 @@ using static DATA.Types;
 
 namespace PLAYER
 {
-    public class PlayerData : MonoBehaviour {
-
+    public class PPlayerData : MonoBehaviour
+    {
         private void Start()
         {
             Acceleration = 0;

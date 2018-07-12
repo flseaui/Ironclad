@@ -1,4 +1,3 @@
-using UnityEngine;
 using static DATA.Types;
 
 namespace PLAYER
@@ -6,78 +5,58 @@ namespace PLAYER
     public class TonkyActions : ActionsBase
     {
 
-        // TEMP VARIABLES WE ARE NOT USING THESE
-
-        // (false - left, true - right)
-        private Direction _direction = Direction.RIGHT;
-
-        private bool _grounded = true;
-
-        private ActionType currentAction;
-
-        private void Update()
-        {
-            //if (currentAction == ActionType.NOTHING)
-            //{
-            currentAction = GetCurrentAction();
-            //}
-
-            Debug.Log($"{currentAction} {_direction}");
-
-        }
-
         // Returns action that should be started this frame based on current inputs
         // Assumes neutral/idle state
-        public new ActionType GetCurrentAction()
+        protected override ActionType GetCurrentAction()
         {
-            if (_input.shortHop)
+            if (Input.shortHop)
             {
                 return ActionType.SHOP;
             }
 
-            if (_input.fullHop)
+            if (Input.fullHop)
             {
                 return ActionType.FHOP;
             }
         
-            if (_direction == Direction.RIGHT)
+            if (Data.Direction == Direction.RIGHT)
             {
-                if (_grounded)
+                if (Data.Grounded)
                 {
-                    if (_input.lightRight)
+                    if (Input.lightRight)
                     {
                         return ActionType.WALK;
                     }
 
-                    if (_input.strongRight)
+                    if (Input.strongRight)
                     {
                         return ActionType.RUN;
                     }
 
-                    if (_input.lightLeft || _input.strongLeft)
+                    if (Input.lightLeft || Input.strongLeft)
                     {
-                        _direction = Direction.LEFT;
+                        Data.Direction = Direction.LEFT;
                         return ActionType.TURN;
                     }
                 }
             }
-            else if (_direction == Direction.LEFT)
+            else if (Data.Direction == Direction.LEFT)
             {
-                if (_grounded)
+                if (Data.Grounded)
                 {
-                    if (_input.lightLeft)
+                    if (Input.lightLeft)
                     {
                         return ActionType.WALK;
                     }
 
-                    if (_input.strongLeft)
+                    if (Input.strongLeft)
                     {
                         return ActionType.RUN;
                     }
 
-                    if (_input.lightRight || _input.strongRight)
+                    if (Input.lightRight || Input.strongRight)
                     {
-                        _direction = Direction.RIGHT;
+                        Data.Direction = Direction.RIGHT;
                         return ActionType.TURN;
                     }
                 }

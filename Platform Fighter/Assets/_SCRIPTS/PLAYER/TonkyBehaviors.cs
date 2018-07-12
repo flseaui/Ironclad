@@ -1,86 +1,87 @@
 ﻿using System;
-using DATA;
+using UnityEngine;
+using static DATA.Types;
 
 namespace PLAYER
 {
-    public class TonkyBehaviors : IBehaviors
+    public class TonkyBehaviors : Behaviors
     {
-        public void RunAction(Types.ActionType action, ref PlayerData data) {
-        
+        protected override void RunAction(ActionType action)
+        {
             switch (action)
             {
 
-                case (Types.ActionType.WALK):
-                    data.Acceleration = .25;
-                    data.TerminalVelocity = 2.5;
+                case (ActionType.WALK):
+                    Data.Acceleration = .25;
+                    Data.TerminalVelocity = 2.5;
                     break;
 
-                case (Types.ActionType.RUN):
-                    data.Acceleration = .25;
-                    data.TerminalVelocity = 5;
+                case (ActionType.RUN):
+                    Data.Acceleration = .25;
+                    Data.TerminalVelocity = 5;
                     break;
 
-                case Types.ActionType.NOTHING:
+                case ActionType.NOTHING:
                     break;
-                case Types.ActionType.IDLE:
+                case ActionType.IDLE:
                     break;
-                case Types.ActionType.JAB:
+                case ActionType.JAB:
                     break;
-                case Types.ActionType.FTILT:
+                case ActionType.FTILT:
                     break;
-                case Types.ActionType.DTILT:
+                case ActionType.DTILT:
                     break;
-                case Types.ActionType.UTILT:
+                case ActionType.UTILT:
                     break;
-                case Types.ActionType.NAIR:
+                case ActionType.NAIR:
                     break;
-                case Types.ActionType.FAIR:
+                case ActionType.FAIR:
                     break;
-                case Types.ActionType.DAIR:
+                case ActionType.DAIR:
                     break;
-                case Types.ActionType.UAIR:
+                case ActionType.UAIR:
                     break;
-                case Types.ActionType.BAIR:
+                case ActionType.BAIR:
                     break;
-                case Types.ActionType.DASHATK:
+                case ActionType.DASHATK:
                     break;
-                case Types.ActionType.NSPECIAL:
+                case ActionType.NSPECIAL:
                     break;
-                case Types.ActionType.FSPECIAL:
+                case ActionType.FSPECIAL:
                     break;
-                case Types.ActionType.AIRFSPECIAL:
+                case ActionType.AIRFSPECIAL:
                     break;
-                case Types.ActionType.DSPECIAL:
+                case ActionType.DSPECIAL:
                     break;
-                case Types.ActionType.USPECIAL:
+                case ActionType.USPECIAL:
                     break;
-                case Types.ActionType.GRAB:
+                case ActionType.GRAB:
                     break;
-                case Types.ActionType.FTHROW:
+                case ActionType.FTHROW:
                     break;
-                case Types.ActionType.DTHROW:
+                case ActionType.DTHROW:
                     break;
-                case Types.ActionType.UTHROW:
+                case ActionType.UTHROW:
                     break;
-                case Types.ActionType.BTHROW:
+                case ActionType.BTHROW:
                     break;
-                case Types.ActionType.SHIELD:
+                case ActionType.SHIELD:
                     break;
-                case Types.ActionType.ROLL:
+                case ActionType.ROLL:
                     break;
-                case Types.ActionType.AIRDODGE:
+                case ActionType.AIRDODGE:
                     break;
-                case Types.ActionType.SPOTDODGE:
+                case ActionType.SPOTDODGE:
                     break;
-                case Types.ActionType.FHOP:
+                case ActionType.FHOP:
                     break;
-                case Types.ActionType.SHOP:
+                case ActionType.SHOP:
                     break;
-                case Types.ActionType.DASH:
+                case ActionType.DASH:
                     break;
-                case Types.ActionType.ASSIST:
+                case ActionType.ASSIST:
                     break;
-                case Types.ActionType.TURN:
+                case ActionType.TURN:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(action), action, null);

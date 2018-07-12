@@ -12,10 +12,10 @@ namespace DATA
 
         private List<FrameType> frames;
 
-        public int FrameCount { get => frames.Count; }
+        public int FrameCount => frames.Count;
 
         private List<InputType> inputs;
-        public int[] Inputs { get => System.Array.ConvertAll(inputs.ToArray(), value => (int)value); }
+        public int[] Inputs => System.Array.ConvertAll(inputs.ToArray(), value => (int)value);
 
         public string name;
 
@@ -25,8 +25,7 @@ namespace DATA
 
         public ActionInfo()
         {
-            frames = new List<FrameType>();
-            frames.Add(FrameType.Startup);
+            frames = new List<FrameType> { FrameType.Startup };
             infinite = false;
         }
 

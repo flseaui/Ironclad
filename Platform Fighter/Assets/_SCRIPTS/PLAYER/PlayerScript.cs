@@ -1,26 +1,30 @@
-﻿using UnityEngine;
-
+﻿using System;
+using UnityEngine;
+using Types = DATA.Types;
+    
 namespace PLAYER
 {
-    [RequireComponent(typeof(TonkyActions))]
+    public delegate void OnActionEndCallback();
+
+    [RequireComponent(typeof(PlayerData))]
     public class PlayerScript : MonoBehaviour
     {
+        public static event OnActionEndCallback OnActionEnd;
+
         private PlayerData _data;
 
-        private TonkyActions _actions;
+        private void Start ()
+        {
+            _data = GetComponent<PlayerData>();
 
-        private IBehaviors _behaviors;
-
-        private void Start () {
-            _actions = GetComponent(typeof(TonkyActions)) as TonkyActions;
-
-            _behaviors = new TonkyBehaviors();
+            _data.Direction = Types.Direction.RIGHT;
+            _data.Grounded = true;
         }
-	
-        private void Update () {
 
-            _behaviors.RunAction(_actions.GetCurrentAction(), ref _data);
-
+        private void ExecuteAction()
+        {
+            OnActionEnd?.Invoke();
         }
+
     }
 }

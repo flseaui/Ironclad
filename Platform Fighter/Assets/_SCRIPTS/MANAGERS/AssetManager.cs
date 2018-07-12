@@ -8,35 +8,30 @@ using static DATA.Types;
 
 namespace MANAGERS
 {
-    public class AssetManager : Singleton<AssetManager>
+    public static class AssetManager
     {
-        private List<Dictionary<ActionType, ActionInfo>> actionSets;
+        private static readonly List<Dictionary<ActionType, ActionInfo>> ActionSets = new List<Dictionary<ActionType, ActionInfo>>();
 
-        private void Start ()
+        public static ActionInfo GetAction(Character characterType, ActionType actionType)
         {
-            actionSets = new List<Dictionary<ActionType, ActionInfo>>();
+            return ActionSets[(int) characterType][actionType];
         }
 
-        public ActionInfo GetAction(Character characterType, ActionType actionType)
-        {
-            return actionSets[(int) characterType][actionType];
-        }
-
-        public void PopulateActions(Character[] characters)
+        public static void PopulateActions(Character[] characters)
         {
             foreach (var character in characters)
             {
-                actionSets.Add(LoadActions(character));
+                ActionSets.Add(LoadActions(character));
             }
         }
 
-        public void LogAction(ActionInfo action)
+        public static void LogAction(ActionInfo action)
         {
             Debug.Log($"ACTION: { action.name }");
         }
 
         // reads in all of a characters actions and returns a list of them
-        private Dictionary<ActionType, ActionInfo> LoadActions(Character character = Character.TEST_CHARACTER)
+        private static Dictionary<ActionType, ActionInfo> LoadActions(Character character = Character.TEST_CHARACTER)
         {
             var actions = new Dictionary<ActionType, ActionInfo>();
 
