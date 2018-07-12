@@ -20,7 +20,7 @@ namespace MANAGERS
                 GameManager.Instance.spawnPoints[playerControllerId].position, 
                 GameManager.Instance.spawnPoints[playerControllerId].rotation
             );
-            player.GetComponent<PlayerInfo>().color = Color.red;
+            //player.GetComponent<PlayerInfo>().color = Color.red;
             NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
         }
     }

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using static DATA.Types;
+using Types = DATA.Types;
 
 namespace PLAYER
 {
@@ -21,7 +21,7 @@ namespace PLAYER
 
         private void Update() => Data.CurrentAction = GetCurrentAction();
 
-        protected abstract ActionType GetCurrentAction();
+        protected abstract Types.ActionType GetCurrentAction();
 
     }
 }

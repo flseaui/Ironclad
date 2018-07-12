@@ -1,4 +1,5 @@
-using static DATA.Types;
+using UnityEngine;
+using Types = DATA.Types;
 
 namespace PLAYER
 {
@@ -7,62 +8,62 @@ namespace PLAYER
 
         // Returns action that should be started this frame based on current inputs
         // Assumes neutral/idle state
-        protected override ActionType GetCurrentAction()
+        protected override Types.ActionType GetCurrentAction()
         {
             if (Input.shortHop)
             {
-                return ActionType.SHOP;
+                return Types.ActionType.SHOP;
             }
 
             if (Input.fullHop)
             {
-                return ActionType.FHOP;
+                return Types.ActionType.FHOP;
             }
         
-            if (Data.Direction == Direction.RIGHT)
+            if (Data.Direction == Types.Direction.RIGHT)
             {
                 if (Data.Grounded)
                 {
                     if (Input.lightRight)
                     {
-                        return ActionType.WALK;
+                        return Types.ActionType.WALK;
                     }
 
                     if (Input.strongRight)
                     {
-                        return ActionType.RUN;
+                        return Types.ActionType.RUN;
                     }
 
                     if (Input.lightLeft || Input.strongLeft)
                     {
-                        Data.Direction = Direction.LEFT;
-                        return ActionType.TURN;
+                        Data.Direction = Types.Direction.LEFT;
+                        return Types.ActionType.TURN;
                     }
                 }
             }
-            else if (Data.Direction == Direction.LEFT)
+            else if (Data.Direction == Types.Direction.LEFT)
             {
                 if (Data.Grounded)
                 {
                     if (Input.lightLeft)
                     {
-                        return ActionType.WALK;
+                        return Types.ActionType.WALK;
                     }
 
                     if (Input.strongLeft)
                     {
-                        return ActionType.RUN;
+                        return Types.ActionType.RUN;
                     }
 
                     if (Input.lightRight || Input.strongRight)
                     {
-                        Data.Direction = Direction.RIGHT;
-                        return ActionType.TURN;
+                        Data.Direction = Types.Direction.RIGHT;
+                        return Types.ActionType.TURN;
                     }
                 }
             }
 
-            return ActionType.IDLE;
+            return Types.ActionType.IDLE;
 
         }
     }

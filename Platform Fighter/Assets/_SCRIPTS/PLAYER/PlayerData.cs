@@ -1,23 +1,17 @@
 ﻿using UnityEngine;
-using static DATA.Types;
+using DATA;
+using Types = DATA.Types;
 
 namespace PLAYER
 {
-    public class PlayerData : MonoBehaviour {
-
-        private void Start()
-        {
-            Acceleration = 0;
-            TerminalVelocity = 0;
-            Grounded = true;
-            CurrentAction = 0;
-            Direction = 0;
-        }
+    public class PlayerData : MonoBehaviour
+    {
 
         public double Acceleration;
         public double TerminalVelocity;
         public bool Grounded;
-        public ActionType CurrentAction;
-        public Direction Direction;
+        public Types.ActionType CurrentAction;
+        public Types.Direction Direction;
+
     }
 }

@@ -21,6 +21,11 @@ namespace PLAYER
             _data.Grounded = true;
         }
 
+        private void Update()
+        {
+            Debug.Log($"{_data.CurrentAction} {_data.Direction}");
+        }
+
         private void ExecuteAction()
         {
             OnActionEnd?.Invoke();
