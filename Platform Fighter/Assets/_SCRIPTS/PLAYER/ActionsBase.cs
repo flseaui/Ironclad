@@ -19,7 +19,10 @@ namespace PLAYER
             Data = GetComponent<PlayerData>();
         }
 
-        private void Update() => Data.CurrentAction = GetCurrentAction();
+        private void Update()
+        {
+           Data.CurrentAction = GetCurrentAction();
+        }
 
         protected abstract Types.ActionType GetCurrentAction();
 

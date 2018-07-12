@@ -7,8 +7,8 @@ namespace PLAYER
     public class PlayerData : MonoBehaviour
     {
 
-        public double Acceleration;
-        public double TerminalVelocity;
+        public Vector2 Acceleration;
+        public Vector2 TerminalVelocity;
         public bool Grounded;
         public Types.ActionType CurrentAction;
         public Types.Direction Direction;

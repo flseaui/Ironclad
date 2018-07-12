@@ -12,15 +12,10 @@ namespace PLAYER
         {
             Data = GetComponent<PlayerData>();
 
-            PlayerScript.OnActionEnd += NextAction;
+            PlayerScript.OnActionEnd += RunAction;
         }
 
-        private void NextAction()
-        {
-            RunAction(Data.CurrentAction);
-        }
-
-        protected abstract void RunAction(ActionType action);
+        protected abstract void RunAction();
 
     }
 }

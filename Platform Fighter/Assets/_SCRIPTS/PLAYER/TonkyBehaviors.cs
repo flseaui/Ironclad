@@ -7,24 +7,27 @@ namespace PLAYER
 {
     public class TonkyBehaviors : Behaviors
     {
-        protected override void RunAction(Types.ActionType action)
+        protected override void RunAction()
         {
-            switch (action)
+            switch (Data.CurrentAction)
             {
-
                 case (Types.ActionType.WALK):
-                    Data.Acceleration = .25;
-                    Data.TerminalVelocity = 2.5;
+                    Data.Acceleration.x = .25f;
+                    Data.TerminalVelocity.x = 2.5f;
                     break;
 
                 case (Types.ActionType.RUN):
-                    Data.Acceleration = .25;
-                    Data.TerminalVelocity = 5;
+                    Data.Acceleration.x = .5f;
+                    Data.TerminalVelocity.x = 5f;
                     break;
 
                 case Types.ActionType.NOTHING:
+                    Data.Acceleration.x = 0f;
+                    Data.TerminalVelocity.x = 0f;
                     break;
                 case Types.ActionType.IDLE:
+                    Data.Acceleration.x = 0f;
+                    Data.TerminalVelocity.x = 0f;
                     break;
                 case Types.ActionType.JAB:
                     break;
@@ -85,7 +88,7 @@ namespace PLAYER
                 case Types.ActionType.TURN:
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(action), action, null);
+                    throw new ArgumentOutOfRangeException(nameof(Data.CurrentAction), Data.CurrentAction, null);
             }
         }
     }

@@ -24,6 +24,7 @@ namespace PLAYER
         private void Update()
         {
             Debug.Log($"{_data.CurrentAction} {_data.Direction}");
+            ExecuteAction();
         }
 
         private void ExecuteAction()
