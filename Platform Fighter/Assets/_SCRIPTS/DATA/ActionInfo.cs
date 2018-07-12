@@ -1,53 +1,74 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Numerics;
+using JetBrains.Annotations;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace DATA
 {
-    [Serializable]
     public class ActionInfo
     {
-        enum FrameType { Startup, Active, Recovery, Buffer }
-        enum InputType { None, Up, Down, Left, Right, UpC, DownC, LeftC, RightC, Neutral, Special, Grab, Shield, Jump, Taunt }
+        public enum FrameType
+        {
+            [UsedImplicitly] Startup,
+            [UsedImplicitly] Active,
+            [UsedImplicitly] Recovery,
+            [UsedImplicitly] Buffer
+        }
 
-        private List<FrameType> frames;
+        public string Name;
 
-        public int FrameCount => frames.Count;
+        [JsonProperty (ItemConverterType = typeof(StringEnumConverter))]
+        private List<FrameType> _frames; 
 
-        private List<InputType> inputs;
-        public int[] Inputs => System.Array.ConvertAll(inputs.ToArray(), value => (int)value);
+        [JsonIgnore]
+        public int FrameCount => _frames.Count;
 
-        public string name;
+        public FrameType FrameTypeAt(int i) => _frames[i];
 
-        public Types.ActionType type;
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Types.ActionType Type;
 
-        private bool infinite;
+        [JsonProperty]
+        private Vector2 _infinite;
+
+        [JsonIgnore]
+        public float InfiniteRangeMin { get => _infinite.X; set => _infinite.X = value; }
+        [JsonIgnore]
+        public float InfiniteRangeMax { get => _infinite.Y; set => _infinite.Y = value; }
+
+        public Vector2 Anchor;
 
         public ActionInfo()
         {
-            frames = new List<FrameType> { FrameType.Startup };
-            infinite = false;
+            _frames = new List<FrameType> { FrameType.Startup };
+            _infinite = new Vector2(-1, -1);
+            Anchor = new Vector2(0, 0);
         }
 
-        private struct Box
+        public class Box
         {
-            public Vector2 knockbackAngle;
-            public float x, y, width, height, damage, knockbackStrength;
+            public Vector2 KnockbackAngle;
+            public double Damage, KnockbackStrength;
+            public int Lifespan, X, Y, Width, Height;
 
-            public Box(float x, float y, float width, float height, float damage, float knockbackStrength, Vector2 knockbackAngle)
+            public Box(int x, int y, int width, int height, double damage, double knockbackStrength, Vector2 knockbackAngle, int lifespan)
             {
-                this.x = x;
-                this.y = y;
-                this.width = width;
-                this.height = height;
-                this.damage = damage;
-                this.knockbackStrength = knockbackStrength;
-                this.knockbackAngle = knockbackAngle;
+                X = x;
+                Y = y;
+                Width = width;
+                Height = height;
+                Damage = damage;
+                KnockbackStrength = knockbackStrength;
+                KnockbackAngle = knockbackAngle;
+                Lifespan = lifespan;
             }
 
-            public Box(Boolean baseBox) : this(0, 0, 5, 5, 0, 0, new Vector2()) { }
+            public Box() : this(0, 0, 5, 5, 0, 0, new Vector2(), 1) { }
         }
 
-        private List<Box> hitboxes, hurtboxes;
+        public List<List<Box>> Hitboxes, Hurtboxes, Grabboxes, Armorboxes, Collisionboxes, Databoxes;
+
     }
+
 }

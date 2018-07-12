@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using DATA;
 using MISC;
+using Newtonsoft.Json;
 using UnityEngine;
 using static DATA.Types;
 
@@ -27,7 +28,7 @@ namespace MANAGERS
 
         public static void LogAction(ActionInfo action)
         {
-            Debug.Log($"ACTION: { action.name }");
+            Debug.Log($"ACTION: { action.Name }");
         }
 
         // reads in all of a characters actions and returns a list of them
@@ -45,9 +46,9 @@ namespace MANAGERS
                 Debug.Log($"READ FILE: { file }");
 
                 var jsonData = File.ReadAllText(file);
-                var action = JsonUtility.FromJson<ActionInfo>(jsonData);
+                var action = JsonConvert.DeserializeObject<ActionInfo>(jsonData);
 
-                actions.Add(action.type, action);
+                actions.Add(action.Type, action);
             }
 
             return actions;

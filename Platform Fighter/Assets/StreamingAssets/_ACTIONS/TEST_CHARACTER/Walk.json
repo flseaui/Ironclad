@@ -1,11 +1,11 @@
 {
-  "Name": "Idle",
+  "Name": "Walk",
   "_frames": [
     "Startup",
     "Startup",
     "Startup"
   ],
-  "Type": "Idle",
+  "Type": "Walk",
   "_infinite": {
     "X": 0.0,
     "Y": 2.0
