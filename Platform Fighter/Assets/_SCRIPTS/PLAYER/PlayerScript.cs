@@ -20,7 +20,7 @@ namespace PlatFighter.PLAYER
         // Update is called once per frame
         void Update () {
 
-            behaviors.ThatOneMethodThatWeReallyShouldNameButWeJustCantThinkOfAName(_action.GetCurrentAction(), ref _acceleration, ref _terminalVelocity);
+            behaviors.RunAction(_action.GetCurrentAction(), ref _acceleration, ref _terminalVelocity);
 
         }
     }

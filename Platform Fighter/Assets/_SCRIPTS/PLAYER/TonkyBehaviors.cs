@@ -3,7 +3,7 @@
     public class TonkyBehaviors
     {
 
-        public void ThatOneMethodThatWeReallyShouldNameButWeJustCantThinkOfAName (Types.ActionType action, ref double acclereation, ref double terminalVelocity) {
+        public void RunAction(Types.ActionType action, ref double acclereation, ref double terminalVelocity) {
         
             switch (action)
             {
