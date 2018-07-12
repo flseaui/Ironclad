@@ -3,24 +3,25 @@
 namespace PLAYER
 {
     [RequireComponent(typeof(TonkyActions))]
-    public class PlayerScript : MonoBehaviour {
+    public class PlayerScript : MonoBehaviour
+    {
+        private PlayerData _data;
 
-        private double _acceleration,
-            _terminalVelocity;
+        private TonkyActions _actions;
 
-        private TonkyActions _action;
-
-        TonkyBehaviors behaviors = new TonkyBehaviors();
+        private IBehaviors _behaviors;
 
         // Use this for initialization
         private void Start () {
-            _action = GetComponent(typeof(TonkyActions)) as TonkyActions;
+            _actions = GetComponent(typeof(TonkyActions)) as TonkyActions;
+
+            _behaviors = new TonkyBehaviors();
         }
 	
         // Update is called once per frame
-        void Update () {
+        private void Update () {
 
-            behaviors.RunAction(_action.GetCurrentAction(), ref _acceleration, ref _terminalVelocity);
+            _behaviors.RunAction(_actions.GetCurrentAction(), ref _data);
 
         }
     }

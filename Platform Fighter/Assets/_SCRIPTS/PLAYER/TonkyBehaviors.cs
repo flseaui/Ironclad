@@ -1,25 +1,89 @@
-﻿using DATA;
+﻿using System;
+using DATA;
 
 namespace PLAYER
 {
-    public class TonkyBehaviors
+    public class TonkyBehaviors : IBehaviors
     {
-
-        public void RunAction(Types.ActionType action, ref double acclereation, ref double terminalVelocity) {
+        public void RunAction(Types.ActionType action, ref PlayerData data) {
         
             switch (action)
             {
 
                 case (Types.ActionType.WALK):
-                    acclereation = .25;
-                    terminalVelocity = 2.5;
+                    data.Acceleration = .25;
+                    data.TerminalVelocity = 2.5;
                     break;
 
                 case (Types.ActionType.RUN):
-                    acclereation = .25;
-                    terminalVelocity = 5;
+                    data.Acceleration = .25;
+                    data.TerminalVelocity = 5;
                     break;
 
+                case Types.ActionType.NOTHING:
+                    break;
+                case Types.ActionType.IDLE:
+                    break;
+                case Types.ActionType.JAB:
+                    break;
+                case Types.ActionType.FTILT:
+                    break;
+                case Types.ActionType.DTILT:
+                    break;
+                case Types.ActionType.UTILT:
+                    break;
+                case Types.ActionType.NAIR:
+                    break;
+                case Types.ActionType.FAIR:
+                    break;
+                case Types.ActionType.DAIR:
+                    break;
+                case Types.ActionType.UAIR:
+                    break;
+                case Types.ActionType.BAIR:
+                    break;
+                case Types.ActionType.DASHATK:
+                    break;
+                case Types.ActionType.NSPECIAL:
+                    break;
+                case Types.ActionType.FSPECIAL:
+                    break;
+                case Types.ActionType.AIRFSPECIAL:
+                    break;
+                case Types.ActionType.DSPECIAL:
+                    break;
+                case Types.ActionType.USPECIAL:
+                    break;
+                case Types.ActionType.GRAB:
+                    break;
+                case Types.ActionType.FTHROW:
+                    break;
+                case Types.ActionType.DTHROW:
+                    break;
+                case Types.ActionType.UTHROW:
+                    break;
+                case Types.ActionType.BTHROW:
+                    break;
+                case Types.ActionType.SHIELD:
+                    break;
+                case Types.ActionType.ROLL:
+                    break;
+                case Types.ActionType.AIRDODGE:
+                    break;
+                case Types.ActionType.SPOTDODGE:
+                    break;
+                case Types.ActionType.FHOP:
+                    break;
+                case Types.ActionType.SHOP:
+                    break;
+                case Types.ActionType.DASH:
+                    break;
+                case Types.ActionType.ASSIST:
+                    break;
+                case Types.ActionType.TURN:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(action), action, null);
             }
         }
     }

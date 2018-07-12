@@ -5,7 +5,6 @@ namespace PLAYER
 {
     public class TonkyActions : ActionsBase
     {
-        private PlayerInput _input;
 
         // TEMP VARIABLES WE ARE NOT USING THESE
 
@@ -15,11 +14,6 @@ namespace PLAYER
         private bool _grounded = true;
 
         private ActionType currentAction;
-
-        private void Start()
-        {
-            _input = GetComponent(typeof(PlayerInput)) as PlayerInput;
-        }
 
         private void Update()
         {

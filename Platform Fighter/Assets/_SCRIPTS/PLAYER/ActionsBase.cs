@@ -6,7 +6,7 @@ namespace PLAYER
     [RequireComponent(typeof(PlayerInput))]
     public class ActionsBase : MonoBehaviour
     {
-        private PlayerInput _input;
+        protected PlayerInput _input;
 
         private void Start()
         {
