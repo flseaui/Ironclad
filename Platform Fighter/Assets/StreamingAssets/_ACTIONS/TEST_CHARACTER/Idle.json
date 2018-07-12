@@ -1,47 +1,33 @@
 {
-  "Name": "Idle",
-  "_frames": [
-    "Startup",
-    "Startup",
-    "Startup"
-  ],
-  "Type": "Idle",
-  "_infinite": {
-    "X": 0.0,
-    "Y": 2.0
-  },
-  "Anchor": {
-    "X": 0.0,
-    "Y": 0.0
-  },
-  "Hitboxes": [
-    [],
-    [],
-    []
-  ],
-  "Hurtboxes": [
-    [],
-    [],
-    []
-  ],
-  "Grabboxes": [
-    [],
-    [],
-    []
-  ],
-  "Armorboxes": [
-    [],
-    [],
-    []
-  ],
-  "Collisionboxes": [
-    [],
-    [],
-    []
-  ],
-  "Databoxes": [
-    [],
-    [],
-    []
-  ]
-}
+    "Name": "Idle",
+    "_frames": [
+      "Startup"
+    ],
+    "Type": "Idle",
+    "_infinite": {
+      "X": 0.0,
+      "Y": 2.0
+    },
+    "Anchor": {
+      "X": 0.0,
+      "Y": 0.0
+    },
+    "Hitboxes": [
+      []
+    ],
+    "Hurtboxes": [
+      []
+    ],
+    "Grabboxes": [
+      []
+    ],
+    "Armorboxes": [
+      []
+    ],
+    "Collisionboxes": [
+      []
+    ],
+    "Databoxes": [
+      []
+    ]
+  }

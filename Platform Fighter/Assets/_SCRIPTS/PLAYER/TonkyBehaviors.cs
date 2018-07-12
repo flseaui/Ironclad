@@ -12,12 +12,12 @@ namespace PLAYER
             switch (Data.CurrentAction)
             {
                 case (Types.ActionType.WALK):
-                    Data.Acceleration.x = .25f;
+                    Data.Acceleration.x = 2f;
                     Data.TerminalVelocity.x = 2.5f;
                     break;
 
                 case (Types.ActionType.RUN):
-                    Data.Acceleration.x = .5f;
+                    Data.Acceleration.x = 4f;
                     Data.TerminalVelocity.x = 5f;
                     break;
 
@@ -86,6 +86,8 @@ namespace PLAYER
                 case Types.ActionType.ASSIST:
                     break;
                 case Types.ActionType.TURN:
+                    Data.Acceleration.x = 1f;
+                    Data.TerminalVelocity.x = 2.5f;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(Data.CurrentAction), Data.CurrentAction, null);

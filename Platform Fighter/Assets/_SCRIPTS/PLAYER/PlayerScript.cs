@@ -31,7 +31,7 @@ namespace PLAYER
         {
             Debug.Log($"{_data.CurrentAction} {_data.Direction}");
 
-           ExecuteAction();
+            ExecuteAction();
         }
 
         private void ExecuteAction()

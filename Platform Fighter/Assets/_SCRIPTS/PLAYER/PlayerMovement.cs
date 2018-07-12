@@ -23,11 +23,13 @@ namespace PLAYER
         {
             if (Data.Direction == Types.Direction.LEFT)
             {
-                Rigidbody.AddForce(-Data.Acceleration, ForceMode2D.Impulse);
+                //Rigidbody.MovePosition(Rigidbody.position + Vector2.left * Data.Acceleration * Time.deltaTime);
+                Rigidbody.AddForce(Vector2.left * Data.Acceleration, ForceMode2D.Impulse);
             }
             else if (Data.Direction == Types.Direction.RIGHT)
             {
-                Rigidbody.AddForce(Data.Acceleration, ForceMode2D.Impulse);
+                //Rigidbody.MovePosition(Rigidbody.position + Vector2.right * Data.Acceleration * Time.deltaTime);
+                Rigidbody.AddForce(Vector2.right * Data.Acceleration, ForceMode2D.Impulse);
             }
         }
     }

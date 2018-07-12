@@ -1,8 +1,6 @@
 {
   "Name": "Run",
   "_frames": [
-    "Startup",
-    "Startup",
     "Startup"
   ],
   "Type": "Run",
@@ -15,33 +13,21 @@
     "Y": 0.0
   },
   "Hitboxes": [
-    [],
-    [],
     []
   ],
   "Hurtboxes": [
-    [],
-    [],
     []
   ],
   "Grabboxes": [
-    [],
-    [],
     []
   ],
   "Armorboxes": [
-    [],
-    [],
     []
   ],
   "Collisionboxes": [
-    [],
-    [],
     []
   ],
   "Databoxes": [
-    [],
-    [],
     []
   ]
 }
