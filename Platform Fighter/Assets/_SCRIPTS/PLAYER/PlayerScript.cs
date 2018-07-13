@@ -75,7 +75,7 @@ namespace PLAYER
         private void CmdUpdateSprite()
         {
             RpcUpdateSprite();
-            transform.localScale = _data.Direction == Types.Direction.LEFT ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
+            //transform.localScale = _data.Direction == Types.Direction.LEFT ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
         }
 
         [ClientRpc]
