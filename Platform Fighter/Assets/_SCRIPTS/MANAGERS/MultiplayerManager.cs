@@ -1,4 +1,5 @@
 ﻿using PLAYER;
+using Rewired;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -25,6 +26,7 @@ namespace MANAGERS
             AssetManager.Instance.PopulateActions(new[] { DATA.Types.Character.TEST_CHARACTER });
 
             player.GetComponent<PlayerInput>().Id = playerControllerId;
+            
 
             NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
         }

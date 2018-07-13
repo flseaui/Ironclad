@@ -24,7 +24,7 @@ namespace PLAYER
 
         private void UpdatePlayerInput()
         {
-            var player = ReInput.players.GetPlayer(0);
+            var player = ReInput.players.GetPlayer(Id);
 
             lightLeft = false;
             strongLeft = false;

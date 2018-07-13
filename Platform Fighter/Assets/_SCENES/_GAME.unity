@@ -279,7 +279,7 @@ MonoBehaviour:
       _assignMouseOnStart: 0
       _assignKeyboardOnStart: 1
       _excludeFromControllerAutoAssignment: 0
-    - _id: 2
+    - _id: 3
       _name: Player1
       _descriptiveName: Player1
       _startPlaying: 1
@@ -642,7 +642,7 @@ MonoBehaviour:
     mouseMaps: []
     customControllerMaps: []
     customControllers: []
-    playerIdCounter: 3
+    playerIdCounter: 7
     actionIdCounter: 25
     actionCategoryIdCounter: 4
     inputBehaviorIdCounter: 5
