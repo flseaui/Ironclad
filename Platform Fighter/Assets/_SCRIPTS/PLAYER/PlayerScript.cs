@@ -7,11 +7,13 @@ using Types = DATA.Types;
 namespace PLAYER
 {
     public delegate void OnActionEndCallback();
+    public delegate void OnActionBeginCallback();
 
     [RequireComponent(typeof(PlayerData))]
     public class PlayerScript : MonoBehaviour
     {
         public static event OnActionEndCallback OnActionEnd;
+        public static event OnActionBeginCallback OnActionBegin;
 
         private PlayerData _data;
 
@@ -36,14 +38,19 @@ namespace PLAYER
 
         private void ExecuteAction()
         {
+            // first frame of action
             if (_currentActionFrame == 0)
+            {
                 _currentAction = AssetManager.GetAction(Types.Character.TEST_CHARACTER, _data.CurrentAction);
+                OnActionBegin?.Invoke();
+            }
 
             ++_currentActionFrame;
 
             UpdateBoxes(_currentActionFrame);
             UpdateSprite(_currentActionFrame);
 
+            // last frame of action
             if (_currentActionFrame >= _currentAction.FrameCount)
             {
                 _currentActionFrame = 0;
