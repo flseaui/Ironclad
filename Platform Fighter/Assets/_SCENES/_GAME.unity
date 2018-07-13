@@ -195,7 +195,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 310940309}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8dbc6cbc56b5d6649abcc3199cd1dc7b, type: 3}
+  m_Script: {fileID: 11500000, guid: cd5852cbe7eb9fe478ebc617407a001a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_NetworkPort: 7777
@@ -207,7 +207,7 @@ MonoBehaviour:
   m_ScriptCRCCheck: 1
   m_MaxDelay: 0.01
   m_LogLevel: 2
-  m_PlayerPrefab: {fileID: 1110542900291582, guid: cd3036b634f1c434992e8515b949500e,
+  m_PlayerPrefab: {fileID: 1110542900291582, guid: ef974447b27e81c46a37f3f94c813048,
     type: 2}
   m_AutoCreatePlayer: 0
   m_PlayerSpawnMethod: 0
@@ -295,7 +295,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 394471011}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be5ccaa050d56a048bda17bf256e63ae, type: 3}
+  m_Script: {fileID: 11500000, guid: e0798c9388f94e668b2e1d04ba824d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroyOnLoad: 1
@@ -495,7 +495,8 @@ MonoBehaviour:
     mouseMapIdCounter: 0
     customControllerMapIdCounter: 0
     customControllerIdCounter: 0
-  _controllerDataFiles: {fileID: 0}
+  _controllerDataFiles: {fileID: 11400000, guid: d21d2b20df8369642b76aafbb2576ba7,
+    type: 2}
 --- !u!4 &394471013
 Transform:
   m_ObjectHideFlags: 0
@@ -577,11 +578,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 468387552}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 838048b67ed3e2f43860fb6f2bb65ab0, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f6ae1b694f97a644ac080f07f0e1ea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteBundles:
-  - {fileID: 11400000, guid: b52025513f1c9a749a4b9fffae9e5c0f, type: 2}
+  - {fileID: 11400000, guid: 41de44148f08a26439f096f1fb5d8046, type: 2}
 --- !u!1 &748903480
 GameObject:
   m_ObjectHideFlags: 0
@@ -745,8 +746,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 4ad06515a69184e40bd70e81bb010395, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 4ad06515a69184e40bd70e81bb010395, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -916,7 +917,7 @@ SpriteRenderer:
   m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1437901130
@@ -972,11 +973,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1647276991}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7df6c82f3e86934187cb68729841e36, type: 3}
+  m_Script: {fileID: 11500000, guid: 60ac72c2556a6eb42b30d2168d0cefc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerCount: 1
-  playerPrefab: {fileID: 100000, guid: d2f9aaf1421803941ba650482f277c99, type: 2}
+  playerPrefab: {fileID: 1110542900291582, guid: ef974447b27e81c46a37f3f94c813048,
+    type: 2}
   spawnPoints:
   - {fileID: 1129367199}
   - {fileID: 1878549238}
@@ -1030,7 +1032,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1747343481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca10deba55e48e44e9319976db30b8ec, type: 3}
+  m_Script: {fileID: 11500000, guid: 1c839961af1ffaf42a98f1396a4c0257, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerInitialHealth: 0
@@ -1243,7 +1245,7 @@ SpriteRenderer:
   m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &2051116889
@@ -1319,7 +1321,7 @@ SpriteRenderer:
   m_Size: {x: 3, y: 0.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!60 &2051116892
