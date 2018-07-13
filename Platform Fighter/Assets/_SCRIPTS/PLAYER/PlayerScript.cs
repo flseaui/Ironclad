@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DATA;
 using MANAGERS;
 using UnityEngine;
+using UnityEngine.Networking;
 using Types = DATA.Types;
     
 namespace PLAYER
@@ -11,7 +12,7 @@ namespace PLAYER
     public delegate void OnActionBeginCallback();
 
     [RequireComponent(typeof(PlayerData))]
-    public class PlayerScript : MonoBehaviour
+    public class PlayerScript : NetworkBehaviour
     {
         public static event OnActionEndCallback OnActionEnd;
         public static event OnActionBeginCallback OnActionBegin;
@@ -21,9 +22,7 @@ namespace PLAYER
         private SpriteRenderer _spriteRenderer;
 
         private ActionInfo _currentAction;
-
-        private List<Sprite[]> _sprites;
-
+       
         private int _currentActionFrame;
 
 
@@ -34,8 +33,6 @@ namespace PLAYER
             _data = GetComponent<PlayerData>();
             _data.Direction = Types.Direction.RIGHT;
             _data.Grounded = true;
-
-            _sprites = AssetManager.Instance.GetSprites(Types.Character.TEST_CHARACTER);
         }
 
         private void Update()
@@ -64,7 +61,7 @@ namespace PLAYER
             ++_currentActionFrame;
 
             UpdateBoxes(_currentActionFrame);
-            UpdateSprite(_currentActionFrame);
+            CmdUpdateSprite(_currentActionFrame);
         }
 
         private void UpdateBoxes(int frame)
@@ -72,11 +69,11 @@ namespace PLAYER
             // TODO disable old boxes and enable new ones
         }
 
-        private void UpdateSprite(int frame)
+        [Command]
+        private void CmdUpdateSprite(int frame)
         {
             // TODO update player sprite with action manually to avoid using anims
-            if (_sprites[(int) _currentAction.Type - 1][frame] != null)
-                _spriteRenderer.sprite = _sprites[(int) _currentAction.Type - 1][frame];
+            
 
             _spriteRenderer.flipX = _data.Direction == Types.Direction.LEFT;
         }

@@ -12,27 +12,11 @@ namespace MANAGERS
 {
     public class AssetManager : Singleton<AssetManager>
     {
-        [SerializeField]
-        private SpriteBundle[] _spriteBundles;
-
         private List<Dictionary<Types.ActionType, ActionInfo>> _actionSets;
 
         private void Start()
         {
             _actionSets = new List<Dictionary<Types.ActionType, ActionInfo>>();
-        }
-
-        public List<Sprite[]> GetSprites(Types.Character characterType)
-        {
-            var atlasus = new List<Sprite[]>();
-            foreach (var atlas in _spriteBundles[(int)characterType].Sprites)
-            {
-                var tempSprites = new Sprite[atlas.spriteCount];
-                atlas.GetSprites(tempSprites);
-                atlasus.Add(tempSprites);
-            }
-
-            return atlasus;
         }
         
         public ActionInfo GetAction(Types.Character characterType, Types.ActionType actionType)

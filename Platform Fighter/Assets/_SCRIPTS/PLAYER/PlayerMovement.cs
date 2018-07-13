@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using Types = DATA.Types;
 
 namespace PLAYER
@@ -7,7 +8,7 @@ namespace PLAYER
         RequireComponent(typeof(PlayerData)),
         RequireComponent(typeof(Rigidbody2D))
     ]
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : NetworkBehaviour
     {
         private PlayerData Data { get; set; }
 
@@ -20,6 +21,12 @@ namespace PLAYER
         }
 
         private void FixedUpdate()
+        {
+            CmdMovePlayer();
+        }
+
+        [Command]
+        private void CmdMovePlayer()
         {
             if (Data.Direction == Types.Direction.LEFT)
             {

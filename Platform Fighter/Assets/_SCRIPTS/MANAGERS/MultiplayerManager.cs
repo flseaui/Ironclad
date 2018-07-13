@@ -17,7 +17,7 @@ namespace MANAGERS
             Debug.Log(playerControllerId);
             var player = Instantiate
             (
-                playerPrefab, 
+                GameManager.Instance.playerPrefab, 
                 GameManager.Instance.spawnPoints[playerControllerId].position, 
                 GameManager.Instance.spawnPoints[playerControllerId].rotation
             );

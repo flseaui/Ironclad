@@ -8,8 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 147e8f8de9ed4e85af83be98460d988d, type: 3}
-  m_Name: TEST_CHARACTER
+  m_Script: {fileID: 11500000, guid: 7485cd126c6ae90499d88285c4f6c30f, type: 3}
+  m_Name: 530a758af1d41144faa89af7d052aed1
   m_EditorClassIdentifier: 
-  Sprites:
-  - {fileID: 4343727234628468602, guid: d9ef6005e85b1944698f76b8219ad346, type: 2}
+  settings: {fileID: 11400000, guid: f9401668d28369b4598a8e8219989177, type: 2}
