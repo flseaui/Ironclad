@@ -80,6 +80,5 @@ namespace PLAYER
 
             _spriteRenderer.flipX = _data.Direction == Types.Direction.LEFT;
         }
-
     }
 }
