@@ -8,6 +8,7 @@ namespace PLAYER
 
         // Returns action that should be started this frame based on current inputs
         // Assumes neutral/idle state
+        
         protected override Types.ActionType GetCurrentAction()
         {
             if (Input.shortHop)

@@ -51,17 +51,19 @@ namespace PLAYER
                 OnActionBegin?.Invoke();
             }
 
+            ++_currentActionFrame;
+
+            UpdateBoxes(_currentActionFrame);
+            if (isLocalPlayer)
+                CmdUpdateSprite();
+
             // last frame of action
-            if (_currentActionFrame > 12)//_currentAction.FrameCount)
+            if (_currentActionFrame > _currentAction.FrameCount)
             {
                 _currentActionFrame = 0;
                 OnActionEnd?.Invoke();
             }
 
-            ++_currentActionFrame;
-
-            UpdateBoxes(_currentActionFrame);
-            CmdUpdateSprite(_currentActionFrame);
         }
 
         private void UpdateBoxes(int frame)
@@ -70,12 +72,17 @@ namespace PLAYER
         }
 
         [Command]
-        private void CmdUpdateSprite(int frame)
+        private void CmdUpdateSprite()
+        {
+            RpcUpdateSprite();
+            transform.localScale = _data.Direction == Types.Direction.LEFT ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
+        }
+
+        [ClientRpc]
+        private void RpcUpdateSprite()
         {
             // TODO update player sprite with action manually to avoid using anims
-            
-
-            _spriteRenderer.flipX = _data.Direction == Types.Direction.LEFT;
+            transform.localScale = _data.Direction == Types.Direction.LEFT ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
         }
     }
 }

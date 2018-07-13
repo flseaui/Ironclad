@@ -295,7 +295,7 @@ MonoBehaviour:
       _defaultCustomControllerMaps: []
       _startingCustomControllers: []
       _assignMouseOnStart: 0
-      _assignKeyboardOnStart: 1
+      _assignKeyboardOnStart: 0
       _excludeFromControllerAutoAssignment: 0
     actions:
     - _id: 0
@@ -1147,8 +1147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f6ae1b694f97a644ac080f07f0e1ea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriteBundles:
-  - {fileID: 11400000, guid: 41de44148f08a26439f096f1fb5d8046, type: 2}
 --- !u!1 &748903480
 GameObject:
   m_ObjectHideFlags: 0
