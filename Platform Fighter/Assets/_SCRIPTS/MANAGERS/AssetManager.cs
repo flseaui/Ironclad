@@ -5,36 +5,58 @@ using DATA;
 using MISC;
 using Newtonsoft.Json;
 using UnityEngine;
-using static DATA.Types;
+using UnityEngine.U2D;
+using Types = DATA.Types;
 
 namespace MANAGERS
 {
-    public static class AssetManager
+    public class AssetManager : Singleton<AssetManager>
     {
-        private static readonly List<Dictionary<ActionType, ActionInfo>> ActionSets = new List<Dictionary<ActionType, ActionInfo>>();
+        [SerializeField]
+        private SpriteBundle[] _spriteBundles;
 
-        public static ActionInfo GetAction(Character characterType, ActionType actionType)
+        private List<Dictionary<Types.ActionType, ActionInfo>> _actionSets;
+
+        private void Start()
         {
-            return ActionSets[(int) characterType][actionType];
+            _actionSets = new List<Dictionary<Types.ActionType, ActionInfo>>();
         }
 
-        public static void PopulateActions(Character[] characters)
+        public List<Sprite[]> GetSprites(Types.Character characterType)
+        {
+            var atlasus = new List<Sprite[]>();
+            foreach (var atlas in _spriteBundles[(int)characterType].Sprites)
+            {
+                var tempSprites = new Sprite[atlas.spriteCount];
+                atlas.GetSprites(tempSprites);
+                atlasus.Add(tempSprites);
+            }
+
+            return atlasus;
+        }
+        
+        public ActionInfo GetAction(Types.Character characterType, Types.ActionType actionType)
+        {
+            return _actionSets[(int) characterType][actionType];
+        }
+
+        public void PopulateActions(Types.Character[] characters)
         {
             foreach (var character in characters)
             {
-                ActionSets.Add(LoadActions(character));
+                _actionSets.Add(LoadActions(character));
             }
         }
 
-        public static void LogAction(ActionInfo action)
+        public void LogAction(ActionInfo action)
         {
             Debug.Log($"ACTION: { action.Name }");
         }
 
         // reads in all of a characters actions and returns a list of them
-        private static Dictionary<ActionType, ActionInfo> LoadActions(Character character = Character.TEST_CHARACTER)
+        private Dictionary<Types.ActionType, ActionInfo> LoadActions(Types.Character character = Types.Character.TEST_CHARACTER)
         {
-            var actions = new Dictionary<ActionType, ActionInfo>();
+            var actions = new Dictionary<Types.ActionType, ActionInfo>();
 
             var actionPath = Path.Combine(Application.streamingAssetsPath, $"_ACTIONS/{ character }/");
 

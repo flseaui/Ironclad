@@ -22,7 +22,7 @@ namespace MANAGERS
             );
             //player.GetComponent<PlayerInfo>().color = Color.red;
 
-            AssetManager.PopulateActions(new[] { DATA.Types.Character.TEST_CHARACTER });
+            AssetManager.Instance.PopulateActions(new[] { DATA.Types.Character.TEST_CHARACTER });
 
             NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
         }
