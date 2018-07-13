@@ -7,7 +7,7 @@ namespace PLAYER
 {
     public class PlayerInput : MonoBehaviour
     {
-        private List<Player> playerControllers = new List<Player>();
+        public int Id { get; set;}
 
         [HideInInspector]
         public bool lightLeft, strongLeft,
@@ -17,24 +17,14 @@ namespace PLAYER
             neutral, special, shield, grab,
             upC, downC, leftC, rightC;
 
-        private void Start()
-        {
-            SetupControllers();
-        }
-
         private void Update()
         {
-            UpdatePlayerInput(0);
+            UpdatePlayerInput();
         }
 
-        public void SetupControllers()
+        private void UpdatePlayerInput()
         {
-            playerControllers.Add(ReInput.players.GetPlayer(0));
-        }
-
-        private void UpdatePlayerInput(int i)
-        {
-            var player = playerControllers[i];
+            var player = ReInput.players.GetPlayer(Id);
 
             lightLeft = false;
             strongLeft = false;
