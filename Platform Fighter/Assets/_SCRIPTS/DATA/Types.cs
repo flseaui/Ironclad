@@ -4,6 +4,7 @@
     {
         public enum Character
         {
+            NONE,
             TEST_CHARACTER
         }
         public enum Direction

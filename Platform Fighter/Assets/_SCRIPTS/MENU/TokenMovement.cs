@@ -1,34 +1,66 @@
-﻿using MISC;
+﻿using System;
+using System.Globalization;
+using MANAGERS;
+using MISC;
 using Rewired;
 using UnityEngine;
+using UnityEngine.UI;
+using Types = DATA.Types;
 
 namespace MENU
 {
     [RequireComponent(typeof(RectTransform))]
     public class TokenMovement : MonoBehaviour
     {
-        private bool _select, _back;
+        public int Id;
+
+        [HideInInspector]
+        public bool Select, Back, Dropped;
 
         private RectTransform _transform;
-
         private Player _player;
+        private Image _image;
+
+        [SerializeField]
+        private Sprite _droppedSprite;
 
         [SerializeField]
         private int _speed = 1000;
-
+        
         private void Start()
         {
             _player = ReInput.players.GetPlayer(0);
             _transform = GetComponent<RectTransform>();
+            _image = GetComponent<Image>();
         }
 
         private void Update()
         {
             UpdateInput();
+
+            if (Dropped)
+                _image.overrideSprite = _droppedSprite;
+            else
+                _image.overrideSprite = null;
+
+            if (Back)
+            {
+                Dropped = false;
+
+                MainMenuManager.Instance.SetCharacter(Id, Types.Character.NONE);
+            }
+
         }
 
         private void UpdateInput()
         {
+
+            Select = _player.GetButton("Select");
+
+            Back = _player.GetButton("Back");
+
+            if (Dropped) return;
+
             _transform.anchoredPosition = Vector2.Lerp
             (
                 _transform.anchoredPosition,
@@ -39,13 +71,6 @@ namespace MENU
                 ),
                 _speed * Time.deltaTime
             );
-
-
-            if (_player.GetButtonDown("Select"))
-                _select = true;
-
-            if (_player.GetButtonDown("Back"))
-                _back = true;
         }
     }
 }
