@@ -27,7 +27,7 @@ namespace MENU
         [SerializeField]
         private int _speed = 1000;
         
-        private void Start()
+        private void Awake()
         {
             _player = ReInput.players.GetPlayer(0);
             _transform = GetComponent<RectTransform>();

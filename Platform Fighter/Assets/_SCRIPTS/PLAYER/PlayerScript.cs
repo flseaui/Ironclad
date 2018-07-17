@@ -26,7 +26,7 @@ namespace PLAYER
         private int _currentActionFrame;
 
 
-        private void Start ()
+        private void Awake ()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
 

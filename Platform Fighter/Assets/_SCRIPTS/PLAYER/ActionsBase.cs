@@ -14,7 +14,7 @@ namespace PLAYER
 
         protected PlayerData Data { get; set; }
 
-        private void Start()
+        private void Awake()
         {
             Input = GetComponent<PlayerInput>();
             Data = GetComponent<PlayerData>();

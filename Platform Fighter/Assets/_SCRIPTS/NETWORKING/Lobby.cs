@@ -20,7 +20,7 @@ namespace NETWORKING
                 };
         }
 
-        public void JoinLobby(ulong id)
+        public void JoinLobby(int id)
         {
             
             Client.Instance.Lobby.Join(Client.Instance.Lobby.CurrentLobby);
@@ -44,7 +44,6 @@ namespace NETWORKING
                     Debug.Log($"Found Lobby: {lobby.Name}");
                 }
             };
-
         }
     }
 }

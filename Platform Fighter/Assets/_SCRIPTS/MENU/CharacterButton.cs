@@ -17,7 +17,7 @@ namespace MENU
         [SerializeField] private Sprite _selectedSprite;
         [SerializeField] private Types.Character _character;
 
-        private void Start()
+        private void Awake()
         {
             _transform = GetComponent<RectTransform>();
             _image = GetComponent<Image>();

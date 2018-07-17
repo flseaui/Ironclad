@@ -8,10 +8,13 @@ namespace PLAYER
     {
         protected PlayerData Data { get; set; }
         
-        private void Start()
+        private void Awake()
         {
             Data = GetComponent<PlayerData>();
+        }
 
+        private void Start()
+        {
             PlayerScript.OnActionEnd += RunAction;
         }
 

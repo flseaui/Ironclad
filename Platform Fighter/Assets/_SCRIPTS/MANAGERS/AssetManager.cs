@@ -14,7 +14,7 @@ namespace MANAGERS
     {
         private List<Dictionary<Types.ActionType, ActionInfo>> _actionSets;
 
-        private void Start()
+        private void Awake()
         {
             _actionSets = new List<Dictionary<Types.ActionType, ActionInfo>>();
         }

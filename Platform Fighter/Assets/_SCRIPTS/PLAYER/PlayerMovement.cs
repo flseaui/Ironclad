@@ -14,7 +14,7 @@ namespace PLAYER
 
         private Rigidbody2D Rigidbody { get; set; }
 
-        private void Start()
+        private void Awake()
         {
             Data = GetComponent<PlayerData>();
             Rigidbody = GetComponent<Rigidbody2D>();

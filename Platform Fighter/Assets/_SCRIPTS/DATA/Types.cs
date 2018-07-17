@@ -12,6 +12,16 @@
             LEFT,
             RIGHT
         }
+
+        public enum Menu
+        {
+            BLANK_MENU,
+            MAIN_MENU,
+            SINGLEPLAYER_MENU,
+            MULTIPLAYER_MENU,
+            OPTIONS_MENU,
+            LOBBY_MENU
+        }
         public enum ActionType
         {
             NOTHING,
