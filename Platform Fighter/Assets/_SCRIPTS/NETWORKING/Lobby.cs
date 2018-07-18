@@ -12,17 +12,16 @@ namespace NETWORKING
             Client.Instance.Lobby.Create(Facepunch.Steamworks.Lobby.Type.Public, 2);
 
             Client.Instance.Lobby.OnLobbyCreated = delegate
-                {
-                    Debug.Log("lobby created: " + Client.Instance.Lobby.CurrentLobby);
-                    Debug.Log($"Owner: {Client.Instance.Lobby.Owner}");
-                    Debug.Log($"Max Members: {Client.Instance.Lobby.MaxMembers}");
-                    Debug.Log($"Num Members: {Client.Instance.Lobby.NumMembers}");
-                };
+            {
+                Debug.Log("lobby created: " + Client.Instance.Lobby.CurrentLobby);
+                Debug.Log($"Owner: {Client.Instance.Lobby.Owner}");
+                Debug.Log($"Max Members: {Client.Instance.Lobby.MaxMembers}");
+                Debug.Log($"Num Members: {Client.Instance.Lobby.NumMembers}");
+            };
         }
 
         public void JoinLobby(ulong id)
         {
-            
             Client.Instance.Lobby.Join(id);
             Client.Instance.Lobby.OnLobbyJoined = delegate
             {
@@ -33,7 +32,7 @@ namespace NETWORKING
         public void FindLobbies()
         {
             Client.Instance.LobbyList.Refresh();
-            
+
             //wait for the callback
             foreach (Transform child in _serverList.transform)
                 Destroy(child.gameObject);

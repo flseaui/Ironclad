@@ -1,6 +1,5 @@
-﻿using MISC;
-using UnityEngine;
-using Types = DATA.Types;
+﻿using DATA;
+using MISC;
 
 namespace MANAGERS
 {
@@ -31,10 +30,7 @@ namespace MANAGERS
                 case 1:
                     Player1Character = character;
                     break;
-                default:
-                    break;
             }
         }
-
     }
 }

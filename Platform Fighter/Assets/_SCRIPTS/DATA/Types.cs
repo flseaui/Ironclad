@@ -2,26 +2,6 @@
 {
     public static class Types
     {
-        public enum Character
-        {
-            NONE,
-            TEST_CHARACTER
-        }
-        public enum Direction
-        {
-            LEFT,
-            RIGHT
-        }
-
-        public enum Menu
-        {
-            BLANK_MENU,
-            MAIN_MENU,
-            SINGLEPLAYER_MENU,
-            MULTIPLAYER_MENU,
-            OPTIONS_MENU,
-            LOBBY_MENU
-        }
         public enum ActionType
         {
             NOTHING,
@@ -55,8 +35,30 @@
             WALK,
             RUN,
             DASH,
-            ASSIST,		
+            ASSIST,
             TURN
+        }
+
+        public enum Character
+        {
+            NONE,
+            TEST_CHARACTER
+        }
+
+        public enum Direction
+        {
+            LEFT,
+            RIGHT
+        }
+
+        public enum Menu
+        {
+            BLANK_MENU,
+            MAIN_MENU,
+            SINGLEPLAYER_MENU,
+            MULTIPLAYER_MENU,
+            OPTIONS_MENU,
+            LOBBY_MENU
         }
     }
 }

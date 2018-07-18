@@ -1,16 +1,20 @@
-﻿using MANAGERS;
-using UnityEngine;
-using Types = DATA.Types;
+﻿using System;
+using ATTRIBUTES;
+using DATA;
+using MANAGERS;
 
 namespace MENU
 {
+    [MenuType(Types.Menu.MAIN_MENU)]
     public class MainMenu : Menu
     {
-        public override Types.Menu MenuType => Types.Menu.MAIN_MENU;
-
-        protected override void SwitchToMenu()
+        protected override void SwitchToThis()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
+
+        public void SwitchToSingleplayerMenu() => MenuManager.Instance.MenuState = Types.Menu.SINGLEPLAYER_MENU;
+
+        public void SwitchToMultiplayerMenu() => MenuManager.Instance.MenuState = Types.Menu.MULTIPLAYER_MENU;
     }
 }

@@ -6,13 +6,12 @@ namespace PLAYER
 {
     public class PlayerData : NetworkBehaviour
     {
-
         public Vector2 Acceleration;
-        public Vector2 TerminalVelocity;
-        public bool Grounded;
         public Types.ActionType CurrentAction;
-        [SyncVar]
-        public Types.Direction Direction;
 
+        [SyncVar] public Types.Direction Direction;
+
+        public bool Grounded;
+        public Vector2 TerminalVelocity;
     }
 }

@@ -1,21 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using MISC;
 using Rewired;
 using UnityEngine;
-using MISC;
 
 namespace PLAYER
 {
     public class PlayerInput : MonoBehaviour
     {
-        public int Id { get; set;}
+        [HideInInspector] public bool lightLeft,
+            strongLeft,
+            lightRight,
+            strongRight,
+            up,
+            down,
+            shortHop,
+            fullHop,
+            neutral,
+            special,
+            shield,
+            grab,
+            upC,
+            downC,
+            leftC,
+            rightC;
 
-        [HideInInspector]
-        public bool lightLeft, strongLeft,
-            lightRight, strongRight,
-            up, down,
-            shortHop, fullHop, 
-            neutral, special, shield, grab,
-            upC, downC, leftC, rightC;
+        public int Id { get; set; }
 
         private void Update()
         {
@@ -59,7 +67,6 @@ namespace PLAYER
                     down = true;
                 else if (player.GetAxis("Crouch") > GameSettings.Instance.upThreshold)
                     up = true;
-
             }
             else
             {
@@ -77,14 +84,13 @@ namespace PLAYER
                     down = true;
                 else if (player.GetAxis("Crouch") > GameSettings.Instance.upThreshold)
                     up = true;
-
             }
 
             if (player.GetButtonLongPressDown("Hop"))
                 fullHop = true;
             else if (player.GetButtonShortPressDown("Hop"))
                 shortHop = true;
-			
+
             if (player.GetButtonDown("Neutral"))
                 neutral = true;
 

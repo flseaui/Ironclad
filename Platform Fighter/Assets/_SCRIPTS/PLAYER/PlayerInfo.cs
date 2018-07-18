@@ -3,9 +3,8 @@ using UnityEngine.Networking;
 
 namespace PLAYER
 {
-    class PlayerInfo : NetworkBehaviour
+    internal class PlayerInfo : NetworkBehaviour
     {
-        [SyncVar]
-        public Color color;
+        [SyncVar] public Color color;
     }
 }

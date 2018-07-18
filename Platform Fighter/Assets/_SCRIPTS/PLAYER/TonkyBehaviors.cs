@@ -1,7 +1,5 @@
 ﻿using System;
-using UnityEngine;
 using DATA;
-using Types = DATA.Types;
 
 namespace PLAYER
 {
@@ -11,12 +9,12 @@ namespace PLAYER
         {
             switch (Data.CurrentAction)
             {
-                case (Types.ActionType.WALK):
+                case Types.ActionType.WALK:
                     Data.Acceleration.x = 2f;
                     Data.TerminalVelocity.x = 2.5f;
                     break;
 
-                case (Types.ActionType.RUN):
+                case Types.ActionType.RUN:
                     Data.Acceleration.x = 4f;
                     Data.TerminalVelocity.x = 5f;
                     break;

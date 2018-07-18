@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-using MANAGERS;
-using MISC;
+﻿using MANAGERS;
 using Rewired;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,21 +9,18 @@ namespace MENU
     [RequireComponent(typeof(RectTransform))]
     public class TokenMovement : MonoBehaviour
     {
-        public int Id;
+        [SerializeField] private Sprite _droppedSprite;
 
-        [HideInInspector]
-        public bool Select, Back, Dropped;
+        private Image _image;
+        private Player _player;
+
+        [SerializeField] private int _speed = 1000;
 
         private RectTransform _transform;
-        private Player _player;
-        private Image _image;
+        public int Id;
 
-        [SerializeField]
-        private Sprite _droppedSprite;
+        [HideInInspector] public bool Select, Back, Dropped;
 
-        [SerializeField]
-        private int _speed = 1000;
-        
         private void Awake()
         {
             _player = ReInput.players.GetPlayer(0);
@@ -49,12 +43,10 @@ namespace MENU
 
                 MainMenuManager.Instance.SetCharacter(Id, Types.Character.NONE);
             }
-
         }
 
         private void UpdateInput()
         {
-
             Select = _player.GetButton("Select");
 
             Back = _player.GetButton("Back");

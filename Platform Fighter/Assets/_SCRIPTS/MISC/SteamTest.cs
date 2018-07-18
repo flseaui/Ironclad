@@ -1,14 +1,12 @@
-﻿using System;
-using UnityEngine;
-using System.Collections;
-using System.Linq;
+﻿using System.Linq;
 using Facepunch.Steamworks;
+using UnityEngine;
 
 namespace MISC
 {
     public class SteamTest : MonoBehaviour
     {
-        void Start()
+        private void Start()
         {
             // Don't destroy this when loading new scenes
             DontDestroyOnLoad(gameObject);
@@ -35,21 +33,13 @@ namespace MISC
 
         private void OnDestroy()
         {
-            if (Client.Instance != null)
-            {
-                // Properly get rid of the client if this object is destroyed
-                Client.Instance.Dispose();
-            }
+            if (Client.Instance != null) Client.Instance.Dispose();
         }
 
 
-        void Update()
+        private void Update()
         {
-            if (Client.Instance != null)
-            {
-// This needs to be called in Update for the library to properly function
-                Client.Instance.Update();
-            }
+            if (Client.Instance != null) Client.Instance.Update();
         }
     }
 }

@@ -7,12 +7,11 @@ namespace MENU
 {
     public class ViewboxImage : MonoBehaviour
     {
-        public int Id;
-
         private Image _image;
 
         [SerializeField] private Sprite _noCharacterSprite;
         [SerializeField] private Sprite _testCharacterSprite;
+        public int Id;
 
         private void Awake()
         {

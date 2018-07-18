@@ -1,32 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using DATA;
+﻿using DATA;
 using MANAGERS;
 using UnityEngine;
 using UnityEngine.Networking;
 using Types = DATA.Types;
-    
+
 namespace PLAYER
 {
     public delegate void OnActionEndCallback();
+
     public delegate void OnActionBeginCallback();
 
     [RequireComponent(typeof(PlayerData))]
     public class PlayerScript : NetworkBehaviour
     {
-        public static event OnActionEndCallback OnActionEnd;
-        public static event OnActionBeginCallback OnActionBegin;
+        private ActionInfo _currentAction;
+
+        private int _currentActionFrame;
 
         private PlayerData _data;
 
         private SpriteRenderer _spriteRenderer;
-
-        private ActionInfo _currentAction;
-       
-        private int _currentActionFrame;
+        public static event OnActionEndCallback OnActionEnd;
+        public static event OnActionBeginCallback OnActionBegin;
 
 
-        private void Awake ()
+        private void Awake()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -63,7 +61,6 @@ namespace PLAYER
                 _currentActionFrame = 0;
                 OnActionEnd?.Invoke();
             }
-
         }
 
         private void UpdateBoxes(int frame)
@@ -82,7 +79,8 @@ namespace PLAYER
         private void RpcUpdateSprite()
         {
             // TODO update player sprite with action manually to avoid using anims
-            transform.localScale = _data.Direction == Types.Direction.LEFT ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
+            transform.localScale =
+                _data.Direction == Types.Direction.LEFT ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
         }
     }
 }

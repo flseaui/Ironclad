@@ -1,15 +1,15 @@
-﻿using UnityEngine;
-using Types = DATA.Types;
+﻿using System;
+using ATTRIBUTES;
+using DATA;
 
 namespace MENU
 {
+    [MenuType(Types.Menu.LOBBY_MENU)]
     public class LobbyMenu : Menu
     {
-        public override Types.Menu MenuType => Types.Menu.LOBBY_MENU;
-
-        protected override void SwitchToMenu()
+        protected override void SwitchToThis()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using static DATA.Types;
 
 namespace PLAYER
 {
@@ -7,7 +6,7 @@ namespace PLAYER
     public abstract class Behaviors : MonoBehaviour
     {
         protected PlayerData Data { get; set; }
-        
+
         private void Awake()
         {
             Data = GetComponent<PlayerData>();
@@ -19,6 +18,5 @@ namespace PLAYER
         }
 
         protected abstract void RunAction();
-
     }
 }

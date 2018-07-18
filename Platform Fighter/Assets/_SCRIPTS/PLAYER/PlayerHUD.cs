@@ -5,7 +5,6 @@ namespace PLAYER
 {
     public class PlayerHUD : MonoBehaviour
     {
-
         public TextMeshProUGUI NameText;
 
         public void SetupGameObjects()
@@ -15,7 +14,6 @@ namespace PLAYER
 
         private void Update()
         {
-
         }
     }
 }
