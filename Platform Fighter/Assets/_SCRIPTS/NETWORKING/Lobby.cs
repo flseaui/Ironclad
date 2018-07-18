@@ -20,10 +20,14 @@ namespace NETWORKING
                 };
         }
 
-        public void JoinLobby(int id)
+        public void JoinLobby(ulong id)
         {
             
-            Client.Instance.Lobby.Join(Client.Instance.Lobby.CurrentLobby);
+            Client.Instance.Lobby.Join(id);
+            Client.Instance.Lobby.OnLobbyJoined = delegate
+            {
+                Debug.Log("lobby joined: " + Client.Instance.Lobby.CurrentLobbyData);
+            };
         }
 
         public void FindLobbies()
