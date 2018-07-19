@@ -1,6 +1,7 @@
 ﻿using System;
 using ATTRIBUTES;
 using DATA;
+using MANAGERS;
 
 namespace MENU
 {
@@ -11,5 +12,8 @@ namespace MENU
         {
             throw new NotImplementedException();
         }
+        
+        public void GoBack() => MenuManager.Instance.SwitchToPreviousMenu();
+        
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Linq;
 using MENU;
 using MISC;
 using UnityEngine;
@@ -30,14 +31,22 @@ namespace MANAGERS
                 _previousMenuState = _menuState;
                 _menuState = value;
 
-                Menus[_previousMenuState].enabled = false;
-                Menus[_menuState].enabled = true;
+                if (_previousMenuState != value)
+                {
+                    Menus[_menuState        ].transform.FindObjectsWithTag("MenuPanel").FirstOrDefault()?.SetActive(true );
+                    Menus[_previousMenuState].transform.FindObjectsWithTag("MenuPanel").FirstOrDefault()?.SetActive(false);
+                }
 
                 OnPropertyChanged();
                 OnMenuStateChanged(new MenuChangedEventArgs(_menuState));
             }
         }
 
+        public void SwitchToPreviousMenu()
+        {
+            MenuState = _previousMenuState;
+        }
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void Awake()
@@ -68,7 +77,10 @@ namespace MANAGERS
 
         public class MenuChangedEventArgs : EventArgs
         {
-            public MenuChangedEventArgs(Types.Menu menu) => Menu = menu;
+            public MenuChangedEventArgs(Types.Menu menu)
+            {
+                Menu = menu;
+            }
 
             public Types.Menu Menu { get; }
         }
