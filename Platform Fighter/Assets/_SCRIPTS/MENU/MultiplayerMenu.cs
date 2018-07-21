@@ -13,7 +13,9 @@ namespace MENU
             throw new NotImplementedException();
         }
         
-        public void GoBack() => MenuManager.Instance.SwitchToPreviousMenu();
+        public void SwitchToLobbyMenu() => MenuManager.Instance.MenuState = Types.Menu.LOBBY_MENU;
+        
+        public void SwitchToMainMenu() => MenuManager.Instance.MenuState = Types.Menu.MAIN_MENU;
         
     }
 }

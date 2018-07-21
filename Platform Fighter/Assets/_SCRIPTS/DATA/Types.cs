@@ -58,7 +58,8 @@
             SINGLEPLAYER_MENU,
             MULTIPLAYER_MENU,
             OPTIONS_MENU,
-            LOBBY_MENU
+            LOBBY_MENU,
+            GAME_START
         }
     }
 }

@@ -5,7 +5,7 @@ namespace MISC
 {
     public static class TransformExtensions
     {
-        public static List<GameObject> FindObjectsWithTag(this Transform parent, string tag)
+        public static IEnumerable<GameObject> FindObjectsWithTag(this Transform parent, string tag)
         {
             var taggedGameObjects = new List<GameObject>();
  
