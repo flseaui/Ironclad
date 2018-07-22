@@ -15,16 +15,23 @@ namespace Editor
     {
         public static void SwapMenu(string menuName)
         {
-            GameObject.FindGameObjectsWithTag("MenuPanel").FirstOrDefault(x => x.activeSelf)?.SetActive(false);
-            GameObject.Find(menuName).transform.FindObjectsWithTag("MenuPanel").FirstOrDefault()?.SetActive(true);
+            var previousMenu = GameObject.FindGameObjectsWithTag("MenuPanel").FirstOrDefault(x => x.activeSelf);
+            if (previousMenu != null) previousMenu.SetActive(false);
+            
+            var menu = GameObject.Find(menuName).transform.FindObjectsWithTag("MenuPanel").FirstOrDefault();
+            if (menu != null) menu.SetActive(true);
+
+            EditorUtils.Collapse(menu, false);
+            
         }
 
         public static bool SwapMenuValidation(string menuName)
         {
+            if (!SceneManager.GetActiveScene().name.Equals("_MENU")) return false;
+            
             var first = GameObject.Find(menuName).transform.FindObjectsWithTag("MenuPanel").FirstOrDefault();
 
             return first != null
-                   && SceneManager.GetActiveScene().name.Equals("_MENU")
                    && !Application.isPlaying
                    && !first.activeSelf;
         }
