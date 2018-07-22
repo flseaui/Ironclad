@@ -16,24 +16,6 @@ namespace NETWORKING
             };
         }
 
-        public void FindLobbies()
-        {
-            Client.Instance.LobbyList.Refresh();
-
-            //wait for the callback
-            foreach (Transform child in _serverList.transform)
-                Destroy(child.gameObject);
-
-            Client.Instance.LobbyList.OnLobbiesUpdated = delegate
-            {
-                if (!Client.Instance.LobbyList.Finished) return;
-
-                foreach (var lobby in Client.Instance.LobbyList.Lobbies)
-                {
-                    Instantiate(_serverButtonPrefab, _serverList.transform);
-                    Debug.Log($"Found Lobby: {lobby.Name}");
-                }
-            };
-        }
+        
     }
 }

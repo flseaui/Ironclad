@@ -9,42 +9,42 @@ namespace PLAYER
 
         protected override Types.ActionType GetCurrentAction()
         {
-            if (Input.shortHop) return Types.ActionType.SHOP;
+            if (Input.shortHop) return Types.ActionType.Shop;
 
-            if (Input.fullHop) return Types.ActionType.FHOP;
+            if (Input.fullHop) return Types.ActionType.Fhop;
 
-            if (Data.Direction == Types.Direction.RIGHT)
+            if (Data.Direction == Types.Direction.Right)
             {
                 if (Data.Grounded)
                 {
-                    if (Input.lightRight) return Types.ActionType.WALK;
+                    if (Input.lightRight) return Types.ActionType.Walk;
 
-                    if (Input.strongRight) return Types.ActionType.RUN;
+                    if (Input.strongRight) return Types.ActionType.Run;
 
                     if (Input.lightLeft || Input.strongLeft)
                     {
-                        Data.Direction = Types.Direction.LEFT;
-                        return Types.ActionType.TURN;
+                        Data.Direction = Types.Direction.Left;
+                        return Types.ActionType.Turn;
                     }
                 }
             }
-            else if (Data.Direction == Types.Direction.LEFT)
+            else if (Data.Direction == Types.Direction.Left)
             {
                 if (Data.Grounded)
                 {
-                    if (Input.lightLeft) return Types.ActionType.WALK;
+                    if (Input.lightLeft) return Types.ActionType.Walk;
 
-                    if (Input.strongLeft) return Types.ActionType.RUN;
+                    if (Input.strongLeft) return Types.ActionType.Run;
 
                     if (Input.lightRight || Input.strongRight)
                     {
-                        Data.Direction = Types.Direction.RIGHT;
-                        return Types.ActionType.TURN;
+                        Data.Direction = Types.Direction.Right;
+                        return Types.ActionType.Turn;
                     }
                 }
             }
 
-            return Types.ActionType.IDLE;
+            return Types.ActionType.Idle;
         }
     }
 }

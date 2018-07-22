@@ -41,7 +41,7 @@ namespace MENU
             {
                 Dropped = false;
 
-                MainMenuManager.Instance.SetCharacter(Id, Types.Character.NONE);
+                MainMenuManager.Instance.SetCharacter(Id, Types.Character.None);
             }
         }
 

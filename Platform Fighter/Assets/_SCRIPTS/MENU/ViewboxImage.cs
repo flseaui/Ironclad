@@ -22,10 +22,10 @@ namespace MENU
         {
             switch (MainMenuManager.Instance.GetCharacter(Id))
             {
-                case Types.Character.TEST_CHARACTER:
+                case Types.Character.TestCharacter:
                     _image.overrideSprite = _testCharacterSprite;
                     break;
-                case Types.Character.NONE:
+                case Types.Character.None:
                     _image.overrideSprite = _noCharacterSprite;
                     break;
                 default:

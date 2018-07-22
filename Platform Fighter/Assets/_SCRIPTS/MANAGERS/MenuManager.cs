@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Linq;
-using MENU;
 using MISC;
+using UnityEditor;
 using UnityEngine;
+using Menu = MENU.Menu;
 using Types = DATA.Types;
 
 namespace MANAGERS
@@ -17,7 +18,7 @@ namespace MANAGERS
         private Types.Menu _menuState;
         private Types.Menu _previousMenuState;
 
-        [SerializeField] private Types.Menu _startingMenu = Types.Menu.BLANK_MENU;
+        [SerializeField] private Types.Menu _startingMenu = Types.Menu.BlankMenu;
 
         public Dictionary<Types.Menu, Menu> Menus = new Dictionary<Types.Menu, Menu>();
 
@@ -53,6 +54,8 @@ namespace MANAGERS
         {
             _menuState = _startingMenu;
             _previousMenuState = _startingMenu;
+
+            if (MenuStateChanged == null) return;
         }
 
         private void OnMenuStateChanged(MenuChangedEventArgs e)

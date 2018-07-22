@@ -9,81 +9,81 @@ namespace PLAYER
         {
             switch (Data.CurrentAction)
             {
-                case Types.ActionType.WALK:
+                case Types.ActionType.Walk:
                     Data.Acceleration.x = 2f;
                     Data.TerminalVelocity.x = 2.5f;
                     break;
 
-                case Types.ActionType.RUN:
+                case Types.ActionType.Run:
                     Data.Acceleration.x = 4f;
                     Data.TerminalVelocity.x = 5f;
                     break;
 
-                case Types.ActionType.NOTHING:
+                case Types.ActionType.Nothing:
                     Data.Acceleration.x = 0f;
                     Data.TerminalVelocity.x = 0f;
                     break;
-                case Types.ActionType.IDLE:
+                case Types.ActionType.Idle:
                     Data.Acceleration.x = 0f;
                     Data.TerminalVelocity.x = 0f;
                     break;
-                case Types.ActionType.JAB:
+                case Types.ActionType.Jab:
                     break;
-                case Types.ActionType.FTILT:
+                case Types.ActionType.Ftilt:
                     break;
-                case Types.ActionType.DTILT:
+                case Types.ActionType.Dtilt:
                     break;
-                case Types.ActionType.UTILT:
+                case Types.ActionType.Utilt:
                     break;
-                case Types.ActionType.NAIR:
+                case Types.ActionType.Nair:
                     break;
-                case Types.ActionType.FAIR:
+                case Types.ActionType.Fair:
                     break;
-                case Types.ActionType.DAIR:
+                case Types.ActionType.Dair:
                     break;
-                case Types.ActionType.UAIR:
+                case Types.ActionType.Uair:
                     break;
-                case Types.ActionType.BAIR:
+                case Types.ActionType.Bair:
                     break;
-                case Types.ActionType.DASHATK:
+                case Types.ActionType.Dashatk:
                     break;
-                case Types.ActionType.NSPECIAL:
+                case Types.ActionType.Nspecial:
                     break;
-                case Types.ActionType.FSPECIAL:
+                case Types.ActionType.Fspecial:
                     break;
-                case Types.ActionType.AIRFSPECIAL:
+                case Types.ActionType.Airfspecial:
                     break;
-                case Types.ActionType.DSPECIAL:
+                case Types.ActionType.Dspecial:
                     break;
-                case Types.ActionType.USPECIAL:
+                case Types.ActionType.Uspecial:
                     break;
-                case Types.ActionType.GRAB:
+                case Types.ActionType.Grab:
                     break;
-                case Types.ActionType.FTHROW:
+                case Types.ActionType.Fthrow:
                     break;
-                case Types.ActionType.DTHROW:
+                case Types.ActionType.Dthrow:
                     break;
-                case Types.ActionType.UTHROW:
+                case Types.ActionType.Uthrow:
                     break;
-                case Types.ActionType.BTHROW:
+                case Types.ActionType.Bthrow:
                     break;
-                case Types.ActionType.SHIELD:
+                case Types.ActionType.Shield:
                     break;
-                case Types.ActionType.ROLL:
+                case Types.ActionType.Roll:
                     break;
-                case Types.ActionType.AIRDODGE:
+                case Types.ActionType.Airdodge:
                     break;
-                case Types.ActionType.SPOTDODGE:
+                case Types.ActionType.Spotdodge:
                     break;
-                case Types.ActionType.FHOP:
+                case Types.ActionType.Fhop:
                     break;
-                case Types.ActionType.SHOP:
+                case Types.ActionType.Shop:
                     break;
-                case Types.ActionType.DASH:
+                case Types.ActionType.Dash:
                     break;
-                case Types.ActionType.ASSIST:
+                case Types.ActionType.Assist:
                     break;
-                case Types.ActionType.TURN:
+                case Types.ActionType.Turn:
                     Data.Acceleration.x = 1f;
                     Data.TerminalVelocity.x = 2.5f;
                     break;

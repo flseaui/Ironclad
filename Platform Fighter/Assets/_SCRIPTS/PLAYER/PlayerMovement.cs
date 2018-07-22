@@ -26,9 +26,9 @@ namespace PLAYER
         [Command]
         private void CmdMovePlayer()
         {
-            if (Data.Direction == Types.Direction.LEFT)
+            if (Data.Direction == Types.Direction.Left)
                 Rigidbody.AddForce(Vector2.left * Data.Acceleration, ForceMode2D.Impulse);
-            else if (Data.Direction == Types.Direction.RIGHT)
+            else if (Data.Direction == Types.Direction.Right)
                 Rigidbody.AddForce(Vector2.right * Data.Acceleration, ForceMode2D.Impulse);
         }
     }

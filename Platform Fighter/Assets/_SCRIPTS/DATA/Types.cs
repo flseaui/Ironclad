@@ -4,62 +4,62 @@
     {
         public enum ActionType
         {
-            NOTHING,
-            IDLE,
-            JAB,
-            FTILT,
-            DTILT,
-            UTILT,
-            NAIR,
-            FAIR,
-            DAIR,
-            UAIR,
-            BAIR,
-            DASHATK,
-            NSPECIAL,
-            FSPECIAL,
-            AIRFSPECIAL,
-            DSPECIAL,
-            USPECIAL,
-            GRAB,
-            FTHROW,
-            DTHROW,
-            UTHROW,
-            BTHROW,
-            SHIELD,
-            ROLL,
-            AIRDODGE,
-            SPOTDODGE,
-            FHOP,
-            SHOP,
-            WALK,
-            RUN,
-            DASH,
-            ASSIST,
-            TURN
+            Nothing,
+            Idle,
+            Jab,
+            Ftilt,
+            Dtilt,
+            Utilt,
+            Nair,
+            Fair,
+            Dair,
+            Uair,
+            Bair,
+            Dashatk,
+            Nspecial,
+            Fspecial,
+            Airfspecial,
+            Dspecial,
+            Uspecial,
+            Grab,
+            Fthrow,
+            Dthrow,
+            Uthrow,
+            Bthrow,
+            Shield,
+            Roll,
+            Airdodge,
+            Spotdodge,
+            Fhop,
+            Shop,
+            Walk,
+            Run,
+            Dash,
+            Assist,
+            Turn
         }
 
         public enum Character
         {
-            NONE,
-            TEST_CHARACTER
+            None,
+            TestCharacter
         }
 
         public enum Direction
         {
-            LEFT,
-            RIGHT
+            Left,
+            Right
         }
 
         public enum Menu
         {
-            BLANK_MENU,
-            MAIN_MENU,
-            SINGLEPLAYER_MENU,
-            MULTIPLAYER_MENU,
-            OPTIONS_MENU,
-            LOBBY_MENU,
-            GAME_START
+            BlankMenu,
+            MainMenu,
+            SingleplayerMenu,
+            MultiplayerMenu,
+            OptionsMenu,
+            LobbySelectMenu,
+            LobbyCharacterMenu
         }
     }
 }

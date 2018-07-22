@@ -29,7 +29,7 @@ namespace PLAYER
             _spriteRenderer = GetComponent<SpriteRenderer>();
 
             _data = GetComponent<PlayerData>();
-            _data.Direction = Types.Direction.RIGHT;
+            _data.Direction = Types.Direction.Right;
             _data.Grounded = true;
         }
 
@@ -45,7 +45,7 @@ namespace PLAYER
             // first frame of action
             if (_currentActionFrame == 0)
             {
-                _currentAction = AssetManager.Instance.GetAction(Types.Character.TEST_CHARACTER, _data.CurrentAction);
+                _currentAction = AssetManager.Instance.GetAction(Types.Character.TestCharacter, _data.CurrentAction);
                 OnActionBegin?.Invoke();
             }
 
@@ -80,7 +80,7 @@ namespace PLAYER
         {
             // TODO update player sprite with action manually to avoid using anims
             transform.localScale =
-                _data.Direction == Types.Direction.LEFT ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
+                _data.Direction == Types.Direction.Left ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
         }
     }
 }

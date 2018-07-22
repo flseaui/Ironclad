@@ -5,7 +5,7 @@ using MANAGERS;
 
 namespace MENU
 {
-    [MenuType(Types.Menu.SINGLEPLAYER_MENU)]
+    [MenuType(Types.Menu.SingleplayerMenu)]
     public class SingleplayerMenu : Menu
     {
         protected override void SwitchToThis()

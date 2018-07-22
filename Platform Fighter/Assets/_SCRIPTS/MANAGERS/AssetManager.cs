@@ -35,7 +35,7 @@ namespace MANAGERS
 
         // reads in all of a characters actions and returns a list of them
         private Dictionary<Types.ActionType, ActionInfo> LoadActions(
-            Types.Character character = Types.Character.TEST_CHARACTER)
+            Types.Character character = Types.Character.TestCharacter)
         {
             var actions = new Dictionary<Types.ActionType, ActionInfo>();
 

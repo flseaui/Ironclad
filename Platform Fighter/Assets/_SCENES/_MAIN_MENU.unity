@@ -200,7 +200,7 @@ GameObject:
   - component: {fileID: 40443702}
   - component: {fileID: 40443703}
   m_Layer: 5
-  m_Name: GameStartMenu
+  m_Name: LobbyCharacterMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2052,7 +2052,7 @@ GameObject:
   - component: {fileID: 1128481585}
   - component: {fileID: 1128481586}
   m_Layer: 5
-  m_Name: LobbyMenu
+  m_Name: LobbySelectMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2088,6 +2088,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44f0c46bfe754e2f9941cc34d4952433, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _serverList: {fileID: 274556866}
+  _serverButtonPrefab: {fileID: 1860025882872346, guid: 836c8ae9f763b104abbdc86ec1629904,
+    type: 2}
 --- !u!1 &1135290771
 GameObject:
   m_ObjectHideFlags: 0
@@ -2098,12 +2101,12 @@ GameObject:
   - component: {fileID: 1135290772}
   - component: {fileID: 1135290774}
   m_Layer: 5
-  m_Name: LobbyMenuPanel
+  m_Name: LobbySelectMenuPanel
   m_TagString: MenuPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1135290772
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2725,7 +2728,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1399164856
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3346,7 +3349,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1128481586}
-        m_MethodName: SwitchToGameStartMenu
+        m_MethodName: CreateLobby
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3402,7 +3405,7 @@ GameObject:
   - component: {fileID: 1817201603}
   - component: {fileID: 1817201604}
   m_Layer: 5
-  m_Name: GameStartMenuPanel
+  m_Name: LobbyCharacterMenuPanel
   m_TagString: MenuPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4025,7 +4028,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistent: 0
-  _startingMenu: 1
+  _startingMenu: 5
 --- !u!1 &2141393021
 GameObject:
   m_ObjectHideFlags: 0
@@ -4102,7 +4105,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1128481586}
         m_MethodName: FindLobbies
         m_Mode: 1
         m_Arguments:

@@ -8,8 +8,8 @@ using Types = DATA.Types;
 
 namespace MENU
 {
-    [MenuType(Types.Menu.GAME_START)]
-    public class GameStartMenu : Menu
+    [MenuType(Types.Menu.LobbyCharacterMenu)]
+    public class LobbyCharacterMenu : Menu
     {
         protected override void SwitchToThis()
         {
