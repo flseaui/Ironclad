@@ -22,7 +22,7 @@ namespace Editor
             if (menu != null) menu.SetActive(true);
 
             EditorUtils.Collapse(menu, false);
-            
+            EditorUtils.SelectObject(menu);
         }
 
         public static bool SwapMenuValidation(string menuName)

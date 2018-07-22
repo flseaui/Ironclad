@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Editor
 {
-    public class EditorUtils
+    public static class EditorUtils
     {
         public static void CollapseSelection(bool value)
         {

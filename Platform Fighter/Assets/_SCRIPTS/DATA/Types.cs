@@ -59,7 +59,8 @@
             MultiplayerMenu,
             OptionsMenu,
             LobbySelectMenu,
-            LobbyCharacterMenu
+            LobbyCharacterMenu,
+            PrivateMatchMenu
         }
     }
 }
