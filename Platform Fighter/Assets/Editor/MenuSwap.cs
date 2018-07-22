@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using MISC;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Types = DATA.Types;
 
 namespace Editor
@@ -17,19 +19,29 @@ namespace Editor
             GameObject.Find(menuName).transform.FindObjectsWithTag("MenuPanel").FirstOrDefault()?.SetActive(true);
         }
 
+        public static bool SwapMenuValidation(string menuName)
+        {
+            var first = GameObject.Find(menuName).transform.FindObjectsWithTag("MenuPanel").FirstOrDefault();
+
+            return first != null
+                   && SceneManager.GetActiveScene().name.Equals("_MENU")
+                   && !Application.isPlaying
+                   && !first.activeSelf;
+        }
+        
         /// <summary>
-        ///     Generates a list of menuitems from an array
+        ///     Generates a script containing MenuItems for each <code>Types.Menu</code>
         /// </summary>
         [MenuItem("Assets/PFighter/Generate Menu Items")]
         private static void GenerateMenuItems()
         {
-            // the generated filepath
-            var scriptFile = Application.dataPath + "/Editor/Generated/GMenuSwapMenuItems.cs";
+            // The generated filepath
+            var scriptPath = Application.dataPath + "/Editor/Generated/GMenuSwapMenuItems.cs";
 
-            // an example string array used to generate the items
-            string[] ar = Enum.GetNames(typeof(Types.Menu));
+            // List of elements in Types.Menu excluding BlankMenu
+            var menuNames = Enum.GetNames(typeof(Types.Menu)).Where(name => !name.Equals("BlankMenu"));
 
-            // The class string
+            // Boilerplate
             var sb = new StringBuilder();
             sb.AppendLine("/** This class is Auto-Generated **/");
             sb.AppendLine("");
@@ -40,11 +52,13 @@ namespace Editor
             sb.AppendLine("    public static class GMenuSwapMenuItems {");
             sb.AppendLine("");
 
-            // loops though the array and generates the menu items
-            for (var i = 0; i < ar.Length; i++)
+            // Generate MenuItems
+            foreach (var menuName in menuNames)
             {
-                sb.AppendLine($"    [MenuItem(\"Menu/{ ar[i] }\")]");
-                sb.AppendLine($"    private static void SwapTo{ ar[i] }() => MenuSwap.SwapMenu(\"{ ar[i] }\");");
+                sb.AppendLine($"    [MenuItem(\"Menu/{ menuName }\")]");
+                sb.AppendLine($"    private static void SwapTo{ menuName }() => MenuSwap.SwapMenu(\"{ menuName }\");");
+                sb.AppendLine($"    [MenuItem(\"Menu/{ menuName }\", true)]");
+                sb.AppendLine($"    private static bool SwapTo{ menuName }Validation() => MenuSwap.SwapMenuValidation(\"{ menuName }\");");
                 sb.AppendLine("");
             }
 
@@ -52,12 +66,12 @@ namespace Editor
             sb.AppendLine("    }");
             sb.AppendLine("}");
 
-            // writes the class and imports it so it is visible in the Project window
+            // Writes the class and imports it so it is visible in the Project window
             if (!Directory.Exists(Application.dataPath + "/Editor/Generated/"))
                 Directory.CreateDirectory(Application.dataPath + "/Editor/Generated/");
-            if (File.Exists(scriptFile))
-                File.Delete(scriptFile);
-            File.WriteAllText(scriptFile, sb.ToString(), Encoding.UTF8);
+            if (File.Exists(scriptPath))
+                File.Delete(scriptPath);
+            File.WriteAllText(scriptPath, sb.ToString(), Encoding.UTF8);
             AssetDatabase.ImportAsset("Assets/Editor/Generated/GMenuSwapMenuItems.cs");
         }
     }
