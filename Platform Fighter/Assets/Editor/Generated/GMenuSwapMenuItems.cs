@@ -36,6 +36,11 @@ namespace Editor.Generated
     [MenuItem("Menu/LobbyCharacterMenu", true)]
     private static bool SwapToLobbyCharacterMenuValidation() => MenuSwap.SwapMenuValidation("LobbyCharacterMenu");
 
+    [MenuItem("Menu/PrivateMatchMenu")]
+    private static void SwapToPrivateMatchMenu() => MenuSwap.SwapMenu("PrivateMatchMenu");
+    [MenuItem("Menu/PrivateMatchMenu", true)]
+    private static bool SwapToPrivateMatchMenuValidation() => MenuSwap.SwapMenuValidation("PrivateMatchMenu");
+
 
     }
 }

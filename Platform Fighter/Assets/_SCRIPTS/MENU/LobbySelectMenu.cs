@@ -3,6 +3,8 @@ using ATTRIBUTES;
 using Facepunch.Steamworks;
 using MANAGERS;
 using UnityEngine;
+using UnityEngine.Experimental.UIElements;
+using UnityEngine.UI;
 using Types = DATA.Types;
 
 namespace MENU
@@ -21,8 +23,10 @@ namespace MENU
         {
             Client.Instance.Lobby.Create(Lobby.Type.Public, 2);
 
-            Client.Instance.Lobby.OnLobbyCreated = delegate
+            Client.Instance.Lobby.OnLobbyCreated = success =>
             {
+                if (!success) return;
+
                 Debug.Log("lobby created: " + Client.Instance.Lobby.CurrentLobby);
                 Debug.Log($"Owner: {Client.Instance.Lobby.Owner}");
                 Debug.Log($"Max Members: {Client.Instance.Lobby.MaxMembers}");
@@ -35,21 +39,21 @@ namespace MENU
         public void FindLobbies()
         {
             Client.Instance.LobbyList.Refresh();
-
+            
             //wait for the callback
             foreach (Transform child in _serverList.transform)
                 Destroy(child.gameObject);
 
             Client.Instance.LobbyList.OnLobbiesUpdated = delegate
             {
-                if (!Client.Instance.LobbyList.Finished) return;
-
                 foreach (var lobby in Client.Instance.LobbyList.Lobbies)
                 {
-                    Instantiate(_serverButtonPrefab, _serverList.transform);
+                    var button = Instantiate(_serverButtonPrefab, _serverList.transform);
+                    button.GetComponentInChildren<Text>().text = lobby.Name;
+                    button.name = lobby.Name;
                     Debug.Log($"Found Lobby: {lobby.Name}");
                 }
-            };
+           };
         }
 
         public void SwitchToMultiplayerMenu() => MenuManager.Instance.MenuState = Types.Menu.MultiplayerMenu;
