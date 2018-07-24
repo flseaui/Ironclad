@@ -13,8 +13,13 @@ namespace MENU
     {
         protected override void SwitchToThis()
         {
-            throw new NotImplementedException();
+            Client.Instance.Lobby.OnLobbyMemberDataUpdated = delegate(ulong memberId)
+            {
+                Debug.Log(Client.Instance.Lobby.GetMemberData(memberId, "name"));
+            };
         }
+        
+        
         
         public void GoBack() => MenuManager.Instance.SwitchToPreviousMenu();
 

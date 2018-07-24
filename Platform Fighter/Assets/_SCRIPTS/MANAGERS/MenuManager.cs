@@ -54,6 +54,7 @@ namespace MANAGERS
         {
             _menuState = _startingMenu;
             _previousMenuState = _startingMenu;
+            
         }
 
         private void OnMenuStateChanged(MenuChangedEventArgs e)

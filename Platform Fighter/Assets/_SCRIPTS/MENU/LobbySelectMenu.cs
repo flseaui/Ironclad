@@ -54,17 +54,16 @@ namespace MENU
                     var button = Instantiate(_serverButtonPrefab, _serverList.transform);
                     button.GetComponentInChildren<Text>().text = lobby.Name;
                     button.name = lobby.Name;
-                    button.GetComponent<Button>().onClick.AddListener(delegate { JoinLobby(lobby.LobbyID); });
+                    button.GetComponent<Button>().onClick.AddListener(delegate
+                    {
+                        Client.Instance.Lobby.Join(lobby.LobbyID);
+                        MenuManager.Instance.MenuState = Types.Menu.LobbyCharacterMenu;
+                        Debug.Log($"Joined Lobby: {Client.Instance.Lobby.Name}");
+                    });
                     Debug.Log($"Found Lobby: {lobby.Name}");
                 }
            };
-
-            void JoinLobby(ulong lobbyId)
-            {
-                Client.Instance.Lobby.Join(lobbyId);
-                Debug.Log($"Joined Lobby: {Client.Instance.Lobby.Name}");
-            }
-            
+          
         }
         
         public void SwitchToMultiplayerMenu() => MenuManager.Instance.MenuState = Types.Menu.MultiplayerMenu;
