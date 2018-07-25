@@ -24,18 +24,6 @@ namespace MENU
 
         public void CreateLobby()
         {
-            Client.Instance.Lobby.Create(Lobby.Type.Public, 2);
-
-            Client.Instance.Lobby.OnLobbyCreated = success =>
-            {
-                if (!success) return;
-
-                Debug.Log("lobby created: " + Client.Instance.Lobby.CurrentLobby);
-                Debug.Log($"Owner: {Client.Instance.Lobby.Owner}");
-                Debug.Log($"Max Members: {Client.Instance.Lobby.MaxMembers}");
-                Debug.Log($"Num Members: {Client.Instance.Lobby.NumMembers}");
-            };
-
             MenuManager.Instance.MenuState = Types.Menu.LobbyCharacterMenu;
         }
 
@@ -56,8 +44,8 @@ namespace MENU
                     button.name = lobby.Name;
                     button.GetComponent<Button>().onClick.AddListener(delegate
                     {
-                        Client.Instance.Lobby.Join(lobby.LobbyID);
                         MenuManager.Instance.MenuState = Types.Menu.LobbyCharacterMenu;
+                        Client.Instance.Lobby.Join(lobby.LobbyID);
                         Debug.Log($"Joined Lobby: {Client.Instance.Lobby.Name}");
                     });
                     Debug.Log($"Found Lobby: {lobby.Name}");

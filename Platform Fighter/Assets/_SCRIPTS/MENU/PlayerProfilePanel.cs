@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using MISC;
 using UnityEngine;
@@ -11,8 +14,27 @@ namespace MENU
         private GameObject _playerProfilePrefab;
 
         private int _playerCount;
-        
-        public void AddPlayer()
+
+        private List<ProfileInfo> _playerProfiles;
+
+        private struct ProfileInfo
+        {
+            public GameObject Profile { get; }
+            public ulong PlayerId { get; }
+
+            public ProfileInfo(GameObject profile, ulong playerId)
+            {
+                Profile = profile;
+                PlayerId = playerId;
+            }
+        }
+
+        private void Awake()
+        {
+            _playerProfiles = new List<ProfileInfo>();
+        }
+
+        public void AddPlayerProfile(ulong playerId)
         {
             if (_playerCount == 4) return;
             
@@ -29,6 +51,14 @@ namespace MENU
             );
 
             playerProfile.GetComponent<PlayerProfile>().SetPlayerName($"Player {_playerCount}");
+            _playerProfiles.Add(new ProfileInfo(playerProfile, playerId));
         }
+
+        public void RemovePlayerProfile(ulong id)
+        {
+            --_playerCount;
+            Destroy(_playerProfiles.FirstOrDefault(x => x.PlayerId == id).Profile);
+        }
+        
     }
 }
