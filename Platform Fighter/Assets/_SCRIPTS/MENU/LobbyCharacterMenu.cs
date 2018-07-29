@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using ATTRIBUTES;
 using Facepunch.Steamworks;
@@ -14,12 +16,11 @@ namespace MENU
     public class LobbyCharacterMenu : Menu
     {
         [SerializeField] private PlayerProfilePanel _playerProfilerPanel;
-        
+
         protected override void SwitchToThis()
-        { 
+        {
             Client.Instance.Lobby.Create(Lobby.Type.Public, 2);
-            
-            Client.Instance.Lobby.OnLobbyCreated = success =>
+            Client.Instance.Lobby.OnLobbyCreated = success => 
             {
                 if (!success) return;
 
