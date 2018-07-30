@@ -5,6 +5,14 @@ namespace MISC
 {
     public static class TransformExtensions
     {
+        public static void ClearChildren(this Transform parent)
+        {
+            foreach (Transform child in parent)
+            {
+                Object.Destroy(child);
+            }
+        }
+        
         public static IEnumerable<GameObject> FindObjectsWithTag(this Transform parent, string tag)
         {
             var taggedGameObjects = new List<GameObject>();

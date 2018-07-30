@@ -66,10 +66,7 @@ namespace MENU
         {
             _playerCount = 0;
             _playerProfiles.Clear();
-            foreach (Transform child in transform)
-            {
-                Destroy(child.gameObject);
-            }
+            transform.ClearChildren();
         }
         
     }
