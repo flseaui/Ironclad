@@ -23,7 +23,8 @@ namespace MENU
         }
 
         public void CreateLobby()
-        {
+        {            
+            Client.Instance.Lobby.Create(Lobby.Type.Public, 2);
             MenuManager.Instance.MenuState = Types.Menu.LobbyCharacterMenu;
         }
 

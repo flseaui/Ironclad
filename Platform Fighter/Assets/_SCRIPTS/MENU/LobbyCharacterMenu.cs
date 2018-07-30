@@ -19,7 +19,6 @@ namespace MENU
 
         protected override void SwitchToThis()
         {
-            Client.Instance.Lobby.Create(Lobby.Type.Public, 2);
             Client.Instance.Lobby.OnLobbyCreated = success => 
             {
                 if (!success) return;
@@ -66,6 +65,7 @@ namespace MENU
         public void GoBack()
         {
             _playerProfilerPanel.RemovePlayerProfile(Client.Instance.SteamId);
+            //_playerProfilerPanel.ClearPlayerProfiles();
             Client.Instance.Lobby.Leave();
             MenuManager.Instance.SwitchToPreviousMenu();
         }

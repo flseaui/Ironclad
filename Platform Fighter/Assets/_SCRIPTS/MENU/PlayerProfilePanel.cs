@@ -57,7 +57,19 @@ namespace MENU
         public void RemovePlayerProfile(ulong id)
         {
             --_playerCount;
-            Destroy(_playerProfiles.FirstOrDefault(x => x.PlayerId == id).Profile);
+            var profile = _playerProfiles.FirstOrDefault(x => x.PlayerId == id);
+            _playerProfiles.Remove(profile);
+            Destroy(profile.Profile);
+        }
+
+        public void ClearPlayerProfiles()
+        {
+            _playerCount = 0;
+            _playerProfiles.Clear();
+            foreach (Transform child in transform)
+            {
+                Destroy(child.gameObject);
+            }
         }
         
     }
