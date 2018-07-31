@@ -17,6 +17,8 @@ namespace MENU
     {
         [SerializeField] private PlayerProfilePanel _playerProfilerPanel;
 
+        private int _playerReady;
+        
         protected override void SwitchToThis()
         {   
             Client.Instance.Lobby.OnLobbyCreated = success => 
@@ -46,6 +48,16 @@ namespace MENU
                     _playerProfilerPanel.AddPlayerProfile(member);
                 }
             };
+
+            Client.Instance.Lobby.OnLobbyMemberDataUpdated = delegate(ulong member)
+            {
+                if (Client.Instance.Lobby.GetMemberData(member, "ready").Equals("true"))
+                {
+                    ++_playerReady;
+                    if (_playerReady >= 1)
+                        MenuManager.Instance.MenuState = Types.Menu.MainMenu;
+                }
+            };
             
             Client.Instance.Lobby.OnLobbyStateChanged = delegate(Lobby.MemberStateChange change, ulong initiator, ulong affectee)
             {
@@ -73,7 +85,7 @@ namespace MENU
 
         public void ReadyToPlay()
         {
-            
+            Client.Instance.Lobby.SetMemberData("ready", "true");
         }
         
         public void GoBack()
