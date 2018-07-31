@@ -18,7 +18,7 @@ namespace MENU
         [SerializeField] private PlayerProfilePanel _playerProfilerPanel;
 
         protected override void SwitchToThis()
-        {
+        {   
             Client.Instance.Lobby.OnLobbyCreated = success => 
             {
                 if (!success) return;
@@ -30,12 +30,21 @@ namespace MENU
                 Debug.Log($"Max Members: {Client.Instance.Lobby.MaxMembers}");
                 Debug.Log($"Num Members: {Client.Instance.Lobby.NumMembers}");
             };
-            
+                
             Client.Instance.Lobby.OnLobbyJoined = delegate(bool success)
             {
                 if (!success) return;
-                
-                _playerProfilerPanel.AddPlayerProfile(Client.Instance.SteamId);
+            };
+            
+            Client.Instance.Lobby.OnLobbyDataUpdated = delegate
+            {
+
+                foreach (var member in Client.Instance.Lobby.GetMemberIDs())
+                {
+                    Debug.Log("kpompompompompompom: " + member);
+                    _playerProfilerPanel.ClearPlayerProfiles();
+                    _playerProfilerPanel.AddPlayerProfile(member);
+                }
             };
             
             Client.Instance.Lobby.OnLobbyStateChanged = delegate(Lobby.MemberStateChange change, ulong initiator, ulong affectee)
@@ -61,11 +70,15 @@ namespace MENU
                 }
             };
         }
+
+        public void ReadyToPlay()
+        {
+            
+        }
         
         public void GoBack()
         {
-            _playerProfilerPanel.RemovePlayerProfile(Client.Instance.SteamId);
-            //_playerProfilerPanel.ClearPlayerProfiles();
+            _playerProfilerPanel.ClearPlayerProfiles();
             Client.Instance.Lobby.Leave();
             MenuManager.Instance.SwitchToPreviousMenu();
         }
