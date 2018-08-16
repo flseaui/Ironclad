@@ -40,10 +40,11 @@ namespace MENU
             
             Client.Instance.Lobby.OnLobbyDataUpdated = delegate
             {
+                
+                _playerProfilerPanel.ClearPlayerProfiles();
                 foreach (var member in Client.Instance.Lobby.GetMemberIDs())
                 {
                     Debug.Log("kpompompompompompom: " + member);
-                    _playerProfilerPanel.ClearPlayerProfiles();
                     _playerProfilerPanel.AddPlayerProfile(member);
                 }
             };
