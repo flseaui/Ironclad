@@ -33,14 +33,13 @@ namespace MENU
                 Debug.Log($"Num Members: {Client.Instance.Lobby.NumMembers}");
             };
                 
-            Client.Instance.Lobby.OnLobbyJoined = delegate(bool success)
+            Client.Instance.Lobby.OnLobbyJoined = success =>
             {
                 if (!success) return;
             };
             
             Client.Instance.Lobby.OnLobbyDataUpdated = delegate
             {
-
                 foreach (var member in Client.Instance.Lobby.GetMemberIDs())
                 {
                     Debug.Log("kpompompompompompom: " + member);
@@ -51,6 +50,7 @@ namespace MENU
 
             Client.Instance.Lobby.OnLobbyMemberDataUpdated = delegate(ulong member)
             {
+                Debug.Log("memememember" + member);
                 if (Client.Instance.Lobby.GetMemberData(member, "ready").Equals("true"))
                 {
                     ++_playerReady;
@@ -86,6 +86,8 @@ namespace MENU
         public void ReadyToPlay()
         {
             Client.Instance.Lobby.SetMemberData("ready", "true");
+            Debug.Log("wedy 2 pway");
+            Debug.Log(Client.Instance.Lobby.GetMemberData(Client.Instance.SteamId, "ready"));
         }
         
         public void GoBack()
