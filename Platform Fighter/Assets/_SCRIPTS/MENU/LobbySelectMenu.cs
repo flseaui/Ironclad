@@ -23,8 +23,8 @@ namespace MENU
         }
 
         public void CreateLobby()
-        {            
-            Client.Instance.Lobby.Create(Lobby.Type.Public, 2);
+        {
+            GameObject.Find("LobbyCharacterMenu").GetComponent<LobbyCharacterMenu>().InteractionType = true;
             MenuManager.Instance.MenuState = Types.Menu.LobbyCharacterMenu;
         }
 
@@ -47,6 +47,7 @@ namespace MENU
                     {
                         
                         Debug.Log($"Joined Lobby: {Client.Instance.Lobby.Name}");
+                        GameObject.Find("LobbyCharacterMenu").GetComponent<LobbyCharacterMenu>().InteractionType = false;
                         GameObject.Find("LobbyCharacterMenu").GetComponent<LobbyCharacterMenu>().LobbyId = lobby.LobbyID;
                         MenuManager.Instance.MenuState = Types.Menu.LobbyCharacterMenu;
                     });

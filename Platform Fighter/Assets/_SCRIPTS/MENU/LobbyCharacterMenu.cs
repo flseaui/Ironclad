@@ -19,6 +19,8 @@ namespace MENU
 
         private int _playerReady;
         
+        // true = create, false = join
+        public bool InteractionType { get; set; }
         public ulong LobbyId { get; set; }
 
         protected override void SwitchToThis()
@@ -86,7 +88,10 @@ namespace MENU
                 }
             };
 
-            Client.Instance.Lobby.Join(LobbyId);
+            if (InteractionType)
+                Client.Instance.Lobby.Create(Lobby.Type.Public, 2);
+            else
+                Client.Instance.Lobby.Join(LobbyId);
         }
 
         public void ReadyToPlay()
