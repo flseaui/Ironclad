@@ -24,74 +24,80 @@ namespace MENU
         public ulong LobbyId { get; set; }
 
         protected override void SwitchToThis()
-        {   
-            Client.Instance.Lobby.OnLobbyCreated = success => 
-            {
-                if (!success) return;
-
-                _playerProfilerPanel.AddPlayerProfile(Client.Instance.SteamId);
-                
-                Debug.Log("lobby created: " + Client.Instance.Lobby.CurrentLobby);
-                Debug.Log($"Owner: {Client.Instance.Lobby.Owner}");
-                Debug.Log($"Max Members: {Client.Instance.Lobby.MaxMembers}");
-                Debug.Log($"Num Members: {Client.Instance.Lobby.NumMembers}");
-            };
-                
-            Client.Instance.Lobby.OnLobbyJoined = success =>
-            {
-                
-                Debug.Log("OnLobbyJoined");
-                if (!success) return;
-            };
-            
-            Client.Instance.Lobby.OnLobbyDataUpdated = delegate
-            {
-                Debug.Log("OnLobbyDataUpdated");
-                _playerProfilerPanel.ClearPlayerProfiles();
-                foreach (var member in Client.Instance.Lobby.GetMemberIDs())
-                {
-                    _playerProfilerPanel.AddPlayerProfile(member);
-                }
-            };
-
-            Client.Instance.Lobby.OnLobbyMemberDataUpdated = delegate(ulong member)
-            {
-                Debug.Log("OnLobbyMemberDataUpdated");
-                if (Client.Instance.Lobby.GetMemberData(member, "ready").Equals("true"))
-                {
-                    ++_playerReady;
-                    if (_playerReady >= 1)
-                        MenuManager.Instance.MenuState = Types.Menu.MainMenu;
-                }
-            };
-            
-            Client.Instance.Lobby.OnLobbyStateChanged = delegate(Lobby.MemberStateChange change, ulong initiator, ulong affectee)
-            {
-                Debug.Log("OnLobbyStateChanged");
-                switch (change)
-                {
-                    case Lobby.MemberStateChange.Entered:
-                        _playerProfilerPanel.AddPlayerProfile(initiator);
-                        break;
-                    case Lobby.MemberStateChange.Disconnected:
-                        _playerProfilerPanel.RemovePlayerProfile(initiator);
-                        break;
-                    case Lobby.MemberStateChange.Left:
-                        _playerProfilerPanel.RemovePlayerProfile(initiator);
-                        break;
-                    case Lobby.MemberStateChange.Kicked:
-                        break;
-                    case Lobby.MemberStateChange.Banned:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(change), change, null);
-                }
-            };
+        {
+            Client.Instance.Lobby.OnLobbyCreated           += OnCreated;
+            Client.Instance.Lobby.OnLobbyJoined            += OnJoined;
+            Client.Instance.Lobby.OnLobbyDataUpdated       += OnDataUpdated;
+            Client.Instance.Lobby.OnLobbyMemberDataUpdated += OnMemberDataUpdated;
+            Client.Instance.Lobby.OnLobbyStateChanged      += OnStateChange;
 
             if (InteractionType)
                 Client.Instance.Lobby.Create(Lobby.Type.Public, 2);
             else
                 Client.Instance.Lobby.Join(LobbyId);
+        }
+
+        void OnCreated(bool success)
+        {
+            if (!success) return;
+
+            _playerProfilerPanel.ClearPlayerProfiles();
+            _playerProfilerPanel.AddPlayerProfile(Client.Instance.SteamId);
+
+            Debug.Log("lobby created: " + Client.Instance.Lobby.CurrentLobby);
+            Debug.Log($"Owner: {Client.Instance.Lobby.Owner}");
+            Debug.Log($"Max Members: {Client.Instance.Lobby.MaxMembers}");
+            Debug.Log($"Num Members: {Client.Instance.Lobby.NumMembers}");
+        }
+
+        void OnJoined(bool success)
+        {
+            Debug.Log("OnLobbyJoined");
+            if (!success) return;
+        }
+
+        void OnDataUpdated()
+        {
+            Debug.Log("OnLobbyDataUpdated");
+            _playerProfilerPanel.ClearPlayerProfiles();
+            foreach (var member in Client.Instance.Lobby.GetMemberIDs())
+            {
+                _playerProfilerPanel.AddPlayerProfile(member);
+            }
+        }
+
+        void OnMemberDataUpdated(ulong member)
+        {
+            Debug.Log("OnLobbyMemberDataUpdated");
+            if (Client.Instance.Lobby.GetMemberData(member, "ready").Equals("true"))
+            {
+                ++_playerReady;
+                if (_playerReady >= 1)
+                    MenuManager.Instance.MenuState = Types.Menu.MainMenu;
+            }
+        }
+
+        void OnStateChange(Lobby.MemberStateChange change, ulong initiator, ulong affectee)
+        {
+            Debug.Log("OnLobbyStateChanged");
+            switch (change)
+            {
+                case Lobby.MemberStateChange.Entered:
+                    _playerProfilerPanel.AddPlayerProfile(initiator);
+                    break;
+                case Lobby.MemberStateChange.Disconnected:
+                    _playerProfilerPanel.RemovePlayerProfile(initiator);
+                    break;
+                case Lobby.MemberStateChange.Left:
+                    _playerProfilerPanel.RemovePlayerProfile(initiator);
+                    break;
+                case Lobby.MemberStateChange.Kicked:
+                    break;
+                case Lobby.MemberStateChange.Banned:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(change), change, null);
+            }
         }
 
         public void ReadyToPlay()
