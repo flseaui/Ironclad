@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using MISC;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace MENU
 {
@@ -52,6 +53,12 @@ namespace MENU
 
             playerProfile.GetComponent<PlayerProfile>().SetPlayerName($"Player {_playerCount}");
             _playerProfiles.Add(new ProfileInfo(playerProfile, playerId));
+        }
+
+        public void ReadyPlayerProfile(ulong id)
+        {
+            var profile = _playerProfiles.FirstOrDefault(x => x.PlayerId == id);
+            profile.Profile.transform.Find("ReadyBadge").GetComponent<Image>().color = Color.green;
         }
 
         public void RemovePlayerProfile(ulong id)

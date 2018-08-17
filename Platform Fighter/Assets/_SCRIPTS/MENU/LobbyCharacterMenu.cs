@@ -100,12 +100,17 @@ namespace MENU
             }
         }
 
+        private void Update()
+        {
+            Client.Instance.Lobby.SetMemberData("ready", "true");
+        }
+
         public void ReadyToPlay()
         {
             Client.Instance.Lobby.SetMemberData("ready", "true");
-            MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;
+            //MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;
             Debug.Log("wedy 2 pway");
-            Debug.Log(Client.Instance.Lobby.GetMemberData(Client.Instance.SteamId, "ready"));
+            _playerProfilerPanel.ReadyPlayerProfile(Client.Instance.SteamId);
         }
         
         public void GoBack()
