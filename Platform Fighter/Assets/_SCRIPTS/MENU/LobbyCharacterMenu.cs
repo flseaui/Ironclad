@@ -73,7 +73,7 @@ namespace MENU
             {
                 ++_playerReady;
                 if (_playerReady >= 1)
-                    MenuManager.Instance.MenuState = Types.Menu.MainMenu;
+                    MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;
             }
         }
 
@@ -103,6 +103,7 @@ namespace MENU
         public void ReadyToPlay()
         {
             Client.Instance.Lobby.SetMemberData("ready", "true");
+            MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;
             Debug.Log("wedy 2 pway");
             Debug.Log(Client.Instance.Lobby.GetMemberData(Client.Instance.SteamId, "ready"));
         }

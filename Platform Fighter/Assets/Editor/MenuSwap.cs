@@ -27,7 +27,7 @@ namespace Editor
 
         public static bool SwapMenuValidation(string menuName)
         {
-            if (!SceneManager.GetActiveScene().name.Equals("_MENU")) return false;
+            if (!SceneManager.GetActiveScene().name.Equals("MENU_SCENE")) return false;
             
             var first = GameObject.Find(menuName).transform.FindObjectsWithTag("MenuPanel").FirstOrDefault();
 

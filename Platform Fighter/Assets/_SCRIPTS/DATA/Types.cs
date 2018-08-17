@@ -60,7 +60,8 @@
             OptionsMenu,
             LobbySelectMenu,
             LobbyCharacterMenu,
-            PrivateMatchMenu
+            PrivateMatchMenu,
+            GameStartMenu
         }
     }
 }
