@@ -19,6 +19,8 @@ namespace MENU
 
         private int _playerReady;
         
+        public ulong LobbyId { get; set; }
+
         protected override void SwitchToThis()
         {   
             Client.Instance.Lobby.OnLobbyCreated = success => 
@@ -35,23 +37,24 @@ namespace MENU
                 
             Client.Instance.Lobby.OnLobbyJoined = success =>
             {
+                
+                Debug.Log("OnLobbyJoined");
                 if (!success) return;
             };
             
             Client.Instance.Lobby.OnLobbyDataUpdated = delegate
             {
-                
+                Debug.Log("OnLobbyDataUpdated");
                 _playerProfilerPanel.ClearPlayerProfiles();
                 foreach (var member in Client.Instance.Lobby.GetMemberIDs())
                 {
-                    Debug.Log("kpompompompompompom: " + member);
                     _playerProfilerPanel.AddPlayerProfile(member);
                 }
             };
 
             Client.Instance.Lobby.OnLobbyMemberDataUpdated = delegate(ulong member)
             {
-                Debug.Log("memememember" + member);
+                Debug.Log("OnLobbyMemberDataUpdated");
                 if (Client.Instance.Lobby.GetMemberData(member, "ready").Equals("true"))
                 {
                     ++_playerReady;
@@ -62,7 +65,7 @@ namespace MENU
             
             Client.Instance.Lobby.OnLobbyStateChanged = delegate(Lobby.MemberStateChange change, ulong initiator, ulong affectee)
             {
-                Debug.Log("yallreadu know");
+                Debug.Log("OnLobbyStateChanged");
                 switch (change)
                 {
                     case Lobby.MemberStateChange.Entered:
@@ -82,6 +85,8 @@ namespace MENU
                         throw new ArgumentOutOfRangeException(nameof(change), change, null);
                 }
             };
+
+            Client.Instance.Lobby.Join(LobbyId);
         }
 
         public void ReadyToPlay()

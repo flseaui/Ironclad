@@ -15,7 +15,5 @@ namespace NETWORKING
                 Debug.Log("lobby joined: " + Client.Instance.Lobby.CurrentLobbyData);
             };
         }
-
-        
     }
 }
