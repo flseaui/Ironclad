@@ -45,7 +45,7 @@ namespace MENU
                     button.GetComponent<Button>().onClick.AddListener(delegate
                     {
                         
-                        Debug.Log($"Joined Lobby: {Client.Instance.Lobby.Name}");
+                        Debug.Log($"Joined Lobby: {lobby.Name}");
                         MenuManager.Instance.SwitchToMenuWithArgs(Types.Menu.LobbyCharacterMenu, "join", lobby.LobbyID.ToString());
                     });
                     Debug.Log($"Found Lobby: {lobby.Name}");

@@ -21,13 +21,12 @@ namespace MENU
 
         protected override void SwitchToThis(params string[] args)
         {
-            Client.Instance.Lobby.OnLobbyCreated           += OnCreated;
-            Client.Instance.Lobby.OnLobbyJoined            += OnJoined;
-            Client.Instance.Lobby.OnLobbyDataUpdated       += OnDataUpdated;
-            Client.Instance.Lobby.OnLobbyMemberDataUpdated += OnMemberDataUpdated;
-            Client.Instance.Lobby.OnLobbyStateChanged      += OnStateChange;
-            Client.Instance.Lobby.OnChatMessageRecieved    += OnChatMessage;
-
+            Client.Instance.Lobby.OnLobbyCreated           = OnCreated;
+            Client.Instance.Lobby.OnLobbyJoined            = OnJoined;
+            Client.Instance.Lobby.OnLobbyDataUpdated       = OnDataUpdated;
+            Client.Instance.Lobby.OnLobbyMemberDataUpdated = OnMemberDataUpdated;
+            Client.Instance.Lobby.OnLobbyStateChanged      = OnStateChange;
+            Client.Instance.Lobby.OnChatMessageRecieved    = OnChatMessage;
 
             if (args.Length > 0)
             {
@@ -40,7 +39,6 @@ namespace MENU
                     Client.Instance.Lobby.Join(ulong.Parse(args[1]));
                 }
             }
-
         }
 
         void OnCreated(bool success)
@@ -122,7 +120,16 @@ namespace MENU
         public void GoBack()
         {
             _playerProfilerPanel.ClearPlayerProfiles();
-            Client.Instance.Lobby.Leave();
+            
+            if (Client.Instance.Lobby.NumMembers <= 1)
+            {
+                Client.Instance.Lobby.Leave();
+                Client.Instance.Lobby.Dispose();
+            }
+            else
+            {
+                Client.Instance.Lobby.Leave();
+            }
             MenuManager.Instance.SwitchToPreviousMenu();
         }
     }
