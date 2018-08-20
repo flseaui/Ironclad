@@ -17,15 +17,14 @@ namespace MENU
     {
         [SerializeField] private GameObject _serverList, _serverButtonPrefab;
 
-        protected override void SwitchToThis()
+        protected override void SwitchToThis(params string[] args)
         {
             throw new NotImplementedException();
         }
 
         public void CreateLobby()
         {
-            GameObject.Find("LobbyCharacterMenu").GetComponent<LobbyCharacterMenu>().InteractionType = true;
-            MenuManager.Instance.MenuState = Types.Menu.LobbyCharacterMenu;
+            MenuManager.Instance.SwitchToMenuWithArgs(Types.Menu.LobbyCharacterMenu, "create");
         }
 
         public void FindLobbies()
@@ -47,9 +46,7 @@ namespace MENU
                     {
                         
                         Debug.Log($"Joined Lobby: {Client.Instance.Lobby.Name}");
-                        GameObject.Find("LobbyCharacterMenu").GetComponent<LobbyCharacterMenu>().InteractionType = false;
-                        GameObject.Find("LobbyCharacterMenu").GetComponent<LobbyCharacterMenu>().LobbyId = lobby.LobbyID;
-                        MenuManager.Instance.MenuState = Types.Menu.LobbyCharacterMenu;
+                        MenuManager.Instance.SwitchToMenuWithArgs(Types.Menu.LobbyCharacterMenu, "join", lobby.LobbyID.ToString());
                     });
                     Debug.Log($"Found Lobby: {lobby.Name}");
                 }

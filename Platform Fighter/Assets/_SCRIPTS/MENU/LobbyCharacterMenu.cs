@@ -18,24 +18,29 @@ namespace MENU
         [SerializeField] private PlayerProfilePanel _playerProfilerPanel;
 
         private int _playerReady;
-        
-        // true = create, false = join
-        public bool InteractionType { get; set; }
-        public ulong LobbyId { get; set; }
 
-        protected override void SwitchToThis()
+        protected override void SwitchToThis(params string[] args)
         {
             Client.Instance.Lobby.OnLobbyCreated           += OnCreated;
             Client.Instance.Lobby.OnLobbyJoined            += OnJoined;
             Client.Instance.Lobby.OnLobbyDataUpdated       += OnDataUpdated;
             Client.Instance.Lobby.OnLobbyMemberDataUpdated += OnMemberDataUpdated;
             Client.Instance.Lobby.OnLobbyStateChanged      += OnStateChange;
-            Client.Instance.Lobby.OnChatMessageRecieved += OnChatMessage;
+            Client.Instance.Lobby.OnChatMessageRecieved    += OnChatMessage;
 
-            if (InteractionType)
-                Client.Instance.Lobby.Create(Lobby.Type.Public, 2);
-            else
-                Client.Instance.Lobby.Join(LobbyId);
+
+            if (args.Length > 0)
+            {
+                if (args[0] == "create")
+                {
+                    Client.Instance.Lobby.Create(Lobby.Type.Public, 2);
+                }
+                else if (args[0] == "join")
+                {
+                    Client.Instance.Lobby.Join(ulong.Parse(args[1]));
+                }
+            }
+
         }
 
         void OnCreated(bool success)
@@ -109,7 +114,7 @@ namespace MENU
         public void ReadyToPlay()
         {
             Client.Instance.Lobby.SetMemberData("ready", "true");
-            Client.Instance.Lobby.OnLobbyMemberDataUpdated(Client.Instance.SteamId);
+            //Client.Instance.Lobby.OnLobbyMemberDataUpdated(Client.Instance.SteamId);
             Debug.Log("wedy 2 pway");
             _playerProfilerPanel.ReadyPlayerProfile(Client.Instance.SteamId);
         }

@@ -23,9 +23,9 @@ namespace MENU
         {
             if (e.Menu != Type) return;
 
-            SwitchToThis();
+            SwitchToThis(e.Args);
         }
         
-        protected abstract void SwitchToThis();
+        protected abstract void SwitchToThis(params string[] args);
     }
 }

@@ -14,7 +14,7 @@ namespace MENU
 
         [SerializeField] private TextMeshProUGUI _loadingText;
 
-        protected override void SwitchToThis()
+        protected override void SwitchToThis(params string[] args)
         {
             if (SceneManager.GetActiveScene().name.Equals("MENU_SCENE"))
             {

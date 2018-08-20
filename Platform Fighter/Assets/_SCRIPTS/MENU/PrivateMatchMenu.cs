@@ -9,7 +9,7 @@ namespace MENU
     [MenuType(Types.Menu.PrivateMatchMenu)]
     public class PrivateMatchMenu : Menu
     {
-        protected override void SwitchToThis()
+        protected override void SwitchToThis(params string[] args)
         {
             throw new System.NotImplementedException();
         }

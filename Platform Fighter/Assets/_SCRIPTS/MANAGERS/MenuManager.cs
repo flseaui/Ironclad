@@ -43,6 +43,23 @@ namespace MANAGERS
             }
         }
 
+        public void SwitchToMenuWithArgs(Types.Menu menu, params string[] args)
+        {
+            if (menu == _menuState) return;
+
+            _previousMenuState = _menuState;
+            _menuState = menu;
+
+            if (_previousMenuState != menu)
+            {
+                Menus[_menuState        ].transform.FindObjectsWithTag("MenuPanel").FirstOrDefault()?.SetActive(true );
+                Menus[_previousMenuState].transform.FindObjectsWithTag("MenuPanel").FirstOrDefault()?.SetActive(false);
+            }
+
+            OnPropertyChanged();
+            OnMenuStateChanged(new MenuChangedEventArgs(_menuState, args));
+        }
+
         public void SwitchToPreviousMenu()
         {
             MenuState = _previousMenuState;
@@ -79,12 +96,21 @@ namespace MANAGERS
 
         public class MenuChangedEventArgs : EventArgs
         {
+            public MenuChangedEventArgs(Types.Menu menu, params string[] args)
+            {
+                Menu = menu;
+                Args = args;
+            }
+
             public MenuChangedEventArgs(Types.Menu menu)
             {
                 Menu = menu;
+                Args = new string[0];
             }
 
             public Types.Menu Menu { get; }
+
+            public String[] Args { get; }
         }
     }
 }

@@ -8,7 +8,7 @@ namespace MENU
     [MenuType(Types.Menu.MainMenu)]
     public class MainMenu : Menu
     {
-        protected override void SwitchToThis()
+        protected override void SwitchToThis(params string[] args)
         {
             throw new NotImplementedException();
         }
