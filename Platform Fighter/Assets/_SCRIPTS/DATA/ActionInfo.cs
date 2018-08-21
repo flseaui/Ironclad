@@ -52,7 +52,7 @@ namespace DATA
             get => _infinite.Y;
             set => _infinite.Y = value;
         }
-
+    
         public FrameType FrameTypeAt(int i)
         {
             return _frames[i];

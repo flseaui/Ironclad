@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace MISC
 {
@@ -10,9 +8,9 @@ namespace MISC
 
         private Facepunch.Steamworks.Client client;
 
-        void Start ()
+        private void Start ()
         {
-            GameObject.DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);
 
             if (AppId == 0)
                 throw new System.Exception("You need to set the AppId to your game");
@@ -21,7 +19,7 @@ namespace MISC
 
             // Create a steam_appid.txt
             try
-            {
+            {    
                 System.IO.File.WriteAllText("steam_appid.txt", AppId.ToString());
             }
             catch ( System.Exception e )
@@ -41,8 +39,8 @@ namespace MISC
 
             Debug.Log( "Steam Initialized: " + client.Username + " / " + client.SteamId ); 
         }
-        
-        void Update()
+
+        private void Update()
         {
             if (client == null)
                 return;
