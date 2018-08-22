@@ -75,6 +75,7 @@ namespace MENU
             Debug.Log("OnLobbyMemberDataUpdated");
             if (Client.Instance.Lobby.GetMemberData(member, "ready").Equals("true"))
             {
+                _playerProfilerPanel.ReadyPlayerProfile(member);
                 ++_playerReady;
                 if (_playerReady >= Client.Instance.Lobby.NumMembers)
                     MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;
@@ -86,7 +87,7 @@ namespace MENU
             Debug.Log("OnChatMessage");
         }
 
-        void OnStateChange(Lobby.MemberStateChange change, ulong initiator, ulong affectee)
+        private void OnStateChange(Lobby.MemberStateChange change, ulong initiator, ulong affectee)
         {
             Debug.Log("OnLobbyStateChanged");
             switch (change)
@@ -114,22 +115,12 @@ namespace MENU
             Client.Instance.Lobby.SetMemberData("ready", "true");
             //Client.Instance.Lobby.OnLobbyMemberDataUpdated(Client.Instance.SteamId);
             Debug.Log("wedy 2 pway");
-            _playerProfilerPanel.ReadyPlayerProfile(Client.Instance.SteamId);
         }
         
         public void GoBack()
         {
             _playerProfilerPanel.ClearPlayerProfiles();
-            
-            if (Client.Instance.Lobby.NumMembers <= 1)
-            {
-                Client.Instance.Lobby.Leave();
-                Client.Instance.Lobby.Dispose();
-            }
-            else
-            {
-                Client.Instance.Lobby.Leave();
-            }
+            Client.Instance.Lobby.Leave();
             MenuManager.Instance.SwitchToPreviousMenu();
         }
     }

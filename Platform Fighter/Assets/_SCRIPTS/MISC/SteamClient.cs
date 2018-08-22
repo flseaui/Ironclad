@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Facepunch.Steamworks;
+using UnityEngine;
 
 namespace MISC
 {
@@ -60,6 +61,7 @@ namespace MISC
         {
             if (client != null)
             {
+                
                 client.Dispose();
                 client = null;
             }
