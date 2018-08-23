@@ -13,6 +13,16 @@ namespace MENU
             throw new NotImplementedException();
         }
 
+        public void ReadyButton()
+        {
+            GameManager.Instance.Characters = new []
+                { 
+                  Types.Character.TestCharacter, 
+                  Types.Character.TestCharacter 
+                };
+            MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;   
+        }
+        
         public void GoBack() => MenuManager.Instance.SwitchToPreviousMenu();
         
     }

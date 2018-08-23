@@ -5,11 +5,12 @@ namespace MANAGERS
 {
     public class GameManager : Singleton<GameManager>
     {
-        public int playerCount = 1;
+        public DATA.Types.Character[] Characters { get; set; }
 
-        // Prefabs
-        public GameObject playerPrefab;
-
-        public Transform[] spawnPoints;
+        private void StartGame()
+        {
+            
+        }
+        
     }
 }
