@@ -6,7 +6,7 @@ namespace PLAYER
 {
     [RequireComponent(typeof(PlayerData))]
     [RequireComponent(typeof(Rigidbody2D))]
-    public class PlayerMovement : NetworkBehaviour
+    public class PlayerMovement : MonoBehaviour
     {
         private PlayerData Data { get; set; }
 
@@ -20,11 +20,10 @@ namespace PLAYER
 
         private void FixedUpdate()
         {
-            CmdMovePlayer();
+            MovePlayer();
         }
 
-        [Command]
-        private void CmdMovePlayer()
+        private void MovePlayer()
         {
             if (Data.Direction == Types.Direction.Left)
                 Rigidbody.AddForce(Vector2.left * Data.Acceleration, ForceMode2D.Impulse);

@@ -11,7 +11,7 @@ namespace PLAYER
     public delegate void OnActionBeginCallback();
 
     [RequireComponent(typeof(PlayerData))]
-    public class PlayerScript : NetworkBehaviour
+    public class PlayerScript : MonoBehaviour
     {
         private ActionInfo _currentAction;
 
@@ -22,7 +22,6 @@ namespace PLAYER
         private SpriteRenderer _spriteRenderer;
         public static event OnActionEndCallback OnActionEnd;
         public static event OnActionBeginCallback OnActionBegin;
-
 
         private void Awake()
         {
@@ -52,15 +51,15 @@ namespace PLAYER
             ++_currentActionFrame;
 
             UpdateBoxes(_currentActionFrame);
-            if (isLocalPlayer)
-                CmdUpdateSprite();
+            
+            UpdateSprite();
 
             // last frame of action
             if (_currentActionFrame > _currentAction.FrameCount)
             {
                 _currentActionFrame = 0;
                 OnActionEnd?.Invoke();
-            }
+            } 
         }
 
         private void UpdateBoxes(int frame)
@@ -68,15 +67,7 @@ namespace PLAYER
             // TODO disable old boxes and enable new ones
         }
 
-        [Command]
-        private void CmdUpdateSprite()
-        {
-            RpcUpdateSprite();
-            //transform.localScale = _data.Direction == Types.Direction.LEFT ? new Vector3(-1, 1, 1) : new Vector3(1, 1, 1);
-        }
-
-        [ClientRpc]
-        private void RpcUpdateSprite()
+        private void UpdateSprite()
         {
             // TODO update player sprite with action manually to avoid using anims
             transform.localScale =
