@@ -38,7 +38,7 @@ namespace PLAYER
 
                     if (Input.lightRight || Input.strongRight)
                     {
-                        Data.Direction = Types.Direction.Right;
+                        Data.Direction = Types.Direction.Right;    
                         return Types.ActionType.Turn;
                     }
                 }

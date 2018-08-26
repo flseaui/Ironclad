@@ -20,10 +20,12 @@ namespace MANAGERS
 
         public ActionInfo GetAction(Types.Character characterType, Types.ActionType actionType)
         {
-            return _actionSets[(int) characterType][actionType];
+            return _actionSets[(int) characterType].ContainsKey(actionType)
+                ? _actionSets[(int) characterType][actionType]
+                : _actionSets[(int) characterType][Types.ActionType.Idle];
         }
 
-        public void PopulateActions(Types.Character[] characters)
+        public void PopulateActions(IEnumerable<Types.Character> characters)
         {
             foreach (var character in characters) _actionSets.Add(LoadActions(character));
         }
