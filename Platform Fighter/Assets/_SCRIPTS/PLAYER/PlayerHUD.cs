@@ -12,8 +12,6 @@ namespace PLAYER
             NameText = GameObject.Find("NameText").GetComponent<TextMeshProUGUI>();
         }
 
-        private void Update()
-        {
-        }
+        private void Update() { }
     }
 }

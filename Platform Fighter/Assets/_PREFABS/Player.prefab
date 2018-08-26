@@ -22,8 +22,6 @@ GameObject:
   - component: {fileID: 212954989511865322}
   - component: {fileID: 50521002551280952}
   - component: {fileID: 61796601358515752}
-  - component: {fileID: 114055364290308466}
-  - component: {fileID: 114616302561703780}
   - component: {fileID: 114304905046815444}
   - component: {fileID: 114053516341619698}
   - component: {fileID: 114227987072950648}
@@ -31,7 +29,6 @@ GameObject:
   - component: {fileID: 114045754544223424}
   - component: {fileID: 114269284827562152}
   - component: {fileID: 95703801719290990}
-  - component: {fileID: 114507736451977948}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -137,38 +134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29a518bba12742c4cb7f5c831f4a1eda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114055364290308466
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1110542900291582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 239
-    i1: 151
-    i2: 68
-    i3: 71
-    i4: 178
-    i5: 126
-    i6: 129
-    i7: 196
-    i8: 106
-    i9: 55
-    i10: 243
-    i11: 249
-    i12: 76
-    i13: 129
-    i14: 48
-    i15: 72
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
 --- !u!114 &114227987072950648
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -219,50 +184,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Acceleration: {x: 0, y: 0}
-  TerminalVelocity: {x: 0, y: 0}
-  Grounded: 0
   CurrentAction: 0
   Direction: 0
---- !u!114 &114507736451977948
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1110542900291582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1590678366, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Animator: {fileID: 95703801719290990}
-  m_ParameterSendBits: 1
-  param0: 
-  param1: 
-  param2: 
-  param3: 
-  param4: 
-  param5: 
---- !u!114 &114616302561703780
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1110542900291582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TransformSyncMode: 2
-  m_SendInterval: 0.1
-  m_SyncRotationAxis: 3
-  m_RotationSyncCompression: 0
-  m_SyncSpin: 0
-  m_MovementTheshold: 0.001
-  m_VelocityThreshold: 0.0001
-  m_SnapThreshold: 5
-  m_InterpolateRotation: 1
-  m_InterpolateMovement: 1
+  Grounded: 0
+  TerminalVelocity: {x: 0, y: 0}
 --- !u!114 &114667764300966322
 MonoBehaviour:
   m_ObjectHideFlags: 1

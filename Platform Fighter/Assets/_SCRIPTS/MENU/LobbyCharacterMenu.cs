@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using ATTRIBUTES;
 using Facepunch.Steamworks;
 using MANAGERS;
-using MISC;
-using Newtonsoft.Json.Linq;
+using TOOLS;
 using UnityEngine;
 using Types = DATA.Types;
 
@@ -21,58 +17,50 @@ namespace MENU
 
         protected override void SwitchToThis(params string[] args)
         {
-            Client.Instance.Lobby.OnLobbyCreated           = OnCreated;
-            Client.Instance.Lobby.OnLobbyJoined            = OnJoined;
-            Client.Instance.Lobby.OnLobbyDataUpdated       = OnDataUpdated;
+            Client.Instance.Lobby.OnLobbyCreated = OnCreated;
+            Client.Instance.Lobby.OnLobbyJoined = OnJoined;
+            Client.Instance.Lobby.OnLobbyDataUpdated = OnDataUpdated;
             Client.Instance.Lobby.OnLobbyMemberDataUpdated = OnMemberDataUpdated;
-            Client.Instance.Lobby.OnLobbyStateChanged      = OnStateChange;
-            Client.Instance.Lobby.OnChatMessageRecieved    = OnChatMessage;
+            Client.Instance.Lobby.OnLobbyStateChanged = OnStateChange;
+            Client.Instance.Lobby.OnChatMessageRecieved = OnChatMessage;
 
             if (args.Length > 0)
             {
                 if (args[0] == "create")
-                {
                     Client.Instance.Lobby.Create(Lobby.Type.Public, 2);
-                }
-                else if (args[0] == "join")
-                {
-                    Client.Instance.Lobby.Join(ulong.Parse(args[1]));
-                }
+                else if (args[0] == "join") Client.Instance.Lobby.Join(ulong.Parse(args[1]));
             }
         }
 
-        void OnCreated(bool success)
+        private void OnCreated(bool success)
         {
             if (!success) return;
 
             _playerProfilerPanel.ClearPlayerProfiles();
             _playerProfilerPanel.AddPlayerProfile(Client.Instance.SteamId);
 
-            Debug.Log("lobby created: " + Client.Instance.Lobby.CurrentLobby);
-            Debug.Log($"Owner: {Client.Instance.Lobby.Owner}");
-            Debug.Log($"Max Members: {Client.Instance.Lobby.MaxMembers}");
-            Debug.Log($"Num Members: {Client.Instance.Lobby.NumMembers}");
+            NLog.Log(NLog.LogType.Message, "lobby created: " + Client.Instance.Lobby.CurrentLobby);
+            NLog.Log(NLog.LogType.Message, $"Owner: {Client.Instance.Lobby.Owner}");
+            NLog.Log(NLog.LogType.Message, $"Max Members: {Client.Instance.Lobby.MaxMembers}");
+            NLog.Log(NLog.LogType.Message, $"Num Members: {Client.Instance.Lobby.NumMembers}");
         }
 
-        void OnJoined(bool success)
+        private void OnJoined(bool success)
         {
-            Debug.Log("OnLobbyJoined");
+            NLog.Log(NLog.LogType.Message, "OnLobbyJoined");
             if (!success) return;
         }
 
-        void OnDataUpdated()
+        private void OnDataUpdated()
         {
-            Debug.Log("OnLobbyDataUpdated");
+            NLog.Log(NLog.LogType.Message, "OnLobbyDataUpdated");
             _playerProfilerPanel.ClearPlayerProfiles();
-            foreach (var member in Client.Instance.Lobby.GetMemberIDs())
-            {
-                _playerProfilerPanel.AddPlayerProfile(member);
-            }
+            foreach (var member in Client.Instance.Lobby.GetMemberIDs()) _playerProfilerPanel.AddPlayerProfile(member);
         }
 
-        void OnMemberDataUpdated(ulong member)
+        private void OnMemberDataUpdated(ulong member)
         {
-            Debug.Log("OnLobbyMemberDataUpdated");
+            NLog.Log(NLog.LogType.Message, "OnLobbyMemberDataUpdated");
             if (Client.Instance.Lobby.GetMemberData(member, "ready").Equals("true"))
             {
                 _playerProfilerPanel.ReadyPlayerProfile(member);
@@ -82,14 +70,14 @@ namespace MENU
             }
         }
 
-        void OnChatMessage(ulong d, byte[] c, int s)
+        private void OnChatMessage(ulong d, byte[] c, int s)
         {
-            Debug.Log("OnChatMessage");
+            NLog.Log(NLog.LogType.Message, "OnChatMessage");
         }
 
         private void OnStateChange(Lobby.MemberStateChange change, ulong initiator, ulong affectee)
         {
-            Debug.Log("OnLobbyStateChanged");
+            NLog.Log(NLog.LogType.Message, "OnLobbyStateChanged");
             switch (change)
             {
                 case Lobby.MemberStateChange.Entered:
@@ -114,9 +102,9 @@ namespace MENU
         {
             Client.Instance.Lobby.SetMemberData("ready", "true");
             //Client.Instance.Lobby.OnLobbyMemberDataUpdated(Client.Instance.SteamId);
-            Debug.Log("wedy 2 pway");
+            NLog.Log(NLog.LogType.Message, "wedy 2 pway");
         }
-        
+
         public void GoBack()
         {
             _playerProfilerPanel.ClearPlayerProfiles();

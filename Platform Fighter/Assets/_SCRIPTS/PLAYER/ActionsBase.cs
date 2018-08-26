@@ -3,8 +3,7 @@ using Types = DATA.Types;
 
 namespace PLAYER
 {
-    [RequireComponent(typeof(PlayerInput))]
-    [RequireComponent(typeof(PlayerData))]
+    [RequireComponent(typeof(PlayerInput)), RequireComponent(typeof(PlayerData))]
     public abstract class ActionsBase : MonoBehaviour
     {
         protected PlayerInput Input { get; set; }

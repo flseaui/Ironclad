@@ -1,6 +1,7 @@
 ﻿using ATTRIBUTES;
 using Facepunch.Steamworks;
 using MANAGERS;
+using TOOLS;
 using UnityEngine;
 using Types = DATA.Types;
 
@@ -21,12 +22,12 @@ namespace MENU
             Client.Instance.Lobby.OnLobbyJoined = delegate(bool successfullyJoined)
             {
                 if (successfullyJoined)
-                    Debug.Log("Player Joined");
+                    NLog.Log(NLog.LogType.Message, "Player Joined");
             };
 
             /*foreach ( var friend in Client.Instance.Friends.All.Where( x => x.IsOnline ) )
             {
-               Debug.Log( $"{friend.Id}: {friend.Name}" );
+               NLog.Log(LogType.Message,  $"{friend.Id}: {friend.Name}" );
             }*/
         }
         

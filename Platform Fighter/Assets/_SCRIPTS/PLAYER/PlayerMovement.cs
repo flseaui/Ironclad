@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
-using UnityEngine.Networking;
 using Types = DATA.Types;
 
 namespace PLAYER
 {
-    [RequireComponent(typeof(PlayerData))]
-    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(PlayerData)), RequireComponent(typeof(Rigidbody2D))]
     public class PlayerMovement : MonoBehaviour
     {
         private PlayerData Data { get; set; }

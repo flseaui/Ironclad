@@ -1,13 +1,10 @@
 ﻿using System;
 using ATTRIBUTES;
 using Facepunch.Steamworks;
-using JetBrains.Annotations;
 using MANAGERS;
+using TOOLS;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Experimental.UIElements;
 using UnityEngine.UI;
-using Button = UnityEngine.UI.Button;
 using Types = DATA.Types;
 
 namespace MENU
@@ -30,7 +27,7 @@ namespace MENU
         public void FindLobbies()
         {
             Client.Instance.LobbyList.Refresh();
-            
+
             //wait for the callback
             foreach (Transform child in _serverList.transform)
                 Destroy(child.gameObject);
@@ -44,16 +41,15 @@ namespace MENU
                     button.name = lobby.Name;
                     button.GetComponent<Button>().onClick.AddListener(delegate
                     {
-                        
-                        Debug.Log($"Joined Lobby: {lobby.Name}");
-                        MenuManager.Instance.SwitchToMenuWithArgs(Types.Menu.LobbyCharacterMenu, "join", lobby.LobbyID.ToString());
+                        NLog.Log(NLog.LogType.Message, $"Joined Lobby: {lobby.Name}");
+                        MenuManager.Instance.SwitchToMenuWithArgs(Types.Menu.LobbyCharacterMenu, "join",
+                            lobby.LobbyID.ToString());
                     });
-                    Debug.Log($"Found Lobby: {lobby.Name}");
+                    NLog.Log(NLog.LogType.Message, $"Found Lobby: {lobby.Name}");
                 }
-           };
-          
+            };
         }
-        
+
         public void SwitchToMultiplayerMenu() => MenuManager.Instance.MenuState = Types.Menu.MultiplayerMenu;
     }
 }

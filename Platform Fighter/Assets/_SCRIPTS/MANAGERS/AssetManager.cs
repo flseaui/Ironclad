@@ -4,6 +4,7 @@ using System.Linq;
 using DATA;
 using MISC;
 using Newtonsoft.Json;
+using TOOLS;
 using UnityEngine;
 using Types = DATA.Types;
 
@@ -18,12 +19,10 @@ namespace MANAGERS
             _actionSets = new List<Dictionary<Types.ActionType, ActionInfo>>();
         }
 
-        public ActionInfo GetAction(Types.Character characterType, Types.ActionType actionType)
-        {
-            return _actionSets[(int) characterType].ContainsKey(actionType)
+        public ActionInfo GetAction(Types.Character characterType, Types.ActionType actionType) =>
+            _actionSets[(int) characterType].ContainsKey(actionType)
                 ? _actionSets[(int) characterType][actionType]
                 : _actionSets[(int) characterType][Types.ActionType.Idle];
-        }
 
         public void PopulateActions(IEnumerable<Types.Character> characters)
         {
@@ -32,7 +31,7 @@ namespace MANAGERS
 
         public void LogAction(ActionInfo action)
         {
-            Debug.Log($"ACTION: {action.Name}");
+            NLog.Log(NLog.LogType.Message, $"ACTION: {action.Name}");
         }
 
         // reads in all of a characters actions and returns a list of them
@@ -48,7 +47,7 @@ namespace MANAGERS
 
             foreach (var file in Directory.GetFiles(actionPath).Where(s => s.EndsWith(".json")))
             {
-                Debug.Log($"READ FILE: {file}");
+                NLog.Log(NLog.LogType.Message, $"READ FILE: {file}");
 
                 var jsonData = File.ReadAllText(file);
                 var action = JsonConvert.DeserializeObject<ActionInfo>(jsonData);

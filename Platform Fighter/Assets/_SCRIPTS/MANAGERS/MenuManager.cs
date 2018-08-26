@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using MENU;
 using MISC;
-using UnityEditor;
 using UnityEngine;
-using Menu = MENU.Menu;
 using Types = DATA.Types;
 
 namespace MANAGERS
@@ -34,14 +33,17 @@ namespace MANAGERS
 
                 if (_previousMenuState != value)
                 {
-                    Menus[_menuState        ].transform.FindObjectsWithTag("MenuPanel").FirstOrDefault()?.SetActive(true );
-                    Menus[_previousMenuState].transform.FindObjectsWithTag("MenuPanel").FirstOrDefault()?.SetActive(false);
+                    Menus[_menuState].transform.FindObjectsWithTag("MenuPanel").FirstOrDefault()?.SetActive(true);
+                    Menus[_previousMenuState].transform.FindObjectsWithTag("MenuPanel").FirstOrDefault()
+                        ?.SetActive(false);
                 }
 
                 OnPropertyChanged();
                 OnMenuStateChanged(new MenuChangedEventArgs(_menuState));
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public void SwitchToMenuWithArgs(Types.Menu menu, params string[] args)
         {
@@ -52,7 +54,7 @@ namespace MANAGERS
 
             if (_previousMenuState != menu)
             {
-                Menus[_menuState        ].transform.FindObjectsWithTag("MenuPanel").FirstOrDefault()?.SetActive(true );
+                Menus[_menuState].transform.FindObjectsWithTag("MenuPanel").FirstOrDefault()?.SetActive(true);
                 Menus[_previousMenuState].transform.FindObjectsWithTag("MenuPanel").FirstOrDefault()?.SetActive(false);
             }
 
@@ -64,14 +66,11 @@ namespace MANAGERS
         {
             MenuState = _previousMenuState;
         }
-        
-        public event PropertyChangedEventHandler PropertyChanged;
 
         private void Awake()
         {
             _menuState = _startingMenu;
             _previousMenuState = _startingMenu;
-            
         }
 
         private void OnMenuStateChanged(MenuChangedEventArgs e)
@@ -110,7 +109,7 @@ namespace MANAGERS
 
             public Types.Menu Menu { get; }
 
-            public String[] Args { get; }
+            public string[] Args { get; }
         }
     }
 }

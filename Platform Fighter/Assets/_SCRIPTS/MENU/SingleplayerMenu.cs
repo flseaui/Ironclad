@@ -15,15 +15,14 @@ namespace MENU
 
         public void ReadyButton()
         {
-            GameManager.Instance.Characters = new []
-                { 
-                  Types.Character.TestCharacter, 
-                  Types.Character.TestCharacter 
-                };
-            MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;   
+            GameManager.Instance.Characters = new[]
+            {
+                Types.Character.TestCharacter,
+                Types.Character.TestCharacter
+            };
+            MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;
         }
-        
+
         public void GoBack() => MenuManager.Instance.SwitchToPreviousMenu();
-        
     }
 }

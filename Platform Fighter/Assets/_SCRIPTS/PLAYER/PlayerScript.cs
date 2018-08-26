@@ -1,7 +1,7 @@
 ﻿using DATA;
 using MANAGERS;
+using TOOLS;
 using UnityEngine;
-using UnityEngine.Networking;
 using Types = DATA.Types;
 
 namespace PLAYER
@@ -34,7 +34,7 @@ namespace PLAYER
 
         private void Update()
         {
-            Debug.Log($"{_data.CurrentAction} {_data.Direction}");
+            NLog.Log(NLog.LogType.Message, $"{_data.CurrentAction} {_data.Direction}");
 
             ExecuteAction();
         }
@@ -51,7 +51,7 @@ namespace PLAYER
             ++_currentActionFrame;
 
             UpdateBoxes(_currentActionFrame);
-            
+
             UpdateSprite();
 
             // last frame of action
@@ -59,7 +59,7 @@ namespace PLAYER
             {
                 _currentActionFrame = 0;
                 OnActionEnd?.Invoke();
-            } 
+            }
         }
 
         private void UpdateBoxes(int frame)

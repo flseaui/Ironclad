@@ -1,5 +1,9 @@
-﻿using Facepunch.Steamworks;
+﻿using System;
+using System.IO;
+using Facepunch.Steamworks;
+using TOOLS;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace MISC
 {
@@ -7,38 +11,38 @@ namespace MISC
     {
         public uint AppId;
 
-        private Facepunch.Steamworks.Client client;
+        private Client client;
 
-        private void Start ()
+        private void Start()
         {
             DontDestroyOnLoad(gameObject);
 
             if (AppId == 0)
-                throw new System.Exception("You need to set the AppId to your game");
+                throw new Exception("You need to set the AppId to your game");
 
-            Facepunch.Steamworks.Config.ForUnity( Application.platform.ToString() );
+            Config.ForUnity(Application.platform.ToString());
 
             // Create a steam_appid.txt
             try
-            {    
-                System.IO.File.WriteAllText("steam_appid.txt", AppId.ToString());
-            }
-            catch ( System.Exception e )
             {
-                Debug.LogWarning("Couldn't write steam_appid.txt: " + e.Message );
+                File.WriteAllText("steam_appid.txt", AppId.ToString());
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("Couldn't write steam_appid.txt: " + e.Message);
             }
 
             // Create the client
-            client = new Facepunch.Steamworks.Client( AppId );
+            client = new Client(AppId);
 
-            if ( !client.IsValid )
+            if (!client.IsValid)
             {
                 client = null;
                 Debug.LogWarning("Couldn't initialize Steam");
                 return;
             }
 
-            Debug.Log( "Steam Initialized: " + client.Username + " / " + client.SteamId ); 
+            NLog.Log(NLog.LogType.Message, "Steam Initialized: " + client.Username + " / " + client.SteamId);
         }
 
         private void Update()
@@ -48,12 +52,12 @@ namespace MISC
 
             try
             {
-                UnityEngine.Profiling.Profiler.BeginSample("Steam Update");
+                Profiler.BeginSample("Steam Update");
                 client.Update();
             }
             finally
             {
-                UnityEngine.Profiling.Profiler.EndSample();
+                Profiler.EndSample();
             }
         }
 
@@ -61,7 +65,6 @@ namespace MISC
         {
             if (client != null)
             {
-                
                 client.Dispose();
                 client = null;
             }

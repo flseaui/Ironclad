@@ -10,9 +10,8 @@ namespace MENU
     [MenuType(Types.Menu.GameStartMenu)]
     public class GameStartMenu : Menu
     {
-        private bool _loadScene;
-
         [SerializeField] private TextMeshProUGUI _loadingText;
+        private bool _loadScene;
 
         protected override void SwitchToThis(params string[] args)
         {
@@ -26,24 +25,17 @@ namespace MENU
         private void Update()
         {
             if (_loadScene)
-            {
-                _loadingText.color = new Color(_loadingText.color.r, _loadingText.color.g, _loadingText.color.b, Mathf.PingPong(Time.time, 1));
-            }
+                _loadingText.color = new Color(_loadingText.color.r, _loadingText.color.g, _loadingText.color.b,
+                    Mathf.PingPong(Time.time, 1));
         }
 
-        IEnumerator LoadNewScene(string scene)
+        private IEnumerator LoadNewScene(string scene)
         {
-
             yield return new WaitForSeconds(3);
 
             var async = SceneManager.LoadSceneAsync(scene);
 
-            while (!async.isDone)
-            {
-                yield return null;
-            }
-
+            while (!async.isDone) yield return null;
         }
-
     }
 }
