@@ -11,6 +11,8 @@ namespace MANAGERS
             Types.Character.TestCharacter
         };
 
+        public Types.Stage Stage { get; set; } = Types.Stage.TestStage;
+        
         private void StartGame() { }
     }
 }

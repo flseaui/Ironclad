@@ -43,12 +43,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 958e154a64ad49fa9c85d3e8590a97f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _droppedSprite: {fileID: 21300000, guid: 59947c7b01b5fcc4189e2247e71d35b2, type: 3}
+  _speed: 1000
   Id: 0
   Select: 0
   Back: 0
   Dropped: 0
-  _droppedSprite: {fileID: 21300000, guid: 59947c7b01b5fcc4189e2247e71d35b2, type: 3}
-  _speed: 1000
 --- !u!114 &114704561232313934
 MonoBehaviour:
   m_ObjectHideFlags: 1

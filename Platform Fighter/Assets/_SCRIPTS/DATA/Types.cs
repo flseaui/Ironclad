@@ -63,5 +63,10 @@
             PrivateMatchMenu,
             GameStartMenu
         }
+
+        public enum Stage
+        {
+            TestStage
+        }
     }
 }

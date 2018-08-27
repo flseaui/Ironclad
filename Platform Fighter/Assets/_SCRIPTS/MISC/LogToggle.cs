@@ -2,6 +2,6 @@
 {
     public static class LogToggle
     {
-        public static bool LogMessages;
+        public static bool LogMessages = true;
     }
 }

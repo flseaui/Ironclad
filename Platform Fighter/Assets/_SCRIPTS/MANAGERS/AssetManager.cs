@@ -12,13 +12,27 @@ namespace MANAGERS
 {
     public class AssetManager : Singleton<AssetManager>
     {
+        [SerializeField] private GameObject[] _stagePrefabs;
+        
         private List<Dictionary<Types.ActionType, ActionInfo>> _actionSets;
+        
+        private void Awake() => _actionSets = new List<Dictionary<Types.ActionType, ActionInfo>>();
 
-        private void Awake()
-        {
-            _actionSets = new List<Dictionary<Types.ActionType, ActionInfo>>();
-        }
+        /**
+         * STAGES
+         */
 
+        public GameObject GetStage(Types.Stage stage) =>
+            _stagePrefabs.FirstOrDefault(prefab => prefab.name == stage.ToString());
+
+        public GameObject GetStageByIndex(int index) => _stagePrefabs[index];
+        
+        
+        
+        /**
+         * ACTIONS
+         */
+        
         public ActionInfo GetAction(Types.Character characterType, Types.ActionType actionType) =>
             _actionSets[(int) characterType].ContainsKey(actionType)
                 ? _actionSets[(int) characterType][actionType]
@@ -29,10 +43,8 @@ namespace MANAGERS
             foreach (var character in characters) _actionSets.Add(LoadActions(character));
         }
 
-        public void LogAction(ActionInfo action)
-        {
+        public void LogAction(ActionInfo action) =>
             NLog.Log(NLog.LogType.Message, $"ACTION: {action.Name}");
-        }
 
         // reads in all of a characters actions and returns a list of them
         private Dictionary<Types.ActionType, ActionInfo> LoadActions(

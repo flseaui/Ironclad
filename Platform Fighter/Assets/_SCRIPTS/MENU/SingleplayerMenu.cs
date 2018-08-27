@@ -20,6 +20,7 @@ namespace MENU
                 Types.Character.TestCharacter,
                 Types.Character.TestCharacter
             };
+            GameManager.Instance.Stage = Types.Stage.TestStage;
             MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;
         }
 
