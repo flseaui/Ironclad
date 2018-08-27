@@ -27,8 +27,6 @@ namespace MANAGERS
 
         public GameObject GetStageByIndex(int index) => _stagePrefabs[index];
         
-        
-        
         /**
          * ACTIONS
          */
@@ -38,6 +36,8 @@ namespace MANAGERS
                 ? _actionSets[(int) characterType][actionType]
                 : _actionSets[(int) characterType][Types.ActionType.Idle];
 
+        public Dictionary<Types.ActionType, ActionInfo> GetActionSet(Types.Character characterType) => _actionSets[(int) characterType];
+        
         public void PopulateActions(IEnumerable<Types.Character> characters)
         {
             foreach (var character in characters) _actionSets.Add(LoadActions(character));
