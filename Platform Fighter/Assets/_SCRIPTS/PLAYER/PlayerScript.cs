@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DATA;
 using MANAGERS;
 using TOOLS;
@@ -78,15 +79,27 @@ namespace PLAYER
             foreach (var action in actionSet.Values)
             {
                 var frameList = new List<List<GameObject>>();
-                foreach (var frame in action.Hitboxes)
+                foreach (var frame in action.Hitboxes.
+                    Concat(action.Hurtboxes).
+                    Concat(action.Grabboxes).
+                    Concat(action.Armorboxes).
+                    Concat(action.Collisionboxes).
+                    Concat(action.Databoxes) 
+                )
                 {
                     var boxList = new List<GameObject>();
                     foreach (var hitbox in frame)
                     {
                         var box = Instantiate(new GameObject());
                         box.AddComponent<BoxCollider2D>();
-                        box.transform.position = new Vector3(hitbox.X, hitbox.Y, 0);
                         box.GetComponent<BoxCollider2D>().size = new Vector2(hitbox.Width, hitbox.Height);
+                        
+                        box.AddComponent<BoxData>();
+                        box.GetComponent<BoxData>().setData(hitbox);
+                        
+                        box.transform.position = new Vector2(hitbox.X, hitbox.Y);
+                        box.tag = hitbox.Type + "box";
+                        
                         boxList.Add(box);
                     }
                     frameList.Add(boxList);   

@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Numerics;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -43,28 +44,40 @@ namespace DATA
         [JsonIgnore]
         public float InfiniteRangeMin
         {
-            get => _infinite.X;
-            set => _infinite.X = value;
+            get => _infinite.x;
+            set => _infinite.x = value;
         }
 
         [JsonIgnore]
         public float InfiniteRangeMax
         {
-            get => _infinite.Y;
-            set => _infinite.Y = value;
+            get => _infinite.y;
+            set => _infinite.y = value;
         }
 
         public FrameType FrameTypeAt(int i) => _frames[i];
 
+        public enum BoxType
+        {
+            [UsedImplicitly] Hit,
+            [UsedImplicitly] Hurt,
+            [UsedImplicitly] Grab,
+            [UsedImplicitly] Armor,
+            [UsedImplicitly] Collision,
+            [UsedImplicitly] Data
+        }
+        
         public class Box
         {
             public double Damage, KnockbackStrength;
             public Vector2 KnockbackAngle;
             public int Lifespan, X, Y, Width, Height;
-
-            public Box(int x, int y, int width, int height, double damage, double knockbackStrength,
+            public BoxType Type;
+            
+            public Box(BoxType type, int x, int y, int width, int height, double damage, double knockbackStrength,
                 Vector2 knockbackAngle, int lifespan)
             {
+                Type = type;
                 X = x;
                 Y = y;
                 Width = width;
@@ -75,7 +88,7 @@ namespace DATA
                 Lifespan = lifespan;
             }
 
-            public Box() : this(0, 0, 5, 5, 0, 0, new Vector2(), 1) { }
+            public Box() : this(BoxType.Hit, 0, 0, 5, 5, 0, 0, new Vector2(), 1) { }
         }
     }
 }
