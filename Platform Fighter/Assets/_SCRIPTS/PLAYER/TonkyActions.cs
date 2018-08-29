@@ -7,6 +7,8 @@ namespace PLAYER
         // Returns action that should be started this frame based on current inputs
         // Assumes neutral/idle state
 
+        PlayerData.PlayerLocation Position;
+
         protected override Types.ActionType GetCurrentAction()
         {
             if (Input.shortHop) return Types.ActionType.Shop;
@@ -15,7 +17,7 @@ namespace PLAYER
 
             if (Data.Direction == Types.Direction.Right)
             {
-                if (Data.Grounded)
+                if (Position == PlayerData.PlayerLocation.Grounded)
                 {
                     if (Input.lightRight) return Types.ActionType.Walk;
 
@@ -30,7 +32,7 @@ namespace PLAYER
             }
             else if (Data.Direction == Types.Direction.Left)
             {
-                if (Data.Grounded)
+                if (Position == PlayerData.PlayerLocation.Grounded)
                 {
                     if (Input.lightLeft) return Types.ActionType.Walk;
 

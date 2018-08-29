@@ -69,13 +69,12 @@ namespace DATA
         
         public class Box
         {
-            public double Damage, KnockbackStrength;
-            public Vector2 KnockbackAngle;
+            public double Damage, KnockbackStrength, KnockbackAngle;
             public int Lifespan, X, Y, Width, Height;
             public BoxType Type;
             
             public Box(BoxType type, int x, int y, int width, int height, double damage, double knockbackStrength,
-                Vector2 knockbackAngle, int lifespan)
+                double knockbackAngle, int lifespan)
             {
                 Type = type;
                 X = x;
@@ -88,7 +87,7 @@ namespace DATA
                 Lifespan = lifespan;
             }
 
-            public Box() : this(BoxType.Hit, 0, 0, 5, 5, 0, 0, new Vector2(), 1) { }
+            public Box() : this(BoxType.Hit, 0, 0, 5, 5, 0, 0, 0, 1) { }
         }
     }
 }
