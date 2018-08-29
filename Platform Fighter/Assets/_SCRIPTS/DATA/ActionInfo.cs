@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
+using System.Numerics;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -18,7 +18,8 @@ namespace DATA
         }
 
         [JsonProperty] public string Name { get; set; }
-
+        
+        [JsonProperty]
         [JsonConverter(typeof(StringEnumConverter))]
         public Types.ActionType Type { get; set; }
         
@@ -47,30 +48,30 @@ namespace DATA
 
         public float InfiniteRangeMin
         {
-            get => _infinite.x;
-            set => _infinite.x = value;
+            get => _infinite.X;
+            set => _infinite.X = value;
         }
 
         public float InfiniteRangeMax
         {
-            get => _infinite.y;
-            set => _infinite.y = value;
+            get => _infinite.Y;
+            set => _infinite.Y = value;
         }
 
         public FrameType FrameTypeAt(int i) => _frames[i];
-
-        public enum BoxType
-        {
-            [UsedImplicitly] Hit,
-            [UsedImplicitly] Hurt,
-            [UsedImplicitly] Grab,
-            [UsedImplicitly] Armor,
-            [UsedImplicitly] Collision,
-            [UsedImplicitly] Data
-        }
         
         public class Box
-        {
+        {   
+            public enum BoxType
+            {
+                [UsedImplicitly] Hit,
+                [UsedImplicitly] Hurt,
+                [UsedImplicitly] Grab,
+                [UsedImplicitly] Armor,
+                [UsedImplicitly] Collision,
+                [UsedImplicitly] Data
+            }
+     
             public double Damage { get; }
             public double KnockbackStrength { get; }
             public double KnockbackAngle { get; }
@@ -81,7 +82,7 @@ namespace DATA
             public int Width { get; }
             public int Height { get; }
             
-            [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
+            [JsonConverter(typeof(StringEnumConverter))]
             public BoxType Type { get; }
             
             public Box(BoxType type, int x, int y, int width, int height, double damage, double knockbackStrength,

@@ -31,8 +31,6 @@ namespace PLAYER
             _spriteRenderer = GetComponent<SpriteRenderer>();
 
             _data = GetComponent<PlayerData>();
-            _data.Direction = Types.Direction.Right;
-            PlayerData.PlayerLocation Position = PlayerData.PlayerLocation.Grounded;
 
             _boxPool = new List<List<List<GameObject>>>();
             
@@ -40,6 +38,9 @@ namespace PLAYER
 
         private void Start()
         {
+            _data.Direction = Types.Direction.Right;
+            PlayerData.PlayerLocation Position = PlayerData.PlayerLocation.Grounded;
+            
             PoolBoxes();
         }
         

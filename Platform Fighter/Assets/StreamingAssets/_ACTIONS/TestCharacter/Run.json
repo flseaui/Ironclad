@@ -1,64 +1,33 @@
 {
   "Name": "Run",
-  "Type": "Run",
   "_frames": [
-    "Startup",
     "Startup"
   ],
+  "Type": "Run",
   "_infinite": {
-    "X": -1.0,
-    "Y": -1.0
+    "X": 0.0,
+    "Y": 2.0
   },
   "Anchor": {
     "X": 0.0,
     "Y": 0.0
   },
   "Hitboxes": [
-    [],
     []
   ],
   "Hurtboxes": [
-    [
-      {
-        "Damage": 0.0,
-        "KnockbackStrength": 0.0,
-        "KnockbackAngle": 0.0,
-        "Lifespan": 1,
-        "X": 152,
-        "Y": 70,
-        "Width": 114,
-        "Height": 212,
-        "Type": "Hurt"
-      }
-    ],
-    [
-      {
-        "Damage": 0.0,
-        "KnockbackStrength": 0.0,
-        "KnockbackAngle": 0.0,
-        "Lifespan": 1,
-        "X": 248,
-        "Y": 75,
-        "Width": 117,
-        "Height": 202,
-        "Type": "Hurt"
-      }
-    ]
+    []
   ],
   "Grabboxes": [
-    [],
     []
   ],
   "Armorboxes": [
-    [],
     []
   ],
   "Collisionboxes": [
-    [],
     []
   ],
   "Databoxes": [
-    [],
     []
   ]
 }

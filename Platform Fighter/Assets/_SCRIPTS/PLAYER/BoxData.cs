@@ -7,7 +7,7 @@ namespace PLAYER
     {
         public double Damage, KnockbackStrength, KnockbackAngle;
         public int Lifespan, X, Y, Width, Height;
-        public ActionInfo.BoxType Type;
+        public ActionInfo.Box.BoxType Type;
 
         public void setData(ActionInfo.Box box)
         {
