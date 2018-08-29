@@ -71,6 +71,7 @@ namespace DATA
         {
             public double Damage, KnockbackStrength, KnockbackAngle;
             public int Lifespan, X, Y, Width, Height;
+            [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
             public BoxType Type;
             
             public Box(BoxType type, int x, int y, int width, int height, double damage, double knockbackStrength,
