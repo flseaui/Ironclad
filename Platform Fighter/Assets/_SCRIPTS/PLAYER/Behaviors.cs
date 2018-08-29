@@ -14,7 +14,7 @@ namespace PLAYER
 
         private void Start()
         {
-            PlayerScript.OnActionEnd += RunAction;
+            PlayerController.OnActionEnd += RunAction;
         }
 
         protected abstract void RunAction();

@@ -9,8 +9,24 @@ namespace PLAYER
         public Types.ActionType CurrentAction;
 
         public Types.Direction Direction;
- 
-        public bool Grounded;
+
+        public enum PlayerLocation
+        {
+            Grounded,
+            Airborne,
+        }
+
+        public enum PlayerState
+        {
+            KnockedDown,
+            OnLedge,
+            Stunned,
+            FreeFall,
+        }
+
         public Vector2 TerminalVelocity;
+
+        public double Percent;
+        public Vector2 KnockbackVelocity;
     }
 }
