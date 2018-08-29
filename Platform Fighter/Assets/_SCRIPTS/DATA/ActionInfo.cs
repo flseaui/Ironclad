@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -7,6 +6,7 @@ using Newtonsoft.Json.Converters;
 
 namespace DATA
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class ActionInfo
     {
         public enum FrameType
@@ -17,19 +17,24 @@ namespace DATA
             [UsedImplicitly] Buffer
         }
 
+        [JsonProperty] public string Name { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Types.ActionType Type { get; set; }
+        
         [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         private List<FrameType> _frames;
 
         [JsonProperty] private Vector2 _infinite;
 
-        public Vector2 Anchor;
+        [JsonProperty] public Vector2 Anchor { get; set; }
 
-        public List<List<Box>> Hitboxes, Hurtboxes, Grabboxes, Armorboxes, Collisionboxes, Databoxes;
-
-        public string Name;
-
-        [JsonConverter(typeof(StringEnumConverter))]
-        public Types.ActionType Type;
+        [JsonProperty] public List<List<Box>> Hitboxes { get; set; }
+        [JsonProperty] public List<List<Box>> Hurtboxes { get; set; }
+        [JsonProperty] public List<List<Box>> Grabboxes { get; set; }
+        [JsonProperty] public List<List<Box>> Armorboxes { get; set; }
+        [JsonProperty] public List<List<Box>> Collisionboxes { get; set; }
+        [JsonProperty] public List<List<Box>> Databoxes { get; set; }
 
         public ActionInfo()
         {
@@ -38,17 +43,14 @@ namespace DATA
             Anchor = new Vector2(0, 0);
         }
 
-        [JsonIgnore]
         public int FrameCount => _frames.Count;
 
-        [JsonIgnore]
         public float InfiniteRangeMin
         {
             get => _infinite.x;
             set => _infinite.x = value;
         }
 
-        [JsonIgnore]
         public float InfiniteRangeMax
         {
             get => _infinite.y;
@@ -69,14 +71,21 @@ namespace DATA
         
         public class Box
         {
-            public double Damage, KnockbackStrength;
-            public Vector2 KnockbackAngle;
-            public int Lifespan, X, Y, Width, Height;
+            public double Damage { get; }
+            public double KnockbackStrength { get; }
+            public double KnockbackAngle { get; }
+            
+            public int Lifespan { get; }
+            public int X { get; }
+            public int Y { get; }
+            public int Width { get; }
+            public int Height { get; }
+            
             [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
-            public BoxType Type;
+            public BoxType Type { get; }
             
             public Box(BoxType type, int x, int y, int width, int height, double damage, double knockbackStrength,
-                Vector2 knockbackAngle, int lifespan)
+                double knockbackAngle, int lifespan)
             {
                 Type = type;
                 X = x;
@@ -89,7 +98,7 @@ namespace DATA
                 Lifespan = lifespan;
             }
 
-            public Box() : this(BoxType.Hit, 0, 0, 5, 5, 0, 0, new Vector2(), 1) { }
+            public Box() : this(BoxType.Hit, 0, 0, 5, 5, 0, 0, 0, 1) { }
         }
     }
 }

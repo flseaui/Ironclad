@@ -9,7 +9,7 @@ namespace PLAYER
         public Types.ActionType CurrentAction;
 
         public Types.Direction Direction;
-
+ 
         public bool Grounded;
         public Vector2 TerminalVelocity;
     }

@@ -1,4 +1,6 @@
 {
+  "Name": "Walk",
+  "Type": "Walk",
   "_frames": [
     "Startup",
     "Startup"
@@ -20,10 +22,7 @@
       {
         "Damage": 0.0,
         "KnockbackStrength": 0.0,
-        "KnockbackAngle": {
-          "X": 0.0,
-          "Y": 0.0
-        },
+        "KnockbackAngle": 0.0,
         "Lifespan": 1,
         "X": 152,
         "Y": 70,
@@ -36,10 +35,7 @@
       {
         "Damage": 0.0,
         "KnockbackStrength": 0.0,
-        "KnockbackAngle": {
-          "X": 0.0,
-          "Y": 0.0
-        },
+        "KnockbackAngle": 0.0,
         "Lifespan": 1,
         "X": 248,
         "Y": 75,
@@ -64,7 +60,5 @@
   "Databoxes": [
     [],
     []
-  ],
-  "Name": "Walk",
-  "Type": "Walk"
+  ]
 }
