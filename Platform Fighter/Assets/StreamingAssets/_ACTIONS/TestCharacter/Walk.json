@@ -1,33 +1,70 @@
 {
-  "Name": "Walk",
   "_frames": [
+    "Startup",
     "Startup"
   ],
-  "Type": "Walk",
   "_infinite": {
-    "X": 0.0,
-    "Y": 2.0
+    "X": -1.0,
+    "Y": -1.0
   },
   "Anchor": {
     "X": 0.0,
     "Y": 0.0
   },
   "Hitboxes": [
+    [],
     []
   ],
   "Hurtboxes": [
-    []
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": {
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "Lifespan": 1,
+        "X": 152,
+        "Y": 70,
+        "Width": 114,
+        "Height": 212,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": {
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "Lifespan": 1,
+        "X": 248,
+        "Y": 75,
+        "Width": 117,
+        "Height": 202,
+        "Type": "Hurt"
+      }
+    ]
   ],
   "Grabboxes": [
+    [],
     []
   ],
   "Armorboxes": [
+    [],
     []
   ],
   "Collisionboxes": [
+    [],
     []
   ],
   "Databoxes": [
+    [],
     []
-  ]
+  ],
+  "Name": "Walk",
+  "Type": "Walk"
 }
