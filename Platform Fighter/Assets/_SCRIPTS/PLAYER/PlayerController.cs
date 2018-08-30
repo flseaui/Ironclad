@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using DATA;
 using MANAGERS;
 using TOOLS;
@@ -24,7 +25,9 @@ namespace PLAYER
         private SpriteRenderer _spriteRenderer;
         private ActionInfo _currentAction;
 
-        private List<List<List<GameObject>>> _boxPool;
+        private BoxPool _boxPool;
+
+        [SerializeField] private GameObject _boxPrefab;
         
         private void Awake()
         {
@@ -32,8 +35,7 @@ namespace PLAYER
 
             _data = GetComponent<PlayerData>();
 
-            _boxPool = new List<List<List<GameObject>>>();
-            
+            _boxPool = new BoxPool();
         }
 
         private void Start()
@@ -60,14 +62,15 @@ namespace PLAYER
                 OnActionBegin?.Invoke();
             }
 
-            ++_currentActionFrame;
-
             UpdateBoxes(_currentActionFrame);
 
             UpdateSprite();
 
+            ++_currentActionFrame;
+            
+            Debug.Log($"s: {_currentActionFrame}, f:{_currentAction.FrameCount}");
             // last frame of action
-            if (_currentActionFrame > _currentAction.FrameCount)
+            if (_currentActionFrame >= _currentAction.FrameCount - 1)
             {
                 _currentActionFrame = 0;
                 OnActionEnd?.Invoke();
@@ -79,7 +82,7 @@ namespace PLAYER
             var actionSet = AssetManager.Instance.GetActionSet(Types.Character.TestCharacter);
             foreach (var action in actionSet.Values)
             {
-                var frameList = new List<List<GameObject>>();
+                var frameCount = 0;
                 foreach (var frame in action.Hitboxes.
                     Concat(action.Hurtboxes).
                     Concat(action.Grabboxes).
@@ -88,30 +91,27 @@ namespace PLAYER
                     Concat(action.Databoxes) 
                 )
                 {
-                    var boxList = new List<GameObject>();
                     foreach (var hitbox in frame)
                     {
-                        var box = Instantiate(new GameObject());
-                        box.AddComponent<BoxCollider2D>();
+                        var box = Instantiate(_boxPrefab, transform);
+                        box.transform.position = new Vector2(hitbox.X, hitbox.Y);
+                        
                         box.GetComponent<BoxCollider2D>().size = new Vector2(hitbox.Width, hitbox.Height);
                         
-                        box.AddComponent<BoxData>();
-                        box.GetComponent<BoxData>().setData(hitbox);
-                        
-                        box.transform.position = new Vector2(hitbox.X, hitbox.Y);
-                        box.tag = hitbox.Type + "box";
-                        
-                        boxList.Add(box);
+                        var boxData = box.GetComponent<BoxData>();
+                        boxData.SetData(hitbox, action.Type, frameCount);
+
+                        _boxPool.AddBox(boxData);
                     }
-                    frameList.Add(boxList);   
+                    ++frameCount;
                 }
-                _boxPool.Add(frameList);
             }
         }
         
         private void UpdateBoxes(int frame)
         {
             // TODO disable old boxes and enable new ones
+            _boxPool.SwitchFrames(_currentAction.Type, frame);
         }
 
         private void UpdateSprite()
