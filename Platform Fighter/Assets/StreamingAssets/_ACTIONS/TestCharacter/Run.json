@@ -16,7 +16,19 @@
     []
   ],
   "Hurtboxes": [
-    []
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 1,
+        "X": 152,
+        "Y": 70,
+        "Width": 114,
+        "Height": 212,
+        "Type": "Hurt"
+      }
+    ]
   ],
   "Grabboxes": [
     []
