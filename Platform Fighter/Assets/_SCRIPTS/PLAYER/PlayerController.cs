@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using DATA;
@@ -79,38 +80,52 @@ namespace PLAYER
 
         private void PoolBoxes()
         {
+            Action<IEnumerable<List<ActionInfo.Box>>, Types.ActionType> CreateBoxes =
+                delegate(IEnumerable<List<ActionInfo.Box>> boxes, Types.ActionType actionType)
+                {
+                    var frameCount = 0;
+                    foreach (var frame in boxes)
+                    {
+                        if (frame.Count > 0)
+                        {
+                            foreach (var hitbox in frame)
+                            {
+                                var box = Instantiate(_boxPrefab, transform);
+                                box.transform.position = new Vector2(hitbox.X, hitbox.Y);
+                                box.name = $"{hitbox.Type.ToString()}Box";
+
+                                box.GetComponent<BoxCollider2D>().size = new Vector2(hitbox.Width, hitbox.Height);
+
+                                var boxData = box.GetComponent<BoxData>();
+                                boxData.SetData(hitbox, actionType, frameCount);
+
+                                _boxPool.AddBox(boxData);
+                            }
+                        }
+                        else
+                        {
+                            _boxPool.AddNullBox(actionType, frameCount).gameObject.transform.parent = transform;
+                        }
+
+                        ++frameCount;
+                    }
+                };
+            
             var actionSet = AssetManager.Instance.GetActionSet(Types.Character.TestCharacter);
             foreach (var action in actionSet.Values)
             {
-                var frameCount = 0;
-                foreach (var frame in action.Hitboxes.
-                    Concat(action.Hurtboxes).
-                    Concat(action.Grabboxes).
-                    Concat(action.Armorboxes).
-                    Concat(action.Collisionboxes).
-                    Concat(action.Databoxes) 
-                )
-                {
-                    foreach (var hitbox in frame)
-                    {
-                        var box = Instantiate(_boxPrefab, transform);
-                        box.transform.position = new Vector2(hitbox.X, hitbox.Y);
-                        
-                        box.GetComponent<BoxCollider2D>().size = new Vector2(hitbox.Width, hitbox.Height);
-                        
-                        var boxData = box.GetComponent<BoxData>();
-                        boxData.SetData(hitbox, action.Type, frameCount);
-
-                        _boxPool.AddBox(boxData);
-                    }
-                    ++frameCount;
-                }
+                CreateBoxes(action.Hitboxes, action.Type);
+                CreateBoxes(action.Hurtboxes, action.Type);
+                CreateBoxes(action.Grabboxes, action.Type);
+                CreateBoxes(action.Armorboxes, action.Type);
+                CreateBoxes(action.Collisionboxes, action.Type);
+                CreateBoxes(action.Databoxes, action.Type);
             }
         }
         
         private void UpdateBoxes(int frame)
         {
-            // TODO disable old boxes and enable new ones
+            // TODO disable old boxes and enable new ones<w
             _boxPool.SwitchFrames(_currentAction.Type, frame);
         }
 

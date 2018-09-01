@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using TOOLS;
 
 namespace DATA
 {
@@ -37,6 +39,8 @@ namespace DATA
         [JsonProperty] public List<List<Box>> Collisionboxes { get; set; }
         [JsonProperty] public List<List<Box>> Databoxes { get; set; }
 
+        public List<List<Box>> AllBoxes => CollectionTools.Concat(Hitboxes, Hurtboxes, Grabboxes, Armorboxes, Collisionboxes, Databoxes).ToList();
+
         public ActionInfo()
         {
             _frames = new List<FrameType> {FrameType.Startup};
@@ -69,7 +73,8 @@ namespace DATA
                 [UsedImplicitly] Grab,
                 [UsedImplicitly] Armor,
                 [UsedImplicitly] Collision,
-                [UsedImplicitly] Data
+                [UsedImplicitly] Data,
+                [UsedImplicitly] Null
             }
      
             public double Damage { get; }

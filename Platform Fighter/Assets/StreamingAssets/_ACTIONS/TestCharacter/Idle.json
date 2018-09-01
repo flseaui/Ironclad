@@ -1,6 +1,8 @@
 {
   "Name": "Idle",
   "_frames": [
+    "Startup",
+    "Startup",
     "Startup"
   ],
   "Type": "Idle",
@@ -13,6 +15,8 @@
     "Y": 0.0
   },
   "Hitboxes": [
+    [],
+    [],
     []
   ],
   "Hurtboxes": [
@@ -28,18 +32,40 @@
         "Height": 212,
         "Type": "Hurt"
       }
+    ],
+    [],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 1,
+        "X": 152,
+        "Y": 70,
+        "Width": 214,
+        "Height": 112,
+        "Type": "Hurt"
+      }
     ]
   ],
   "Grabboxes": [
+    [],
+    [],
     []
   ],
   "Armorboxes": [
+    [],
+    [],
     []
   ],
   "Collisionboxes": [
+    [],
+    [],
     []
   ],
   "Databoxes": [
+    [],
+    [],
     []
   ]
 }

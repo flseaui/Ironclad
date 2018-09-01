@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DATA;
 using UnityEngine;
 using Types = DATA.Types;
 
@@ -27,9 +28,24 @@ namespace PLAYER
             if (_boxes[(int) boxData.ParentAction].Count <= boxData.ParentFrame)
                 _boxes[(int) boxData.ParentAction].Add(new List<BoxData>());
             
-            _boxes[(int) boxData.ParentAction][boxData.ParentFrame - 1].Add(boxData);
+            _boxes[(int) boxData.ParentAction][boxData.ParentFrame].Add(boxData);
         }
 
+        public BoxData AddNullBox(Types.ActionType action, int frame)
+        {
+            var nullBox = new GameObject();
+            nullBox.SetActive(false);
+            nullBox.name = "NullBox";
+            nullBox.AddComponent<BoxData>();
+            nullBox.GetComponent<BoxData>().SetAsNull();
+
+            if (_boxes[(int) action].Count <= frame)
+                _boxes[(int) action].Add(new List<BoxData>());
+            
+            _boxes[(int) action][frame].Add(nullBox.GetComponent<BoxData>());
+            return nullBox.GetComponent<BoxData>();
+        }
+        
         public void SwitchFrames(Types.ActionType action, int frame)
         {
             DisableEnabledBoxes();
@@ -49,6 +65,8 @@ namespace PLAYER
             //if (frame > _boxes[(int) action].Count) return;
             foreach (var box in _boxes[(int) action][frame])
             {
+                if (box.Type == ActionInfo.Box.BoxType.Null) continue;
+                
                 box.gameObject.SetActive(true);
                 _enabledBoxes.Add(box);
             }
