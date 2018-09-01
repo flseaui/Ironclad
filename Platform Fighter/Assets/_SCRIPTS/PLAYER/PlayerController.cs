@@ -68,8 +68,7 @@ namespace PLAYER
             UpdateSprite();
 
             ++_currentActionFrame;
-            
-            Debug.Log($"s: {_currentActionFrame}, f:{_currentAction.FrameCount}");
+           
             // last frame of action
             if (_currentActionFrame >= _currentAction.FrameCount - 1)
             {
