@@ -27,6 +27,12 @@ namespace PLAYER
         public Vector2 TerminalVelocity;
 
         public double Percent;
-        public Vector2 KnockbackVelocity;
+
+        public Vector2 
+            PlayerVelocity,
+            MovementVelocity,
+            KnockbackVelocity;
+
+        public float gravity;
     }
 }

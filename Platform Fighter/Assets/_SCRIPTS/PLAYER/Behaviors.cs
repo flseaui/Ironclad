@@ -14,9 +14,9 @@ namespace PLAYER
 
         private void Start()
         {
-            PlayerController.OnActionEnd += RunAction;
+          //  PlayerController.OnActionEnd += RunAction;
         }
 
-        protected abstract void RunAction();
+        protected abstract void RunAction(int frameNumber);
     }
 }

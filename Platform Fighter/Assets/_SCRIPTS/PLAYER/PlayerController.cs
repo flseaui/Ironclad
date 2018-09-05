@@ -10,7 +10,7 @@ using Types = DATA.Types;
 
 namespace PLAYER
 {
-    public delegate void OnActionEndCallback();
+    public delegate void OnActionEndCallback(int frameNumbber);
 
     public delegate void OnActionBeginCallback();
 
@@ -72,8 +72,8 @@ namespace PLAYER
             // last frame of action
             if (_currentActionFrame >= _currentAction.FrameCount - 1)
             {
-                _currentActionFrame = 0;
                 OnActionEnd?.Invoke();
+                _currentActionFrame = 0;
             }
         }
 

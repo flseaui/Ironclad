@@ -19,15 +19,53 @@ namespace PLAYER
 
         private void FixedUpdate()
         {
+            CalculateVelocity();
             MovePlayer();
+        }
+
+        private void CalculateVelocity()
+        {
+            if (Data.MovementVelocity.y > 0)
+            {
+                Data.PlayerVelocity.y = Data.MovementVelocity.y;
+
+                Data.MovementVelocity.y -= Data.gravity;
+
+                if (Data.MovementVelocity.y > 0)
+                    Data.MovementVelocity.y = 0;
+            }
+            else if (Data.MovementVelocity.y < 0)
+            {
+                Data.PlayerVelocity.y = Data.MovementVelocity.y;
+
+                if (Data.PlayerVelocity.y > -Data.TerminalVelocity.y)
+                {
+                    Data.MovementVelocity.y -= Data.gravity;
+
+                    if (Data.MovementVelocity.y < -Data.TerminalVelocity.y)
+                        Data.MovementVelocity.y = -Data.TerminalVelocity.y;
+                }
+            }
+            else
+                Data.PlayerVelocity.y = 0;
+
+            if (Data.MovementVelocity.x > 0)
+                Data.PlayerVelocity.x = Data.MovementVelocity.x * (Data.Direction == Types.Direction.Left ? -1 : 1);
+
+            Data.PlayerVelocity += Data.KnockbackVelocity;
+
+            Data.KnockbackVelocity /= 2;
+
+            if (Data.KnockbackVelocity.x < 1)
+                Data.KnockbackVelocity.x = 0;
+
+            if (Data.KnockbackVelocity.y < 1)
+                Data.KnockbackVelocity.y = 0;
         }
 
         private void MovePlayer()
         {
-            if (Data.Direction == Types.Direction.Left)
-                Rigidbody.AddForce(Vector2.left * Data.Acceleration, ForceMode2D.Impulse);
-            else if (Data.Direction == Types.Direction.Right)
-                Rigidbody.AddForce(Vector2.right * Data.Acceleration, ForceMode2D.Impulse);
+                Rigidbody.AddForce(Data.PlayerVelocity, ForceMode2D.Impulse);
         }
     }
 }
