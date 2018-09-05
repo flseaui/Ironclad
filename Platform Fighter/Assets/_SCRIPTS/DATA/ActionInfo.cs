@@ -62,6 +62,8 @@ namespace DATA
             set => _infinite.Y = value;
         }
 
+        public Vector2 Velocity;
+
         public FrameType FrameTypeAt(int i) => _frames[i];
         
         public class Box

@@ -10,22 +10,12 @@ namespace PLAYER
             switch (Data.CurrentAction)
             {
                 case Types.ActionType.Walk:
-                    Data.Acceleration.x = 2f;
-                    Data.TerminalVelocity.x = 2.5f;
                     break;
-
                 case Types.ActionType.Run:
-                    Data.Acceleration.x = 4f;
-                    Data.TerminalVelocity.x = 5f;
                     break;
-
                 case Types.ActionType.Nothing:
-                    Data.Acceleration.x = 0f;
-                    Data.TerminalVelocity.x = 0f;
                     break;
                 case Types.ActionType.Idle:
-                    Data.Acceleration.x = 0f;
-                    Data.TerminalVelocity.x = 0f;
                     break;
                 case Types.ActionType.Jab:
                     break;
