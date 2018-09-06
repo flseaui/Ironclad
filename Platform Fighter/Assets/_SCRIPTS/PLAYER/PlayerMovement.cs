@@ -51,14 +51,16 @@ namespace PLAYER
 
             if (Data.MovementVelocity.x > 0)
                 Data.PlayerVelocity.x = Data.MovementVelocity.x * (Data.Direction == Types.Direction.Left ? -1 : 1);
+            else
+                Data.PlayerVelocity.x = 0;
 
             Data.PlayerVelocity += Data.KnockbackVelocity;
 
             Data.KnockbackVelocity /= 2;
 
             if (Data.KnockbackVelocity.x < 1)
-                Data.KnockbackVelocity.x = 0;
 
+                Data.KnockbackVelocity.x = 0;
             if (Data.KnockbackVelocity.y < 1)
                 Data.KnockbackVelocity.y = 0;
         }
