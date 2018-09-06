@@ -5,7 +5,7 @@ namespace PLAYER
 {
     public class TonkyBehaviors : Behaviors
     {
-        protected override void RunAction( int frameNumber)
+        protected override void RunAction()
         {
             switch (Data.CurrentAction)
             {

@@ -11,6 +11,8 @@ public class CollisionScript : MonoBehaviour {
 
         if (PlayerBoxType == ActionInfo.Box.BoxType.Hurt && OppenantBoxType == ActionInfo.Box.BoxType.Hit)
         {
+            //Needs to determin direction
+
             GetComponent<DamageScript>().ApplyDamage(col.GetComponent<BoxData>().Damage, col.GetComponent<BoxData>().KnockbackStrength, col.GetComponent<BoxData>().KnockbackAngle);
         }
     }
