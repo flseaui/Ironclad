@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using JetBrains.Annotations;
+using MISC;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using TOOLS;
+using UnityEngine;
 
 namespace DATA
 {
@@ -28,8 +29,10 @@ namespace DATA
         [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         private List<FrameType> _frames;
 
+        [JsonConverter(typeof(UnityVectorConverter))]
         [JsonProperty] private Vector2 _infinite;
 
+        [JsonConverter(typeof(UnityVectorConverter))]
         [JsonProperty] public Vector2 Anchor { get; set; }
 
         [JsonProperty] public List<List<Box>> Hitboxes { get; set; }
@@ -54,14 +57,14 @@ namespace DATA
 
         public float InfiniteRangeMin
         {
-            get => _infinite.X;
-            set => _infinite.X = value;
+            get => _infinite.x;
+            set => _infinite.x = value;
         }
 
         public float InfiniteRangeMax
         {
-            get => _infinite.Y;
-            set => _infinite.Y = value;
+            get => _infinite.y;
+            set => _infinite.y = value;
         }
 
         public FrameType FrameTypeAt(int i) => _frames[i];
@@ -111,6 +114,7 @@ namespace DATA
 
         public class FrameProperty
         {
+            [JsonConverter(typeof(UnityVectorConverter))]
             public Vector2 Velocity { get; set; }
 
             public FrameProperty(Vector2 velocity)

@@ -5,8 +5,10 @@ namespace PLAYER
 {
     public class TonkyBehaviors : Behaviors
     {
-        protected override void RunAction()
+        public override void RunAction()
         {
+            Data.PlayerVelocity = PlayerController.CurrentActionProperties.Velocity;
+            
             switch (Data.CurrentAction)
             {
                 case Types.ActionType.Walk:

@@ -65,7 +65,8 @@ namespace PLAYER
 
         private void MovePlayer()
         {
-                Rigidbody.AddForce(Data.PlayerVelocity, ForceMode2D.Impulse);
+            Debug.Log(Data.PlayerVelocity);
+            Rigidbody.AddForce(Data.PlayerVelocity, ForceMode2D.Impulse);
         }
     }
 }

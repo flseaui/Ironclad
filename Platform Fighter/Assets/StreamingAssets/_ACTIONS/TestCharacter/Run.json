@@ -5,12 +5,12 @@
   ],
   "Type": "Run",
   "_infinite": {
-    "X": 0.0,
-    "Y": 2.0
+    "x": 0.0,
+    "y": 2.0
   },
   "Anchor": {
-    "X": 0.0,
-    "Y": 0.0
+    "x": 0.0,
+    "y": 0.0
   },
   "Hitboxes": [
     [
@@ -19,8 +19,8 @@
 			"KnockbackStrength": 8.0,
 			"KnockbackAngle": 45.0,
 			"Lifespan": 1,
-			"X": 152,
-			"Y": 70,
+			"x": 152,
+			"y": 70,
 			"Width": 114,
 			"Height": 212,
 			"Type": "Hurt"
@@ -34,8 +34,8 @@
         "KnockbackStrength": 0.0,
         "KnockbackAngle": 0.0,
         "Lifespan": 1,
-        "X": 152,
-        "Y": 70,
+        "x": 152,
+        "y": 70,
         "Width": 114,
         "Height": 212,
         "Type": "Hurt"

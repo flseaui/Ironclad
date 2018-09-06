@@ -20,6 +20,8 @@ namespace PLAYER
         public static event OnActionEndCallback OnActionEnd;
         public static event OnActionBeginCallback OnActionBegin;
 
+        public ActionInfo.FrameProperty CurrentActionProperties => _currentAction.FrameProperties[_currentActionFrame];
+
         private int _currentActionFrame;
         
         private PlayerData _data;
@@ -35,7 +37,7 @@ namespace PLAYER
             _spriteRenderer = GetComponent<SpriteRenderer>();
 
             _data = GetComponent<PlayerData>();
-
+            
             _boxPool = new BoxPool();
         }
 
@@ -62,9 +64,9 @@ namespace PLAYER
                 _currentAction = AssetManager.Instance.GetAction(Types.Character.TestCharacter, _data.CurrentAction);
                 OnActionBegin?.Invoke();
             }
-
+            
             UpdateBoxes(_currentActionFrame);
-
+            
             UpdateSprite();
 
             ++_currentActionFrame;
