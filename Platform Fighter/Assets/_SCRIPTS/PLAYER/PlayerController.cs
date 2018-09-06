@@ -20,7 +20,15 @@ namespace PLAYER
         public static event OnActionEndCallback OnActionEnd;
         public static event OnActionBeginCallback OnActionBegin;
 
-        public ActionInfo.FrameProperty CurrentActionProperties => _currentAction.FrameProperties[_currentActionFrame];
+        public ActionInfo.FrameProperty CurrentActionProperties
+        {
+            get
+            {
+                if (_currentAction.FrameProperties == null || _currentActionFrame < 0) return new ActionInfo.FrameProperty();
+                
+                return _currentAction.FrameProperties[_currentActionFrame]; 
+            }
+        }
 
         private int _currentActionFrame;
         
@@ -92,7 +100,7 @@ namespace PLAYER
                             foreach (var hitbox in frame)
                             {
                                 var box = Instantiate(_boxPrefab, transform);
-                                box.transform.position = new Vector2(hitbox.X, hitbox.Y);
+                                box.transform.localPosition = new Vector2(hitbox.X, hitbox.Y);
                                 box.name = $"{hitbox.Type.ToString()}Box";
 
                                 box.GetComponent<BoxCollider2D>().size = new Vector2(hitbox.Width, hitbox.Height);

@@ -17,19 +17,19 @@
   "FrameProperties": [
       {
           "Velocity": {
-              "x": 2.0,
+              "x": 0.0,
               "y": 0.0
           }
       },
       {
           "Velocity": {
-              "x": 3.0,
-              "y": 4.0
+              "x": 0.0,
+              "y": 0.0
           }
       },
       {
           "Velocity": {
-              "x": 5.0,
+              "x": 0.0,
               "y": 0.0
           }
       }
@@ -46,10 +46,10 @@
         "KnockbackStrength": 0.0,
         "KnockbackAngle": 0.0,
         "Lifespan": 100,
-        "X": 152,
-        "Y": 70,
-        "Width": 114,
-        "Height": 212,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
         "Type": "Hurt"
       }
     ],
@@ -60,10 +60,10 @@
         "KnockbackStrength": 0.0,
         "KnockbackAngle": 0.0,
         "Lifespan": 100,
-        "X": 152,
-        "Y": 70,
-        "Width": 214,
-        "Height": 112,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
         "Type": "Hurt"
       }
     ]

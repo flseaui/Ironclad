@@ -6,6 +6,7 @@ public class CollisionScript : MonoBehaviour {
     
     private void OnTriggerEnter2D(Collider2D col)
     {
+        Debug.Log("collide");
         ActionInfo.Box.BoxType PlayerBoxType = GetComponent<BoxData>().Type;
         ActionInfo.Box.BoxType OppenantBoxType = col.GetComponent<BoxData>().Type;
 

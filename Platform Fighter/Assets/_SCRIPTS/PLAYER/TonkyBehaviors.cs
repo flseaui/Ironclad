@@ -7,7 +7,7 @@ namespace PLAYER
     {
         public override void RunAction()
         {
-            Data.PlayerVelocity = PlayerController.CurrentActionProperties.Velocity;
+            Data.MovementVelocity = PlayerController.CurrentActionProperties.Velocity;
             
             switch (Data.CurrentAction)
             {

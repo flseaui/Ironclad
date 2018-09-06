@@ -20,11 +20,11 @@ namespace DATA
             [UsedImplicitly] Buffer
         }
 
-        [JsonProperty] public string Name { get; set; }
+        [JsonProperty] public string Name { get; private set; }
         
         [JsonProperty]
         [JsonConverter(typeof(StringEnumConverter))]
-        public Types.ActionType Type { get; set; }
+        public Types.ActionType Type { get; private set; }
         
         [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         private List<FrameType> _frames;
@@ -33,16 +33,16 @@ namespace DATA
         [JsonProperty] private Vector2 _infinite;
 
         [JsonConverter(typeof(UnityVectorConverter))]
-        [JsonProperty] public Vector2 Anchor { get; set; }
+        [JsonProperty] public Vector2 Anchor { get; private set; }
 
-        [JsonProperty] public List<List<Box>> Hitboxes { get; set; }
-        [JsonProperty] public List<List<Box>> Hurtboxes { get; set; }
-        [JsonProperty] public List<List<Box>> Grabboxes { get; set; }
-        [JsonProperty] public List<List<Box>> Armorboxes { get; set; }
-        [JsonProperty] public List<List<Box>> Collisionboxes { get; set; }
-        [JsonProperty] public List<List<Box>> Databoxes { get; set; }
+        [JsonProperty] public List<List<Box>> Hitboxes { get; private set; }
+        [JsonProperty] public List<List<Box>> Hurtboxes { get; private set; }
+        [JsonProperty] public List<List<Box>> Grabboxes { get; private set; }
+        [JsonProperty] public List<List<Box>> Armorboxes { get; private set; }
+        [JsonProperty] public List<List<Box>> Collisionboxes { get; private set; }
+        [JsonProperty] public List<List<Box>> Databoxes { get; private set; }
         
-        [JsonProperty] public List<FrameProperty> FrameProperties { get; set; }
+        [JsonProperty] public List<FrameProperty> FrameProperties { get; private set; }
 
         public List<List<Box>> AllBoxes => CollectionTools.Concat(Hitboxes, Hurtboxes, Grabboxes, Armorboxes, Collisionboxes, Databoxes).ToList();
 
@@ -82,18 +82,18 @@ namespace DATA
                 [UsedImplicitly] Null
             }
      
-            public double Damage { get; }
-            public double KnockbackStrength { get; }
-            public double KnockbackAngle { get; }
+            [JsonProperty] public double Damage { get; private set; }
+            [JsonProperty] public double KnockbackStrength { get; private set; }
+            [JsonProperty] public double KnockbackAngle { get; private set; }
             
-            public int Lifespan { get; }
-            public int X { get; }
-            public int Y { get; }
-            public int Width { get; }
-            public int Height { get; }
+            [JsonProperty] public int Lifespan { get; private set; }
+            [JsonProperty] public int X { get; private set; }
+            [JsonProperty] public int Y { get; private set; }
+            [JsonProperty] public int Width { get; private set; }
+            [JsonProperty] public int Height { get; private set; }
             
             [JsonConverter(typeof(StringEnumConverter))]
-            public BoxType Type { get; }
+            [JsonProperty] public BoxType Type { get; private set; }
             
             public Box(BoxType type, int x, int y, int width, int height, double damage, double knockbackStrength,
                 double knockbackAngle, int lifespan)
@@ -115,11 +115,16 @@ namespace DATA
         public class FrameProperty
         {
             [JsonConverter(typeof(UnityVectorConverter))]
-            public Vector2 Velocity { get; set; }
+            [JsonProperty] public Vector2 Velocity { get; private set; }
 
             public FrameProperty(Vector2 velocity)
             {
                 Velocity = velocity;
+            }
+
+            public FrameProperty()
+            {
+                Velocity = new Vector2(0, 0);
             }
             
         }

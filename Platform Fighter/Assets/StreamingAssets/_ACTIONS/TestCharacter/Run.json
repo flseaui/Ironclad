@@ -12,6 +12,14 @@
     "x": 0.0,
     "y": 0.0
   },
+  "FrameProperties": [
+    {
+      "Velocity": {
+        "x": 1.0,
+        "y": 0.0
+      }
+    }
+  ],
   "Hitboxes": [
     [
 		{
@@ -19,10 +27,10 @@
 			"KnockbackStrength": 8.0,
 			"KnockbackAngle": 45.0,
 			"Lifespan": 1,
-			"x": 152,
-			"y": 70,
-			"Width": 114,
-			"Height": 212,
+            "X": 0,
+            "Y": 0,
+			"Width": 2,
+			"Height": 1,
 			"Type": "Hurt"
 		}
 	  ]
@@ -34,10 +42,10 @@
         "KnockbackStrength": 0.0,
         "KnockbackAngle": 0.0,
         "Lifespan": 1,
-        "x": 152,
-        "y": 70,
-        "Width": 114,
-        "Height": 212,
+        "X": 2,
+        "Y": 0,
+        "Width": 2,
+        "Height": 1,
         "Type": "Hurt"
       }
     ]
