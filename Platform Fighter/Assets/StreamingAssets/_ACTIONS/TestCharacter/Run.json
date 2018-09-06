@@ -13,7 +13,19 @@
     "Y": 0.0
   },
   "Hitboxes": [
-    []
+    [
+		{
+			"Damage": 8.0,
+			"KnockbackStrength": 8.0,
+			"KnockbackAngle": 45.0,
+			"Lifespan": 1,
+			"X": 152,
+			"Y": 70,
+			"Width": 114,
+			"Height": 212,
+			"Type": "Hurt"
+		}
+	  ]
   ],
   "Hurtboxes": [
     [

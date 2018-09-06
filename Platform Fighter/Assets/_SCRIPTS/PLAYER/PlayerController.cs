@@ -10,7 +10,7 @@ using Types = DATA.Types;
 
 namespace PLAYER
 {
-    public delegate void OnActionEndCallback(int frameNumbber);
+    public delegate void OnActionEndCallback();
 
     public delegate void OnActionBeginCallback();
 
