@@ -13,15 +13,13 @@
     "Y": 0.0
   },
     "FrameProperties": [
-	[
 		{
 			"Velocity": {
 				"X": 0.0,
 				"Y": 20.0
 			}
 		}
-	]
-  ],
+	],
   "Hitboxes": [
     []
   ],

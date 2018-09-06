@@ -38,6 +38,7 @@ namespace DATA
         [JsonProperty] public List<List<Box>> Armorboxes { get; set; }
         [JsonProperty] public List<List<Box>> Collisionboxes { get; set; }
         [JsonProperty] public List<List<Box>> Databoxes { get; set; }
+        
         [JsonProperty] public List<FrameProperty> FrameProperties { get; set; }
 
         public List<List<Box>> AllBoxes => CollectionTools.Concat(Hitboxes, Hurtboxes, Grabboxes, Armorboxes, Collisionboxes, Databoxes).ToList();
@@ -111,6 +112,12 @@ namespace DATA
         public class FrameProperty
         {
             public Vector2 Velocity { get; set; }
+
+            public FrameProperty(Vector2 velocity)
+            {
+                Velocity = velocity;
+            }
+            
         }
     }
 }
