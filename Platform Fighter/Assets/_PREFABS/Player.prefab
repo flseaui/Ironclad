@@ -29,7 +29,6 @@ GameObject:
   - component: {fileID: 114045754544223424}
   - component: {fileID: 114269284827562152}
   - component: {fileID: 114919772373162646}
-  - component: {fileID: 114526927916664524}
   - component: {fileID: 95703801719290990}
   m_Layer: 0
   m_Name: Player
@@ -195,17 +194,6 @@ MonoBehaviour:
   MovementVelocity: {x: 0, y: 0}
   KnockbackVelocity: {x: 0, y: 0}
   gravity: 0
---- !u!114 &114526927916664524
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1110542900291582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6710746fbc399b41b7c869ac17df0f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114667764300966322
 MonoBehaviour:
   m_ObjectHideFlags: 1

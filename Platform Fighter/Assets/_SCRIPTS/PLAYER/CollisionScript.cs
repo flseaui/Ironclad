@@ -12,12 +12,12 @@ namespace PLAYER
             var boxData = other.GetComponent<BoxData>();
             var playerBoxType = GetComponent<BoxData>().Type;
             var oppenantBoxType = boxData.Type;
-
+            
             if (playerBoxType == ActionInfo.Box.BoxType.Hurt && oppenantBoxType == ActionInfo.Box.BoxType.Hit)
             {
                 //Needs to determin direction
 
-                GetComponent<DamageScript>().ApplyDamage(boxData.Damage, boxData.KnockbackStrength, boxData.KnockbackAngle);
+                GetComponentInParent<DamageScript>().ApplyDamage(boxData.Damage, boxData.KnockbackStrength, boxData.KnockbackAngle);
             }
         }
     }

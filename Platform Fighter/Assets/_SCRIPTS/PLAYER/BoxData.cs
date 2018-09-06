@@ -15,7 +15,7 @@ namespace PLAYER
         public int Y { get; private set;}
         public int Width { get; private set; }
         public int Height { get; private set; }
-        
+
         public ActionInfo.Box.BoxType Type { get; private set; }
 
         public Types.ActionType ParentAction { get; private set; }

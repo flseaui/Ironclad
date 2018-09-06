@@ -69,6 +69,7 @@ namespace PLAYER
         {
             Debug.Log(Data.PlayerVelocity);
             Rigidbody.AddForce(Data.PlayerVelocity, ForceMode2D.Impulse);
+           
         }
     }
 }
