@@ -11,6 +11,8 @@ namespace PLAYER
 
         private Rigidbody2D Rigidbody { get; set; }
 
+        private Vector2 AddedForce;
+
         private void Awake()
         {
             Data = GetComponent<PlayerData>();
@@ -25,6 +27,7 @@ namespace PLAYER
 
         private void CalculateVelocity()
         {
+            /*
             if (Data.MovementVelocity.y > 0)
             {
                 Data.PlayerVelocity.y = Data.MovementVelocity.y;
@@ -49,27 +52,38 @@ namespace PLAYER
             else
                 Data.PlayerVelocity.y = 0;
 
-            if (Data.MovementVelocity.x > 0)
-                Data.PlayerVelocity.x = Data.MovementVelocity.x * (Data.Direction == Types.Direction.Left ? -1 : 1);
-            else
-                Data.PlayerVelocity.x = 0;
+            Data.MovementVelocity.x *= (Data.Direction == Types.Direction.Left ? -1 : 1);
+
+            Data.PlayerVelocity.x = Data.MovementVelocity.x;
 
             Data.PlayerVelocity += Data.KnockbackVelocity;
 
             Data.KnockbackVelocity /= 2;
 
             if (Data.KnockbackVelocity.x < 1)
-
                 Data.KnockbackVelocity.x = 0;
             if (Data.KnockbackVelocity.y < 1)
                 Data.KnockbackVelocity.y = 0;
+                
+                */
+
+            if (Data.CurrentVelocity.x != Data.TargetVelocity.x)
+            {
+                if (Data.CurrentVelocity.x > Data.TargetVelocity.x)
+                    AddedForce.x = (Data.CurrentVelocity.x - Data.TargetVelocity.x >= Data.Acceleration.x ? -Data.Acceleration.x : -(Data.CurrentVelocity.x - Data.TargetVelocity.x));
+                else
+                    AddedForce.x = (Data.TargetVelocity.x - Data.CurrentVelocity.x >= Data.Acceleration.x ? Data.Acceleration.x : Data.TargetVelocity.x - Data.CurrentVelocity.x);
+            }
+            
+            Rigidbody.AddForce(AddedForce, ForceMode2D.Impulse);
+            Data.CurrentVelocity += AddedForce;
+
+
         }
 
         private void MovePlayer()
-        {
-            Debug.Log(Data.PlayerVelocity);
-            Rigidbody.AddForce(Data.PlayerVelocity, ForceMode2D.Impulse);
-           
+        {                   
+
         }
     }
 }

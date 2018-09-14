@@ -5,7 +5,6 @@ namespace PLAYER
 {
     public class PlayerData : MonoBehaviour
     {
-        public Vector2 Acceleration;
         public Types.ActionType CurrentAction;
 
         public Types.Direction Direction;
@@ -29,8 +28,9 @@ namespace PLAYER
         public double Percent;
 
         public Vector2 
-            PlayerVelocity,
-            MovementVelocity,
+            CurrentVelocity,
+            TargetVelocity,
+            Acceleration,
             KnockbackVelocity;
 
         public float gravity;

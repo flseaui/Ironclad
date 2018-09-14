@@ -7,7 +7,8 @@ namespace PLAYER
     {
         public override void RunAction()
         {
-            Data.MovementVelocity = PlayerController.CurrentActionProperties.Velocity;
+            Data.TargetVelocity = PlayerController.CurrentActionProperties.Velocity * (Data.Direction == Types.Direction.Left ? -1 : 1);
+            Data.Acceleration.x = 1;
             
             switch (Data.CurrentAction)
             {
@@ -76,7 +77,7 @@ namespace PLAYER
                 case Types.ActionType.Assist:
                     break;
                 case Types.ActionType.Turn:
-                    Data.Acceleration.x = 1f;
+                    //Data.Acceleration.x = 1f;
                     Data.TerminalVelocity.x = 2.5f;
                     break;
                 default:
