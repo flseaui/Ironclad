@@ -67,7 +67,6 @@ namespace PLAYER
                 
                 */
 
-            Debug.Log("CurrentVelocity: " + Data.CurrentVelocity);
             if (Data.CurrentVelocity.x != Data.TargetVelocity.x)
             {
                 if (Data.CurrentVelocity.x > Data.TargetVelocity.x)
@@ -81,9 +80,12 @@ namespace PLAYER
             }
             else
                 AddedForce.x = 0;
-            
-            Rigidbody.AddForce(AddedForce, ForceMode2D.Impulse);
-            Data.CurrentVelocity += AddedForce;
+
+            if (AddedForce.x != 0)
+            {
+                Rigidbody.AddForce(AddedForce, ForceMode2D.Impulse);
+                Data.CurrentVelocity += AddedForce;
+            }
 
 
         }
