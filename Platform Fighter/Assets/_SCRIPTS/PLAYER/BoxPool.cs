@@ -10,31 +10,8 @@ namespace PLAYER
     {
         // List of actions of frames of boxes
         private List<List<List<BoxData>>> _boxes;
-        private List<EnabledBox> _enabledBoxes;
-
-        private struct EnabledBox
-        {
-            private BoxData _box;
-
-            public int Lifespan { get; set; }
-
-            public EnabledBox(BoxData box)
-            {
-                _box = box;
-                Lifespan = box.Lifespan;
-            }
-
-            public void DecreaseLifespan()
-            {
-                Lifespan--;
-            }
-
-            public void Disable()
-            {
-                _box.gameObject.SetActive(false);
-            }
-        }
-        
+        private List<(int, BoxData)> _enabledBoxes;
+ 
         public BoxPool()
         {
             _boxes = new List<List<List<BoxData>>>(Enum.GetNames(typeof(Types.ActionType)).Length);
@@ -43,7 +20,7 @@ namespace PLAYER
                 _boxes.Add(new List<List<BoxData>>());
             }
             
-            _enabledBoxes = new List<EnabledBox>();
+            _enabledBoxes = new List<(int, BoxData)>();
         }
 
         public void AddBox(BoxData boxData)
@@ -77,14 +54,15 @@ namespace PLAYER
         
         private void DisableEnabledBoxes()
         {
-            foreach (var box in _enabledBoxes)
+            for (var i = 0; i < _enabledBoxes.Count; i++)
             {
-                if (box.Lifespan > 0)
+                var box = _enabledBoxes[i];
+                if (box.Item1 > 0)
                 {
-                    box.DecreaseLifespan();
-                    if (box.Lifespan <= 0)
+                    box.Item1--;
+                    if (box.Item1 <= 0)
                     {
-                        box.Disable();
+                        box.Item2.gameObject.SetActive(false);
                         _enabledBoxes.Remove(box);
                     }
                 }
@@ -103,7 +81,7 @@ namespace PLAYER
                 if (box.gameObject.activeSelf) continue;
                 
                 box.gameObject.SetActive(true);
-                _enabledBoxes.Add(new EnabledBox(box));
+                _enabledBoxes.Add((box.Lifespan, box));
             }
         }
 

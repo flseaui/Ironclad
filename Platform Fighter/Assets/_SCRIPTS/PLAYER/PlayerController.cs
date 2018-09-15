@@ -34,6 +34,7 @@ namespace PLAYER
         
         private PlayerData _data;
         private SpriteRenderer _spriteRenderer;
+        private Animator _animator;
         private ActionInfo _currentAction;
 
         private BoxPool _boxPool;
@@ -44,6 +45,8 @@ namespace PLAYER
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
 
+            _animator = GetComponent<Animator>();
+            
             _data = GetComponent<PlayerData>();
             
             _boxPool = new BoxPool();
@@ -70,10 +73,11 @@ namespace PLAYER
             if (_currentActionFrame == 0)
             {
                 _currentAction = AssetManager.Instance.GetAction(Types.Character.TestCharacter, _data.CurrentAction);
+                _animator.SetInteger("CurrentAction", (int) _currentAction.Type);
                 OnActionBegin?.Invoke();
             }
             
-            UpdateBoxes(_currentActionFrame);
+           UpdateBoxes(_currentActionFrame);
             
             UpdateSprite();
 
