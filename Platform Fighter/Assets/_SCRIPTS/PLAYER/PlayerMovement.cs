@@ -67,13 +67,20 @@ namespace PLAYER
                 
                 */
 
+            Debug.Log("CurrentVelocity: " + Data.CurrentVelocity);
             if (Data.CurrentVelocity.x != Data.TargetVelocity.x)
             {
                 if (Data.CurrentVelocity.x > Data.TargetVelocity.x)
-                    AddedForce.x = (Data.CurrentVelocity.x - Data.TargetVelocity.x >= Data.Acceleration.x ? -Data.Acceleration.x : -(Data.CurrentVelocity.x - Data.TargetVelocity.x));
+                    AddedForce.x = (Data.CurrentVelocity.x - Data.TargetVelocity.x >= Data.Acceleration.x
+                        ? -Data.Acceleration.x
+                        : -(Data.CurrentVelocity.x - Data.TargetVelocity.x));
                 else
-                    AddedForce.x = (Data.TargetVelocity.x - Data.CurrentVelocity.x >= Data.Acceleration.x ? Data.Acceleration.x : Data.TargetVelocity.x - Data.CurrentVelocity.x);
+                    AddedForce.x = (Data.TargetVelocity.x - Data.CurrentVelocity.x >= Data.Acceleration.x
+                        ? Data.Acceleration.x
+                        : Data.TargetVelocity.x - Data.CurrentVelocity.x);
             }
+            else
+                AddedForce.x = 0;
             
             Rigidbody.AddForce(AddedForce, ForceMode2D.Impulse);
             Data.CurrentVelocity += AddedForce;
