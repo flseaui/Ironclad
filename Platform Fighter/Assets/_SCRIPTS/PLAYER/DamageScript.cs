@@ -20,7 +20,7 @@ namespace PLAYER
 			_playerData.KnockbackVelocity.x = (float)((KnockbackStrength + KnockbackStrength * _playerData.Percent) * Mathf.Cos((float)KnockbackAngle)); //* positive or negitive for left or right
 			_playerData.KnockbackVelocity.x = (float)((KnockbackStrength + KnockbackStrength * _playerData.Percent) * Mathf.Sin((float)KnockbackAngle));
 
-			NLog.Log(NLog.LogType.Message, "DAMAGE BITCH");
+			Debug.Log("DAMAGE BITCH");
 		}
 	}
 }

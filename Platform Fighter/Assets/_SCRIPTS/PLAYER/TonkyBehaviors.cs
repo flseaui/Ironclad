@@ -8,7 +8,7 @@ namespace PLAYER
         public override void RunAction()
         {
             Data.TargetVelocity = PlayerController.CurrentActionProperties.Velocity * (Data.Direction == Types.Direction.Left ? -1 : 1);
-            Data.Acceleration.x = 1;
+            Data.Acceleration.x = .5f;
             
             switch (Data.CurrentAction)
             {

@@ -42,7 +42,7 @@ namespace MISC
                 return;
             }
 
-            NLog.Log(NLog.LogType.Message, "Steam Initialized: " + client.Username + " / " + client.SteamId);
+            Debug.Log("Steam Initialized: " + client.Username + " / " + client.SteamId);
         }
 
         private void Update()

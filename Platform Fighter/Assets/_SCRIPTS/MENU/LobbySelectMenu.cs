@@ -41,11 +41,11 @@ namespace MENU
                     button.name = lobby.Name;
                     button.GetComponent<Button>().onClick.AddListener(delegate
                     {
-                        NLog.Log(NLog.LogType.Message, $"Joined Lobby: {lobby.Name}");
+                        Debug.Log($"Joined Lobby: {lobby.Name}");
                         MenuManager.Instance.SwitchToMenuWithArgs(Types.Menu.LobbyCharacterMenu, "join",
                             lobby.LobbyID.ToString());
                     });
-                    NLog.Log(NLog.LogType.Message, $"Found Lobby: {lobby.Name}");
+                    Debug.Log($"Found Lobby: {lobby.Name}");
                 }
             };
         }

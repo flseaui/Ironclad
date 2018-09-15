@@ -23,7 +23,13 @@ namespace MANAGERS
 
             var spawnPoints = SpawnStage();
             
-            for (var i = 0; i < GameManager.Instance.Characters.Length; ++i)
+            GameManager.Instance.Characters = new []
+            {
+                Types.Character.TestCharacter,
+                Types.Character.None
+            };
+            
+            for (var i = 0; i < GameManager.Instance.Characters.Count(character => character != Types.Character.None); ++i)
             {
                 var player = Instantiate
                 (
@@ -32,7 +38,7 @@ namespace MANAGERS
                     spawnPoints[i].rotation
                 );
 
-                AssetManager.Instance.PopulateActions(new[] {Types.Character.TestCharacter});
+                AssetManager.Instance.PopulateActions(GameManager.Instance.Characters);
 
                 player.GetComponent<PlayerInput>().Id = i;
                 player.GetComponent<PlayerInput>().Id = i;

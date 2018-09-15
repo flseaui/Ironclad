@@ -38,7 +38,7 @@ namespace MISC
                         return _instance = instances[0];
                     }
 
-                    NLog.Log(NLog.LogType.Message,
+                    Debug.Log(
                         $"[{nameof(Singleton)}<{typeof(T)}>] An instance is needed in the scene and no existing instances were found, so a new instance will be created.");
                     return _instance = new GameObject($"({nameof(Singleton)}){typeof(T)}")
                         .AddComponent<T>();

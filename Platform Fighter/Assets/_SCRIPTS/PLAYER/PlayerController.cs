@@ -24,7 +24,7 @@ namespace PLAYER
         {
             get
             {
-                if (_currentAction.FrameProperties == null || _currentActionFrame < 0) return new ActionInfo.FrameProperty();
+                if (_currentAction?.FrameProperties == null || _currentActionFrame < 0) return new ActionInfo.FrameProperty();
                 
                 return _currentAction.FrameProperties[_currentActionFrame]; 
             }
@@ -59,7 +59,7 @@ namespace PLAYER
         
         private void Update()
         {
-            NLog.Log(NLog.LogType.Message, $"{_data.CurrentAction} {_data.Direction}");
+            Debug.Log($"{_data.CurrentAction} {_data.Direction}");
 
             ExecuteAction();
         }
@@ -121,7 +121,7 @@ namespace PLAYER
                 };
             
             var actionSet = AssetManager.Instance.GetActionSet(Types.Character.TestCharacter);
-            foreach (var action in actionSet.Values)
+            foreach (var action in actionSet.Actions)
             {
                 CreateBoxes(action.Hitboxes, action.Type);
                 CreateBoxes(action.Hurtboxes, action.Type);

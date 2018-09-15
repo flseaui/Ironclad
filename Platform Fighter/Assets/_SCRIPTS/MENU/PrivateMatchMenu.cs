@@ -22,7 +22,7 @@ namespace MENU
             Client.Instance.Lobby.OnLobbyJoined = delegate(bool successfullyJoined)
             {
                 if (successfullyJoined)
-                    NLog.Log(NLog.LogType.Message, "Player Joined");
+                    Debug.Log("Player Joined");
             };
 
             /*foreach ( var friend in Client.Instance.Friends.All.Where( x => x.IsOnline ) )

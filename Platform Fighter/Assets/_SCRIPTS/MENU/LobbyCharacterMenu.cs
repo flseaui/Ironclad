@@ -48,7 +48,7 @@ namespace MENU
 
         private void OnJoined(bool success)
         {
-            NLog.Log(NLog.LogType.Message, "OnLobbyJoined");
+            Debug.Log("OnLobbyJoined");
             if (!success) return;
         }
 

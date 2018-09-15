@@ -15,9 +15,37 @@ namespace MANAGERS
     {
         [SerializeField] private GameObject[] _stagePrefabs;
         
-        private List<Dictionary<Types.ActionType, ActionInfo>> _actionSets;
-        
-        private void Awake() => _actionSets = new List<Dictionary<Types.ActionType, ActionInfo>>();
+        private List<ActionSet> _actionSets;
+
+        public class ActionSet
+        {
+            private Dictionary<Types.ActionType, ActionInfo> _actionsDictionary;
+
+            public Types.Character Character { get; }
+            
+            public ActionSet()
+            {
+                _actionsDictionary = new Dictionary<Types.ActionType, ActionInfo>();
+            }
+
+            public ActionSet(Types.Character character, Dictionary<Types.ActionType, ActionInfo> actionsDictionary)
+            {
+                Character = character;
+                _actionsDictionary = actionsDictionary;
+            }
+
+            public IEnumerable<ActionInfo> Actions => _actionsDictionary.Values;
+
+            public ActionInfo GetAction(Types.ActionType actionType)
+            {
+                return _actionsDictionary.ContainsKey(actionType)
+                    ? _actionsDictionary[actionType]
+                    : _actionsDictionary[Types.ActionType.Idle];
+            }
+            
+        }
+
+        private void Awake() => _actionSets = new List<ActionSet>();
         
         /**
          * STAGES
@@ -31,21 +59,28 @@ namespace MANAGERS
         /**
          * ACTIONS
          */
-        
-        public ActionInfo GetAction(Types.Character characterType, Types.ActionType actionType) =>
-            _actionSets[(int) characterType].ContainsKey(actionType)
-                ? _actionSets[(int) characterType][actionType]
-                : _actionSets[(int) characterType][Types.ActionType.Idle];
 
-        public Dictionary<Types.ActionType, ActionInfo> GetActionSet(Types.Character characterType) => _actionSets[(int) characterType];
-        
+        public ActionInfo GetAction(Types.Character characterType, Types.ActionType actionType) =>
+            GetActionSet(characterType).GetAction(actionType);
+
+        public ActionSet GetActionSet(Types.Character characterType)
+        {
+            return _actionSets.FirstOrDefault(set => set.Character == characterType);
+        }
+
         public void PopulateActions(IEnumerable<Types.Character> characters)
         {
-            foreach (var character in characters) _actionSets.Add(LoadActions(character));
+            foreach (var character in characters)
+            {
+                if (character == Types.Character.None)
+                    continue;
+                
+                _actionSets.Add(new ActionSet(character, LoadActions(character)));
+            }
         }
 
         public void LogAction(ActionInfo action) =>
-            NLog.Log(NLog.LogType.Message, $"ACTION: {action.Name}");
+            Debug.Log($"ACTION: {action.Name}");
 
         // reads in all of a characters actions and returns a list of them
         private Dictionary<Types.ActionType, ActionInfo> LoadActions(
@@ -60,7 +95,7 @@ namespace MANAGERS
 
             foreach (var file in Directory.GetFiles(actionPath).Where(s => s.EndsWith(".json")))
             {
-                NLog.Log(NLog.LogType.Message, $"READ FILE: {file}");
+                Debug.Log($"READ FILE: {file}");
 
                 var jsonData = File.ReadAllText(file);
                 var action = JsonConvert.DeserializeObject<ActionInfo>(jsonData);

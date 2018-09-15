@@ -13,7 +13,7 @@ namespace NETWORKING
             Client.Instance.Lobby.Join(id);
             Client.Instance.Lobby.OnLobbyJoined = delegate
             {
-                NLog.Log(NLog.LogType.Message, "lobby joined: " + Client.Instance.Lobby.CurrentLobbyData);
+                Debug.Log("lobby joined: " + Client.Instance.Lobby.CurrentLobbyData);
             };
         }
     }
