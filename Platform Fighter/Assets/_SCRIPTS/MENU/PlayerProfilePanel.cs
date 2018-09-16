@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Facepunch.Steamworks;
 using MISC;
+using UnityEditor.Sprites;
 using UnityEngine;
-using UnityEngine.UI;
+using Color = UnityEngine.Color;
+using Image = UnityEngine.UI.Image;
 
 namespace MENU
 {
@@ -25,6 +28,13 @@ namespace MENU
 
             ++_playerCount;
             var playerProfile = Instantiate(_playerProfilePrefab, transform);
+
+            var steamAvatar = playerProfile.transform.Find("PlayerAvatar").GetComponent<SteamAvatar>();
+            steamAvatar.SteamId = playerId;
+            steamAvatar.Fetch();
+
+            var d = new Vector2();
+            
             playerProfile.GetComponent<PlayerProfile>().SetBorderColor
             (
                 _playerCount

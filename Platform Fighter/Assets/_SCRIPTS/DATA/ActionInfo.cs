@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using JetBrains.Annotations;
 using MISC;
 using Newtonsoft.Json;
@@ -112,21 +113,42 @@ namespace DATA
             public Box() : this(BoxType.Hit, 0, 0, 5, 5, 0, 0, 0, 1) { }
         }
 
+        public class VelocityModifier
+        {
+            public enum ModificationType
+            {
+                Target,
+                IgnoreX,
+                IgnoreY,
+                IgnoreBoth
+            }
+
+            public VelocityModifier(Vector2 velocity, ModificationType modificationType = ModificationType.IgnoreBoth)
+            {
+                ModificationAndVelocity = (modificationType, velocity);
+            }
+            
+            public (ModificationType, Vector2) ModificationAndVelocity { get; }
+
+            public Vector2 Velocity => ModificationAndVelocity.Item2;
+
+            public ModificationType Modification => ModificationAndVelocity.Item1;
+        }
+        
         public class FrameProperty
         {
             [JsonConverter(typeof(UnityVectorConverter))]
-            [JsonProperty] public Vector2 Velocity { get; private set; }
+            [JsonProperty] public VelocityModifier DetailedVelocity { get; private set; }
 
-            public FrameProperty(Vector2 velocity)
+            public FrameProperty(VelocityModifier velocity)
             {
-                Velocity = velocity;
+                DetailedVelocity = velocity;
             }
 
             public FrameProperty()
             {
-                Velocity = new Vector2(0, 0);
+                DetailedVelocity = new VelocityModifier(new Vector2(0, 0));
             }
-            
         }
     }
 }
