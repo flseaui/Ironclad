@@ -70,6 +70,7 @@ namespace DATA
 
         public FrameType FrameTypeAt(int i) => _frames[i];
         
+        [JsonObject(MemberSerialization.OptIn)]
         public class Box
         {   
             public enum BoxType
@@ -113,31 +114,32 @@ namespace DATA
             public Box() : this(BoxType.Hit, 0, 0, 5, 5, 0, 0, 0, 1) { }
         }
 
+        [JsonObject(MemberSerialization.OptIn)]
         public class VelocityModifier
         {
             public enum ModificationType
             {
-                Target,
-                IgnoreX,
-                IgnoreY,
-                IgnoreBoth
+                [UsedImplicitly] Target,
+                [UsedImplicitly] IgnoreX,
+                [UsedImplicitly] IgnoreY,
+                [UsedImplicitly] IgnoreBoth
             }
 
-            public VelocityModifier(Vector2 velocity, ModificationType modificationType = ModificationType.IgnoreBoth)
+            public VelocityModifier(Vector2 velocity = default, ModificationType modificationType = ModificationType.IgnoreBoth)
             {
-                ModificationAndVelocity = (modificationType, velocity);
-            }
-            
-            public (ModificationType, Vector2) ModificationAndVelocity { get; }
+                Velocity = velocity;
+                Modification = modificationType;
+            }  
 
-            public Vector2 Velocity => ModificationAndVelocity.Item2;
+            [JsonProperty] public Vector2 Velocity { get; private set; }
 
-            public ModificationType Modification => ModificationAndVelocity.Item1;
+            [JsonConverter(typeof(StringEnumConverter)), JsonProperty]
+            public ModificationType Modification { get; private set; }
         }
         
+        [JsonObject(MemberSerialization.OptIn)]
         public class FrameProperty
         {
-            [JsonConverter(typeof(UnityVectorConverter))]
             [JsonProperty] public VelocityModifier DetailedVelocity { get; private set; }
 
             public FrameProperty(VelocityModifier velocity)
@@ -147,7 +149,7 @@ namespace DATA
 
             public FrameProperty()
             {
-                DetailedVelocity = new VelocityModifier(new Vector2(0, 0));
+                DetailedVelocity = new VelocityModifier();
             }
         }
     }

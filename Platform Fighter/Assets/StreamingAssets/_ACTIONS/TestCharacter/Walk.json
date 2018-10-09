@@ -14,10 +14,13 @@
   },
     "FrameProperties": [
 		{
-			"Velocity": {
-				"x": 5.0,
-				"y": 0.0
-			}
+          "DetailedVelocity": {
+            "Velocity": {
+              "x": 5.0,
+              "y": 0.0
+            },
+            "Modification": "IgnoreY"
+          }
 		}
 	],
   "Hitboxes": [

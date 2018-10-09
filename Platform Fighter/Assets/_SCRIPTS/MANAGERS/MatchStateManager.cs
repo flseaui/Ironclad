@@ -13,7 +13,7 @@ namespace MANAGERS
     public class MatchStateManager : Singleton<MatchStateManager>
     {
         // Prefabs
-        [FormerlySerializedAs("PlayerPrefab"),SerializeField]
+        [SerializeField]
         private GameObject _playerPrefab;
 
         private List<GameObject> _activePlayers;

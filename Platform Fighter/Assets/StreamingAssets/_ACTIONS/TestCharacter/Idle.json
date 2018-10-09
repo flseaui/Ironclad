@@ -16,22 +16,31 @@
   },
   "FrameProperties": [
       {
+        "DetailedVelocity": {
           "Velocity": {
-              "x": 0.0,
-              "y": 0.0
-          }
+            "x": 0.0,
+            "y": 0.0
+          },
+          "Modification": "IgnoreY"
+        }
       },
       {
+        "DetailedVelocity": {
           "Velocity": {
-              "x": 0.0,
-              "y": 0.0
-          }
+            "x": 0.0,
+            "y": 0.0
+          },
+          "Modification": "IgnoreY"
+        }
       },
       {
+        "DetailedVelocity": {
           "Velocity": {
-              "x": 0.0,
-              "y": 0.0
-          }
+            "x": 0.0,
+            "y": 0.0
+          },
+          "Modification": "IgnoreY"
+        }
       }
   ],
   "Hitboxes": [
