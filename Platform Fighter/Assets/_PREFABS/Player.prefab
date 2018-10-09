@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 114269284827562152}
   - component: {fileID: 114919772373162646}
   - component: {fileID: 95703801719290990}
+  - component: {fileID: 4337195290793705567}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -148,13 +149,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92cc23270c7ec9d4888f392b5fa53239, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Acceleration: {x: 0, y: 0}
   CurrentAction: 0
   Direction: 0
   TerminalVelocity: {x: 0, y: 0}
   Percent: 0
-  PlayerVelocity: {x: 0, y: 0}
-  MovementVelocity: {x: 0, y: 0}
+  CurrentVelocity: {x: 0, y: 0}
+  TargetVelocity: {x: 0, y: 0}
+  Acceleration: {x: 0, y: 0}
   KnockbackVelocity: {x: 0, y: 0}
   gravity: 0
 --- !u!114 &114053516341619698
@@ -265,3 +266,15 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4337195290793705567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1110542900291582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fa69ca5b9941c9a5577eeb42314c47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -77,7 +77,7 @@ namespace PLAYER
                 OnActionBegin?.Invoke();
             }
             
-           UpdateBoxes(_currentActionFrame);
+            UpdateBoxes(_currentActionFrame);
             
             UpdateSprite();
 

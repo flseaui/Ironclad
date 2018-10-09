@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MISC;
+using NETWORKING;
 using PLAYER;
 using TOOLS;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Types = DATA.Types;
 
 namespace MANAGERS
@@ -11,16 +13,22 @@ namespace MANAGERS
     public class MatchStateManager : Singleton<MatchStateManager>
     {
         // Prefabs
-        public GameObject PlayerPrefab;
+        [FormerlySerializedAs("PlayerPrefab"),SerializeField]
+        private GameObject _playerPrefab;
 
+        private List<GameObject> _activePlayers;
+        
         private void Start()
         {
+            _activePlayers = new List<GameObject>();
+            
             MatchStart();
         }
 
+        public GameObject GetPlayer(int playerId) => _activePlayers.FirstOrDefault(player => player.GetComponent<NetworkIdentity>().Id == playerId);
+        
         private void MatchStart()
         {
-
             var spawnPoints = SpawnStage();
             
             GameManager.Instance.Characters = new []
@@ -33,7 +41,7 @@ namespace MANAGERS
             {
                 var player = Instantiate
                 (
-                    PlayerPrefab,
+                    _playerPrefab,
                     spawnPoints[i].position,
                     spawnPoints[i].rotation
                 );
@@ -41,7 +49,8 @@ namespace MANAGERS
                 AssetManager.Instance.PopulateActions(GameManager.Instance.Characters);
 
                 player.GetComponent<PlayerInput>().Id = i;
-                player.GetComponent<PlayerInput>().Id = i;
+                player.GetComponent<NetworkIdentity>().Id = i;
+                _activePlayers.Add(player);
             }
         }
 

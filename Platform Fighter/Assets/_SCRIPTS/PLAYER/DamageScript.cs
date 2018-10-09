@@ -12,13 +12,13 @@ namespace PLAYER
 			_playerData = GetComponent<PlayerData>();
 		}
 
-		public void ApplyDamage(double Damage, double KnockbackStrength, double KnockbackAngle)
+		public void ApplyDamage(double damage, double knockbackStrength, double knockbackAngle)
 		{
-			_playerData.Percent += Damage;
+			_playerData.Percent += damage;
 
 			//Find some way to determine direction
-			_playerData.KnockbackVelocity.x = (float)((KnockbackStrength + KnockbackStrength * _playerData.Percent) * Mathf.Cos((float)KnockbackAngle)); //* positive or negitive for left or right
-			_playerData.KnockbackVelocity.x = (float)((KnockbackStrength + KnockbackStrength * _playerData.Percent) * Mathf.Sin((float)KnockbackAngle));
+			_playerData.KnockbackVelocity.x = (float)((knockbackStrength + knockbackStrength * _playerData.Percent) * Mathf.Cos((float)knockbackAngle)); //* positive or negitive for left or right
+			_playerData.KnockbackVelocity.x = (float)((knockbackStrength + knockbackStrength * _playerData.Percent) * Mathf.Sin((float)knockbackAngle));
 
 			Debug.Log("DAMAGE BITCH");
 		}

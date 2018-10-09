@@ -15,7 +15,7 @@ namespace PLAYER
             
             if (playerBoxType == ActionInfo.Box.BoxType.Hurt && oppenantBoxType == ActionInfo.Box.BoxType.Hit)
             {
-                //Needs to determin direction
+                //Needs to determine direction
 
                 GetComponentInParent<DamageScript>().ApplyDamage(boxData.Damage, boxData.KnockbackStrength, boxData.KnockbackAngle);
             }
