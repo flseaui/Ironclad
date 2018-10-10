@@ -1,9 +1,7 @@
 using System;
-using System.Threading;
 using ATTRIBUTES;
 using Facepunch.Steamworks;
 using MANAGERS;
-using TOOLS;
 using UnityEngine;
 using Types = DATA.Types;
 
@@ -24,7 +22,7 @@ namespace MENU
             Client.Instance.Lobby.OnLobbyMemberDataUpdated = OnMemberDataUpdated;
             Client.Instance.Lobby.OnLobbyStateChanged = OnStateChange;
             Client.Instance.Lobby.OnChatMessageRecieved = OnChatMessage;
-            
+
             if (args.Length > 0)
             {
                 if (args[0] == "create")
@@ -40,12 +38,11 @@ namespace MENU
             _playerProfilerPanel.ClearPlayerProfiles();
             _playerProfilerPanel.AddPlayerProfile(Client.Instance.SteamId);
 
-            
-            
-             Debug.Log("lobby created: " + Client.Instance.Lobby.CurrentLobby);
-             Debug.Log($"Owner: {Client.Instance.Lobby.Owner}");
-             Debug.Log($"Max Members: {Client.Instance.Lobby.MaxMembers}");
-             Debug.Log($"Num Members: {Client.Instance.Lobby.NumMembers}");
+
+            Debug.Log("lobby created: " + Client.Instance.Lobby.CurrentLobby);
+            Debug.Log($"Owner: {Client.Instance.Lobby.Owner}");
+            Debug.Log($"Max Members: {Client.Instance.Lobby.MaxMembers}");
+            Debug.Log($"Num Members: {Client.Instance.Lobby.NumMembers}");
         }
 
         private void OnJoined(bool success)
@@ -56,14 +53,14 @@ namespace MENU
 
         private void OnDataUpdated()
         {
-            Debug.Log( "OnLobbyDataUpdated");
+            Debug.Log("OnLobbyDataUpdated");
             _playerProfilerPanel.ClearPlayerProfiles();
             foreach (var member in Client.Instance.Lobby.GetMemberIDs()) _playerProfilerPanel.AddPlayerProfile(member);
         }
 
         private void OnMemberDataUpdated(ulong member)
         {
-            Debug.Log( "OnLobbyMemberDataUpdated");
+            Debug.Log("OnLobbyMemberDataUpdated");
             if (Client.Instance.Lobby.GetMemberData(member, "ready").Equals("true"))
             {
                 Debug.Log("ddddd");
@@ -81,7 +78,7 @@ namespace MENU
 
         private void OnStateChange(Lobby.MemberStateChange change, ulong initiator, ulong affectee)
         {
-            Debug.Log( "OnLobbyStateChanged");
+            Debug.Log("OnLobbyStateChanged");
             switch (change)
             {
                 case Lobby.MemberStateChange.Entered:

@@ -4,7 +4,6 @@ using System.Text;
 using Facepunch.Steamworks;
 using MANAGERS;
 using MISC;
-using Newtonsoft.Json;
 using PLAYER;
 using UnityEngine;
 
@@ -51,7 +50,7 @@ namespace NETWORKING
 
             SendP2PMessage(movementMessage);
         }
-        
+
         public static void SendP2PMessage(P2PMessage message)
         {
             var serializedMessage = JsonUtility.ToJson(message);

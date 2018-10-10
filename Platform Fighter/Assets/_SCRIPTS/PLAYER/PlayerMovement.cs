@@ -1,18 +1,15 @@
-﻿using System;
-using NETWORKING;
+﻿using NETWORKING;
 using UnityEngine;
-using Types = DATA.Types;
 
 namespace PLAYER
 {
     [RequireComponent(typeof(PlayerData)), RequireComponent(typeof(Rigidbody2D))]
     public class PlayerMovement : MonoBehaviour
     {
+        private Vector2 _addedForce;
         private PlayerData Data { get; set; }
 
         private Rigidbody2D Rigidbody { get; set; }
-
-        private Vector2 _addedForce;
 
         private void Awake()
         {
@@ -24,7 +21,7 @@ namespace PLAYER
         {
             CalculateVelocity();
         }
-        
+
         private void FixedUpdate()
         {
             MovePlayer(_addedForce, true);
@@ -75,29 +72,29 @@ namespace PLAYER
             if (Data.CurrentVelocity.x != Data.TargetVelocity.x)
             {
                 if (Data.CurrentVelocity.x > Data.TargetVelocity.x)
-                    _addedForce.x = (Data.CurrentVelocity.x - Data.TargetVelocity.x >= Data.Acceleration.x
+                    _addedForce.x = Data.CurrentVelocity.x - Data.TargetVelocity.x >= Data.Acceleration.x
                         ? -Data.Acceleration.x
-                        : -(Data.CurrentVelocity.x - Data.TargetVelocity.x));
+                        : -(Data.CurrentVelocity.x - Data.TargetVelocity.x);
                 else
-                    _addedForce.x = (Data.TargetVelocity.x - Data.CurrentVelocity.x >= Data.Acceleration.x
+                    _addedForce.x = Data.TargetVelocity.x - Data.CurrentVelocity.x >= Data.Acceleration.x
                         ? Data.Acceleration.x
-                        : Data.TargetVelocity.x - Data.CurrentVelocity.x);
+                        : Data.TargetVelocity.x - Data.CurrentVelocity.x;
             }
             else
+            {
                 _addedForce.x = 0;
-
+            }
         }
 
         public void MovePlayer(Vector2 addedForce, bool sendNetworkAction)
         {
-            
             Debug.Log(addedForce);
             if (addedForce.x != 0)
             {
-                Rigidbody.AddForce(addedForce, ForceMode2D.Impulse);                
+                Rigidbody.AddForce(addedForce, ForceMode2D.Impulse);
                 Data.CurrentVelocity += addedForce;
                 Events.OnEntityMoved(GetComponent<NetworkIdentity>(), addedForce, sendNetworkAction);
-            } 
+            }
         }
     }
 }

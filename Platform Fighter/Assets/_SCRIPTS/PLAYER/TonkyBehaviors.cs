@@ -7,9 +7,10 @@ namespace PLAYER
     {
         public override void RunAction()
         {
-            Data.TargetVelocity = PlayerController.CurrentActionProperties.DetailedVelocity.Velocity * (Data.Direction == Types.Direction.Left ? -1 : 1);
+            Data.TargetVelocity = PlayerController.CurrentActionProperties.DetailedVelocity.Velocity *
+                                  (Data.Direction == Types.Direction.Left ? -1 : 1);
             Data.Acceleration.x = .5f;
-            
+
             switch (Data.CurrentAction)
             {
                 case Types.ActionType.Walk:

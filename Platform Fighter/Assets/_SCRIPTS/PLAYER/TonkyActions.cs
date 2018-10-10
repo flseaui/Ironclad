@@ -7,7 +7,7 @@ namespace PLAYER
         // Returns action that should be started this frame based on current inputs
         // Assumes neutral/idle state
 
-        PlayerData.PlayerLocation Position;
+        private PlayerData.PlayerLocation Position;
 
         protected override Types.ActionType GetCurrentAction()
         {

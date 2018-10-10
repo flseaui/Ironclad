@@ -3,41 +3,41 @@ using System.Linq;
 using MISC;
 using NETWORKING;
 using PLAYER;
-using TOOLS;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Types = DATA.Types;
 
 namespace MANAGERS
 {
     public class MatchStateManager : Singleton<MatchStateManager>
     {
-        // Prefabs
-        [SerializeField]
-        private GameObject _playerPrefab;
-
         private List<GameObject> _activePlayers;
-        
+
+        // Prefabs
+        [SerializeField] private GameObject _playerPrefab;
+
         private void Start()
         {
             _activePlayers = new List<GameObject>();
-            
+
             MatchStart();
         }
 
-        public GameObject GetPlayer(int playerId) => _activePlayers.FirstOrDefault(player => player.GetComponent<NetworkIdentity>().Id == playerId);
-        
+        public GameObject GetPlayer(int playerId) =>
+            _activePlayers.FirstOrDefault(player => player.GetComponent<NetworkIdentity>().Id == playerId);
+
         private void MatchStart()
         {
             var spawnPoints = SpawnStage();
-            
-            GameManager.Instance.Characters = new []
+
+            GameManager.Instance.Characters = new[]
             {
                 Types.Character.TestCharacter,
                 Types.Character.None
             };
-            
-            for (var i = 0; i < GameManager.Instance.Characters.Count(character => character != Types.Character.None); ++i)
+
+            for (var i = 0;
+                i < GameManager.Instance.Characters.Count(character => character != Types.Character.None);
+                ++i)
             {
                 var player = Instantiate
                 (
@@ -62,12 +62,11 @@ namespace MANAGERS
             var stage = Instantiate(stagePrefab);
 
             var spawnPointsParent = stage.transform.Find("SpawnPoints");
-            
+
             return spawnPointsParent
                 .GetComponentsInChildren<Transform>(true)
                 .Where(spawnPoint => spawnPoint.gameObject != spawnPointsParent.gameObject)
                 .ToArray();
         }
-        
     }
 }

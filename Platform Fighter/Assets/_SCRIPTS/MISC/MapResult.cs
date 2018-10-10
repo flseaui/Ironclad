@@ -4,7 +4,7 @@ namespace MISC
 {
     public class MapResult<TValue, TResult>
     {
-        internal MapResult(TValue value, TResult result = default(TResult), bool matchedPreviously = false)
+        internal MapResult(TValue value, TResult result = default, bool matchedPreviously = false)
         {
             OriginalValue = value;
             Result = result;

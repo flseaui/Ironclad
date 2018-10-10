@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using JetBrains.Annotations;
 using MISC;
 using Newtonsoft.Json;
@@ -21,31 +20,12 @@ namespace DATA
             [UsedImplicitly] Buffer
         }
 
-        [JsonProperty] public string Name { get; private set; }
-        
-        [JsonProperty]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public Types.ActionType Type { get; private set; }
-        
         [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         private List<FrameType> _frames;
 
-        [JsonConverter(typeof(UnityVectorConverter))]
-        [JsonProperty] private Vector2 _infinite;
-
-        [JsonConverter(typeof(UnityVectorConverter))]
-        [JsonProperty] public Vector2 Anchor { get; private set; }
-
-        [JsonProperty] public List<List<Box>> Hitboxes { get; private set; }
-        [JsonProperty] public List<List<Box>> Hurtboxes { get; private set; }
-        [JsonProperty] public List<List<Box>> Grabboxes { get; private set; }
-        [JsonProperty] public List<List<Box>> Armorboxes { get; private set; }
-        [JsonProperty] public List<List<Box>> Collisionboxes { get; private set; }
-        [JsonProperty] public List<List<Box>> Databoxes { get; private set; }
+        [JsonConverter(typeof(UnityVectorConverter)), JsonProperty]
         
-        [JsonProperty] public List<FrameProperty> FrameProperties { get; private set; }
-
-        public List<List<Box>> AllBoxes => CollectionTools.Concat(Hitboxes, Hurtboxes, Grabboxes, Armorboxes, Collisionboxes, Databoxes).ToList();
+        private Vector2 _infinite;
 
         public ActionInfo()
         {
@@ -53,6 +33,40 @@ namespace DATA
             _infinite = new Vector2(-1, -1);
             Anchor = new Vector2(0, 0);
         }
+
+        [JsonProperty]
+        public string Name { get; private set; }
+
+        [JsonProperty, JsonConverter(typeof(StringEnumConverter))]
+        public Types.ActionType Type { get; private set; }
+
+        [JsonConverter(typeof(UnityVectorConverter)), JsonProperty]
+        
+        public Vector2 Anchor { get; private set; }
+
+        [JsonProperty]
+        public List<List<Box>> Hitboxes { get; private set; }
+
+        [JsonProperty]
+        public List<List<Box>> Hurtboxes { get; private set; }
+
+        [JsonProperty]
+        public List<List<Box>> Grabboxes { get; private set; }
+
+        [JsonProperty]
+        public List<List<Box>> Armorboxes { get; private set; }
+
+        [JsonProperty]
+        public List<List<Box>> Collisionboxes { get; private set; }
+
+        [JsonProperty]
+        public List<List<Box>> Databoxes { get; private set; }
+
+        [JsonProperty]
+        public List<FrameProperty> FrameProperties { get; private set; }
+
+        public List<List<Box>> AllBoxes => CollectionTools
+            .Concat(Hitboxes, Hurtboxes, Grabboxes, Armorboxes, Collisionboxes, Databoxes).ToList();
 
         public int FrameCount => _frames.Count;
 
@@ -69,10 +83,10 @@ namespace DATA
         }
 
         public FrameType FrameTypeAt(int i) => _frames[i];
-        
+
         [JsonObject(MemberSerialization.OptIn)]
         public class Box
-        {   
+        {
             public enum BoxType
             {
                 [UsedImplicitly] Hit,
@@ -83,20 +97,7 @@ namespace DATA
                 [UsedImplicitly] Data,
                 [UsedImplicitly] Null
             }
-     
-            [JsonProperty] public double Damage { get; private set; }
-            [JsonProperty] public double KnockbackStrength { get; private set; }
-            [JsonProperty] public double KnockbackAngle { get; private set; }
-            
-            [JsonProperty] public int Lifespan { get; private set; }
-            [JsonProperty] public int X { get; private set; }
-            [JsonProperty] public int Y { get; private set; }
-            [JsonProperty] public int Width { get; private set; }
-            [JsonProperty] public int Height { get; private set; }
-            
-            [JsonConverter(typeof(StringEnumConverter))]
-            [JsonProperty] public BoxType Type { get; private set; }
-            
+
             public Box(BoxType type, int x, int y, int width, int height, double damage, double knockbackStrength,
                 double knockbackAngle, int lifespan)
             {
@@ -112,6 +113,34 @@ namespace DATA
             }
 
             public Box() : this(BoxType.Hit, 0, 0, 5, 5, 0, 0, 0, 1) { }
+
+            [JsonProperty]
+            public double Damage { get; private set; }
+
+            [JsonProperty]
+            public double KnockbackStrength { get; private set; }
+
+            [JsonProperty]
+            public double KnockbackAngle { get; private set; }
+
+            [JsonProperty]
+            public int Lifespan { get; private set; }
+
+            [JsonProperty]
+            public int X { get; private set; }
+
+            [JsonProperty]
+            public int Y { get; private set; }
+
+            [JsonProperty]
+            public int Width { get; private set; }
+
+            [JsonProperty]
+            public int Height { get; private set; }
+
+            [JsonConverter(typeof(StringEnumConverter)), JsonProperty]
+            
+            public BoxType Type { get; private set; }
         }
 
         [JsonObject(MemberSerialization.OptIn)]
@@ -125,32 +154,29 @@ namespace DATA
                 [UsedImplicitly] IgnoreBoth
             }
 
-            public VelocityModifier(Vector2 velocity = default, ModificationType modificationType = ModificationType.IgnoreBoth)
+            public VelocityModifier(Vector2 velocity = default,
+                ModificationType modificationType = ModificationType.IgnoreBoth)
             {
                 Velocity = velocity;
                 Modification = modificationType;
-            }  
+            }
 
-            [JsonProperty] public Vector2 Velocity { get; private set; }
+            [JsonProperty]
+            public Vector2 Velocity { get; private set; }
 
             [JsonConverter(typeof(StringEnumConverter)), JsonProperty]
             public ModificationType Modification { get; private set; }
         }
-        
+
         [JsonObject(MemberSerialization.OptIn)]
         public class FrameProperty
         {
-            [JsonProperty] public VelocityModifier DetailedVelocity { get; private set; }
+            public FrameProperty(VelocityModifier velocity) => DetailedVelocity = velocity;
 
-            public FrameProperty(VelocityModifier velocity)
-            {
-                DetailedVelocity = velocity;
-            }
+            public FrameProperty() => DetailedVelocity = new VelocityModifier();
 
-            public FrameProperty()
-            {
-                DetailedVelocity = new VelocityModifier();
-            }
+            [JsonProperty]
+            public VelocityModifier DetailedVelocity { get; private set; }
         }
     }
 }

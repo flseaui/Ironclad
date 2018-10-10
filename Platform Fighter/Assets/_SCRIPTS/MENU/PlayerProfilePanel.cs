@@ -2,7 +2,6 @@
 using System.Linq;
 using Facepunch.Steamworks;
 using MISC;
-using UnityEditor.Sprites;
 using UnityEngine;
 using Color = UnityEngine.Color;
 using Image = UnityEngine.UI.Image;
@@ -34,7 +33,7 @@ namespace MENU
             steamAvatar.Fetch();
 
             var d = new Vector2();
-            
+
             playerProfile.GetComponent<PlayerProfile>().SetBorderColor
             (
                 _playerCount
@@ -45,7 +44,7 @@ namespace MENU
                     .Else(Color.white)
             );
 
-            playerProfile.GetComponent<PlayerProfile>().SetPlayerName($"Player {_playerCount}");
+            playerProfile.GetComponent<PlayerProfile>().SetPlayerName(Client.Instance.Friends.GetName(playerId));
             _playerProfiles.Add(new ProfileInfo(playerProfile, playerId));
         }
 

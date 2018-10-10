@@ -5,14 +5,10 @@ namespace PLAYER
 {
     public class PlayerData : MonoBehaviour
     {
-        public Types.ActionType CurrentAction;
-
-        public Types.Direction Direction;
-
         public enum PlayerLocation
         {
             Grounded,
-            Airborne,
+            Airborne
         }
 
         public enum PlayerState
@@ -20,19 +16,23 @@ namespace PLAYER
             KnockedDown,
             OnLedge,
             Stunned,
-            FreeFall,
+            FreeFall
         }
 
-        public Vector2 TerminalVelocity;
+        public Types.ActionType CurrentAction;
 
-        public double Percent;
-
-        public Vector2 
+        public Vector2
             CurrentVelocity,
             TargetVelocity,
             Acceleration,
             KnockbackVelocity;
 
+        public Types.Direction Direction;
+
         public float gravity;
+
+        public double Percent;
+
+        public Vector2 TerminalVelocity;
     }
 }

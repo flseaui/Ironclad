@@ -8,7 +8,7 @@ namespace PLAYER
         protected PlayerData Data { get; private set; }
 
         protected PlayerController PlayerController { get; private set; }
-        
+
         private void Awake()
         {
             Data = GetComponent<PlayerData>();

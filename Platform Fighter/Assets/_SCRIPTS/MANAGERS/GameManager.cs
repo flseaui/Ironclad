@@ -12,7 +12,7 @@ namespace MANAGERS
         };
 
         public Types.Stage Stage { get; set; } = Types.Stage.TestStage;
-        
+
         private void StartGame() { }
     }
 }

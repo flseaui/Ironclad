@@ -9,10 +9,10 @@ namespace PLAYER
         public double KnockbackAngle { get; private set; }
         public double KnockbackStrength { get; private set; }
         public double Damage { get; private set; }
-        
+
         public int Lifespan { get; private set; }
         public int X { get; private set; }
-        public int Y { get; private set;}
+        public int Y { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
 

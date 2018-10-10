@@ -4,9 +4,6 @@ using System.Linq;
 using DATA;
 using MISC;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
-using TOOLS;
 using UnityEngine;
 using Types = DATA.Types;
 
@@ -14,40 +11,11 @@ namespace MANAGERS
 {
     public class AssetManager : Singleton<AssetManager>
     {
-        [SerializeField] private GameObject[] _stagePrefabs;
-        
         private List<ActionSet> _actionSets;
-
-        public class ActionSet
-        {
-            private Dictionary<Types.ActionType, ActionInfo> _actionsDictionary;
-
-            public Types.Character Character { get; }
-            
-            public ActionSet()
-            {
-                _actionsDictionary = new Dictionary<Types.ActionType, ActionInfo>();
-            }
-
-            public ActionSet(Types.Character character, Dictionary<Types.ActionType, ActionInfo> actionsDictionary)
-            {
-                Character = character;
-                _actionsDictionary = actionsDictionary;
-            }
-
-            public IEnumerable<ActionInfo> Actions => _actionsDictionary.Values;
-
-            public ActionInfo GetAction(Types.ActionType actionType)
-            {
-                return _actionsDictionary.ContainsKey(actionType)
-                    ? _actionsDictionary[actionType]
-                    : _actionsDictionary[Types.ActionType.Idle];
-            }
-            
-        }
+        [SerializeField] private GameObject[] _stagePrefabs;
 
         private void Awake() => _actionSets = new List<ActionSet>();
-        
+
         /**
          * STAGES
          */
@@ -56,7 +24,7 @@ namespace MANAGERS
             _stagePrefabs.FirstOrDefault(prefab => prefab.name == stage.ToString());
 
         public GameObject GetStageByIndex(int index) => _stagePrefabs[index];
-        
+
         /**
          * ACTIONS
          */
@@ -75,7 +43,7 @@ namespace MANAGERS
             {
                 if (character == Types.Character.None)
                     continue;
-                
+
                 _actionSets.Add(new ActionSet(character, LoadActions(character)));
             }
         }
@@ -105,6 +73,27 @@ namespace MANAGERS
             }
 
             return actions;
+        }
+
+        public class ActionSet
+        {
+            private readonly Dictionary<Types.ActionType, ActionInfo> _actionsDictionary;
+
+            public ActionSet() => _actionsDictionary = new Dictionary<Types.ActionType, ActionInfo>();
+
+            public ActionSet(Types.Character character, Dictionary<Types.ActionType, ActionInfo> actionsDictionary)
+            {
+                Character = character;
+                _actionsDictionary = actionsDictionary;
+            }
+
+            public Types.Character Character { get; }
+
+            public IEnumerable<ActionInfo> Actions => _actionsDictionary.Values;
+
+            public ActionInfo GetAction(Types.ActionType actionType) => _actionsDictionary.ContainsKey(actionType)
+                ? _actionsDictionary[actionType]
+                : _actionsDictionary[Types.ActionType.Idle];
         }
     }
 }

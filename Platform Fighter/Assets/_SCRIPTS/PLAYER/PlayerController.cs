@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
 using DATA;
 using MANAGERS;
-using TOOLS;
 using UnityEngine;
 using Types = DATA.Types;
 
@@ -17,52 +14,54 @@ namespace PLAYER
     [RequireComponent(typeof(PlayerData))]
     public class PlayerController : MonoBehaviour
     {
-        public static event OnActionEndCallback OnActionEnd;
-        public static event OnActionBeginCallback OnActionBegin;
+        private Animator _animator;
+
+        private BoxPool _boxPool;
+
+        [SerializeField] private GameObject _boxPrefab;
+        private ActionInfo _currentAction;
+
+        private int _currentActionFrame;
+
+        private PlayerData _data;
+        private SpriteRenderer _spriteRenderer;
 
         public ActionInfo.FrameProperty CurrentActionProperties
         {
             get
             {
-                if (_currentAction?.FrameProperties == null || _currentActionFrame < 0) return new ActionInfo.FrameProperty();
-                
-                return _currentAction.FrameProperties[_currentActionFrame]; 
+                if (_currentAction?.FrameProperties == null || _currentActionFrame < 0)
+                    return new ActionInfo.FrameProperty();
+
+                return _currentAction.FrameProperties[_currentActionFrame];
             }
         }
 
-        private int _currentActionFrame;
-        
-        private PlayerData _data;
-        private SpriteRenderer _spriteRenderer;
-        private Animator _animator;
-        private ActionInfo _currentAction;
+        public static event OnActionEndCallback OnActionEnd;
+        public static event OnActionBeginCallback OnActionBegin;
 
-        private BoxPool _boxPool;
-
-        [SerializeField] private GameObject _boxPrefab;
-        
         private void Awake()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
 
             _animator = GetComponent<Animator>();
-            
+
             _data = GetComponent<PlayerData>();
-            
+
             _boxPool = new BoxPool();
         }
 
         private void Start()
         {
             _data.Direction = Types.Direction.Right;
-            PlayerData.PlayerLocation Position = PlayerData.PlayerLocation.Grounded;
-            
+            var Position = PlayerData.PlayerLocation.Grounded;
+
             PoolBoxes();
         }
-        
+
         private void Update()
         {
-           //Debug.Log($"{_data.CurrentAction} {_data.Direction}");
+            //Debug.Log($"{_data.CurrentAction} {_data.Direction}");
 
             ExecuteAction();
         }
@@ -76,13 +75,13 @@ namespace PLAYER
                 _animator.SetInteger("CurrentAction", (int) _currentAction.Type);
                 OnActionBegin?.Invoke();
             }
-            
+
             UpdateBoxes(_currentActionFrame);
-            
+
             UpdateSprite();
 
             ++_currentActionFrame;
-           
+
             // last frame of action
             if (_currentActionFrame >= _currentAction.FrameCount - 1)
             {
@@ -100,7 +99,6 @@ namespace PLAYER
                     foreach (var frame in boxes)
                     {
                         if (frame.Count > 0)
-                        {
                             foreach (var hitbox in frame)
                             {
                                 var box = Instantiate(_boxPrefab, transform);
@@ -114,16 +112,13 @@ namespace PLAYER
 
                                 _boxPool.AddBox(boxData);
                             }
-                        }
                         else
-                        {
                             _boxPool.AddNullBox(actionType, frameCount).gameObject.transform.parent = transform;
-                        }
 
                         ++frameCount;
                     }
                 };
-            
+
             var actionSet = AssetManager.Instance.GetActionSet(Types.Character.TestCharacter);
             foreach (var action in actionSet.Actions)
             {
@@ -135,7 +130,7 @@ namespace PLAYER
                 CreateBoxes(action.Databoxes, action.Type);
             }
         }
-        
+
         private void UpdateBoxes(int frame)
         {
             // TODO disable old boxes and enable new ones<w
