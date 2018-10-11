@@ -17,7 +17,8 @@ namespace MENU
 
         public void InviteFriend()
         {
-            Client.Instance.Lobby.OpenFriendInviteOverlay();
+            //TODO Add friend inviting code here
+            //Client.Instance.Overlay.
 
             Client.Instance.Lobby.OnLobbyJoined = delegate(bool successfullyJoined)
             {

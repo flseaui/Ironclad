@@ -1,9 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 using Facepunch.Steamworks;
 using UnityEngine.UI;
 
 //
-// To change at runtime call Fetch( steamid )
+// To change at runtime set SteamId then call Fetch()
 //
 public class SteamAvatar : MonoBehaviour
 {
@@ -13,29 +13,23 @@ public class SteamAvatar : MonoBehaviour
 
     void Start()
     {
-        if ( SteamId > 0 )
-            Fetch( SteamId );
+        Fetch();
     }
 
-    public void Fetch( ulong steamid )
+    public void Fetch()
     {
-        if ( steamid == 0 ) return;
-
+        if (SteamId == 0) return;
         if (Client.Instance == null)
         {
             ApplyTexture(FallbackTexture);
             return;
         }
 
-        SteamId = steamid;
-        Client.Instance.Friends.GetAvatar(Size, SteamId, ( i ) => OnImage( i, steamid ));
+        Client.Instance.Friends.GetAvatar(Size, SteamId, OnImage);
     }
 
-    private void OnImage( Facepunch.Steamworks.Image image, ulong steamid )
+    private void OnImage( Facepunch.Steamworks.Image image )
     {
-        if ( steamid != SteamId )
-            return;
-
         if ( image == null )
         {
             ApplyTexture(FallbackTexture);

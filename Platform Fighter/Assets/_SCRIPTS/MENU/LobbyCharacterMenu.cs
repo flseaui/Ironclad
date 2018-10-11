@@ -22,15 +22,17 @@ namespace MENU
             Client.Instance.Lobby.OnLobbyMemberDataUpdated = OnMemberDataUpdated;
             Client.Instance.Lobby.OnLobbyStateChanged = OnStateChange;
             Client.Instance.Lobby.OnChatMessageRecieved = OnChatMessage;
-
+            
             if (args.Length > 0)
             {
                 if (args[0] == "create")
                     Client.Instance.Lobby.Create(Lobby.Type.Public, 2);
-                else if (args[0] == "join") Client.Instance.Lobby.Join(ulong.Parse(args[1]));
+                else if (args[0] == "join") 
+                    Client.Instance.Lobby.Join(ulong.Parse(args[1]));
             }
         }
 
+        
         private void OnCreated(bool success)
         {
             if (!success) return;
@@ -54,20 +56,28 @@ namespace MENU
         private void OnDataUpdated()
         {
             Debug.Log("OnLobbyDataUpdated");
-            _playerProfilerPanel.ClearPlayerProfiles();
-            foreach (var member in Client.Instance.Lobby.GetMemberIDs()) _playerProfilerPanel.AddPlayerProfile(member);
+            //_playerProfilerPanel.ClearPlayerProfiles();
+            //foreach (var member in Client.Instance.Lobby.GetMemberIDs()) _playerProfilerPanel.AddPlayerProfile(member);
         }
 
-        private void OnMemberDataUpdated(ulong member)
+        private void OnMemberDataUpdated(ulong steamId)
         {
             Debug.Log("OnLobbyMemberDataUpdated");
-            if (Client.Instance.Lobby.GetMemberData(member, "ready").Equals("true"))
+            switch(Client.Instance.Lobby.GetMemberData(steamId, "ready"))
             {
-                Debug.Log("ddddd");
-                _playerProfilerPanel.ReadyPlayerProfile(member);
-                ++_playerReady;
-                if (_playerReady >= Client.Instance.Lobby.NumMembers)
-                    MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;
+                case "true":
+                    _playerProfilerPanel.ReadyPlayerProfile(steamId);
+                    ++_playerReady;
+                    if (_playerReady >= Client.Instance.Lobby.NumMembers && Client.Instance.Lobby.NumMembers > 1)
+                        MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;
+                    
+                    break;
+                case "false":
+                    _playerProfilerPanel.UnreadyPlayerProfile(steamId);
+                    if (_playerReady > 0)
+                        --_playerReady;
+                    
+                    break;
             }
         }
 
@@ -101,7 +111,11 @@ namespace MENU
 
         public void ReadyToPlay()
         {
-            Client.Instance.Lobby.SetMemberData("ready", "true");
+            Debug.Log(Client.Instance.Lobby.GetMemberData(Client.Instance.SteamId, "ready"));
+            if (Client.Instance.Lobby.GetMemberData(Client.Instance.SteamId, "ready") != "true")
+                Client.Instance.Lobby.SetMemberData("ready", "true");
+            else
+                Client.Instance.Lobby.SetMemberData("ready", "false");
             //Client.Instance.Lobby.OnLobbyMemberDataUpdated(Client.Instance.SteamId);
             Debug.Log("wedy 2 pway");
         }
