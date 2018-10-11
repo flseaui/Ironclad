@@ -51,6 +51,7 @@ namespace MENU
         {
             Debug.Log("OnLobbyJoined");
             if (!success) return;
+            foreach (var member in Client.Instance.Lobby.GetMemberIDs()) _playerProfilerPanel.AddPlayerProfile(member);
         }
 
         private void OnDataUpdated()
@@ -111,7 +112,6 @@ namespace MENU
 
         public void ReadyToPlay()
         {
-            Debug.Log(Client.Instance.Lobby.GetMemberData(Client.Instance.SteamId, "ready"));
             if (Client.Instance.Lobby.GetMemberData(Client.Instance.SteamId, "ready") != "true")
                 Client.Instance.Lobby.SetMemberData("ready", "true");
             else
