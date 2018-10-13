@@ -29,12 +29,6 @@ namespace MANAGERS
         {
             var spawnPoints = SpawnStage();
 
-            GameManager.Instance.Characters = new[]
-            {
-                Types.Character.TestCharacter,
-                Types.Character.None
-            };
-
             for (var i = 0;
                 i < GameManager.Instance.Characters.Count(character => character != Types.Character.None);
                 ++i)

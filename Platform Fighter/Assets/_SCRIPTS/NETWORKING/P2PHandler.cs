@@ -14,6 +14,7 @@ namespace NETWORKING
         private void Start()
         {
             Events.OnEntityMoved += SendP2PMove;
+            Events.OnEntitySpawned += SendP2PSpawn;
             SubscribeToP2PEvents();
         }
 
@@ -51,6 +52,16 @@ namespace NETWORKING
             SendP2PMessage(movementMessage);
         }
 
+        private void SendP2PSpawn(NetworkIdentity networkIdentity, bool sendNetworkAction)
+        {
+            if (!sendNetworkAction) return;
+
+            var spawnBody = new P2PSpawn(networkIdentity.Id);
+            var spawningMessage = new P2PMessage(networkIdentity.Id, P2PMessageKey.Spawn, spawnBody.Serialize());
+
+            SendP2PMessage(spawningMessage);
+        }
+        
         public static void SendP2PMessage(P2PMessage message)
         {
             var serializedMessage = JsonUtility.ToJson(message);
@@ -72,6 +83,11 @@ namespace NETWORKING
 
                     //note the false flag, which instructs the program to NOT also try sending the event again.
                     player.GetComponent<PlayerMovement>().MovePlayer(moveBody.AddedForce, false);
+                    break;
+                case P2PMessageKey.Spawn:
+                    var spawnBody = JsonUtility.FromJson<P2PSpawn>(msg.Body);
+                    
+                    
                     break;
             }
         }

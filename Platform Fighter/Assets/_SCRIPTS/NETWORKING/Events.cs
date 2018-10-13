@@ -6,5 +6,6 @@ namespace NETWORKING
     public static class Events
     {
         public static Action<NetworkIdentity, Vector2, bool> OnEntityMoved;
+        public static Action<NetworkIdentity, bool> OnEntitySpawned;
     }
 }

@@ -18,4 +18,17 @@ namespace NETWORKING
 
         public string Serialize() => JsonUtility.ToJson(this);
     }
+
+    [Serializable]
+    public struct P2PSpawn : IP2PAction
+    {
+        public int NetworkId;
+        
+        public P2PSpawn(int networkId)
+        {
+            NetworkId = networkId;
+        }
+        
+        public string Serialize() => JsonUtility.ToJson(this);
+    }
 }

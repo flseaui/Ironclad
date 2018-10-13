@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using ATTRIBUTES;
 using Facepunch.Steamworks;
 using MANAGERS;
+using MISC;
 using UnityEngine;
 using Types = DATA.Types;
 
@@ -11,7 +13,7 @@ namespace MENU
     public class LobbyCharacterMenu : Menu
     {
         [SerializeField] private PlayerProfilePanel _playerProfilerPanel;
-
+        
         private int _playerReady;
 
         protected override void SwitchToThis(params string[] args)
@@ -37,9 +39,10 @@ namespace MENU
         {
             if (!success) return;
 
+            SetupMemberData();
+            
             _playerProfilerPanel.ClearPlayerProfiles();
             _playerProfilerPanel.AddPlayerProfile(Client.Instance.SteamId);
-
 
             Debug.Log("lobby created: " + Client.Instance.Lobby.CurrentLobby);
             Debug.Log($"Owner: {Client.Instance.Lobby.Owner}");
@@ -51,9 +54,18 @@ namespace MENU
         {
             Debug.Log("OnLobbyJoined");
             if (!success) return;
+
+            SetupMemberData();
+            
             foreach (var member in Client.Instance.Lobby.GetMemberIDs()) _playerProfilerPanel.AddPlayerProfile(member);
         }
 
+        private void SetupMemberData()
+        {
+            Client.Instance.Lobby.SetMemberData("character", "testCharacter");
+            Client.Instance.Lobby.SetMemberData("ready", "false");
+        }
+        
         private void OnDataUpdated()
         {
             Debug.Log("OnLobbyDataUpdated");
@@ -70,8 +82,23 @@ namespace MENU
                     _playerProfilerPanel.ReadyPlayerProfile(steamId);
                     ++_playerReady;
                     if (_playerReady >= Client.Instance.Lobby.NumMembers && Client.Instance.Lobby.NumMembers > 1)
+                    {
+                        var tempCharacterArray = new List<Types.Character>();
+                        foreach (var id in Client.Instance.Lobby.GetMemberIDs())
+                        {
+                            tempCharacterArray.Add(CharacterStringToId(Client.Instance.Lobby.GetMemberData(id, "character")));
+                        }
+                        
+                        GameManager.Instance.Characters = tempCharacterArray.ToArray();
+
+                        foreach (var character in GameManager.Instance.Characters)
+                        {
+                            Debug.Log(character.ToString());    
+                        }
+                         
                         MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;
-                    
+                    }
+
                     break;
                 case "false":
                     _playerProfilerPanel.UnreadyPlayerProfile(steamId);
@@ -120,6 +147,29 @@ namespace MENU
             Debug.Log("wedy 2 pway");
         }
 
+        public Types.Character CharacterStringToId(string character)
+        {
+            Debug.Log("Character:" + character);
+            switch (character)
+            {
+                case "testCharacter":
+                    return Types.Character.TestCharacter;
+                default:
+                    return Types.Character.None;
+            }
+        }
+
+        public void OnCharacterChanged(int character)
+        {
+            Debug.Log("DDDDDDDDDDDD");
+            Client.Instance.Lobby.SetMemberData
+            (
+                "character", 
+                character
+                .Map(0, "testCharacter" )
+            );
+        }
+        
         public void GoBack()
         {
             _playerProfilerPanel.ClearPlayerProfiles();

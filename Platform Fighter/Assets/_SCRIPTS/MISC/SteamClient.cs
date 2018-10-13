@@ -11,11 +11,21 @@ namespace MISC
         public uint AppId;
 
         private Client client;
-
+        
+        private static bool Instantiated;
+        
         private void Start()
         {
+            if (Instantiated)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            
             DontDestroyOnLoad(gameObject);
 
+            Instantiated = true;
+            
             if (AppId == 0)
                 throw new Exception("You need to set the AppId to your game");
 
