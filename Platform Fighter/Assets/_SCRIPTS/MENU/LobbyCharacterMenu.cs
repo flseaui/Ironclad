@@ -88,12 +88,7 @@ namespace MENU
                         }
                         
                         GameManager.Instance.Characters = tempCharacterArray.ToArray();
-
-                        foreach (var character in GameManager.Instance.Characters)
-                        {
-                            Debug.Log(character.ToString());    
-                        }
-                         
+                        
                         MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;
                     }
 

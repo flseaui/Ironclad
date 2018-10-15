@@ -12,7 +12,6 @@ namespace PLAYER
         private void Awake()
         {
             Inputs = new bool[Enum.GetNames(typeof(Types.Input)).Length];
-            Debug.Log("LENGTH: " + Inputs.Length);
         }
     }
 }

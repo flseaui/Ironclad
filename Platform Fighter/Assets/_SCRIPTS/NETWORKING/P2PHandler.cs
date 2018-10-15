@@ -60,6 +60,8 @@ namespace NETWORKING
             
             var body = new P2PInputSet(networkIdentity.Id, inputs);
             var message = new P2PMessage(networkIdentity.Id, P2PMessageKey.InputSet, body.Serialize());
+           
+            Debug.Log(message.Body);
             
             SendP2PMessage(message);
         }

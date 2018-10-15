@@ -32,9 +32,9 @@ namespace PLAYER
             var player = ReInput.players.GetPlayer(Id);
 
             _changedInputs.Clear();
-            
-            _prevInputs = Inputs;
-            
+
+            Inputs.CopyTo(_prevInputs, 0);
+                
             for (var index = 0; index < Inputs.Length; index++)
             {
                 Inputs[index] = false;

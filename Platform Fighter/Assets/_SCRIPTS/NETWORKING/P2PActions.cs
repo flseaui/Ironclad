@@ -9,6 +9,7 @@ namespace NETWORKING
     {
         public int NetworkId;
 
+        [Serializable]
         public struct InputChange
         {
             public Types.Input InputType;
