@@ -83,7 +83,7 @@ namespace NETWORKING
             var data = Encoding.UTF8.GetBytes(serializedMessage);
 
             foreach (var id in Client.Instance.Lobby.GetMemberIDs().Where(id => id != Client.Instance.SteamId))
-                Client.Instance.Networking.SendP2PPacket(id, data, data.Length, Networking.SendType.Reliable, 0);
+                Client.Instance.Networking.SendP2PPacket(id, data, data.Length, Networking.SendType.Unreliable, 0);
         }
 
         public void ParseP2PMessage(ulong senderID, P2PMessage msg)
