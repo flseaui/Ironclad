@@ -3,16 +3,20 @@ using Types = DATA.Types;
 
 namespace PLAYER
 {
-    [RequireComponent(typeof(PlayerInput)), RequireComponent(typeof(PlayerData))]
+    [RequireComponent(typeof(InputSender)), RequireComponent(typeof(PlayerData))]
     public abstract class ActionsBase : MonoBehaviour
     {
-        protected PlayerInput Input { get; set; }
+        protected InputSender Input { get; set; }
 
         protected PlayerData Data { get; set; }
 
         private void Awake()
         {
-            Input = GetComponent<PlayerInput>();
+            if (GetComponent<PlayerInput>() != null)
+                Input = GetComponent<PlayerInput>();
+            else
+                Input = GetComponent<NetworkInput>();
+            
             Data = GetComponent<PlayerData>();
         }
 

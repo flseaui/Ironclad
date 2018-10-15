@@ -15,6 +15,7 @@ namespace NETWORKING
         {
             Events.OnEntityMoved += SendP2PMove;
             Events.OnEntitySpawned += SendP2PSpawn;
+            Events.OnInputsChanged += SendP2PInputSet;
             SubscribeToP2PEvents();
         }
 
@@ -52,6 +53,17 @@ namespace NETWORKING
             SendP2PMessage(movementMessage);
         }
 
+        private void SendP2PInputSet(NetworkIdentity networkIdentity, P2PInputSet.InputChange[] inputs,
+            bool sendNetworkAction)
+        {
+            if (!sendNetworkAction) return;
+            
+            var body = new P2PInputSet(networkIdentity.Id, inputs);
+            var message = new P2PMessage(networkIdentity.Id, P2PMessageKey.InputSet, body.Serialize());
+            
+            SendP2PMessage(message);
+        }
+        
         private void SendP2PSpawn(NetworkIdentity networkIdentity, bool sendNetworkAction)
         {
             if (!sendNetworkAction) return;
@@ -77,6 +89,11 @@ namespace NETWORKING
             var player = MatchStateManager.Instance.GetPlayer(msg.PlayerId);
             switch (msg.Key)
             {
+                case P2PMessageKey.InputSet:
+                    var body = JsonUtility.FromJson<P2PInputSet>(msg.Body);
+                    
+                    player.GetComponent<NetworkInput>().ParseInputs(body.Inputs);
+                    break;
                 case P2PMessageKey.Move:
                     //deserialize the message body
                     var moveBody = JsonUtility.FromJson<P2PMove>(msg.Body);

@@ -20,6 +20,7 @@ namespace NETWORKING
 
     public enum P2PMessageKey
     {
+        InputSet,
         Move,
         Spawn
     }

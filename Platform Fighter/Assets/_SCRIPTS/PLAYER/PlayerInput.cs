@@ -1,29 +1,26 @@
-﻿using MISC;
+﻿using System;
+using System.Collections.Generic;
+using MISC;
+using NETWORKING;
 using Rewired;
 using UnityEngine;
+using Types = DATA.Types;
 
 namespace PLAYER
 {
-    public class PlayerInput : MonoBehaviour
+    public class PlayerInput : InputSender
     {
-        [HideInInspector] public bool lightLeft,
-            strongLeft,
-            lightRight,
-            strongRight,
-            up,
-            down,
-            shortHop,
-            fullHop,
-            neutral,
-            special,
-            shield,
-            grab,
-            upC,
-            downC,
-            leftC,
-            rightC;
-
         public int Id { get; set; }
+
+        private List<P2PInputSet.InputChange> _changedInputs;
+
+        private bool[] _prevInputs;
+        
+        private void Start()
+        {
+            _changedInputs = new List<P2PInputSet.InputChange>();
+            _prevInputs = new bool[Inputs.Length];
+        }
 
         private void Update()
         {
@@ -34,74 +31,76 @@ namespace PLAYER
         {
             var player = ReInput.players.GetPlayer(Id);
 
-            lightLeft = false;
-            strongLeft = false;
-            lightRight = false;
-            strongRight = false;
-            up = false;
-            down = false;
-            shortHop = false;
-            fullHop = false;
-            neutral = false;
-            special = false;
-            shield = false;
-            grab = false;
-            upC = false;
-            downC = false;
-            leftC = false;
-            rightC = false;
+            _changedInputs.Clear();
+            
+            _prevInputs = Inputs;
+            
+            for (var index = 0; index < Inputs.Length; index++)
+            {
+                Inputs[index] = false;
+            }
 
             if (player.controllers.hasKeyboard)
             {
                 if (player.GetAxis("Run") < -GameSettings.Instance.runThreshold)
-                    strongLeft = true;
+                    Inputs[(int) Types.Input.StrongLeft] = true;
                 else if (player.GetAxis("Move") < 0)
-                    lightLeft = true;
+                    Inputs[(int) Types.Input.LightLeft] = true;
 
                 if (player.GetAxis("Run") > GameSettings.Instance.runThreshold)
-                    strongRight = true;
+                    Inputs[(int) Types.Input.StrongRight] = true;
                 else if (player.GetAxis("Move") > 0)
-                    lightRight = true;
+                    Inputs[(int) Types.Input.LightRight] = true;
 
                 if (player.GetAxis("Crouch") < GameSettings.Instance.crouchThreshold)
-                    down = true;
+                    Inputs[(int) Types.Input.Down] = true;
                 else if (player.GetAxis("Crouch") > GameSettings.Instance.upThreshold)
-                    up = true;
+                    Inputs[(int) Types.Input.Up] = true;
             }
             else
             {
                 if (player.GetAxis("Move") < -GameSettings.Instance.runThreshold)
-                    strongLeft = true;
+                    Inputs[(int) Types.Input.StrongLeft] = true;
                 else if (player.GetAxis("Move") < 0)
-                    lightLeft = true;
+                    Inputs[(int) Types.Input.LightLeft] = true;
 
                 if (player.GetAxis("Move") > GameSettings.Instance.runThreshold)
-                    strongRight = true;
+                    Inputs[(int) Types.Input.StrongRight] = true;
                 else if (player.GetAxis("Move") > 0)
-                    lightRight = true;
+                    Inputs[(int) Types.Input.LightRight] = true;
 
                 if (player.GetAxis("Crouch") < GameSettings.Instance.crouchThreshold)
-                    down = true;
+                    Inputs[(int) Types.Input.Down] = true;
                 else if (player.GetAxis("Crouch") > GameSettings.Instance.upThreshold)
-                    up = true;
+                    Inputs[(int) Types.Input.Up] = true;
             }
 
             if (player.GetButtonLongPressDown("Hop"))
-                fullHop = true;
+                Inputs[(int) Types.Input.FullHop] = true;
             else if (player.GetButtonShortPressDown("Hop"))
-                shortHop = true;
+                Inputs[(int) Types.Input.ShortHop] = true;
 
             if (player.GetButtonDown("Neutral"))
-                neutral = true;
+                Inputs[(int) Types.Input.Neutral] = true;
 
             if (player.GetButtonDown("Special"))
-                special = true;
+                Inputs[(int) Types.Input.Special] = true;
 
             if (player.GetButtonDown("Shield"))
-                shield = true;
+                Inputs[(int) Types.Input.Shield] = true;
 
             if (player.GetButtonDown("Grab"))
-                grab = true;
+                Inputs[(int) Types.Input.Grab] = true;
+
+            for (var index = 0; index < Inputs.Length; index++)
+            {
+                if (Inputs[index] != _prevInputs[index])
+                {
+                    _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index]));
+                }
+            }
+
+            Events.OnInputsChanged(GetComponent<NetworkIdentity>(), _changedInputs.ToArray(), true);
         }
     }
 }

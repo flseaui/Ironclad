@@ -68,5 +68,25 @@
         {
             TestStage
         }
+
+        public enum Input
+        {
+            LightLeft,
+            StrongLeft,
+            LightRight,
+            StrongRight,
+            Up,
+            Down,
+            ShortHop,
+            FullHop,
+            Neutral,
+            Special,
+            Shield,
+            Grab,
+            UpC,
+            DownC,
+            LeftC,
+            RightC
+        }
     }
 }

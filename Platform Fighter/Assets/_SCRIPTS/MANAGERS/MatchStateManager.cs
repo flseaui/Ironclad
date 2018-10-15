@@ -4,6 +4,7 @@ using MISC;
 using NETWORKING;
 using PLAYER;
 using UnityEngine;
+using Client = Facepunch.Steamworks.Client;
 using Types = DATA.Types;
 
 namespace MANAGERS
@@ -14,6 +15,7 @@ namespace MANAGERS
 
         // Prefabs
         [SerializeField] private GameObject _playerPrefab;
+        [SerializeField] private GameObject _networkPlayerPrefab;
 
         private void Start()
         {
@@ -33,17 +35,31 @@ namespace MANAGERS
                 i < GameManager.Instance.Characters.Count(character => character != Types.Character.None);
                 ++i)
             {
-                var player = Instantiate
-                (
-                    _playerPrefab,
-                    spawnPoints[i].position,
-                    spawnPoints[i].rotation
-                );
+                GameObject player;
+                if (i == int.Parse(Client.Instance.Lobby.GetMemberData(Client.Instance.SteamId, "lobbySpot")))
+                {
+                    player = Instantiate
+                    (
+                        _playerPrefab,
+                        spawnPoints[i].position,
+                        spawnPoints[i].rotation
+                    );
+                    player.GetComponent<PlayerInput>().Id = 0;
+                }
+                else
+                {
+                    player = Instantiate
+                    (
+                        _networkPlayerPrefab,
+                        spawnPoints[i].position,
+                        spawnPoints[i].rotation
+                    );
+                }
 
+                player.GetComponent<NetworkIdentity>().Id = i;
+                
                 AssetManager.Instance.PopulateActions(GameManager.Instance.Characters);
 
-                player.GetComponent<PlayerInput>().Id = i;
-                player.GetComponent<NetworkIdentity>().Id = i;
                 _activePlayers.Add(player);
             }
         }

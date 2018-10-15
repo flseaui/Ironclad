@@ -1071,6 +1071,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _persistent: 0
   _playerPrefab: {fileID: 1110542900291582, guid: ef974447b27e81c46a37f3f94c813048, type: 3}
+  _networkPlayerPrefab: {fileID: 1110542900291582, guid: 595c937a4acff594584dd97a2c5e93a3, type: 3}
 --- !u!4 &535902620
 Transform:
   m_ObjectHideFlags: 0

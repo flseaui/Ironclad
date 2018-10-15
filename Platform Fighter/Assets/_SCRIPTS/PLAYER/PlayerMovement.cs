@@ -88,12 +88,11 @@ namespace PLAYER
 
         public void MovePlayer(Vector2 addedForce, bool sendNetworkAction)
         {
-            Debug.Log(addedForce);
             if (addedForce.x != 0)
             {
                 Rigidbody.AddForce(addedForce, ForceMode2D.Impulse);
                 Data.CurrentVelocity += addedForce;
-                Events.OnEntityMoved(GetComponent<NetworkIdentity>(), addedForce, sendNetworkAction);
+                //Events.OnEntityMoved(GetComponent<NetworkIdentity>(), addedForce, sendNetworkAction);
             }
         }
     }

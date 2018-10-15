@@ -11,19 +11,19 @@ namespace PLAYER
 
         protected override Types.ActionType GetCurrentAction()
         {
-            if (Input.shortHop) return Types.ActionType.Shop;
+            if (Input.Inputs[(int) Types.Input.ShortHop]) return Types.ActionType.Shop;
 
-            if (Input.fullHop) return Types.ActionType.Fhop;
+            if (Input.Inputs[(int) Types.Input.FullHop]) return Types.ActionType.Fhop;
 
             if (Data.Direction == Types.Direction.Right)
             {
                 if (Position == PlayerData.PlayerLocation.Grounded)
                 {
-                    if (Input.lightRight) return Types.ActionType.Walk;
+                    if (Input.Inputs[(int) Types.Input.LightRight]) return Types.ActionType.Walk;
 
-                    if (Input.strongRight) return Types.ActionType.Run;
+                    if (Input.Inputs[(int) Types.Input.StrongRight]) return Types.ActionType.Run;
 
-                    if (Input.lightLeft || Input.strongLeft)
+                    if (Input.Inputs[(int) Types.Input.LightLeft] || Input.Inputs[(int) Types.Input.StrongLeft])
                     {
                         Data.Direction = Types.Direction.Left;
                         return Types.ActionType.Turn;
@@ -34,11 +34,11 @@ namespace PLAYER
             {
                 if (Position == PlayerData.PlayerLocation.Grounded)
                 {
-                    if (Input.lightLeft) return Types.ActionType.Walk;
+                    if (Input.Inputs[(int) Types.Input.LightLeft]) return Types.ActionType.Walk;
 
-                    if (Input.strongLeft) return Types.ActionType.Run;
+                    if (Input.Inputs[(int) Types.Input.StrongLeft]) return Types.ActionType.Run;
 
-                    if (Input.lightRight || Input.strongRight)
+                    if (Input.Inputs[(int) Types.Input.LightRight] || Input.Inputs[(int) Types.Input.StrongRight])
                     {
                         Data.Direction = Types.Direction.Right;
                         return Types.ActionType.Turn;

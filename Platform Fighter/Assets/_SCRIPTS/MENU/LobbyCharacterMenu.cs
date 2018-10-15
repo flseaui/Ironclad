@@ -52,7 +52,6 @@ namespace MENU
 
         private void OnJoined(bool success)
         {
-            Debug.Log("OnLobbyJoined");
             if (!success) return;
 
             SetupMemberData();
@@ -64,24 +63,23 @@ namespace MENU
         {
             Client.Instance.Lobby.SetMemberData("character", "testCharacter");
             Client.Instance.Lobby.SetMemberData("ready", "false");
+            Client.Instance.Lobby.SetMemberData("lobbySpot", (Client.Instance.Lobby.NumMembers - 1).ToString());
         }
         
         private void OnDataUpdated()
         {
-            Debug.Log("OnLobbyDataUpdated");
             //_playerProfilerPanel.ClearPlayerProfiles();
             //foreach (var member in Client.Instance.Lobby.GetMemberIDs()) _playerProfilerPanel.AddPlayerProfile(member);
         }
 
         private void OnMemberDataUpdated(ulong steamId)
         {
-            Debug.Log("OnLobbyMemberDataUpdated");
             switch(Client.Instance.Lobby.GetMemberData(steamId, "ready"))
             {
                 case "true":
                     _playerProfilerPanel.ReadyPlayerProfile(steamId);
                     ++_playerReady;
-                    if (_playerReady >= Client.Instance.Lobby.NumMembers && Client.Instance.Lobby.NumMembers > 1)
+                    if (_playerReady >= Client.Instance.Lobby.NumMembers && Client.Instance.Lobby.NumMembers > 0)
                     {
                         var tempCharacterArray = new List<Types.Character>();
                         foreach (var id in Client.Instance.Lobby.GetMemberIDs())
@@ -116,7 +114,6 @@ namespace MENU
 
         private void OnStateChange(Lobby.MemberStateChange change, ulong initiator, ulong affectee)
         {
-            Debug.Log("OnLobbyStateChanged");
             switch (change)
             {
                 case Lobby.MemberStateChange.Entered:
@@ -143,13 +140,10 @@ namespace MENU
                 Client.Instance.Lobby.SetMemberData("ready", "true");
             else
                 Client.Instance.Lobby.SetMemberData("ready", "false");
-            //Client.Instance.Lobby.OnLobbyMemberDataUpdated(Client.Instance.SteamId);
-            Debug.Log("wedy 2 pway");
         }
 
         public Types.Character CharacterStringToId(string character)
         {
-            Debug.Log("Character:" + character);
             switch (character)
             {
                 case "testCharacter":
@@ -161,7 +155,6 @@ namespace MENU
 
         public void OnCharacterChanged(int character)
         {
-            Debug.Log("DDDDDDDDDDDD");
             Client.Instance.Lobby.SetMemberData
             (
                 "character", 
