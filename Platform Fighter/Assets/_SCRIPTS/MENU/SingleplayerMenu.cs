@@ -1,7 +1,8 @@
 ﻿using System;
 using ATTRIBUTES;
-using DATA;
 using MANAGERS;
+using UnityEngine;
+using Types = DATA.Types;
 
 namespace MENU
 {
@@ -20,6 +21,7 @@ namespace MENU
                 Types.Character.TestCharacter,
                 Types.Character.TestCharacter
             };
+            GameManager.Instance.FromSingleplayer = true;
             GameManager.Instance.Stage = Types.Stage.TestStage;
             MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;
         }

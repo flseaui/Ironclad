@@ -4,6 +4,7 @@ using MISC;
 using NETWORKING;
 using PLAYER;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Client = Facepunch.Steamworks.Client;
 using Types = DATA.Types;
 
@@ -12,7 +13,10 @@ namespace MANAGERS
     public class MatchStateManager : Singleton<MatchStateManager>
     {
         private List<GameObject> _activePlayers;
-
+        
+        // bad variable do not use for anything final
+        public bool StartedFromSingleplayer;
+        
         // Prefabs
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private GameObject _networkPlayerPrefab;
@@ -24,6 +28,8 @@ namespace MANAGERS
             MatchStart();
         }
 
+        public List<GameObject> GetPlayers() => _activePlayers;
+        
         public GameObject GetPlayer(int playerId) =>
             _activePlayers.FirstOrDefault(player => player.GetComponent<NetworkIdentity>().Id == playerId);
 
@@ -36,7 +42,7 @@ namespace MANAGERS
                 ++i)
             {
                 GameObject player;
-                if (i == int.Parse(Client.Instance.Lobby.GetMemberData(Client.Instance.SteamId, "lobbySpot")))
+                if (GameManager.Instance.FromSingleplayer)
                 {
                     player = Instantiate
                     (
@@ -44,16 +50,29 @@ namespace MANAGERS
                         spawnPoints[i].position,
                         spawnPoints[i].rotation
                     );
-                    player.GetComponent<PlayerInput>().Id = 0;
+                    player.GetComponent<PlayerInput>().Id = i;
                 }
                 else
                 {
-                    player = Instantiate
-                    (
-                        _networkPlayerPrefab,
-                        spawnPoints[i].position,
-                        spawnPoints[i].rotation
-                    );
+                    if (i == int.Parse(Client.Instance.Lobby.GetMemberData(Client.Instance.SteamId, "lobbySpot")))
+                    {
+                        player = Instantiate
+                        (
+                            _playerPrefab,
+                            spawnPoints[i].position,
+                            spawnPoints[i].rotation
+                        );
+                        player.GetComponent<PlayerInput>().Id = 0;
+                    }
+                    else
+                    {
+                        player = Instantiate
+                        (
+                            _networkPlayerPrefab,
+                            spawnPoints[i].position,
+                            spawnPoints[i].rotation
+                        );
+                    }
                 }
 
                 player.GetComponent<NetworkIdentity>().Id = i;
