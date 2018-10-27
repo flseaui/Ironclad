@@ -22,12 +22,14 @@ namespace NETWORKING
             /// -1 : not associated with player
             /// </summary>
             public int Player;
+            public Type BaseType;
             public Type Type;
             public string JsonData;
 
-            public Snapshot(int player, Type type, string json)
+            public Snapshot(int player, Type baseType, Type type, string json)
             {
                 Player = player;
+                BaseType = baseType;
                 Type = type;
                 JsonData = json;
             }
@@ -47,7 +49,7 @@ namespace NETWORKING
 
             if (Input.GetKey(KeyCode.F2))
             {
-                Rollback(1);
+                Rollback(0);
             }
             
         }
@@ -58,31 +60,34 @@ namespace NETWORKING
         /// <param name="distance"> Number of snapshots to rollback. </param>
         public void Rollback(int distance)
         {
-            if (distance <= 0 || distance > _snapshots.Count)
+            if (distance < 0 || distance > _snapshots.Count)
             {
                 return;
             }
 
             foreach (var snapshot in _snapshots[distance])
             {
-                var component = JsonUtility.FromJson(snapshot.JsonData, snapshot.Type);
-                ((ISettable) MatchStateManager.Instance.GetPlayer(snapshot.Player).GetComponent(snapshot.Type)).SetData(component);
+                Debug.Log("srapshot: " + snapshot.Player);
+                var packet = JsonUtility.FromJson(snapshot.JsonData, snapshot.Type);
+                ((ISettable) MatchStateManager.Instance.GetPlayer(snapshot.Player).GetComponent(snapshot.BaseType)).SetData(packet);
             }
             
         }
 
         public void SaveGameState()
         {
+            _snapshots.Add(new List<Snapshot>());
             foreach (var player in MatchStateManager.Instance.GetPlayers())
             {
-                TakeSnapshot(player.GetComponent<NetworkIdentity>().Id, _snapshots.Count, player.GetComponent<PlayerData>());
+                TakeSnapshot(player.GetComponent<NetworkIdentity>().Id, 0, typeof(PlayerData), player.GetComponent<PlayerData>().DataPacket);
             }
         }
         
-        public void TakeSnapshot<T>(int player, int depth, T structure)
+        public void TakeSnapshot<T>(int player, int depth, Type baseType, T structure)
         {
             var json = JsonUtility.ToJson(structure);
-            _snapshots[depth].Add(new Snapshot(player, structure.GetType(), json));
+            Debug.Log("deptj " + depth);
+            _snapshots[depth].Add(new Snapshot(player, baseType, structure.GetType(), json));
         }
         
     }

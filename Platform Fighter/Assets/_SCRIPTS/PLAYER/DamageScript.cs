@@ -4,11 +4,11 @@ namespace PLAYER
 {
     public class DamageScript : MonoBehaviour
     {
-        private PlayerData _playerData;
+        private PlayerDataPacket _playerData;
 
         private void Awake()
         {
-            _playerData = GetComponent<PlayerData>();
+            _playerData = GetComponent<PlayerData>().DataPacket;
         }
 
         public void ApplyDamage(double damage, double knockbackStrength, double knockbackAngle)

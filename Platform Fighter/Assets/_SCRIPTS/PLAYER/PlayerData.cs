@@ -6,24 +6,21 @@ using UnityEngine.Serialization;
 using Types = DATA.Types;
 
 namespace PLAYER
-{
-    [Serializable]
+{    
     public class PlayerData : MonoBehaviour, ISettable
     {
+        public PlayerDataPacket DataPacket;
+        
         public void SetData(object data)
         {
-            var newData = (PlayerData) data;
-            CurrentAction = newData.CurrentAction;
-            CurrentVelocity = newData.CurrentVelocity;
-            TargetVelocity = newData.TargetVelocity;
-            Acceleration = newData.Acceleration;
-            KnockbackVelocity = newData.KnockbackVelocity;
-            Direction = newData.Direction;
-            Gravity = newData.Gravity;
-            Percent = newData.Percent;
-            TerminalVelocity = newData.TerminalVelocity;
+            var newData = (PlayerDataPacket) data;
+            DataPacket = newData;
         }
-        
+    }
+    
+    [Serializable]
+    public class PlayerDataPacket
+    {
         public enum PlayerLocation
         {
             Grounded,

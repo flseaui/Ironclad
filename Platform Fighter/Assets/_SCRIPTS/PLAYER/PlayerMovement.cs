@@ -7,13 +7,13 @@ namespace PLAYER
     public class PlayerMovement : MonoBehaviour
     {
         private Vector2 _addedForce;
-        private PlayerData Data { get; set; }
+        private PlayerDataPacket Data { get; set; }
 
         private Rigidbody2D Rigidbody { get; set; }
 
         private void Awake()
         {
-            Data = GetComponent<PlayerData>();
+            Data = GetComponent<PlayerData>().DataPacket;
             Rigidbody = GetComponent<Rigidbody2D>();
         }
 

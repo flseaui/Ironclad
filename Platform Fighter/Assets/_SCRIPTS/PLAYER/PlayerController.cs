@@ -23,7 +23,7 @@ namespace PLAYER
 
         private int _currentActionFrame;
 
-        private PlayerData _data;
+        private PlayerDataPacket _data;
         private SpriteRenderer _spriteRenderer;
 
         public ActionInfo.FrameProperty CurrentActionProperties
@@ -46,7 +46,7 @@ namespace PLAYER
 
             _animator = GetComponent<Animator>();
 
-            _data = GetComponent<PlayerData>();
+            _data = GetComponent<PlayerData>().DataPacket;
 
             _boxPool = new BoxPool();
         }
@@ -54,7 +54,7 @@ namespace PLAYER
         private void Start()
         {
             _data.Direction = Types.Direction.Right;
-            var Position = PlayerData.PlayerLocation.Grounded;
+            var Position = PlayerDataPacket.PlayerLocation.Grounded;
 
             PoolBoxes();
         }

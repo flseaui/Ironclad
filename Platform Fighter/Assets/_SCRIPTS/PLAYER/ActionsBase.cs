@@ -8,7 +8,7 @@ namespace PLAYER
     {
         protected InputSender Input { get; set; }
 
-        protected PlayerData Data { get; set; }
+        protected PlayerDataPacket Data { get; set; }
 
         private void Awake()
         {
@@ -17,7 +17,7 @@ namespace PLAYER
             else
                 Input = GetComponent<NetworkInput>();
             
-            Data = GetComponent<PlayerData>();
+            Data = GetComponent<PlayerData>().DataPacket;
         }
 
         private void Update()
