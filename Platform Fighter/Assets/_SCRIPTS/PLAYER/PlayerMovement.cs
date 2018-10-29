@@ -25,6 +25,8 @@ namespace PLAYER
         private void FixedUpdate()
         {
             MovePlayer(_addedForce, true);
+            
+            Data.Position = Rigidbody.position;
         }
 
         private void CalculateVelocity()

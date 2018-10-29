@@ -14,13 +14,24 @@ namespace PLAYER
         public void SetData(object data)
         {
             var newData = (PlayerDataPacket) data;
-            DataPacket = newData;
+            DataPacket.CurrentAction = newData.CurrentAction;
+            DataPacket.CurrentVelocity = newData.CurrentVelocity;
+            DataPacket.TargetVelocity = newData.TargetVelocity;
+            DataPacket.Acceleration = newData.Acceleration;
+            DataPacket.KnockbackVelocity = newData.KnockbackVelocity;
+            DataPacket.Direction = newData.Direction;
+            DataPacket.Gravity = newData.Gravity;
+            DataPacket.Percent = newData.Percent;
+            DataPacket.TerminalVelocity = newData.TerminalVelocity;
+            DataPacket.Position = newData.Position;
+            GetComponent<Rigidbody2D>().MovePosition(newData.Position);
         }
     }
     
     [Serializable]
     public class PlayerDataPacket
     {
+        
         public enum PlayerLocation
         {
             Grounded,
@@ -52,5 +63,7 @@ namespace PLAYER
         public double Percent;
 
         public Vector2 TerminalVelocity;
+
+        public Vector2 Position;
     }
 }

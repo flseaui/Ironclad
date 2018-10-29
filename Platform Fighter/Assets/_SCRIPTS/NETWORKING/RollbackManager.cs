@@ -42,12 +42,12 @@ namespace NETWORKING
 
         private void Update()
         {
-            if (Input.GetKey(KeyCode.F1))
+            if (Input.GetKeyDown(KeyCode.F1))
             {
                 SaveGameState();
             }
 
-            if (Input.GetKey(KeyCode.F2))
+            if (Input.GetKeyDown(KeyCode.F2))
             {
                 Rollback(0);
             }
@@ -67,28 +67,25 @@ namespace NETWORKING
 
             foreach (var snapshot in _snapshots[distance])
             {
-                Debug.Log("srapshot: " + snapshot.Player);
                 var packet = JsonUtility.FromJson(snapshot.JsonData, snapshot.Type);
                 ((ISettable) MatchStateManager.Instance.GetPlayer(snapshot.Player).GetComponent(snapshot.BaseType)).SetData(packet);
             }
-            
         }
 
         public void SaveGameState()
         {
+            _snapshots.Clear();
             _snapshots.Add(new List<Snapshot>());
             foreach (var player in MatchStateManager.Instance.GetPlayers())
-            {
+            {      
                 TakeSnapshot(player.GetComponent<NetworkIdentity>().Id, 0, typeof(PlayerData), player.GetComponent<PlayerData>().DataPacket);
             }
         }
-        
+
         public void TakeSnapshot<T>(int player, int depth, Type baseType, T structure)
         {
             var json = JsonUtility.ToJson(structure);
-            Debug.Log("deptj " + depth);
             _snapshots[depth].Add(new Snapshot(player, baseType, structure.GetType(), json));
-        }
-        
+        }        
     }
 }
