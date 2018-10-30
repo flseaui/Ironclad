@@ -6,6 +6,7 @@ namespace PLAYER
     [RequireComponent(typeof(PlayerData)), RequireComponent(typeof(Rigidbody2D))]
     public class PlayerMovement : MonoBehaviour
     {
+        [SerializeField]
         private Vector2 _addedForce;
         private PlayerDataPacket Data { get; set; }
 
