@@ -52,7 +52,7 @@ namespace PLAYER
 
         public Vector2 TargetVelocity;
 
-        public Vector2  Acceleration;
+        public Vector2 Acceleration;
 
         public Vector2 KnockbackVelocity;
 
