@@ -93,8 +93,12 @@ namespace NETWORKING
             {
                 case P2PMessageKey.InputSet:
                     var body = JsonUtility.FromJson<P2PInputSet>(msg.Body);
+
+                    var networkInput = player.GetComponent<NetworkInput>();
+
+                    networkInput.ShouldPredictInputs = false;
                     
-                    player.GetComponent<NetworkInput>().ParseInputs(body.Inputs);
+                    networkInput.ParseInputs(body.Inputs);
                     break;
                 case P2PMessageKey.Move:
                     //deserialize the message body
