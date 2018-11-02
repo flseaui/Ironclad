@@ -9,6 +9,9 @@ namespace PLAYER
     {
         public bool HasInputs { get; set; }
 
+        private bool _predicting;
+        private int _framesOfPrediction;
+        
         private P2PInputSet.InputChange[] ChangedInputs { get; set; }
 
         public void GiveInputs(P2PInputSet.InputChange[] changedInputs)
@@ -24,16 +27,27 @@ namespace PLAYER
             
             if (HasInputs)
             {
+                RollbackManager.Instance.SaveGameState();
+                
+                if (_predicting)
+                {
+                    _predicting = false;
+                    RollbackManager.Instance.Rollback(0);
+                }
                 ParseInputs(ChangedInputs);
                 HasInputs = false;
             }
             else
+            {
+                _predicting = true;
+                ++_framesOfPrediction;
                 ParseInputs(PredictInputs());
+            }
         }
 
         private P2PInputSet.InputChange[] PredictInputs()
         {
-            return new P2PInputSet.InputChange[] { new P2PInputSet.InputChange(Types.Input.LightRight, true) };
+            return new P2PInputSet.InputChange[] {  };
         }
         
         public void ParseInputs(P2PInputSet.InputChange[] inputs)
