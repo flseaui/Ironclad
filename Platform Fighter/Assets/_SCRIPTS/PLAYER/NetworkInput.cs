@@ -1,5 +1,6 @@
 using System;
 using DATA;
+using MANAGERS;
 using NETWORKING;
 
 namespace PLAYER
@@ -18,6 +19,9 @@ namespace PLAYER
         
         private void Update()
         {
+            if (!MatchStateManager.Instance.ReadyToFight)
+                return;
+            
             if (HasInputs)
             {
                 ParseInputs(ChangedInputs);

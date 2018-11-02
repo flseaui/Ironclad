@@ -25,8 +25,10 @@ namespace PLAYER
 
         private void Update()
         {
-            if (MatchStateManager.Instance.ReadyToFight)
-                UpdatePlayerInput();
+            if (!MatchStateManager.Instance.ReadyToFight)
+                return;
+                
+            UpdatePlayerInput();
         }
 
         private void UpdatePlayerInput()
