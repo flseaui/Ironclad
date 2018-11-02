@@ -16,6 +16,8 @@ namespace MANAGERS
         
         // bad variable do not use for anything final
         public bool StartedFromSingleplayer;
+
+        public bool ReadyToFight;
         
         // Prefabs
         [SerializeField] private GameObject _playerPrefab;
@@ -24,7 +26,7 @@ namespace MANAGERS
         private void Start()
         {
             _activePlayers = new List<GameObject>();
-
+            
             MatchStart();
         }
 

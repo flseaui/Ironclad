@@ -1,22 +1,53 @@
 using System;
 using DATA;
+using MANAGERS;
 using NETWORKING;
 
 namespace PLAYER
 {
     public class NetworkInput : InputSender
     {
-        public bool ShouldPredictInputs { get; set; }
+        public bool HasInputs { get; set; }
+
+        private bool _predicting;
+        private int _framesOfPrediction;
+        
+        private P2PInputSet.InputChange[] ChangedInputs { get; set; }
+
+        public void GiveInputs(P2PInputSet.InputChange[] changedInputs)
+        {
+            ChangedInputs = changedInputs;
+            HasInputs = true;
+        }
         
         private void Update()
         {
-            if (ShouldPredictInputs)
+            if (!MatchStateManager.Instance.ReadyToFight)
+                return;
+            
+            if (HasInputs)
+            {
+                RollbackManager.Instance.SaveGameState();
+                
+                if (_predicting)
+                {
+                    _predicting = false;
+                    RollbackManager.Instance.Rollback(0);
+                }
+                ParseInputs(ChangedInputs);
+                HasInputs = false;
+            }
+            else
+            {
+                _predicting = true;
+                ++_framesOfPrediction;
                 ParseInputs(PredictInputs());
+            }
         }
 
         private P2PInputSet.InputChange[] PredictInputs()
         {
-            return new P2PInputSet.InputChange[] { new P2PInputSet.InputChange(Types.Input.LightRight, true) };
+            return new P2PInputSet.InputChange[] {  };
         }
         
         public void ParseInputs(P2PInputSet.InputChange[] inputs)
@@ -25,8 +56,6 @@ namespace PLAYER
             {
                 Inputs[(int) input.InputType] = input.State;
             }
-
-            ShouldPredictInputs = true;
         }
     }
 }
