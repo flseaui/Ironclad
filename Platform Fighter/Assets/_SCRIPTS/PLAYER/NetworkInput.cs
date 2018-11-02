@@ -6,11 +6,24 @@ namespace PLAYER
 {
     public class NetworkInput : InputSender
     {
-        public bool ShouldPredictInputs { get; set; }
+        public bool HasInputs { get; set; }
+
+        private P2PInputSet.InputChange[] ChangedInputs { get; set; }
+
+        public void GiveInputs(P2PInputSet.InputChange[] changedInputs)
+        {
+            ChangedInputs = changedInputs;
+            HasInputs = true;
+        }
         
         private void Update()
         {
-            if (ShouldPredictInputs)
+            if (HasInputs)
+            {
+                ParseInputs(ChangedInputs);
+                HasInputs = false;
+            }
+            else
                 ParseInputs(PredictInputs());
         }
 
@@ -25,8 +38,6 @@ namespace PLAYER
             {
                 Inputs[(int) input.InputType] = input.State;
             }
-
-            ShouldPredictInputs = true;
         }
     }
 }
