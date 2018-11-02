@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MANAGERS;
 using MISC;
 using NETWORKING;
 using Rewired;
@@ -24,7 +25,8 @@ namespace PLAYER
 
         private void Update()
         {
-            UpdatePlayerInput();
+            if (MatchStateManager.Instance.ReadyToFight)
+                UpdatePlayerInput();
         }
 
         private void UpdatePlayerInput()

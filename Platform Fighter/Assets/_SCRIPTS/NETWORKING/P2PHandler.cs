@@ -11,12 +11,13 @@ namespace NETWORKING
 {
     public class P2PHandler : Singleton<P2PHandler>
     {
+        private int _playersJoined;
+        
         private void Start()
         {
-            Events.OnEntityMoved += SendP2PMove;
-            Events.OnEntitySpawned += SendP2PSpawn;
             Events.OnInputsChanged += SendP2PInputSet;
-            SubscribeToP2PEvents();
+            Events.OnMatchJoined += SendP2PMatchJoined;
+            SubscribeToP2PEvents();          
         }
 
         private void SubscribeToP2PEvents()
@@ -43,14 +44,12 @@ namespace NETWORKING
             ParseP2PMessage(sender, serializedMessage);
         }
 
-        private void SendP2PMove(NetworkIdentity networkIdentity, Vector2 addedForce, bool sendNetworkAction)
+        private void SendP2PMatchJoined(NetworkIdentity networkIdentity)
         {
-            if (!sendNetworkAction) return;
-
-            var moveBody = new P2PMove(networkIdentity.Id, addedForce);
-            var movementMessage = new P2PMessage(networkIdentity.Id, P2PMessageKey.Move, moveBody.Serialize());
-
-            SendP2PMessage(movementMessage);
+            var body = new P2PJoin();
+            var message = new P2PMessage(networkIdentity.Id, P2PMessageKey.Join, body.Serialize());
+            
+            SendP2PMessage(message);
         }
 
         private void SendP2PInputSet(NetworkIdentity networkIdentity, P2PInputSet.InputChange[] inputs,
@@ -58,23 +57,13 @@ namespace NETWORKING
         {
             if (!sendNetworkAction) return;
             
-            var body = new P2PInputSet(networkIdentity.Id, inputs);
+            var body = new P2PInputSet(inputs);
             var message = new P2PMessage(networkIdentity.Id, P2PMessageKey.InputSet, body.Serialize());
            
             Debug.Log(message.Body);
             
             SendP2PMessage(message);
-        }
-        
-        private void SendP2PSpawn(NetworkIdentity networkIdentity, bool sendNetworkAction)
-        {
-            if (!sendNetworkAction) return;
-
-            var spawnBody = new P2PSpawn(networkIdentity.Id);
-            var spawningMessage = new P2PMessage(networkIdentity.Id, P2PMessageKey.Spawn, spawnBody.Serialize());
-
-            SendP2PMessage(spawningMessage);
-        }
+        }  
         
         public static void SendP2PMessage(P2PMessage message)
         {
@@ -92,22 +81,19 @@ namespace NETWORKING
             switch (msg.Key)
             {
                 case P2PMessageKey.InputSet:
-                    var body = JsonUtility.FromJson<P2PInputSet>(msg.Body);
+                    var inputSet = JsonUtility.FromJson<P2PInputSet>(msg.Body);
 
-                    player.GetComponent<NetworkInput>().GiveInputs(body.Inputs);
+                    player.GetComponent<NetworkInput>().GiveInputs(inputSet.Inputs);
                     break;
-                case P2PMessageKey.Move:
-                    //deserialize the message body
-                    var moveBody = JsonUtility.FromJson<P2PMove>(msg.Body);
+                case P2PMessageKey.Join:
+                    var joinMessage = JsonUtility.FromJson<P2PJoin>(msg.Body);
 
-                    //note the false flag, which instructs the program to NOT also try sending the event again.
-                    player.GetComponent<PlayerMovement>().MovePlayer(moveBody.AddedForce, false);
-                    break;
-                case P2PMessageKey.Spawn:
-                    var spawnBody = JsonUtility.FromJson<P2PSpawn>(msg.Body);
+                    ++_playersJoined;
                     
-                    
+                    if (_playersJoined >= Client.Instance.Lobby.NumMembers)
+                        MatchStateManager.Instance.ReadyToFight = true;
                     break;
+
             }
         }
     }
