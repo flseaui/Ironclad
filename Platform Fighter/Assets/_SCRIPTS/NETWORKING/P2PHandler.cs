@@ -11,7 +11,7 @@ namespace NETWORKING
 {
     public class P2PHandler : Singleton<P2PHandler>
     {
-        private int _playersJoined;
+        private int _playersJoined = 1;
         
         private void Start()
         {
@@ -20,6 +20,12 @@ namespace NETWORKING
             SubscribeToP2PEvents();          
         }
 
+        private void Update()
+        {
+            if (_playersJoined >= Client.Instance.Lobby.NumMembers)
+                MatchStateManager.Instance.ReadyToFight = true;
+        }
+        
         private void SubscribeToP2PEvents()
         {
             Client.Instance.Networking.SetListenChannel(0, true);
@@ -87,11 +93,8 @@ namespace NETWORKING
                     break;
                 case P2PMessageKey.Join:
                     var joinMessage = JsonUtility.FromJson<P2PJoin>(msg.Body);
-
-                    ++_playersJoined;
                     
-                    if (_playersJoined >= Client.Instance.Lobby.NumMembers)
-                        MatchStateManager.Instance.ReadyToFight = true;
+                    ++_playersJoined;                  
                     break;
 
             }

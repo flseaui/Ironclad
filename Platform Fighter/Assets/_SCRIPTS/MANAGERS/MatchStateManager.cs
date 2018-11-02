@@ -26,7 +26,7 @@ namespace MANAGERS
         private void Start()
         {
             _activePlayers = new List<GameObject>();
-
+            
             MatchStart();
         }
 
