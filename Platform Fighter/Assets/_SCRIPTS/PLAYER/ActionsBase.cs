@@ -23,6 +23,7 @@ namespace PLAYER
         private void Update()
         {
             Data.CurrentAction = GetCurrentAction();
+            Debug.Log(Data.CurrentAction);
         }
 
         protected abstract Types.ActionType GetCurrentAction();

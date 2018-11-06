@@ -16,6 +16,10 @@
             Uair,
             Bair,
             Dashatk,
+            Nstrong,
+            Fstrong,
+            Dstrong,
+            Ustrong,
             Nspecial,
             Fspecial,
             Airfspecial,
@@ -32,11 +36,16 @@
             Spotdodge,
             Fhop,
             Shop,
+            Fall,
+            FreeFall,
+            LedgeGrab,
             Walk,
             Run,
             Dash,
             Assist,
-            Turn
+            Turn,
+            Stun,
+            KnockedDown
         }
 
         public enum Character
@@ -80,6 +89,7 @@
             ShortHop,
             FullHop,
             Neutral,
+            Strong,
             Special,
             Shield,
             Grab,

@@ -1,4 +1,5 @@
-﻿using NETWORKING;
+﻿using System.Security.Cryptography.X509Certificates;
+using NETWORKING;
 using UnityEngine;
 
 namespace PLAYER
@@ -32,6 +33,11 @@ namespace PLAYER
 
         private void CalculateVelocity()
         {
+            Vector2 KnockbackDecay;
+            KnockbackDecay.x = .01f;
+
+            int gravity;
+            
             /*
             if (Data.MovementVelocity.y > 0)
             {
@@ -71,8 +77,14 @@ namespace PLAYER
                 Data.KnockbackVelocity.y = 0;
                 
                 */
+            
+            if (Data.KnockbackVelocity.x != 0 || Data.KnockbackVelocity.y != 0)
+            {
+                Data.KnockbackVelocity.x -= Data.KnockbackVelocity.x - KnockbackDecay.x < 0 ? Data.KnockbackVelocity.x : KnockbackDecay.x;
 
-            if (Data.CurrentVelocity.x != Data.TargetVelocity.x)
+                _addedForce.x = Data.KnockbackVelocity.x - Data.CurrentVelocity.x;
+
+            }else if (Data.CurrentVelocity.x != Data.TargetVelocity.x)
             {
                 if (Data.CurrentVelocity.x > Data.TargetVelocity.x)
                     _addedForce.x = Data.CurrentVelocity.x - Data.TargetVelocity.x >= Data.Acceleration.x
@@ -84,10 +96,17 @@ namespace PLAYER
                         : Data.TargetVelocity.x - Data.CurrentVelocity.x;
             }
             else
-            {
                 _addedForce.x = 0;
-            }
+
+            if (Data.KnockbackVelocity.x != 0 || Data.KnockbackVelocity.y != 0)
+                _addedForce.y = Data.KnockbackVelocity.y - Data.CurrentVelocity.y;
+            else if (Data.TargetVelocity.y != 0)
+                _addedForce.y = Data.TargetVelocity.y - Data.CurrentVelocity.y;
+            else
+                _addedForce.y = 0;
+
         }
+
 
         public void MovePlayer(Vector2 addedForce, bool sendNetworkAction)
         {

@@ -9,7 +9,7 @@ namespace PLAYER
         {
             Data.TargetVelocity = PlayerController.CurrentActionProperties.DetailedVelocity.Velocity *
                                   (Data.Direction == Types.Direction.Left ? -1 : 1);
-            Data.Acceleration.x = .5f;
+            Data.Acceleration.x = 5f;
 
             switch (Data.CurrentAction)
             {
@@ -40,6 +40,14 @@ namespace PLAYER
                 case Types.ActionType.Bair:
                     break;
                 case Types.ActionType.Dashatk:
+                    break;
+                case Types.ActionType.Nstrong:
+                    break;
+                case Types.ActionType.Fstrong:
+                    break;
+                case Types.ActionType.Dstrong:
+                    break;
+                case Types.ActionType.Ustrong:
                     break;
                 case Types.ActionType.Nspecial:
                     break;
@@ -72,6 +80,8 @@ namespace PLAYER
                 case Types.ActionType.Fhop:
                     break;
                 case Types.ActionType.Shop:
+                    break;
+                case Types.ActionType.Fall:
                     break;
                 case Types.ActionType.Dash:
                     break;

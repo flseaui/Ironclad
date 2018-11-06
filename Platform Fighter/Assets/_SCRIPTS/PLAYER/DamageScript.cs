@@ -19,7 +19,7 @@ namespace PLAYER
             _playerData.KnockbackVelocity.x = (float) ((knockbackStrength + knockbackStrength * _playerData.Percent) *
                                                        Mathf.Cos((float) knockbackAngle)
                 ); //* positive or negitive for left or right
-            _playerData.KnockbackVelocity.x = (float) ((knockbackStrength + knockbackStrength * _playerData.Percent) *
+            _playerData.KnockbackVelocity.y = (float) ((knockbackStrength + knockbackStrength * _playerData.Percent) *
                                                        Mathf.Sin((float) knockbackAngle));
 
             Debug.Log("DAMAGE BITCH");

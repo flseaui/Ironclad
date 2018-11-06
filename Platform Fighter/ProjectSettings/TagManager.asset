@@ -6,6 +6,7 @@ TagManager:
   tags:
   - MenuPanel
   - Box
+  - Stage
   layers:
   - Default
   - TransparentFX

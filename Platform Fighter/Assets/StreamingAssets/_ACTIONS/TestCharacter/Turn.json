@@ -1,0 +1,100 @@
+{
+  "Name": "Turn",
+  "_frames": [
+    "Startup",
+    "Startup",
+    "Startup"
+  ],
+  "Type": "Turn",
+  "_infinite": {
+    "x": 0.0,
+    "y": 2.0
+  },
+  "Anchor": {
+    "x": 0.0,
+    "y": 0.0
+  },
+  "FrameProperties": [
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "Modification": "IgnoreY"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "Modification": "IgnoreY"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "Modification": "IgnoreY"
+      }
+    }
+  ],
+  "Hitboxes": [
+    [],
+    [],
+    []
+  ],
+  "Hurtboxes": [
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 100,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
+        "Type": "Hurt"
+      }
+    ],
+    [],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 100,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
+        "Type": "Hurt"
+      }
+    ]
+  ],
+  "Grabboxes": [
+    [],
+    [],
+    []
+  ],
+  "Armorboxes": [
+    [],
+    [],
+    []
+  ],
+  "Collisionboxes": [
+    [],
+    [],
+    []
+  ],
+  "Databoxes": [
+    [],
+    [],
+    []
+  ]
+}

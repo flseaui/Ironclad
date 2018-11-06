@@ -1,9 +1,9 @@
 {
-  "Name": "Run",
+  "Name": "Fall",
   "_frames": [
     "Startup"
   ],
-  "Type": "Run",
+  "Type": "Fall",
   "_infinite": {
     "x": 0.0,
     "y": 2.0
@@ -16,10 +16,10 @@
     {
       "DetailedVelocity": {
         "Velocity": {
-          "x": 10.0,
+          "x": 0.0,
           "y": 0.0
         },
-        "Modification": "IgnoreY"
+        "Modification": "IgnoreBoth"
       }
     }
   ],
@@ -32,7 +32,7 @@
         "Damage": 0.0,
         "KnockbackStrength": 0.0,
         "KnockbackAngle": 0.0,
-        "Lifespan": 1,
+        "Lifespan": 100,
         "X": 0,
         "Y": 0,
         "Width": 1,
@@ -42,15 +42,23 @@
     ]
   ],
   "Grabboxes": [
+    [],
+    [],
     []
   ],
   "Armorboxes": [
+    [],
+    [],
     []
   ],
   "Collisionboxes": [
+    [],
+    [],
     []
   ],
   "Databoxes": [
+    [],
+    [],
     []
   ]
 }

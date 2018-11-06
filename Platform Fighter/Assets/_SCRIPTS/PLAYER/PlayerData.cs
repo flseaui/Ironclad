@@ -37,7 +37,8 @@ namespace PLAYER
             Grounded,
             Airborne
         }
-
+        
+        //These have just become actions
         public enum PlayerState
         {
             KnockedDown,
@@ -45,6 +46,10 @@ namespace PLAYER
             Stunned,
             FreeFall
         }
+
+        public int ArealActions;
+        
+        public int ArealActionsMax;
 
         public Types.ActionType CurrentAction;
 
@@ -65,5 +70,7 @@ namespace PLAYER
         public Vector2 TerminalVelocity;
 
         public Vector2 Position;
+
+        public PlayerLocation RelativeLocation;
     }
 }

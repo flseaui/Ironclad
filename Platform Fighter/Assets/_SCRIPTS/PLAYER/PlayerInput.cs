@@ -82,6 +82,9 @@ namespace PLAYER
 
             if (player.GetButtonDown("Neutral"))
                 Inputs[(int) Types.Input.Neutral] = true;
+            
+            if (player.GetButtonDown("Strong"))
+                Inputs[(int) Types.Input.Strong] = true;
 
             if (player.GetButtonDown("Special"))
                 Inputs[(int) Types.Input.Special] = true;

@@ -1,13 +1,9 @@
 {
-  "Name": "Run",
+  "Name": "Shop",
   "_frames": [
     "Startup"
   ],
-  "Type": "Run",
-  "_infinite": {
-    "x": 0.0,
-    "y": 2.0
-  },
+  "Type": "Shop",
   "Anchor": {
     "x": 0.0,
     "y": 0.0
@@ -16,10 +12,10 @@
     {
       "DetailedVelocity": {
         "Velocity": {
-          "x": 10.0,
-          "y": 0.0
+          "x": 0.0,
+          "y": 15.0
         },
-        "Modification": "IgnoreY"
+        "Modification": "IgnoreX"
       }
     }
   ],
