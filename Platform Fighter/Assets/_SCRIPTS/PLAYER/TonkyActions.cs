@@ -14,9 +14,7 @@ namespace PLAYER
             bool inputRight =
                 Input.Inputs[(int) Types.Input.LightRight] || Input.Inputs[(int) Types.Input.StrongRight] ? true : 
                     (Input.Inputs[(int) Types.Input.LightLeft] || Input.Inputs[(int) Types.Input.StrongLeft] ? false : 
-                        Data.Direction ==  Types.Direction.Right);
-            
-            Debug.Log("Inputting right: " + inputRight);
+                        Data.Direction ==  Types.Direction.Right);           
             
             //If on the Ground
             if (GetComponent<PlayerData>().DataPacket.RelativeLocation == PlayerDataPacket.PlayerLocation.Grounded)
@@ -82,7 +80,6 @@ namespace PLAYER
 
                     Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
 
-                    Debug.Log("YO FUCKER: " + Data.Direction);
                     return Types.ActionType.Turn;
                 }
                 

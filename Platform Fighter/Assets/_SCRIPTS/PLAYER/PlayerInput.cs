@@ -15,12 +15,16 @@ namespace PLAYER
 
         private List<P2PInputSet.InputChange> _changedInputs;
 
+        private Player _player;
+        
         private bool[] _prevInputs;
         
         private void Start()
         {
             _changedInputs = new List<P2PInputSet.InputChange>();
             _prevInputs = new bool[Inputs.Length];
+            
+            _player = ReInput.players.GetPlayer(Id);
         }
 
         private void Update()
@@ -33,8 +37,6 @@ namespace PLAYER
 
         private void UpdatePlayerInput()
         {
-            var player = ReInput.players.GetPlayer(Id);
-
             _changedInputs.Clear();
 
             Inputs.CopyTo(_prevInputs, 0);
@@ -44,59 +46,59 @@ namespace PLAYER
                 Inputs[index] = false;
             }
 
-            if (player.controllers.hasKeyboard)
+            if (_player.controllers.hasKeyboard)
             {
-                if (player.GetAxis("Run") < -GameSettings.Instance.runThreshold)
+                if (_player.GetAxis("Run") < -GameSettings.Instance.runThreshold)
                     Inputs[(int) Types.Input.StrongLeft] = true;
-                else if (player.GetAxis("Move") < 0)
+                else if (_player.GetAxis("Move") < 0)
                     Inputs[(int) Types.Input.LightLeft] = true;
 
-                if (player.GetAxis("Run") > GameSettings.Instance.runThreshold)
+                if (_player.GetAxis("Run") > GameSettings.Instance.runThreshold)
                     Inputs[(int) Types.Input.StrongRight] = true;
-                else if (player.GetAxis("Move") > 0)
+                else if (_player.GetAxis("Move") > 0)
                     Inputs[(int) Types.Input.LightRight] = true;
 
-                if (player.GetAxis("Crouch") < GameSettings.Instance.crouchThreshold)
+                if (_player.GetAxis("Crouch") < GameSettings.Instance.crouchThreshold)
                     Inputs[(int) Types.Input.Down] = true;
-                else if (player.GetAxis("Crouch") > GameSettings.Instance.upThreshold)
+                else if (_player.GetAxis("Crouch") > GameSettings.Instance.upThreshold)
                     Inputs[(int) Types.Input.Up] = true;
             }
             else
             {
-                if (player.GetAxis("Move") < -GameSettings.Instance.runThreshold)
+                if (_player.GetAxis("Move") < -GameSettings.Instance.runThreshold)
                     Inputs[(int) Types.Input.StrongLeft] = true;
-                else if (player.GetAxis("Move") < 0)
+                else if (_player.GetAxis("Move") < 0)
                     Inputs[(int) Types.Input.LightLeft] = true;
 
-                if (player.GetAxis("Move") > GameSettings.Instance.runThreshold)
+                if (_player.GetAxis("Move") > GameSettings.Instance.runThreshold)
                     Inputs[(int) Types.Input.StrongRight] = true;
-                else if (player.GetAxis("Move") > 0)
+                else if (_player.GetAxis("Move") > 0)
                     Inputs[(int) Types.Input.LightRight] = true;
 
-                if (player.GetAxis("Crouch") < GameSettings.Instance.crouchThreshold)
+                if (_player.GetAxis("Crouch") < GameSettings.Instance.crouchThreshold)
                     Inputs[(int) Types.Input.Down] = true;
-                else if (player.GetAxis("Crouch") > GameSettings.Instance.upThreshold)
+                else if (_player.GetAxis("Crouch") > GameSettings.Instance.upThreshold)
                     Inputs[(int) Types.Input.Up] = true;
             }
 
-            if (player.GetButtonLongPressDown("Hop"))
+            if (_player.GetButtonLongPressDown("Hop"))
                 Inputs[(int) Types.Input.FullHop] = true;
-            else if (player.GetButtonShortPressDown("Hop"))
+            else if (_player.GetButtonShortPressDown("Hop"))
                 Inputs[(int) Types.Input.ShortHop] = true;
 
-            if (player.GetButtonDown("Neutral"))
+            if (_player.GetButtonDown("Neutral"))
                 Inputs[(int) Types.Input.Neutral] = true;
             
-            if (player.GetButtonDown("Strong"))
+            if (_player.GetButtonDown("Strong"))
                 Inputs[(int) Types.Input.Strong] = true;
 
-            if (player.GetButtonDown("Special"))
+            if (_player.GetButtonDown("Special"))
                 Inputs[(int) Types.Input.Special] = true;
 
-            if (player.GetButtonDown("Shield"))
+            if (_player.GetButtonDown("Shield"))
                 Inputs[(int) Types.Input.Shield] = true;
 
-            if (player.GetButtonDown("Grab"))
+            if (_player.GetButtonDown("Grab"))
                 Inputs[(int) Types.Input.Grab] = true;
 
             for (var index = 0; index < Inputs.Length; index++)

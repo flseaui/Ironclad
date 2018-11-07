@@ -77,7 +77,7 @@ namespace NETWORKING
             _snapshots.Clear();
             _snapshots.Add(new List<Snapshot>());
             foreach (var player in MatchStateManager.Instance.GetPlayers())
-            {      
+            {
                 TakeSnapshot(player.GetComponent<NetworkIdentity>().Id, 0, typeof(PlayerData), player.GetComponent<PlayerData>().DataPacket);
             }
         }
