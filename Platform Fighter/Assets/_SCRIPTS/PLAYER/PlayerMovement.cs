@@ -50,7 +50,7 @@ namespace PLAYER
 
             ActionInfo.VelocityModifier.ModificationType VelocityModifier = this.PlayerController.CurrentActionProperties.DetailedVelocity.Modification;
                 
-            deceleration = .25f;
+            deceleration = .01f;
             gravity = .25f;
 
             if (Data.RelativeLocation == PlayerDataPacket.PlayerLocation.Airborne)
@@ -71,11 +71,13 @@ namespace PLAYER
                     else
                         Data.KnockbackVelocity.x = 0;
                 }
-
-                if (Data.KnockbackVelocity.y - terminalVelocity > gravity)
-                    Data.KnockbackVelocity.y -= gravity;
-                else               
-                    Data.KnockbackVelocity.y = terminalVelocity;                
+                else
+                {
+                    if (Data.KnockbackVelocity.y - terminalVelocity > gravity)
+                        Data.KnockbackVelocity.y -= gravity;
+                    else
+                        Data.KnockbackVelocity.y = terminalVelocity;
+                }
             }
             else if (!(Data.TargetVelocity == Vector2.zero && VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreBoth))
             {
@@ -89,7 +91,8 @@ namespace PLAYER
                         else
                             Data.CurrentVelocity.x = 0;
                     }
-                    Data.CurrentVelocity.x = Data.TargetVelocity.x;
+                    else
+                        Data.CurrentVelocity.x = Data.TargetVelocity.x;
                 }
                 //Perhaps decay X velocity if ignored, for now unknown
                 
