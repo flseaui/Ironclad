@@ -108,8 +108,9 @@ namespace PLAYER
                     _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index]));
                 }
             }
-
-            Events.OnInputsChanged(GetComponent<NetworkIdentity>(), _changedInputs.ToArray(), true);
+   
+            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer)
+                Events.OnInputsChanged(GetComponent<NetworkIdentity>(), _changedInputs.ToArray(), true);
         }
     }
 }
