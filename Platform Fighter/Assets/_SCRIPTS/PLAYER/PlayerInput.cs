@@ -101,6 +101,9 @@ namespace PLAYER
             if (_player.GetButtonDown("Grab"))
                 Inputs[(int) Types.Input.Grab] = true;
 
+            MovementStickAngle.x = _player.GetAxis("Move");
+            MovementStickAngle.y = _player.GetAxis("Crouch");
+            
             for (var index = 0; index < Inputs.Length; index++)
             {
                 if (Inputs[index] != _prevInputs[index])
