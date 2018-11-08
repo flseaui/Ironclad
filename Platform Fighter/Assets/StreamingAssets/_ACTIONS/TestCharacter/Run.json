@@ -16,7 +16,7 @@
     {
       "DetailedVelocity": {
         "Velocity": {
-          "x": 10.0,
+          "x": 0.1,
           "y": 0.0
         },
         "Modification": "IgnoreY"

@@ -24,7 +24,7 @@ namespace PLAYER
             DataPacket.Percent = newData.Percent;
             DataPacket.TerminalVelocity = newData.TerminalVelocity;
             DataPacket.Position = newData.Position;
-            GetComponent<Rigidbody2D>().MovePosition(newData.Position);
+            //GetComponent<Rigidbody2D>().MovePosition(newData.Position);
         }
     }
     
@@ -49,9 +49,9 @@ namespace PLAYER
 
         public Vector2 MovementStickAngle;
         
-        public int ArealActions;
+        public int ArialActions;
         
-        public int ArealActionsMax;
+        public int ArialActionsMax;
 
         public Types.ActionType CurrentAction;
 

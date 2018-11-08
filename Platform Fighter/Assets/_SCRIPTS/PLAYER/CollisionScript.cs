@@ -26,8 +26,8 @@ namespace PLAYER
                 {
                     GetComponent<PlayerData>().DataPacket.RelativeLocation = PlayerDataPacket.PlayerLocation.Grounded;
 
-                    GetComponent<PlayerData>().DataPacket.ArealActions =
-                        GetComponent<PlayerData>().DataPacket.ArealActionsMax;
+                    GetComponent<PlayerData>().DataPacket.ArialActions =
+                        GetComponent<PlayerData>().DataPacket.ArialActionsMax;
 
                 }
             }

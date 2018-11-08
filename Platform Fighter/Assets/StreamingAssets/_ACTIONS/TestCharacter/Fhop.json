@@ -13,7 +13,7 @@
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 50.0
+          "y": 1.0
         },
         "Modification": "IgnoreX"
       }
