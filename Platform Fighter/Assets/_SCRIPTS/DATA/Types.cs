@@ -98,5 +98,12 @@
             LeftC,
             RightC
         }
+
+        public enum MatchType
+        {
+            OfflineSingleplayer,
+            OnlineMultiplayer
+        }
+        
     }
 }

@@ -29,7 +29,7 @@ namespace PLAYER
 
         private void Update()
         {
-            if (!MatchStateManager.Instance.ReadyToFight)
+            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && !MatchStateManager.Instance.ReadyToFight)
                 return;
                 
             UpdatePlayerInput();

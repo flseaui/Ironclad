@@ -11,7 +11,7 @@ namespace MENU
     {
         protected override void SwitchToThis(params string[] args)
         {
-            throw new NotImplementedException();
+            GameManager.Instance.MatchType = Types.MatchType.OfflineSingleplayer;
         }
 
         public void ReadyButton()
@@ -21,7 +21,6 @@ namespace MENU
                 Types.Character.TestCharacter,
                 Types.Character.TestCharacter
             };
-            GameManager.Instance.FromSingleplayer = true;
             GameManager.Instance.Stage = Types.Stage.TestStage;
             MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;
         }

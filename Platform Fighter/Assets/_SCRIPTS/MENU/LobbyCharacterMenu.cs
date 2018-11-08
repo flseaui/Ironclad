@@ -32,6 +32,8 @@ namespace MENU
                 else if (args[0] == "join") 
                     Client.Instance.Lobby.Join(ulong.Parse(args[1]));
             }
+            
+            GameManager.Instance.MatchType = Types.MatchType.OnlineMultiplayer;
         }
 
         

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MISC;
 using NETWORKING;
@@ -13,15 +14,19 @@ namespace MANAGERS
     public class MatchStateManager : Singleton<MatchStateManager>
     {
         private List<GameObject> _activePlayers;
-        
-        // bad variable do not use for anything final
-        public bool StartedFromSingleplayer;
-
+     
         public bool ReadyToFight;
         
         // Prefabs
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private GameObject _networkPlayerPrefab;
+        [SerializeField] private GameObject _p2pHandlerPrefab;
+        [SerializeField] private GameObject _rollbackHandlerPrefab;
+        
+        private void OnParticleCollision(GameObject other)
+        {
+            throw new System.NotImplementedException();
+        }
 
         private void Start()
         {
@@ -44,40 +49,46 @@ namespace MANAGERS
                 ++i)
             {
                 GameObject player;
-                if (GameManager.Instance.FromSingleplayer)
+                switch (GameManager.Instance.MatchType)
                 {
-                    player = Instantiate
-                    (
-                        _playerPrefab,
-                        spawnPoints[i].position,
-                        spawnPoints[i].rotation
-                    );
-                    player.GetComponent<PlayerInput>().Id = i;
-                }
-                else
-                {
-                    if (i == int.Parse(Client.Instance.Lobby.GetMemberData(Client.Instance.SteamId, "lobbySpot")))
-                    {
+                    case Types.MatchType.OfflineSingleplayer:
                         player = Instantiate
                         (
                             _playerPrefab,
                             spawnPoints[i].position,
                             spawnPoints[i].rotation
                         );
-                        player.GetComponent<PlayerInput>().Id = 0;
-                    }
-                    else
-                    {
-                        player = Instantiate
-                        (
-                            _networkPlayerPrefab,
-                            spawnPoints[i].position,
-                            spawnPoints[i].rotation
-                        );
-                    }
-                }
+                        player.GetComponent<PlayerInput>().Id = i;
+                        break;
+                    case Types.MatchType.OnlineMultiplayer:
+                        Instantiate(_p2pHandlerPrefab);
+                        Instantiate(_rollbackHandlerPrefab);
+                        if (i == int.Parse(Client.Instance.Lobby.GetMemberData(Client.Instance.SteamId, "lobbySpot")))
+                        {
+                            player = Instantiate
+                            (
+                                _playerPrefab,
+                                spawnPoints[i].position,
+                                spawnPoints[i].rotation
+                            );
+                            player.GetComponent<PlayerInput>().Id = 0;
+                        }
+                        else
+                        {
+                            player = Instantiate
+                            (
+                                _networkPlayerPrefab,
+                                spawnPoints[i].position,
+                                spawnPoints[i].rotation
+                            );
+                        }
 
-                player.GetComponent<NetworkIdentity>().Id = i;
+                        player.AddComponent<NetworkIdentity>();
+                        player.GetComponent<NetworkIdentity>().Id = i;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
                 
                 AssetManager.Instance.PopulateActions(GameManager.Instance.Characters);
 

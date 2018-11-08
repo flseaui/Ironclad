@@ -6,7 +6,7 @@ namespace MANAGERS
 {
     public class GameManager : Singleton<GameManager>
     {
-        public bool FromSingleplayer;
+        public Types.MatchType MatchType { get; set; }
         
         public Types.Character[] Characters { get; set; } =
         {
