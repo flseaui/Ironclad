@@ -20,7 +20,7 @@ namespace PLAYER
             HasInputs = true;
         }
         
-        private void Update()
+        private void FixedUpdate()
         {
             if (!MatchStateManager.Instance.ReadyToFight)
                 return;
