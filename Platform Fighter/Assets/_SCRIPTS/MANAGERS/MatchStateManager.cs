@@ -44,6 +44,12 @@ namespace MANAGERS
         {
             var spawnPoints = SpawnStage();
 
+            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer)
+            {
+                Instantiate(_p2pHandlerPrefab);
+                Instantiate(_rollbackHandlerPrefab);
+            }
+            
             for (var i = 0;
                 i < GameManager.Instance.Characters.Count(character => character != Types.Character.None);
                 ++i)
@@ -61,8 +67,6 @@ namespace MANAGERS
                         player.GetComponent<PlayerInput>().Id = i;
                         break;
                     case Types.MatchType.OnlineMultiplayer:
-                        Instantiate(_p2pHandlerPrefab);
-                        Instantiate(_rollbackHandlerPrefab);
                         if (i == int.Parse(Client.Instance.Lobby.GetMemberData(Client.Instance.SteamId, "lobbySpot")))
                         {
                             player = Instantiate
