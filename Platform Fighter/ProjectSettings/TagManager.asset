@@ -7,6 +7,8 @@ TagManager:
   - MenuPanel
   - Box
   - Stage
+  - EnabledBox
+  - DisabledBox
   layers:
   - Default
   - TransparentFX
