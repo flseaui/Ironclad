@@ -8,12 +8,13 @@ namespace PLAYER
     public class InputSender : MonoBehaviour
     {
         public bool[] Inputs;
-        public Vector2 MovementStickAngle;
 
+        protected PlayerData PlayerData { get; set; }
+        
         private void Awake()
         {
             Inputs = new bool[Enum.GetNames(typeof(Types.Input)).Length];
-            MovementStickAngle = Vector2.zero;
+            PlayerData = GetComponent<PlayerData>();
         }
     }
 }

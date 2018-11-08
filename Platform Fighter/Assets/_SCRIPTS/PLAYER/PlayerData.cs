@@ -47,6 +47,8 @@ namespace PLAYER
             FreeFall
         }
 
+        public Vector2 MovementStickAngle;
+        
         public int ArealActions;
         
         public int ArealActionsMax;
