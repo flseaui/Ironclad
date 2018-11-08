@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PLAYER
 {
-    [RequireComponent(typeof(PlayerData)), RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(PlayerData)), RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(PlayerController))]
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField]
@@ -13,10 +13,13 @@ namespace PLAYER
 
         private Rigidbody2D Rigidbody { get; set; }
 
+        private PlayerController PlayerController { get; set; }
+        
         private void Awake()
         {
             Data = GetComponent<PlayerData>().DataPacket;
             Rigidbody = GetComponent<Rigidbody2D>();
+            PlayerController = GetComponent<PlayerController>();
         }
 
         private void Update()
