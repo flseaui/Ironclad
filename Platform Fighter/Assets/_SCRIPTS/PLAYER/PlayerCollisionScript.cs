@@ -11,11 +11,12 @@ namespace PLAYER
         {
             _playerData = GetComponentInParent<PlayerData>();
         }
-
-        private void OnTriggerEnter2D(Collider2D other)
+        
+        private void OnCollisionEnter2D(Collision2D other)
         {
-            if (other.CompareTag("Stage"))
+            if (other.gameObject.CompareTag("Stage"))
             {
+                Debug.Log("landed");
                 if (GetComponent<BoxCollider2D>().bounds.center.y - GetComponent<BoxCollider2D>().bounds.size.y / 2 >=
                     other.transform.position.y)
                 {
@@ -26,10 +27,10 @@ namespace PLAYER
                 }
             }
         }
-
-        private void OnTriggerExit2D(Collider2D other)
+        
+        private void OnCollisionExit2D(Collision2D other)
         {
-            if (other.CompareTag("Stage"))
+            if (other.gameObject.CompareTag("Stage"))
             {
                 Debug.Log("FUCK MY ASSHOLE");
 

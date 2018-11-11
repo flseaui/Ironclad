@@ -14,7 +14,7 @@ namespace PLAYER
             bool inputRight =
                 Input.Inputs[(int) Types.Input.LightRight] || Input.Inputs[(int) Types.Input.StrongRight] ? true : 
                     (Input.Inputs[(int) Types.Input.LightLeft] || Input.Inputs[(int) Types.Input.StrongLeft] ? false : 
-                        Data.Direction ==  Types.Direction.Right);           
+                        Data.Direction ==  Types.Direction.Right);                    
             
             //If on the Ground
             if (Data.RelativeLocation == PlayerDataPacket.PlayerLocation.Grounded)
@@ -22,6 +22,7 @@ namespace PLAYER
                 if (Input.Inputs[(int) Types.Input.ShortHop])
                 {
                     Debug.Log(Data.RelativeLocation);
+                    
                     Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
                     return Types.ActionType.Jump;
                 }
@@ -93,14 +94,14 @@ namespace PLAYER
 
             if (Data.CurrentAction == Types.ActionType.Jump)
             {
-                if (CurrentActionFrame == 7)
+                if (CurrentActionFrame == 6)
                 {
                     if (Input.Inputs[(int) Types.Input.FullHop])
                         return Types.ActionType.Jump;
                     return Types.ActionType.Fall;
                 }
 
-                if (CurrentActionFrame > 7)
+                if (CurrentActionFrame > 6)
                 {
                     if (Input.Inputs[(int) Types.Input.ShortHop])
                     {
