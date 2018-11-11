@@ -104,6 +104,11 @@
             OfflineSingleplayer,
             OnlineMultiplayer
         }
+
+        public enum Flags
+        {
+            
+        }
         
     }
 }
