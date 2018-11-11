@@ -77,9 +77,7 @@ namespace PLAYER
                     break;
                 case Types.ActionType.Spotdodge:
                     break;
-                case Types.ActionType.Fhop:
-                    break;
-                case Types.ActionType.Shop:
+                case Types.ActionType.Jump:
                     break;
                 case Types.ActionType.Fall:
                     break;

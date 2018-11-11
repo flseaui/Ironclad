@@ -1,9 +1,9 @@
 {
-  "Name": "Shop",
+  "Name": "Jumo",
   "_frames": [
     "Startup"
   ],
-  "Type": "Shop",
+  "Type": "Jump",
   "Anchor": {
     "x": 0.0,
     "y": 0.0
@@ -13,7 +13,7 @@
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 0.5
+          "y": 1.0
         },
         "Modification": "IgnoreX"
       }

@@ -20,16 +20,10 @@ namespace PLAYER
             if (GetComponent<PlayerData>().DataPacket.RelativeLocation == PlayerDataPacket.PlayerLocation.Grounded)
             {
                 
-                if (Input.Inputs[(int) Types.Input.FullHop])
-                {
-                    Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
-                    return Types.ActionType.Fhop;
-                }
-                
                 if (Input.Inputs[(int) Types.Input.ShortHop])
                 {
                     Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
-                    return Types.ActionType.Shop;
+                    return Types.ActionType.Jump;
                 }
                 
                 if (Input.Inputs[(int) Types.Input.Neutral])
@@ -96,7 +90,31 @@ namespace PLAYER
             // if in the air
             
             Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
-            
+
+            if (Data.CurrentAction == Types.ActionType.Jump)
+            {
+                if (CurrentActionFrame == 7)
+                {
+                    if (Input.Inputs[(int) Types.Input.FullHop])
+                        return Types.ActionType.Jump;
+                    return Types.ActionType.Fall;
+                }
+
+                if (CurrentActionFrame > 7)
+                {
+                    if (Input.Inputs[(int) Types.Input.ShortHop])
+                    {
+                        //cancel current action
+                        return Types.ActionType.Jump;
+                    }
+
+                    if (Data.CurrentVelocity.y <= 0)
+                        return Types.ActionType.Fall;
+                }
+
+                return Types.ActionType.Jump;
+            }
+
             if (Input.Inputs[(int) Types.Input.Neutral])
             {
                 if (Input.Inputs[(int) Types.Input.Up]) return Types.ActionType.Uair;
