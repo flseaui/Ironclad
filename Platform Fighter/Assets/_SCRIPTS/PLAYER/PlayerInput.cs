@@ -83,16 +83,16 @@ namespace PLAYER
                     Inputs[(int) Types.Input.Up] = true;
             }
 
-            if(_player.GetButtonDown("Hop"))
+            if(_player.GetButton("Hop"))
             {
-                switch (_jumpFramesHeld) {
-                    case 0:
-                        Inputs[(int) Types.Input.ShortHop] = true;
-                        break;
-                    case 7:
-                        Inputs[(int) Types.Input.FullHop] = true;
-                        Inputs[(int) Types.Input.ShortHop] = false;
-                        break;
+                if (_jumpFramesHeld > -1 && _jumpFramesHeld < 6)
+                {
+                    Inputs[(int) Types.Input.ShortHop] = true;
+                }
+                else if (_jumpFramesHeld == 6)
+                {
+                    Inputs[(int) Types.Input.FullHop] = true;
+                    Inputs[(int) Types.Input.ShortHop] = false;
                 }
 
                 ++_jumpFramesHeld;
