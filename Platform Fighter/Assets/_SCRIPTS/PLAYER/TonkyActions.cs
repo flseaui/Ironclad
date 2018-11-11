@@ -17,11 +17,11 @@ namespace PLAYER
                         Data.Direction ==  Types.Direction.Right);           
             
             //If on the Ground
-            if (GetComponent<PlayerData>().DataPacket.RelativeLocation == PlayerDataPacket.PlayerLocation.Grounded)
-            {
-                
+            if (Data.RelativeLocation == PlayerDataPacket.PlayerLocation.Grounded)
+            {   
                 if (Input.Inputs[(int) Types.Input.ShortHop])
                 {
+                    Debug.Log(Data.RelativeLocation);
                     Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
                     return Types.ActionType.Jump;
                 }
