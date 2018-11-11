@@ -37,6 +37,8 @@ namespace PLAYER
         {
             if (other.CompareTag("Stage"))
             {
+                Debug.Log("FUCK MY ASSHOLE");
+                
                 GetComponent<PlayerData>().DataPacket.RelativeLocation = PlayerDataPacket.PlayerLocation.Airborne;
             }
         }

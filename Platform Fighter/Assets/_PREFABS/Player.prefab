@@ -149,8 +149,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DataPacket:
-    ArealActions: 0
-    ArealActionsMax: 0
+    MovementStickAngle: {x: 0, y: 0}
+    ArialActions: 0
+    ArialActionsMax: 0
     CurrentAction: 0
     CurrentVelocity: {x: 0, y: 0}
     TargetVelocity: {x: 0, y: 0}
