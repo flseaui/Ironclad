@@ -1,34 +1,42 @@
 ﻿using DATA;
-using Rewired;
 using UnityEngine;
 
 namespace PLAYER
 {
     public class CollisionScript : MonoBehaviour
     {
+        private BoxData _boxData;
+
+        private PlayerData _playerData;
+
+        private void Awake()
+        {
+            _playerData = GetComponentInParent<PlayerData>();
+            _boxData = GetComponentInParent<BoxData>();
+        }
+
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Box"))
             {
                 var boxData = other.GetComponent<BoxData>();
-                var playerBoxType = GetComponent<BoxData>().Type;
-                var oppenantBoxType = boxData.Type;
+                var playerBoxType = _boxData.Type;
+                var opponentBoxType = boxData.Type;
 
-                if (playerBoxType == ActionInfo.Box.BoxType.Hurt && oppenantBoxType == ActionInfo.Box.BoxType.Hit)
+                if (playerBoxType == ActionInfo.Box.BoxType.Hurt && opponentBoxType == ActionInfo.Box.BoxType.Hit)
                     GetComponentInParent<DamageScript>()
                         .ApplyDamage(boxData.Damage, boxData.KnockbackStrength, boxData.KnockbackAngle);
-            //}else if (other.CompareTag("Ledge")){
-                
-            }else if (other.CompareTag("Stage"))
+                //} else if (other.CompareTag("Ledge")) {
+            }
+            else if (other.CompareTag("Stage"))
             {
                 if (GetComponent<BoxCollider2D>().bounds.center.y - GetComponent<BoxCollider2D>().bounds.size.y / 2 >=
                     other.transform.position.y)
                 {
-                    GetComponent<PlayerData>().DataPacket.RelativeLocation = PlayerDataPacket.PlayerLocation.Grounded;
+                    _playerData.DataPacket.RelativeLocation = PlayerDataPacket.PlayerLocation.Grounded;
 
-                    GetComponent<PlayerData>().DataPacket.ArialActions =
-                        GetComponent<PlayerData>().DataPacket.ArialActionsMax;
-
+                    _playerData.DataPacket.ArialActions =
+                        _playerData.DataPacket.ArialActionsMax;
                 }
             }
         }
@@ -38,8 +46,8 @@ namespace PLAYER
             if (other.CompareTag("Stage"))
             {
                 Debug.Log("FUCK MY ASSHOLE");
-                
-                GetComponent<PlayerData>().DataPacket.RelativeLocation = PlayerDataPacket.PlayerLocation.Airborne;
+
+                _playerData.DataPacket.RelativeLocation = PlayerDataPacket.PlayerLocation.Airborne;
             }
         }
     }
