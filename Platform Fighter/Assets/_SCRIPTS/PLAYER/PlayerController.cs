@@ -21,19 +21,19 @@ namespace PLAYER
         [SerializeField] private GameObject _boxPrefab;
         private ActionInfo _currentAction;
 
-        private int _currentActionFrame;
-
         private PlayerDataPacket _data;
         private SpriteRenderer _spriteRenderer;
 
+        public int CurrentActionFrame { get; private set; }
+        
         public ActionInfo.FrameProperty CurrentActionProperties
         {
             get
             {
-                if (_currentAction?.FrameProperties == null || _currentActionFrame < 0)
+                if (_currentAction?.FrameProperties == null || CurrentActionFrame < 0)
                     return new ActionInfo.FrameProperty();
 
-                return _currentAction.FrameProperties[_currentActionFrame];
+                return _currentAction.FrameProperties[CurrentActionFrame];
             }
         }
 
@@ -69,24 +69,24 @@ namespace PLAYER
         private void ExecuteAction()
         {
             // first frame of action
-            if (_currentActionFrame == 0)
+            if (CurrentActionFrame == 0)
             {
                 _currentAction = AssetManager.Instance.GetAction(Types.Character.TestCharacter, _data.CurrentAction);
                 _animator.SetInteger("CurrentAction", (int) _currentAction.Type);
                 OnActionBegin?.Invoke();
             }
 
-            UpdateBoxes(_currentActionFrame);
+            UpdateBoxes(CurrentActionFrame);
 
             UpdateSprite();
+            ++CurrentActionFrame;
 
-            ++_currentActionFrame;
 
             // last frame of action
-            if (_currentActionFrame >= _currentAction.FrameCount - 1)
+            if (CurrentActionFrame >= _currentAction.FrameCount - 1)
             {
                 OnActionEnd?.Invoke();
-                _currentActionFrame = 0;
+                CurrentActionFrame = 0;
             }
         }
 

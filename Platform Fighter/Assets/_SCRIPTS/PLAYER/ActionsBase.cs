@@ -6,12 +6,18 @@ namespace PLAYER
     [RequireComponent(typeof(InputSender)), RequireComponent(typeof(PlayerData))]
     public abstract class ActionsBase : MonoBehaviour
     {
-        protected InputSender Input { get; set; }
+        private PlayerController _playerController;
+        
+        protected InputSender Input;
 
-        protected PlayerDataPacket Data { get; set; }
+        protected PlayerDataPacket Data;
+        
+        protected int CurrentActionFrame => _playerController.CurrentActionFrame;
 
         private void Awake()
         {
+            _playerController = GetComponent<PlayerController>();
+            
             if (GetComponent<PlayerInput>() != null)
                 Input = GetComponent<PlayerInput>();
             else
