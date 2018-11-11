@@ -1,7 +1,21 @@
 {
   "Name": "Jumo",
   "_frames": [
-    "Startup"
+    "Startup",
+    "Startup",
+    "Startup",
+    "Startup",
+    "Startup",
+    "Startup",
+    "Startup",
+    "Recovery",
+    "Recovery",
+    "Recovery",
+    "Recovery",
+    "Recovery",
+    "Recovery",
+    "Recovery",
+    "Recovery"
   ],
   "Type": "Jump",
   "Anchor": {
@@ -13,9 +27,135 @@
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 1.0
+          "y": 0.25
         },
         "Modification": "IgnoreX"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.25
+        },
+        "Modification": "IgnoreX"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.25
+        },
+        "Modification": "IgnoreX"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.25
+        },
+        "Modification": "IgnoreX"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.25
+        },
+        "Modification": "IgnoreX"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.25
+        },
+        "Modification": "IgnoreX"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.25
+        },
+        "Modification": "IgnoreX"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "Modification": "IgnoreBoth"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "Modification": "IgnoreBoth"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "Modification": "IgnoreBoth"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "Modification": "IgnoreBoth"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "Modification": "IgnoreBoth"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "Modification": "IgnoreBoth"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "Modification": "IgnoreBoth"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "Modification": "IgnoreBoth"
       }
     }
   ],
@@ -23,6 +163,188 @@
     []
   ],
   "Hurtboxes": [
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 1,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 1,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 1,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 1,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 1,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 1,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 1,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 1,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 1,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 1,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 1,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 1,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 1,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 1,
+        "X": 0,
+        "Y": 0,
+        "Width": 1,
+        "Height": 1,
+        "Type": "Hurt"
+      }
+    ],
     [
       {
         "Damage": 0.0,

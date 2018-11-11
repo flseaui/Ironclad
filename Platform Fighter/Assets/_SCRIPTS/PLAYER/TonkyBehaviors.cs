@@ -7,8 +7,21 @@ namespace PLAYER
     {
         public override void RunAction()
         {
-            Data.TargetVelocity = PlayerController.CurrentActionProperties.DetailedVelocity.Velocity *
-                                  (Data.Direction == Types.Direction.Left ? -1 : 1);
+            ActionInfo.VelocityModifier.ModificationType VelocityModifier = this.PlayerController.CurrentActionProperties.DetailedVelocity.Modification;
+            
+            Data.TargetVelocity.x = 
+                VelocityModifier == ActionInfo.VelocityModifier.ModificationType.Target || 
+                VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreY 
+                    ? PlayerController.CurrentActionProperties.DetailedVelocity.Velocity.x *
+                    (Data.Direction == Types.Direction.Left ? -1 : 1) 
+                    : Data.TargetVelocity.x;
+
+            Data.TargetVelocity.y =
+                VelocityModifier == ActionInfo.VelocityModifier.ModificationType.Target ||
+                VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreX
+                    ? PlayerController.CurrentActionProperties.DetailedVelocity.Velocity.y
+                    : Data.TargetVelocity.y;
+            
             Data.Acceleration.x = 5f;
 
             switch (Data.CurrentAction)
