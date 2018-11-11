@@ -18,6 +18,8 @@ namespace PLAYER
         private Player _player;
         
         private bool[] _prevInputs;
+
+        private int _jumpFramesHeld;
         
         private void Start()
         {
@@ -81,10 +83,24 @@ namespace PLAYER
                     Inputs[(int) Types.Input.Up] = true;
             }
 
-            if (_player.GetButtonLongPressDown("Hop"))
-                Inputs[(int) Types.Input.FullHop] = true;
-            else if (_player.GetButtonShortPressDown("Hop"))
-                Inputs[(int) Types.Input.ShortHop] = true;
+            if(_player.GetButtonDown("Hop"))
+            {
+                switch (_jumpFramesHeld) {
+                    case 0:
+                        Inputs[(int) Types.Input.ShortHop] = true;
+                        break;
+                    case 7:
+                        Inputs[(int) Types.Input.FullHop] = true;
+                        Inputs[(int) Types.Input.ShortHop] = false;
+                        break;
+                }
+
+                ++_jumpFramesHeld;
+            }
+            else
+            {
+                _jumpFramesHeld = 0;
+            }
 
             if (_player.GetButtonDown("Neutral"))
                 Inputs[(int) Types.Input.Neutral] = true;
