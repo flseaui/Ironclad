@@ -47,14 +47,12 @@ namespace PLAYER
             float deceleration;
             float gravity;
             float terminalVelocity;
-
-            ActionInfo.VelocityModifier.ModificationType VelocityModifier = this.PlayerController.CurrentActionProperties.DetailedVelocity.Modification;
                 
             deceleration = .01f;
             gravity = .25f;
 
             if (Data.RelativeLocation == PlayerDataPacket.PlayerLocation.Airborne)
-                terminalVelocity = -2.5f;
+                terminalVelocity = -.05f;
             else
                 terminalVelocity = 0;
 
@@ -79,10 +77,11 @@ namespace PLAYER
                         Data.KnockbackVelocity.y = terminalVelocity;
                 }
             }
-            else if (!(Data.TargetVelocity == Vector2.zero && VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreBoth))
+            else if (!(Data.TargetVelocity == Vector2.zero && Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreBoth))
             {
-                if (!(Data.TargetVelocity.x == 0 &&                     
-                       VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreX))
+                if (   !(Data.TargetVelocity.x == 0 &&                     
+                         Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreX)
+                      && Data.TargetVelocity.x != -999)
                 {                 
                     if (Data.TargetVelocity.x == 0)
                     {
@@ -96,8 +95,9 @@ namespace PLAYER
                 }
                 //Perhaps decay X velocity if ignored, for now unknown
                 
-                if (!(Data.TargetVelocity.y == 0 &&
-                       VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreY))            
+                if  (!(Data.TargetVelocity.y == 0 &&
+                       Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreY)
+                    && Data.TargetVelocity.y != -999)            
                     Data.CurrentVelocity.y = Data.TargetVelocity.y;
                 else
                 {

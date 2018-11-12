@@ -1,5 +1,6 @@
 ﻿using System;
 using ATTRIBUTES;
+using DATA;
 using NETWORKING;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -58,6 +59,8 @@ namespace PLAYER
         public Vector2 CurrentVelocity;
 
         public Vector2 TargetVelocity;
+
+        public ActionInfo.VelocityModifier.ModificationType VelocityModifier;
 
         public Vector2 Acceleration;
 

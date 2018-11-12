@@ -98,7 +98,7 @@ namespace DATA
                 [UsedImplicitly] Null
             }
 
-            public Box(BoxType type, int x, int y, int width, int height, double damage, double knockbackStrength,
+            public Box(BoxType type, int x, int y, double width, double height, double damage, double knockbackStrength,
                 double knockbackAngle, int lifespan)
             {
                 Type = type;
@@ -133,10 +133,10 @@ namespace DATA
             public int Y { get; private set; }
 
             [JsonProperty]
-            public int Width { get; private set; }
+            public double Width { get; private set; }
 
             [JsonProperty]
-            public int Height { get; private set; }
+            public double Height { get; private set; }
 
             [JsonConverter(typeof(StringEnumConverter)), JsonProperty]
             

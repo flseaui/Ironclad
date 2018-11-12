@@ -7,20 +7,20 @@ namespace PLAYER
     {
         public override void RunAction()
         {
-            ActionInfo.VelocityModifier.ModificationType VelocityModifier = this.PlayerController.CurrentActionProperties.DetailedVelocity.Modification;
+            Data.VelocityModifier = PlayerController.CurrentActionProperties.DetailedVelocity.Modification;
             
             Data.TargetVelocity.x = 
-                VelocityModifier == ActionInfo.VelocityModifier.ModificationType.Target || 
-                VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreY 
+                Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.Target || 
+                Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreY 
                     ? PlayerController.CurrentActionProperties.DetailedVelocity.Velocity.x *
                     (Data.Direction == Types.Direction.Left ? -1 : 1) 
-                    : Data.TargetVelocity.x;
+                    : -999;
 
             Data.TargetVelocity.y =
-                VelocityModifier == ActionInfo.VelocityModifier.ModificationType.Target ||
-                VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreX
+                Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.Target ||
+                Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreX
                     ? PlayerController.CurrentActionProperties.DetailedVelocity.Velocity.y
-                    : Data.TargetVelocity.y;
+                    : -999;
             
             Data.Acceleration.x = 5f;
 
@@ -93,6 +93,7 @@ namespace PLAYER
                 case Types.ActionType.Jump:
                     break;
                 case Types.ActionType.Fall:
+                    Data.VelocityModifier = ActionInfo.VelocityModifier.ModificationType.Target;
                     break;
                 case Types.ActionType.Dash:
                     break;

@@ -13,8 +13,8 @@ namespace PLAYER
         public int Lifespan { get; private set; }
         public int X { get; private set; }
         public int Y { get; private set; }
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public double Width { get; private set; }
+        public double Height { get; private set; }
 
         public ActionInfo.Box.BoxType Type { get; private set; }
 

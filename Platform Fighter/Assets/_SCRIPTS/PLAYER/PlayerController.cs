@@ -105,7 +105,7 @@ namespace PLAYER
                                 box.transform.localPosition = new Vector2(hitbox.X, hitbox.Y);
                                 box.name = $"{hitbox.Type.ToString()}Box";
 
-                                box.GetComponent<BoxCollider2D>().size = new Vector2(hitbox.Width, hitbox.Height);
+                                box.GetComponent<BoxCollider2D>().size = new Vector2((float)hitbox.Width, (float)hitbox.Height);
 
                                 var boxData = box.GetComponent<BoxData>();
                                 boxData.SetData(hitbox, actionType, frameCount);
