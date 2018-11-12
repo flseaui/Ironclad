@@ -56,12 +56,12 @@ namespace PLAYER
                 if (info.Lifespan > 0)
                 {
                     info.Lifespan--;
-                    if (info.Lifespan <= 0)
-                    {
-                        box.tag = "DisabledBox";
-                        box.SetActive(false);
-                        //_enabledBoxes.Remove(box);
-                    }
+                }
+                if (info.Lifespan <= 0)
+                {
+                    box.tag = "DisabledBox";
+                    box.SetActive(false);
+                    //_enabledBoxes.Remove(box);
                 }
             }
         }
@@ -79,6 +79,7 @@ namespace PLAYER
 
                 box.gameObject.SetActive(true);
                 box.gameObject.tag = "EnabledBox";
+                box.GetComponent<BoxInfo>().Lifespan = box.GetComponent<BoxData>().Lifespan;
             }
         }
     }
