@@ -54,7 +54,7 @@ namespace PLAYER
             if (Data.RelativeLocation == PlayerDataPacket.PlayerLocation.Airborne)
                 terminalVelocity = -.05f;
             else
-                terminalVelocity = 0;
+                terminalVelocity = -.05f;
 
             if (Data.KnockbackVelocity != Vector2.zero)
             {
