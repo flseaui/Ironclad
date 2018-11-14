@@ -85,12 +85,15 @@ namespace PLAYER
 
             if(_player.GetButton("Hop"))
             {
-                if (_jumpFramesHeld > -1 && _jumpFramesHeld < 6)
+                if (_jumpFramesHeld > -1 && _jumpFramesHeld < 9)
                 {
+                    Debug.Log("JUMPY: " + _jumpFramesHeld);
                     Inputs[(int) Types.Input.ShortHop] = true;
                 }
-                else if (_jumpFramesHeld == 6)
+                else if (_jumpFramesHeld >= 9)
                 {
+                    Debug.Log("BITCH DONE DID A HOP MOTHER FUCKER");
+                    
                     Inputs[(int) Types.Input.FullHop] = true;
                     Inputs[(int) Types.Input.ShortHop] = false;
                 }

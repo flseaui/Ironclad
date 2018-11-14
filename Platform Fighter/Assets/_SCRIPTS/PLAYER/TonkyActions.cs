@@ -9,6 +9,11 @@ namespace PLAYER
         // Returns action that should be started this frame based on current inputs
         // Assumes neutral/idle state
 
+        private void Start()
+        {
+            Data.RelativeLocation = PlayerDataPacket.PlayerLocation.Airborne;
+        }
+
         protected override Types.ActionType GetCurrentAction()
         {
             bool inputRight =
@@ -17,6 +22,8 @@ namespace PLAYER
                         Data.Direction ==  Types.Direction.Right);                    
             
             //If on the Ground
+            Debug.Log(Data.RelativeLocation);
+            
             if (Data.RelativeLocation == PlayerDataPacket.PlayerLocation.Grounded)
             {   
                 if (Input.Inputs[(int) Types.Input.ShortHop])
@@ -94,24 +101,39 @@ namespace PLAYER
 
             if (Data.CurrentAction == Types.ActionType.Jump)
             {
-                if (CurrentActionFrame == 6)
+                if (CurrentActionFrame >= 10 && CurrentActionFrame <= 14)
                 {
                     if (Input.Inputs[(int) Types.Input.FullHop])
+                    {
+                        Debug.Log("FULL HOP");
                         return Types.ActionType.Jump;
+                    }
+
+                    Debug.Log("Short HOP");
                     return Types.ActionType.Fall;
                 }
 
-                if (CurrentActionFrame > 6)
+                if (CurrentActionFrame == 15)
                 {
+
+                    Debug.Log("Yeah I full hopped");
+                    return Types.ActionType.Fall;
+                }
+                /*
+                if (CurrentActionFrame > 10)
+                {
+                    
                     if (Input.Inputs[(int) Types.Input.ShortHop])
                     {
                         //cancel current action
                         return Types.ActionType.Jump;
                     }
+                    
 
                     if (Data.CurrentVelocity.y <= 0)
                         return Types.ActionType.Fall;
                 }
+                */
 
                 return Types.ActionType.Jump;
             }

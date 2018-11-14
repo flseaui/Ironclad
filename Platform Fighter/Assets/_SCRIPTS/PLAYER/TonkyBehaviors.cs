@@ -1,5 +1,7 @@
 ﻿using System;
 using DATA;
+using UnityEngine;
+using Types = DATA.Types;
 
 namespace PLAYER
 {
@@ -8,19 +10,18 @@ namespace PLAYER
         public override void RunAction()
         {
             Data.VelocityModifier = PlayerController.CurrentActionProperties.DetailedVelocity.Modification;
-            
-            Data.TargetVelocity.x = 
-                Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.Target || 
-                Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreY 
-                    ? PlayerController.CurrentActionProperties.DetailedVelocity.Velocity.x *
-                    (Data.Direction == Types.Direction.Left ? -1 : 1) 
-                    : -999;
+
+            Data.TargetVelocity.x =
+                PlayerController.CurrentActionProperties.DetailedVelocity.Velocity.x *
+                (Data.Direction == Types.Direction.Left ? -1 : 1);
 
             Data.TargetVelocity.y =
-                Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.Target ||
-                Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreX
-                    ? PlayerController.CurrentActionProperties.DetailedVelocity.Velocity.y
-                    : -999;
+                PlayerController.CurrentActionProperties.DetailedVelocity.Velocity.y;
+
+            if (Data.TargetVelocity.y == 99)
+            {
+                Debug.Log("YOOOOOOOOOOOOO: " + Data.VelocityModifier);
+            }
             
             Data.Acceleration.x = 5f;
 
@@ -91,9 +92,10 @@ namespace PLAYER
                 case Types.ActionType.Spotdodge:
                     break;
                 case Types.ActionType.Jump:
+                    ApplyArielMovement(Data.MovementStickAngle.x, Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreBoth || Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreY);
                     break;
                 case Types.ActionType.Fall:
-                    Data.VelocityModifier = ActionInfo.VelocityModifier.ModificationType.Target;
+                    ApplyArielMovement(Data.MovementStickAngle.x, Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreBoth || Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreY);
                     break;
                 case Types.ActionType.Dash:
                     break;
@@ -107,5 +109,18 @@ namespace PLAYER
                     throw new ArgumentOutOfRangeException(nameof(Data.CurrentAction), Data.CurrentAction, null);
             }
         }
+
+        public void ApplyArielMovement(float amount, bool modAsIgnoreBoth)
+        {
+            Data.TargetVelocity.x += amount * 0.025f;
+
+            if (modAsIgnoreBoth)
+                Data.VelocityModifier = ActionInfo.VelocityModifier.ModificationType.IgnoreY;
+            else
+                Data.VelocityModifier = ActionInfo.VelocityModifier.ModificationType.Target;
+
+        }
+        
+        
     }
 }

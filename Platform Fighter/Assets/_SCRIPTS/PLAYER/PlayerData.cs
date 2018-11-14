@@ -27,6 +27,7 @@ namespace PLAYER
             DataPacket.Position = newData.Position;
             //GetComponent<Rigidbody2D>().MovePosition(newData.Position);
         }
+        
     }
     
     [Serializable]

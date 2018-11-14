@@ -15,6 +15,11 @@
     "Recovery",
     "Recovery",
     "Recovery",
+    "Recovery",
+    "Recovery",
+    "Recovery",
+    "Recovery",
+    "Recovery",
     "Recovery"
   ],
   "Type": "Jump",
@@ -27,7 +32,7 @@
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 0.25
+          "y": 0.2
         },
         "Modification": "IgnoreX"
       }
@@ -36,7 +41,7 @@
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 0.25
+          "y": 0.2
         },
         "Modification": "IgnoreX"
       }
@@ -45,7 +50,7 @@
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 0.25
+          "y": 0.2
         },
         "Modification": "IgnoreX"
       }
@@ -54,7 +59,7 @@
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 0.25
+          "y": 0.2
         },
         "Modification": "IgnoreX"
       }
@@ -63,7 +68,7 @@
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 0.25
+          "y": 0.2
         },
         "Modification": "IgnoreX"
       }
@@ -72,7 +77,7 @@
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 0.25
+          "y": 0.2
         },
         "Modification": "IgnoreX"
       }
@@ -81,7 +86,7 @@
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 0.25
+          "y": 0.2
         },
         "Modification": "IgnoreX"
       }
@@ -90,72 +95,117 @@
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 0.0
+          "y": 0.2
         },
-        "Modification": "IgnoreBoth"
+        "Modification": "IgnoreX"
       }
     },
     {
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 0.0
+          "y": 0.2
         },
-        "Modification": "IgnoreBoth"
+        "Modification": "IgnoreX"
       }
     },
     {
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 0.0
+          "y": 0.2
         },
-        "Modification": "IgnoreBoth"
+        "Modification": "IgnoreX"
       }
     },
     {
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 0.0
+          "y": 99
         },
-        "Modification": "IgnoreBoth"
+        "Modification": "IgnoreX"
       }
     },
     {
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 0.0
+          "y": 0.2
         },
-        "Modification": "IgnoreBoth"
+        "Modification": "IgnoreX"
       }
     },
     {
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 0.0
+          "y": 0.2
         },
-        "Modification": "IgnoreBoth"
+        "Modification": "IgnoreX"
       }
     },
     {
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 0.0
+          "y": 0.2
         },
-        "Modification": "IgnoreBoth"
+        "Modification": "IgnoreX"
       }
     },
     {
       "DetailedVelocity": {
         "Velocity": {
           "x": 0.0,
-          "y": 0.0
+          "y": 0.2
         },
-        "Modification": "IgnoreBoth"
+        "Modification": "IgnoreX"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.2
+        },
+        "Modification": "IgnoreX"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.2
+        },
+        "Modification": "IgnoreX"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.2
+        },
+        "Modification": "IgnoreX"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.2
+        },
+        "Modification": "IgnoreX"
+      }
+    },
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.2
+        },
+        "Modification": "IgnoreX"
       }
     }
   ],
@@ -163,6 +213,71 @@
     []
   ],
   "Hurtboxes": [
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 100,
+        "X": 0,
+        "Y": 0,
+        "Width": 0.72,
+        "Height": 0.64,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 100,
+        "X": 0,
+        "Y": 0,
+        "Width": 0.72,
+        "Height": 0.64,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 100,
+        "X": 0,
+        "Y": 0,
+        "Width": 0.72,
+        "Height": 0.64,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 100,
+        "X": 0,
+        "Y": 0,
+        "Width": 0.72,
+        "Height": 0.64,
+        "Type": "Hurt"
+      }
+    ],
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 100,
+        "X": 0,
+        "Y": 0,
+        "Width": 0.72,
+        "Height": 0.64,
+        "Type": "Hurt"
+      }
+    ],
     [
       {
         "Damage": 0.0,

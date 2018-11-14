@@ -3,6 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 using DATA;
 using NETWORKING;
 using UnityEngine;
+using Types = DATA.Types;
 
 namespace PLAYER
 {
@@ -49,12 +50,12 @@ namespace PLAYER
             float terminalVelocity;
                 
             deceleration = .01f;
-            gravity = .25f;
+            gravity = -.025f;
 
             if (Data.RelativeLocation == PlayerDataPacket.PlayerLocation.Airborne)
-                terminalVelocity = -.05f;
+                terminalVelocity = -.075f;
             else
-                terminalVelocity = -.05f;
+                terminalVelocity = 0;
 
             if (Data.KnockbackVelocity != Vector2.zero)
             {
@@ -71,17 +72,15 @@ namespace PLAYER
                 }
                 else
                 {
-                    if (Data.KnockbackVelocity.y - terminalVelocity > gravity)
-                        Data.KnockbackVelocity.y -= gravity;
+                    if (Data.KnockbackVelocity.y + gravity  > terminalVelocity)
+                        Data.KnockbackVelocity.y += gravity;
                     else
                         Data.KnockbackVelocity.y = terminalVelocity;
                 }
             }
-            else if (!(Data.TargetVelocity == Vector2.zero && Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreBoth))
+            else if (Data.VelocityModifier != ActionInfo.VelocityModifier.ModificationType.IgnoreBoth)
             {
-                if (   !(Data.TargetVelocity.x == 0 &&                     
-                         Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreX)
-                      && Data.TargetVelocity.x != -999)
+                if (Data.VelocityModifier != ActionInfo.VelocityModifier.ModificationType.IgnoreX)
                 {                 
                     if (Data.TargetVelocity.x == 0)
                     {
@@ -94,26 +93,36 @@ namespace PLAYER
                         Data.CurrentVelocity.x = Data.TargetVelocity.x;
                 }
                 //Perhaps decay X velocity if ignored, for now unknown
-                
-                if  (!(Data.TargetVelocity.y == 0 &&
-                       Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreY)
-                    && Data.TargetVelocity.y != -999)            
+
+                if (Data.VelocityModifier != ActionInfo.VelocityModifier.ModificationType.IgnoreY)
+                {
+                    if (Data.TargetVelocity.y == 99)
+                    {
+                        Debug.Log("What the fuck is happening");
+                    }
+                    
                     Data.CurrentVelocity.y = Data.TargetVelocity.y;
+                }
                 else
                 {
-                    if (Data.CurrentVelocity.y - terminalVelocity > gravity)
-                        Data.CurrentVelocity.y -= gravity;
+                    if (Data.CurrentVelocity.y + gravity > terminalVelocity)
+                        Data.CurrentVelocity.y += gravity;
                     else               
                         Data.CurrentVelocity.y = terminalVelocity;   
                 }
             }
             else
-            {
-                if (Data.CurrentVelocity.y - terminalVelocity > gravity)
-                    Data.CurrentVelocity.y -= gravity;
+            {   
+                if (Data.CurrentVelocity.y + gravity > terminalVelocity)
+                    Data.CurrentVelocity.y += gravity;
                 else               
                     Data.CurrentVelocity.y = terminalVelocity;   
+                
+                Debug.Log("this is it buster: " + Data.CurrentVelocity.y);
             }
+            
+            if (Data.CurrentAction == Types.ActionType.Jump)
+                Debug.Log("YEAH HERES SOME VELOCITY FAG " + Data.CurrentVelocity);
             
             /*
             if (Data.MovementVelocity.y > 0)
