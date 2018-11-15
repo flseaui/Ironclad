@@ -63,7 +63,7 @@ namespace PLAYER
             PoolBoxes();
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             //Debug.Log($"{_data.CurrentAction} {_data.Direction}");
 

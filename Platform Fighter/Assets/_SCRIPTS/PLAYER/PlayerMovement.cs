@@ -122,7 +122,9 @@ namespace PLAYER
             }
             
             if (Data.CurrentAction == Types.ActionType.Jump)
-                Debug.Log("YEAH HERES SOME VELOCITY FAG " + Data.CurrentVelocity);
+            {
+                Debug.Log("YEAH HERES SOME VELOCITY FAG " + Data.CurrentVelocity + "ALSO THIS IS THE FRAME FAG " + PlayerController.CurrentActionFrame);
+            }
             
             /*
             if (Data.MovementVelocity.y > 0)
