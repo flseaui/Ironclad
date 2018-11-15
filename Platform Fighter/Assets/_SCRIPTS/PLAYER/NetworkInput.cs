@@ -26,6 +26,11 @@ namespace PLAYER
             if (!MatchStateManager.Instance.ReadyToFight)
                 return;
             
+            for (var index = 0; index < Inputs.Length; index++)
+            {
+                Inputs[index] = false;
+            }
+            
             if (HasInputs)
             {
                 Debug.Log("WE GOT " + ChangedInputs);
