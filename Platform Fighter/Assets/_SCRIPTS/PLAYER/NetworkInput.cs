@@ -2,6 +2,7 @@ using System;
 using DATA;
 using MANAGERS;
 using NETWORKING;
+using UnityEngine;
 
 namespace PLAYER
 {
@@ -27,6 +28,8 @@ namespace PLAYER
             
             if (HasInputs)
             {
+                Debug.Log("WE GOT " + ChangedInputs);
+                
                 RollbackManager.Instance.SaveGameState();
                 
                 if (_predicting)

@@ -88,7 +88,7 @@ namespace NETWORKING
             {
                 case P2PMessageKey.InputSet:
                     var inputSet = JsonUtility.FromJson<P2PInputSet>(msg.Body);
-
+    
                     player.GetComponent<NetworkInput>().GiveInputs(inputSet.Inputs);
                     break;
                 case P2PMessageKey.Join:
