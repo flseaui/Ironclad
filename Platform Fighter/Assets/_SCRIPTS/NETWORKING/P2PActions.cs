@@ -39,4 +39,18 @@ namespace NETWORKING
     {
         public string Serialize() => JsonUtility.ToJson(this);
     }
+    
+    [Serializable]
+    public struct P2PPing : IP2PAction
+    {
+        public int LocalFrame;
+
+        public P2PPing(int localFrame)
+        {
+            LocalFrame = localFrame;
+        }
+        
+        public string Serialize() => JsonUtility.ToJson(this);
+    }
+    
 }

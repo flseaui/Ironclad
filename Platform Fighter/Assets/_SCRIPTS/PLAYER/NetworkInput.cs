@@ -26,6 +26,8 @@ namespace PLAYER
 
         public void GiveInputs(P2PInputSet.InputChange[] changedInputs)
         {
+            if (changedInputs.Length == 0) return;
+            
             ChangedInputs.Add(changedInputs);
             HasInputs = true;
         }

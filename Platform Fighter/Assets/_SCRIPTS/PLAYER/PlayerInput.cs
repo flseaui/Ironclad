@@ -40,7 +40,7 @@ namespace PLAYER
 
         private void UpdatePlayerInput()
         {
-            _changedInputs.Clear();
+
 
             Inputs.CopyTo(_prevInputs, 0);
                 
@@ -128,9 +128,17 @@ namespace PLAYER
                     _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index]));
                 }
             }
-   
+        }
+
+        private void FixedUpdate()
+        {
+            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && !MatchStateManager.Instance.ReadyToFight)
+                return;
+            
             if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer)
                 Events.OnInputsChanged(GetComponent<NetworkIdentity>(), _changedInputs.ToArray(), true);
+            
+            _changedInputs.Clear();
         }
     }
 }

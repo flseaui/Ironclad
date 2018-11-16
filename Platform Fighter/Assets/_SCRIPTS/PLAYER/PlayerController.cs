@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DATA;
 using MANAGERS;
+using NETWORKING;
 using UnityEngine;
 using Types = DATA.Types;
 
@@ -59,6 +60,8 @@ namespace PLAYER
             var Position = PlayerDataPacket.PlayerLocation.Grounded;
 
             PoolBoxes();
+
+            Events.OnPingSent(GetComponent<NetworkIdentity>(), P2PHandler.Instance.FramesLapsed);
         }
 
         private void FixedUpdate()

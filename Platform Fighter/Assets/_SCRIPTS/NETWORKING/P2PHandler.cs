@@ -13,19 +13,20 @@ namespace NETWORKING
     {
         private int _playersJoined = 1;
 
-        private int _framesLapsed;
+        public int FramesLapsed;
         
         private void Start()
         {
             Events.OnInputsChanged += SendP2PInputSet;
             Events.OnMatchJoined += SendP2PMatchJoined;
+            Events.OnPingSent += SendP2PPing;
             SubscribeToP2PEvents();          
         }
 
         private void FixedUpdate()
         {
             if (MatchStateManager.Instance.ReadyToFight)
-                ++_framesLapsed;
+                ++FramesLapsed;           
         }
         
         private void Update()
@@ -58,6 +59,14 @@ namespace NETWORKING
             ParseP2PMessage(sender, serializedMessage);
         }
 
+        private void SendP2PPing(NetworkIdentity networkIdentity, int localFrame)
+        {
+            var body = new P2PPing(localFrame);
+            var message = new P2PMessage(networkIdentity.Id, P2PMessageKey.Ping, body.Serialize());
+            
+            SendP2PMessage(message);
+        }
+        
         private void SendP2PMatchJoined(NetworkIdentity networkIdentity)
         {
             var body = new P2PJoin();
@@ -94,15 +103,14 @@ namespace NETWORKING
                 ++numClients;
                 Client.Instance.Networking.SendP2PPacket(id, data, data.Length, Networking.SendType.Reliable, 0);
             }
-
-            Debug.Log($"Sent {message.Body} on frame { _framesLapsed }");
+            //Debug.Log($"Sent {message.Body} on frame { FramesLapsed }");
         }
 
         public void ParseP2PMessage(ulong senderID, P2PMessage msg)
         {
             var player = MatchStateManager.Instance.GetPlayer(msg.PlayerId);
 
-            Debug.Log($"Recieved {msg.Body} on frame { _framesLapsed }");
+            //Debug.Log($"Recieved {msg.Body} on frame { FramesLapsed }");
             
             switch (msg.Key)
             {
@@ -115,6 +123,14 @@ namespace NETWORKING
                     var joinMessage = JsonUtility.FromJson<P2PJoin>(msg.Body);
                     
                     ++_playersJoined;                  
+                    break;
+                case P2PMessageKey.Ping:
+                    var pingMessage = JsonUtility.FromJson<P2PPing>(msg.Body);
+
+                    Debug.Log($"Sent on frame {pingMessage.LocalFrame}, recieved on frame {FramesLapsed}");
+                    
+                    Events.OnPingSent(MatchStateManager.Instance.GetPlayers().FirstOrDefault(p => p != player)?.GetComponent<NetworkIdentity>(),
+                        pingMessage.LocalFrame);
                     break;
 
             }

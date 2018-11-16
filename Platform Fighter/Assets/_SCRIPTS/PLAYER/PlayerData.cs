@@ -25,6 +25,7 @@ namespace PLAYER
             DataPacket.Percent = newData.Percent;
             DataPacket.TerminalVelocity = newData.TerminalVelocity;
             DataPacket.Position = newData.Position;
+            DataPacket.VelocityModifier = newData.VelocityModifier;
             //GetComponent<Rigidbody2D>().MovePosition(newData.Position);
         }
         
