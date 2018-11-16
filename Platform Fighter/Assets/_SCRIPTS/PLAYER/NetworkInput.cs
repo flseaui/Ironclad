@@ -12,6 +12,8 @@ namespace PLAYER
         public bool HasInputs { get; set; }
 
         private bool _predicting;
+        private bool _rollbackScheduled;
+        private bool _gameSaveScheduled;
         private int _framesOfPrediction;
         
         private List<P2PInputSet.InputChange[]> ChangedInputs { get; set; }
@@ -24,26 +26,24 @@ namespace PLAYER
 
         public void GiveInputs(P2PInputSet.InputChange[] changedInputs)
         {
-            if (HasInputs) Debug.Log("this shouldnt be happening");
             ChangedInputs.Add(changedInputs);
             HasInputs = true;
         }
-        
-        private void FixedUpdate()
+
+        private void Update()
         {
             if (!MatchStateManager.Instance.ReadyToFight)
                 return;
             
             if (HasInputs)
             {
-                Debug.Log("We done got an input");
-                RollbackManager.Instance.SaveGameState();
-                
+                _gameSaveScheduled = true;
+
                 if (_predicting)
                 {
-                    _predicting = false;
-                    RollbackManager.Instance.Rollback(0);
+                    _rollbackScheduled = true;
                 }
+                
                 ParseInputs(ChangedInputs);
                 HasInputs = false;
             }
@@ -52,6 +52,26 @@ namespace PLAYER
                 _predicting = true;
                 ++_framesOfPrediction;
                 ParseInputs(PredictInputs());
+            }
+        }
+        
+        private void FixedUpdate()
+        {
+            if (!MatchStateManager.Instance.ReadyToFight)
+                return;
+
+            if (_gameSaveScheduled)
+            {
+                RollbackManager.Instance.SaveGameState();
+
+                _gameSaveScheduled = false;
+            }
+
+            if (_rollbackScheduled)
+            {
+                RollbackManager.Instance.Rollback(0);
+
+                _rollbackScheduled = false;
             }
         }
 
