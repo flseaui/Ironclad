@@ -24,7 +24,8 @@ namespace NETWORKING
 
         private void FixedUpdate()
         {
-            ++_framesLapsed;
+            if (MatchStateManager.Instance.ReadyToFight)
+                ++_framesLapsed;
         }
         
         private void Update()

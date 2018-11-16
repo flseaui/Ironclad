@@ -83,7 +83,6 @@ namespace PLAYER
             };
         }
     
-        
         public void ParseInputs(List<P2PInputSet.InputChange[]> inputs)
         {
             for (var index = 0; index < inputs.Count; index++)
@@ -92,6 +91,8 @@ namespace PLAYER
                 foreach (var input in inputList)
                 {
                     Inputs[(int) input.InputType] = input.State;
+                    Debug.Log($"{input.InputType} Input applied on frame {GetComponent<PlayerController>().CurrentActionFrame}");
+                    Debug.Log($"Players position on input application is {transform.position}");
                 }
 
                 inputs.RemoveAt(index);
