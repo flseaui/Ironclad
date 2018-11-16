@@ -16,6 +16,11 @@ namespace PLAYER
         
         private List<P2PInputSet.InputChange[]> ChangedInputs { get; set; }
 
+        private void Awake()
+        {
+            ChangedInputs = new List<P2PInputSet.InputChange[]>();
+        }
+
         public void GiveInputs(P2PInputSet.InputChange[] changedInputs)
         {
             if (HasInputs) Debug.Log("this shouldnt be happening");
