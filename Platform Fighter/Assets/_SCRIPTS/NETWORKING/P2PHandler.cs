@@ -73,6 +73,8 @@ namespace NETWORKING
         
         public static void SendP2PMessage(P2PMessage message)
         {
+            if (Client.Instance.Lobby.NumMembers == 1) return;
+            
             var serializedMessage = JsonUtility.ToJson(message);
 
             var data = Encoding.UTF8.GetBytes(serializedMessage);

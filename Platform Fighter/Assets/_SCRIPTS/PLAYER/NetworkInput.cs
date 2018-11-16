@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DATA;
 using MANAGERS;
 using NETWORKING;
@@ -13,11 +14,12 @@ namespace PLAYER
         private bool _predicting;
         private int _framesOfPrediction;
         
-        private P2PInputSet.InputChange[] ChangedInputs { get; set; }
+        private List<P2PInputSet.InputChange[]> ChangedInputs { get; set; }
 
         public void GiveInputs(P2PInputSet.InputChange[] changedInputs)
         {
-            ChangedInputs = changedInputs;
+            if (HasInputs) Debug.Log("this shouldnt be happening");
+            ChangedInputs.Add(changedInputs);
             HasInputs = true;
         }
         
@@ -28,6 +30,7 @@ namespace PLAYER
             
             if (HasInputs)
             {
+                Debug.Log("We done got an input");
                 RollbackManager.Instance.SaveGameState();
                 
                 if (_predicting)
@@ -46,16 +49,26 @@ namespace PLAYER
             }
         }
 
-        private P2PInputSet.InputChange[] PredictInputs()
+        private List<P2PInputSet.InputChange[]> PredictInputs()
         {
-            return new P2PInputSet.InputChange[] {  };
-        }
-        
-        public void ParseInputs(P2PInputSet.InputChange[] inputs)
-        {
-            foreach (var input in inputs)
+            return new List<P2PInputSet.InputChange[]>
             {
-                Inputs[(int) input.InputType] = input.State;
+                new P2PInputSet.InputChange[] { }
+            };
+        }
+    
+        
+        public void ParseInputs(List<P2PInputSet.InputChange[]> inputs)
+        {
+            for (var index = 0; index < inputs.Count; index++)
+            {
+                var inputList = inputs[index];
+                foreach (var input in inputList)
+                {
+                    Inputs[(int) input.InputType] = input.State;
+                }
+
+                inputs.RemoveAt(index);
             }
         }
     }
