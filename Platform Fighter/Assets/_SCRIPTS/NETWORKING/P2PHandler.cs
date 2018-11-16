@@ -84,7 +84,7 @@ namespace NETWORKING
             foreach (var id in Client.Instance.Lobby.GetMemberIDs().Where(id => id != Client.Instance.SteamId))
             {
                 ++numClients;
-                Client.Instance.Networking.SendP2PPacket(id, data, data.Length, Networking.SendType.Unreliable, 0);
+                Client.Instance.Networking.SendP2PPacket(id, data, data.Length, Networking.SendType.Reliable, 0);
             }
             
             Debug.Log($"Sent packet to {numClients} clients");
