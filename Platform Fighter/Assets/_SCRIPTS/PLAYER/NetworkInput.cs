@@ -16,8 +16,9 @@ namespace PLAYER
         
         private List<P2PInputSet.InputChange[]> ChangedInputs { get; set; }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             ChangedInputs = new List<P2PInputSet.InputChange[]>();
         }
 

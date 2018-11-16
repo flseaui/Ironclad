@@ -11,7 +11,7 @@ namespace PLAYER
 
         protected PlayerData PlayerData { get; set; }
         
-        private void Awake()
+        protected virtual void Awake()
         {
             Inputs = new bool[Enum.GetNames(typeof(Types.Input)).Length];
             PlayerData = GetComponent<PlayerData>();

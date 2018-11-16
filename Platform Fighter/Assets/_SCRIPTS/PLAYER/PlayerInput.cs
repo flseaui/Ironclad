@@ -23,6 +23,7 @@ namespace PLAYER
         
         private void Start()
         {
+            base.Awake();
             _changedInputs = new List<P2PInputSet.InputChange>();
             _prevInputs = new bool[Inputs.Length];
             
