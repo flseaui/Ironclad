@@ -18,11 +18,6 @@ namespace PLAYER
             Data.TargetVelocity.y =
                 PlayerController.CurrentActionProperties.DetailedVelocity.Velocity.y;
 
-            if (Data.TargetVelocity.y == 99)
-            {
-                Debug.Log("YOOOOOOOOOOOOO: " + Data.VelocityModifier);
-            }
-            
             Data.Acceleration.x = 5f;
 
             switch (Data.CurrentAction)

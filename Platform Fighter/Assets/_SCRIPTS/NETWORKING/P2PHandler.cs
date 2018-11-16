@@ -66,7 +66,7 @@ namespace NETWORKING
             var body = new P2PInputSet(inputs);
             var message = new P2PMessage(networkIdentity.Id, P2PMessageKey.InputSet, body.Serialize());
            
-            Debug.Log(message.Body);
+            //Debug.Log(message.Body);
             
             SendP2PMessage(message);
         }  
@@ -77,13 +77,23 @@ namespace NETWORKING
 
             var data = Encoding.UTF8.GetBytes(serializedMessage);
 
+            var numClients = 0;
+            
             foreach (var id in Client.Instance.Lobby.GetMemberIDs().Where(id => id != Client.Instance.SteamId))
+            {
+                ++numClients;
                 Client.Instance.Networking.SendP2PPacket(id, data, data.Length, Networking.SendType.Unreliable, 0);
+            }
+            
+            Debug.Log($"Sent packet to {numClients} clients");
         }
 
         public void ParseP2PMessage(ulong senderID, P2PMessage msg)
         {
             var player = MatchStateManager.Instance.GetPlayer(msg.PlayerId);
+            
+            Debug.Log($"Recieved packet of type {msg.Key} from player {player.GetComponent<NetworkIdentity>().Id}");
+            
             switch (msg.Key)
             {
                 case P2PMessageKey.InputSet:

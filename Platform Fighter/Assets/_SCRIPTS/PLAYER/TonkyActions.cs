@@ -22,14 +22,11 @@ namespace PLAYER
                         Data.Direction ==  Types.Direction.Right);                    
             
             //If on the Ground
-            Debug.Log(Data.RelativeLocation);
             
             if (Data.RelativeLocation == PlayerDataPacket.PlayerLocation.Grounded)
             {   
                 if (Input.Inputs[(int) Types.Input.ShortHop])
-                {
-                    Debug.Log(Data.RelativeLocation);
-                    
+                {                  
                     Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
                     return Types.ActionType.Jump;
                 }
@@ -105,18 +102,14 @@ namespace PLAYER
                 {
                     if (Input.Inputs[(int) Types.Input.FullHop])
                     {
-                        Debug.Log("FULL HOP");
                         return Types.ActionType.Jump;
                     }
 
-                    Debug.Log("Short HOP");
                     return Types.ActionType.Fall;
                 }
 
                 if (CurrentActionFrame == 15)
                 {
-
-                    Debug.Log("Yeah I full hopped");
                     return Types.ActionType.Fall;
                 }
                 /*

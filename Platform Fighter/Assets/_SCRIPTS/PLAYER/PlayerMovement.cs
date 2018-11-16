@@ -95,12 +95,7 @@ namespace PLAYER
                 //Perhaps decay X velocity if ignored, for now unknown
 
                 if (Data.VelocityModifier != ActionInfo.VelocityModifier.ModificationType.IgnoreY)
-                {
-                    if (Data.TargetVelocity.y == 99)
-                    {
-                        Debug.Log("What the fuck is happening");
-                    }
-                    
+                {                   
                     Data.CurrentVelocity.y = Data.TargetVelocity.y;
                 }
                 else
@@ -117,13 +112,6 @@ namespace PLAYER
                     Data.CurrentVelocity.y += gravity;
                 else               
                     Data.CurrentVelocity.y = terminalVelocity;   
-                
-                Debug.Log("this is it buster: " + Data.CurrentVelocity.y);
-            }
-            
-            if (Data.CurrentAction == Types.ActionType.Jump)
-            {
-                Debug.Log("YEAH HERES SOME VELOCITY FAG " + Data.CurrentVelocity + "ALSO THIS IS THE FRAME FAG " + PlayerController.CurrentActionFrame);
             }
             
             /*

@@ -64,7 +64,7 @@ namespace MANAGERS
 
             foreach (var file in Directory.GetFiles(actionPath).Where(s => s.EndsWith(".json")))
             {
-                Debug.Log($"READ FILE: {file}");
+                //Debug.Log($"READ FILE: {file}");
 
                 var jsonData = File.ReadAllText(file);
                 var action = JsonConvert.DeserializeObject<ActionInfo>(jsonData);

@@ -22,7 +22,6 @@ namespace PLAYER
             _playerData.KnockbackVelocity.y = (float) ((knockbackStrength + knockbackStrength * _playerData.Percent) *
                                                        Mathf.Sin((float) knockbackAngle));
 
-            Debug.Log("DAMAGE BITCH");
         }
     }
 }

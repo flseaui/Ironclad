@@ -32,11 +32,9 @@ namespace PLAYER
             {
                 if (_currentAction?.FrameProperties == null || CurrentActionFrame < 0)
                 {
-                    Debug.LogError("FUCK FUCK FUCK FUCK FUUUUUUUUUUUUUUUUUUUUCK");
                     return new ActionInfo.FrameProperty();
                 }
                 
-                Debug.Log("Frame Props: " + _currentAction.FrameProperties[CurrentActionFrame].DetailedVelocity.Velocity.y);
                 return _currentAction.FrameProperties[CurrentActionFrame];
             }
         }

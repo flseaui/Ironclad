@@ -16,7 +16,6 @@ namespace PLAYER
         {
             if (other.gameObject.CompareTag("Stage"))
             {
-                Debug.Log("landed");
                 if (GetComponent<BoxCollider2D>().bounds.center.y - GetComponent<BoxCollider2D>().bounds.size.y / 2 >=
                     other.transform.position.y)
                 {
@@ -32,8 +31,6 @@ namespace PLAYER
         {
             if (other.gameObject.CompareTag("Stage"))
             {
-                Debug.Log("FUCK MY ASSHOLE");
-
                 _playerData.DataPacket.RelativeLocation = PlayerDataPacket.PlayerLocation.Airborne;
             }
         }

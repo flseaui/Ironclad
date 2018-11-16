@@ -46,10 +46,10 @@ namespace MENU
             _playerProfilerPanel.ClearPlayerProfiles();
             _playerProfilerPanel.AddPlayerProfile(Client.Instance.SteamId);
 
-            Debug.Log("lobby created: " + Client.Instance.Lobby.CurrentLobby);
+            /*Debug.Log("lobby created: " + Client.Instance.Lobby.CurrentLobby);
             Debug.Log($"Owner: {Client.Instance.Lobby.Owner}");
             Debug.Log($"Max Members: {Client.Instance.Lobby.MaxMembers}");
-            Debug.Log($"Num Members: {Client.Instance.Lobby.NumMembers}");
+            Debug.Log($"Num Members: {Client.Instance.Lobby.NumMembers}");*/
         }
 
         private void OnJoined(bool success)

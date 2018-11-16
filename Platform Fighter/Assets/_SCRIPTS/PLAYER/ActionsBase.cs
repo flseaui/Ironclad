@@ -29,9 +29,6 @@ namespace PLAYER
         private void FixedUpdate()
         {
             Data.CurrentAction = GetCurrentAction();
-            
-            if(GetComponent<PlayerInput>().Id == 0)
-                Debug.Log(Data.CurrentAction);
         }
 
         protected abstract Types.ActionType GetCurrentAction();
