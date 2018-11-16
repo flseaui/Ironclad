@@ -12,6 +12,8 @@ namespace NETWORKING
     public class P2PHandler : Singleton<P2PHandler>
     {
         private int _playersJoined = 1;
+
+        private int _framesLapsed;
         
         private void Start()
         {
@@ -20,6 +22,11 @@ namespace NETWORKING
             SubscribeToP2PEvents();          
         }
 
+        private void FixedUpdate()
+        {
+            ++_framesLapsed;
+        }
+        
         private void Update()
         {
             if (_playersJoined >= Client.Instance.Lobby.NumMembers)
@@ -71,7 +78,7 @@ namespace NETWORKING
             SendP2PMessage(message);
         }  
         
-        public static void SendP2PMessage(P2PMessage message)
+        public void SendP2PMessage(P2PMessage message)
         {
             if (Client.Instance.Lobby.NumMembers == 1) return;
             
@@ -87,14 +94,14 @@ namespace NETWORKING
                 Client.Instance.Networking.SendP2PPacket(id, data, data.Length, Networking.SendType.Reliable, 0);
             }
 
-            Debug.Log($"SENT{message.Body}");
+            Debug.Log($"Sent {message.Body} on frame { _framesLapsed }");
         }
 
         public void ParseP2PMessage(ulong senderID, P2PMessage msg)
         {
             var player = MatchStateManager.Instance.GetPlayer(msg.PlayerId);
 
-            Debug.Log($"Recieved {msg.Body}");
+            Debug.Log($"Recieved {msg.Body} on frame { _framesLapsed }");
             
             switch (msg.Key)
             {
