@@ -86,15 +86,15 @@ namespace NETWORKING
                 ++numClients;
                 Client.Instance.Networking.SendP2PPacket(id, data, data.Length, Networking.SendType.Reliable, 0);
             }
-            
-            Debug.Log($"Sent packet to {numClients} clients");
+
+            Debug.Log($"SENT{message.Body}");
         }
 
         public void ParseP2PMessage(ulong senderID, P2PMessage msg)
         {
             var player = MatchStateManager.Instance.GetPlayer(msg.PlayerId);
-            
-            Debug.Log($"Recieved packet of type {msg.Key} from player {player.GetComponent<NetworkIdentity>().Id}");
+
+            Debug.Log($"Recieved {msg.Body}");
             
             switch (msg.Key)
             {
