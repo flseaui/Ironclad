@@ -127,10 +127,10 @@ namespace NETWORKING
                 case P2PMessageKey.Ping:
                     var pingMessage = JsonUtility.FromJson<P2PPing>(msg.Body);
 
-                    Debug.Log($"Sent on frame {pingMessage.LocalFrame}, recieved on frame {FramesLapsed}");
+                    //Debug.Log($"Sent on frame {pingMessage.LocalFrame}, recieved on frame {FramesLapsed}");
                     
                     Events.OnPingSent(MatchStateManager.Instance.GetPlayers().FirstOrDefault(p => p != player)?.GetComponent<NetworkIdentity>(),
-                        pingMessage.LocalFrame);
+                        FramesLapsed);
                     break;
 
             }

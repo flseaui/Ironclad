@@ -44,7 +44,7 @@ namespace PLAYER
                 if (_predicting)
                 {
                     _rollbackScheduled = true;
-                }
+                }    
                 
                 ParseInputs(ChangedInputs);
                 HasInputs = false;
@@ -93,8 +93,8 @@ namespace PLAYER
                 foreach (var input in inputList)
                 {
                     Inputs[(int) input.InputType] = input.State;
-                    Debug.Log($"{input.InputType} Input applied on frame {GetComponent<PlayerController>().CurrentActionFrame}");
-                    Debug.Log($"Players position on input application is {transform.position}");
+                    //Debug.Log($"{input.InputType} Input applied on frame {GetComponent<P2PHandler>().FramesLapsed}");
+                    //Debug.Log($"Players position on input application is {transform.position}");
                 }
 
                 inputs.RemoveAt(index);

@@ -60,6 +60,8 @@ namespace NETWORKING
         /// <param name="distance"> Number of snapshots to rollback. </param>
         public void Rollback(int distance)
         {
+            Debug.Log("ROLLBACK PART 1");
+           
             if (distance < 0 || distance > _snapshots.Count)
             {
                 return;
@@ -69,6 +71,7 @@ namespace NETWORKING
             {
                 var packet = JsonUtility.FromJson(snapshot.JsonData, snapshot.Type);
                 ((ISettable) MatchStateManager.Instance.GetPlayer(snapshot.Player).GetComponent(snapshot.BaseType)).SetData(packet);
+                Debug.Log("ROLLBACK PART 2");
             }
         }
 

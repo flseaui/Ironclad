@@ -37,9 +37,10 @@ namespace PLAYER
             CalculateVelocity();
             
             transform.Translate(Data.CurrentVelocity);
+            Data.Position = transform.position;
             //if (GetComponent<NetworkIdentity>().Id == 0)
-               // Debug.Log($"VELOCITY: {Data.CurrentVelocity} on frame {P2PHandler.Instance.FramesLapsed}");
-          //  Data.Position = Rigidbody.position;
+            // Debug.Log($"VELOCITY: {Data.CurrentVelocity} on frame {P2PHandler.Instance.FramesLapsed}");
+            //  Data.Position = Rigidbody.position;
         }
 
         private void CalculateVelocity()
