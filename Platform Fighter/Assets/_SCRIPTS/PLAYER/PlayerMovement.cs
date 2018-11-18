@@ -7,27 +7,19 @@ using Types = DATA.Types;
 
 namespace PLAYER
 {
-    [RequireComponent(typeof(PlayerData)), RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(PlayerController))]
+    [RequireComponent(typeof(PlayerData)), RequireComponent(typeof(PlayerController))]
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField]
         private Vector2 _addedForce;
         private PlayerDataPacket Data { get; set; }
 
-        private Rigidbody2D Rigidbody { get; set; }
-
         private PlayerController PlayerController { get; set; }
         
         private void Awake()
         {
             Data = GetComponent<PlayerData>().DataPacket;
-            Rigidbody = GetComponent<Rigidbody2D>();
             PlayerController = GetComponent<PlayerController>();
-        }
-
-        private void Update()
-        {
-            
         }
 
         private void FixedUpdate()
@@ -36,8 +28,16 @@ namespace PLAYER
             
             CalculateVelocity();
             
-            transform.Translate(Data.CurrentVelocity);
+            // TODO: VERY TEMP GRAVITY AND GROUND """"""COLLISION"""""" USED TO TEST NETWORKING WITHOUT RIGIDBODY, NEEDS TO BE CHANGED!!!!!!!!
+            transform.Translate(new Vector2(Data.CurrentVelocity.x, Data.CurrentVelocity.y - .065f));
             Data.Position = transform.position;
+            if (transform.position.y < 0.5849997f) 
+                transform.position = new Vector3(transform.position.x, 0.5849997f);
+            if (Data.CurrentVelocity.y > 5849997f)
+                Data.RelativeLocation = PlayerDataPacket.PlayerLocation.Airborne;
+            else
+                Data.RelativeLocation = PlayerDataPacket.PlayerLocation.Grounded;
+            
             //if (GetComponent<NetworkIdentity>().Id == 0)
             // Debug.Log($"VELOCITY: {Data.CurrentVelocity} on frame {P2PHandler.Instance.FramesLapsed}");
             //  Data.Position = Rigidbody.position;
