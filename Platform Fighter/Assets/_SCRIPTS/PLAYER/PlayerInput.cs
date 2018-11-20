@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using MANAGERS;
 using MISC;
 using NETWORKING;
 using Rewired;
-using UnityEngine;
 using Types = DATA.Types;
 
 namespace PLAYER
@@ -40,8 +38,6 @@ namespace PLAYER
 
         private void UpdatePlayerInput()
         {
-
-
             Inputs.CopyTo(_prevInputs, 0);
                 
             for (var index = 0; index < Inputs.Length; index++)

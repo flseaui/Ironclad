@@ -15,20 +15,20 @@ namespace PLAYER
         private bool _rollbackScheduled;
         private bool _gameSaveScheduled;
         private int _framesOfPrediction;
-        
-        private List<P2PInputSet.InputChange[]> ChangedInputs { get; set; }
+
+        private List<P2PInputSet.InputChange[]> _changedInputs;
 
         protected override void Awake()
         {
             base.Awake();
-            ChangedInputs = new List<P2PInputSet.InputChange[]>();
+            _changedInputs = new List<P2PInputSet.InputChange[]>();
         }
 
         public void GiveInputs(P2PInputSet.InputChange[] changedInputs)
         {
             if (changedInputs.Length == 0) Debug.Log("ok this is empty :sunglasses:");
             
-            ChangedInputs.Add(changedInputs);
+            _changedInputs.Add(changedInputs);
             HasInputs = true;
         }
 
@@ -46,14 +46,15 @@ namespace PLAYER
                     _rollbackScheduled = true;
                 }    
                 
-                ParseInputs(ChangedInputs);
+                ParseInputs(ref _changedInputs);
                 HasInputs = false;
             }
             else
             {
                 _predicting = true;
                 ++_framesOfPrediction;
-                ParseInputs(PredictInputs());
+                var predictedInputs = PredictInputs();
+                ParseInputs(ref predictedInputs);
             }
         }
         
@@ -85,7 +86,7 @@ namespace PLAYER
             };
         }
     
-        public void ParseInputs(List<P2PInputSet.InputChange[]> inputs)
+        public void ParseInputs(ref List<P2PInputSet.InputChange[]> inputs)
         {
             for (var index = 0; index < inputs.Count; index++)
             {
