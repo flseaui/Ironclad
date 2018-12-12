@@ -28,16 +28,6 @@ namespace PLAYER
             
             CalculateVelocity();
             
-            // TODO: VERY TEMP GRAVITY AND GROUND """"""COLLISION"""""" USED TO TEST NETWORKING WITHOUT RIGIDBODY, NEEDS TO BE CHANGED!!!!!!!!
-            transform.Translate(new Vector2(Data.CurrentVelocity.x, Data.CurrentVelocity.y - .065f));
-            Data.Position = transform.position;
-            if (transform.position.y < 0.5849997f) 
-                transform.position = new Vector3(transform.position.x, 0.5849997f);
-            if (Data.CurrentVelocity.y > 5849997f)
-                Data.RelativeLocation = PlayerDataPacket.PlayerLocation.Airborne;
-            else
-                Data.RelativeLocation = PlayerDataPacket.PlayerLocation.Grounded;
-            
             //if (GetComponent<NetworkIdentity>().Id == 0)
             // Debug.Log($"VELOCITY: {Data.CurrentVelocity} on frame {P2PHandler.Instance.FramesLapsed}");
             //  Data.Position = Rigidbody.position;
