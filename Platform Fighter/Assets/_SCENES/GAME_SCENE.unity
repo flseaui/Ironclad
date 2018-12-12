@@ -115,7 +115,8 @@ NavMeshSettings:
 --- !u!1 &188268066
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 1962590320780632, guid: 1d9945814c581ee42942585e8e191df2, type: 2}
+  m_CorrespondingSourceObject: {fileID: 1962590320780632, guid: 1d9945814c581ee42942585e8e191df2,
+    type: 2}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
@@ -132,7 +133,8 @@ GameObject:
 --- !u!114 &188268067
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114332733560559310, guid: 1d9945814c581ee42942585e8e191df2, type: 2}
+  m_CorrespondingSourceObject: {fileID: 114332733560559310, guid: 1d9945814c581ee42942585e8e191df2,
+    type: 2}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 188268066}
@@ -904,11 +906,13 @@ MonoBehaviour:
     mouseMapIdCounter: 0
     customControllerMapIdCounter: 1
     customControllerIdCounter: 1
-  _controllerDataFiles: {fileID: 11400000, guid: d21d2b20df8369642b76aafbb2576ba7, type: 2}
+  _controllerDataFiles: {fileID: 11400000, guid: d21d2b20df8369642b76aafbb2576ba7,
+    type: 2}
 --- !u!4 &188268068
 Transform:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 4617930044952836, guid: 1d9945814c581ee42942585e8e191df2, type: 2}
+  m_CorrespondingSourceObject: {fileID: 4617930044952836, guid: 1d9945814c581ee42942585e8e191df2,
+    type: 2}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 188268066}
@@ -1027,10 +1031,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _persistent: 0
   ReadyToFight: 0
-  _playerPrefab: {fileID: 1110542900291582, guid: ef974447b27e81c46a37f3f94c813048, type: 3}
-  _networkPlayerPrefab: {fileID: 1110542900291582, guid: 595c937a4acff594584dd97a2c5e93a3, type: 3}
-  _p2pHandlerPrefab: {fileID: 6309862183555327331, guid: 8309fd55e7de0564c96549d9bab7b1b2, type: 3}
-  _rollbackHandlerPrefab: {fileID: 4929884257261239700, guid: 66c17011153fae94396a389182b323d5, type: 3}
+  _playerPrefab: {fileID: 1110542900291582, guid: ef974447b27e81c46a37f3f94c813048,
+    type: 3}
+  _networkPlayerPrefab: {fileID: 1110542900291582, guid: 595c937a4acff594584dd97a2c5e93a3,
+    type: 3}
+  _p2pHandlerPrefab: {fileID: 6309862183555327331, guid: 8309fd55e7de0564c96549d9bab7b1b2,
+    type: 3}
+  _rollbackHandlerPrefab: {fileID: 4929884257261239700, guid: 66c17011153fae94396a389182b323d5,
+    type: 3}
 --- !u!4 &535902620
 Transform:
   m_ObjectHideFlags: 0
@@ -1149,7 +1157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AssetsPPU: 100
+  m_AssetsPPU: 32
   m_RefResolutionX: 960
   m_RefResolutionY: 540
   m_UpscaleRT: 0
