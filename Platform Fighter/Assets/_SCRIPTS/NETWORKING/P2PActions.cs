@@ -16,10 +16,15 @@ namespace NETWORKING
             // true = up/right
             public bool State;
 
-            public InputChange(Types.Input inputType, bool state)
+            // -1 = pressed
+            // >0 = frames input held down for
+            public int FramesHeld;
+
+            public InputChange(Types.Input inputType, bool state, int framesHeld = -1)
             {
                 InputType = inputType;
                 State = state;
+                FramesHeld = framesHeld;
             }
             
         }

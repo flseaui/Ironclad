@@ -17,7 +17,7 @@ namespace PLAYER
         private int _framesOfPrediction;
 
         private List<P2PInputSet.InputChange[]> _changedInputs;
-
+        
         protected override void Awake()
         {
             base.Awake();
@@ -32,13 +32,10 @@ namespace PLAYER
             HasInputs = true;
         }
 
-        private void Update()
-        {
-            if (!MatchStateManager.Instance.ReadyToFight)
-                return;
-            
+        protected override void InputUpdate()
+        {         
             if (HasInputs)
-            {
+            {                
                 _gameSaveScheduled = true;
 
                 if (_predicting)
@@ -87,13 +84,18 @@ namespace PLAYER
         }
     
         public void ParseInputs(ref List<P2PInputSet.InputChange[]> inputs)
-        {
+        {         
             for (var index = 0; index < inputs.Count; index++)
             {
                 var inputList = inputs[index];
                 foreach (var input in inputList)
                 {
-                    Inputs[(int) input.InputType] = input.State;
+                    if (input.FramesHeld != InputFramesHeld[(int) input.InputType])
+                    {
+                        _rollbackScheduled = true;
+                    }
+                    else
+                        Inputs[(int) input.InputType] = input.State;
                     //Debug.Log($"{input.InputType} Input applied on frame {GetComponent<P2PHandler>().FramesLapsed}");
                     //Debug.Log($"Players position on input application is {transform.position}");
                 }

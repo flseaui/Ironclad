@@ -15,31 +15,26 @@ namespace PLAYER
 
         private Player _player;
         
-        private bool[] _prevInputs;
-
         private int _jumpFramesHeld;
         
         private void Start()
         {
             base.Awake();
             _changedInputs = new List<P2PInputSet.InputChange>();
-            _prevInputs = new bool[Inputs.Length];
             
             _player = ReInput.players.GetPlayer(Id);
+            
+            ReleaseEvent += index => _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index], InputFramesHeld[index]));
+            PressEvent += index => _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index]));     
         }
 
-        private void Update()
+       protected override void InputUpdate()
         {
-            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && !MatchStateManager.Instance.ReadyToFight)
-                return;
-                
             UpdatePlayerInput();
         }
 
         private void UpdatePlayerInput()
-        {
-            Inputs.CopyTo(_prevInputs, 0);
-                
+        {                            
             for (var index = 0; index < Inputs.Length; index++)
             {
                 Inputs[index] = false;
@@ -116,14 +111,6 @@ namespace PLAYER
 
             PlayerData.DataPacket.MovementStickAngle.x = _player.GetAxis("Move");
             PlayerData.DataPacket.MovementStickAngle.y = _player.GetAxis("Crouch");
-            
-            for (var index = 0; index < Inputs.Length; index++)
-            {
-                if (Inputs[index] != _prevInputs[index])
-                {
-                    _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index]));
-                }
-            }
         }
 
         private void FixedUpdate()
