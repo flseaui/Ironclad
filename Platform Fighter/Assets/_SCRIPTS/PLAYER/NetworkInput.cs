@@ -86,9 +86,9 @@ namespace PLAYER
 
             if (_rollbackScheduled)
             {
-                RollbackManager.Instance.Rollback(0);
+               // RollbackManager.Instance.Rollback(0);
 
-                _rollbackScheduled = false;
+                //_rollbackScheduled = false;
             }
         }
 

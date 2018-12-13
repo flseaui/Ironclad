@@ -106,7 +106,16 @@
 
         public enum Flags
         {
-            
+            ShortHop,
+            FullHop,
+            ResetAction
+        }
+        
+        public enum FlagState
+        {
+            Inactive,
+            Pending,
+            Resolved
         }
         
     }

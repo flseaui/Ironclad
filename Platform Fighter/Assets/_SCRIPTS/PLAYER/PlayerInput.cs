@@ -85,33 +85,30 @@ namespace PLAYER
 
             if(_player.GetButton("Hop"))
             {
-                if (_jumpFramesHeld > -1 && _jumpFramesHeld < 9)
+                if(_jumpFramesHeld == 0 && GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ShortHop) != Types.FlagState.Pending)
+                    GetComponent<PlayerFlags>().SetFlagState(Types.Flags.FullHop, Types.FlagState.Pending);
+                
+                if (_jumpFramesHeld < 7 && GetComponent<PlayerFlags>().GetFlagState(Types.Flags.FullHop) != Types.FlagState.Pending)
                 {
-                    Inputs[(int) Types.Input.ShortHop] = true;
-                }
-                else if (_jumpFramesHeld >= 9)
-                {
-                    Inputs[(int) Types.Input.FullHop] = true;
-                    Inputs[(int) Types.Input.ShortHop] = false;
+                    GetComponent<PlayerFlags>().SetFlagState(Types.Flags.FullHop, Types.FlagState.Resolved);
+                    GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ShortHop, Types.FlagState.Pending);
                 }
 
                 ++_jumpFramesHeld;
             }
             else
-            {
                 _jumpFramesHeld = 0;
-            }
 
             if (_player.GetButtonDown("Neutral"))
                 Inputs[(int) Types.Input.Neutral] = true;
             
-            if (_player.GetButtonDown("Strong"))
+            if (_player.GetButton("Strong"))
                 Inputs[(int) Types.Input.Strong] = true;
 
             if (_player.GetButtonDown("Special"))
                 Inputs[(int) Types.Input.Special] = true;
 
-            if (_player.GetButtonDown("Shield"))
+            if (_player.GetButton("Shield"))
                 Inputs[(int) Types.Input.Shield] = true;
 
             if (_player.GetButtonDown("Grab"))
