@@ -24,17 +24,14 @@ namespace PLAYER
             _changedInputs = new List<P2PInputSet.InputChange>();
             
             _player = ReInput.players.GetPlayer(Id);
-            
-            ReleaseEvent += OnReleaseEvent;
-            PressEvent += OnPressEvent;     
         }
 
-        private void OnPressEvent(int index)
+        protected override void ReleaseEvent(int index)
         {
             _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index]));
         }
 
-        private void OnReleaseEvent(int index)
+        protected override void PressEvent(int index)
         {
             _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index], InputFramesHeld[index]));
         }

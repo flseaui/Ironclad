@@ -35,25 +35,30 @@ namespace PLAYER
             {
                 if (_predicting)
                 {
+                    Debug.Log("wow there are " + _changedInputs.Count + " epic input changes");
+                    var badPrediction = false;
                     for (var i = 0; i < _changedInputs.Count; i++)
                     {
-                        Debug.Log("wow there is " + i + " epic input changes");
                         if (_changedInputs[i] != _predictedInputChanges[i])
                         {
                             ScheduleRollback();
+                            badPrediction = true;
                             break;
                         }
                     }
 
-                    ScheduleGameSave();
-                    _predicting = false;
+                    if (!badPrediction)
+                    {
+                        ScheduleGameSave();
+                        _predicting = false; 
+                        ParseInputs(ref _changedInputs);
+                    }
                 }
                 else
                 {
                     ScheduleGameSave();
+                    ParseInputs(ref _changedInputs);
                 }
-                
-                ParseInputs(ref _changedInputs);
             }
             else
             {
@@ -81,7 +86,7 @@ namespace PLAYER
 
             if (_rollbackScheduled)
             {
-                //RollbackManager.Instance.Rollback(0);
+                RollbackManager.Instance.Rollback(0);
 
                 _rollbackScheduled = false;
             }
@@ -95,22 +100,24 @@ namespace PLAYER
             };
         }
     
-        public void ParseInputs(ref List<P2PInputSet.InputChange[]> inputs)
+        public void ParseInputs(ref List<P2PInputSet.InputChange[]> inputChanges)
         {
-            for (var index = 0; index < inputs.Count; index++)
+            for (var index = 0; index < inputChanges.Count; index++)
             {
-                var inputList = inputs[index];
-                foreach (var input in inputList)
+                var inputChangeList = inputChanges[index];
+                foreach (var inputChange in inputChangeList)
                 {
-                    if (input.FramesHeld != InputFramesHeld[(int) input.InputType])
+                    if (inputChange.State == false && inputChange.FramesHeld != InputFramesHeld[(int) inputChange.InputType])
                     {
-                        _rollbackScheduled = true;
+                        ScheduleRollback();
                     }
-                    
-                    Inputs[(int) input.InputType] = input.State;
+                    else
+                    {
+                        Inputs[(int) inputChange.InputType] = inputChange.State;
+                    }
                 }
 
-                inputs.RemoveAt(index);
+                inputChanges.RemoveAt(index);
             }
         }
 

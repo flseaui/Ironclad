@@ -44,12 +44,12 @@ namespace PLAYER
                     // if input change is a release
                     if (!Inputs[i])
                     {
-                        ReleaseEvent.Invoke(i);
+                        ReleaseEvent(i);
                         InputFramesHeld[i] = 0;
                     }
                     else
                     {
-                        PressEvent.Invoke(i);  
+                        PressEvent(i);  
                     }
                 }
             }
@@ -57,8 +57,8 @@ namespace PLAYER
 
         // called after PrevInputs reset, before InputFramesHeld increased
         protected virtual void InputUpdate() { }
-        protected Action<int> ReleaseEvent;
-        protected Action<int> PressEvent;
+        protected virtual void ReleaseEvent(int index) { }
+        protected virtual void PressEvent(int index) { }
 
 
     }
