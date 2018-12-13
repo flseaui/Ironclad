@@ -19,7 +19,6 @@ namespace PLAYER
             }
         }
 
-        public bool FlagState(Types.Flags flag) => _flags[flag];
-
+        public bool GetFlagState(Types.Flags flag) => _flags[flag];
     }
 }

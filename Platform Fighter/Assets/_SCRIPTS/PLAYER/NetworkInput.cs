@@ -9,48 +9,60 @@ namespace PLAYER
 {
     public class NetworkInput : InputSender
     {
-        public bool HasInputs { get; set; }
-
         private bool _predicting;
         private bool _rollbackScheduled;
         private bool _gameSaveScheduled;
         private int _framesOfPrediction;
 
         private List<P2PInputSet.InputChange[]> _changedInputs;
+        private List<P2PInputSet.InputChange[]> _predictedInputChanges;
         
         protected override void Awake()
         {
             base.Awake();
             _changedInputs = new List<P2PInputSet.InputChange[]>();
+            _predictedInputChanges = new List<P2PInputSet.InputChange[]>();
         }
 
         public void GiveInputs(P2PInputSet.InputChange[] changedInputs)
         {
-            if (changedInputs.Length == 0) Debug.Log("ok this is empty :sunglasses:");
-            
             _changedInputs.Add(changedInputs);
-            HasInputs = true;
         }
 
         protected override void InputUpdate()
-        {         
-            if (HasInputs)
-            {                
-                _gameSaveScheduled = true;
-
+        {
+            if (_changedInputs.Count > 0)
+            {
                 if (_predicting)
                 {
-                    _rollbackScheduled = true;
-                }    
+                    for (var i = 0; i < _changedInputs.Count; i++)
+                    {
+                        Debug.Log("wow there is " + i + " epic input changes");
+                        if (_changedInputs[i] != _predictedInputChanges[i])
+                        {
+                            ScheduleRollback();
+                            break;
+                        }
+                    }
+
+                    ScheduleGameSave();
+                    _predicting = false;
+                }
+                else
+                {
+                    ScheduleGameSave();
+                }
                 
                 ParseInputs(ref _changedInputs);
-                HasInputs = false;
             }
             else
             {
                 _predicting = true;
                 ++_framesOfPrediction;
+                
                 var predictedInputs = PredictInputs();
+                _predictedInputChanges.AddRange(predictedInputs);
+                
                 ParseInputs(ref predictedInputs);
             }
         }
@@ -69,7 +81,7 @@ namespace PLAYER
 
             if (_rollbackScheduled)
             {
-                RollbackManager.Instance.Rollback(0);
+                //RollbackManager.Instance.Rollback(0);
 
                 _rollbackScheduled = false;
             }
@@ -84,7 +96,7 @@ namespace PLAYER
         }
     
         public void ParseInputs(ref List<P2PInputSet.InputChange[]> inputs)
-        {         
+        {
             for (var index = 0; index < inputs.Count; index++)
             {
                 var inputList = inputs[index];
@@ -94,14 +106,16 @@ namespace PLAYER
                     {
                         _rollbackScheduled = true;
                     }
-                    else
-                        Inputs[(int) input.InputType] = input.State;
-                    //Debug.Log($"{input.InputType} Input applied on frame {GetComponent<P2PHandler>().FramesLapsed}");
-                    //Debug.Log($"Players position on input application is {transform.position}");
+                    
+                    Inputs[(int) input.InputType] = input.State;
                 }
 
                 inputs.RemoveAt(index);
             }
         }
+
+        private void ScheduleGameSave() => _gameSaveScheduled = true;
+        private void ScheduleRollback() => _rollbackScheduled = true;
+
     }
 }

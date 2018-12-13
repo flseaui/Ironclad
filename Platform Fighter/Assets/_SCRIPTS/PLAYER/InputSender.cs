@@ -32,24 +32,24 @@ namespace PLAYER
             
             InputUpdate();
             
-            for (var index = 0; index < Inputs.Length; index++)
+            for (var i = 0; i < Inputs.Length; i++)
             {
                 // if input is held from previous frame increase frames held counter
-                if (Inputs[index] == PrevInputs[index])
+                if (Inputs[i] == PrevInputs[i])
                 {
-                    InputFramesHeld[index]++;
+                    InputFramesHeld[i]++;
                 }
-                else if (Inputs[index] != PrevInputs[index])
+                else if (Inputs[i] != PrevInputs[i])
                 {
                     // if input change is a release
-                    if (!Inputs[index])
+                    if (!Inputs[i])
                     {
-                        ReleaseEvent.Invoke(index);
-                        InputFramesHeld[index] = 0;
+                        ReleaseEvent.Invoke(i);
+                        InputFramesHeld[i] = 0;
                     }
                     else
                     {
-                        PressEvent.Invoke(index);  
+                        PressEvent.Invoke(i);  
                     }
                 }
             }

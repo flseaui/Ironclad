@@ -3,6 +3,7 @@ using MANAGERS;
 using MISC;
 using NETWORKING;
 using Rewired;
+using UnityEngine;
 using Types = DATA.Types;
 
 namespace PLAYER
@@ -24,11 +25,21 @@ namespace PLAYER
             
             _player = ReInput.players.GetPlayer(Id);
             
-            ReleaseEvent += index => _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index], InputFramesHeld[index]));
-            PressEvent += index => _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index]));     
+            ReleaseEvent += OnReleaseEvent;
+            PressEvent += OnPressEvent;     
         }
 
-       protected override void InputUpdate()
+        private void OnPressEvent(int index)
+        {
+            _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index]));
+        }
+
+        private void OnReleaseEvent(int index)
+        {
+            _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index], InputFramesHeld[index]));
+        }
+        
+        protected override void InputUpdate()
         {
             UpdatePlayerInput();
         }

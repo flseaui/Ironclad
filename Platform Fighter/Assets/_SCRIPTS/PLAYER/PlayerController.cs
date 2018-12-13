@@ -61,7 +61,7 @@ namespace PLAYER
 
             PoolBoxes();
 
-            Events.OnPingSent(GetComponent<NetworkIdentity>(), P2PHandler.Instance.FramesLapsed);
+            //Events.OnPingSent(GetComponent<NetworkIdentity>(), P2PHandler.Instance.FramesLapsed);
         }
 
         private void FixedUpdate()

@@ -79,7 +79,7 @@ namespace NETWORKING
             bool sendNetworkAction)
         {
             if (!sendNetworkAction) return;
-            
+
             var body = new P2PInputSet(inputs);
             var message = new P2PMessage(networkIdentity.Id, P2PMessageKey.InputSet, body.Serialize());
            
@@ -116,7 +116,7 @@ namespace NETWORKING
             {
                 case P2PMessageKey.InputSet:
                     var inputSet = JsonUtility.FromJson<P2PInputSet>(msg.Body);
-    
+   
                     player.GetComponent<NetworkInput>().GiveInputs(inputSet.Inputs);
                     break;
                 case P2PMessageKey.Join:

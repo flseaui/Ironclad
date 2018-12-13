@@ -4,7 +4,6 @@ using DATA;
 using NETWORKING;
 using UnityEngine;
 using Types = DATA.Types;
-
 namespace PLAYER
 {
     [RequireComponent(typeof(PlayerData)), RequireComponent(typeof(PlayerController))]
@@ -13,7 +12,6 @@ namespace PLAYER
         [SerializeField]
         private Vector2 _addedForce;
         private PlayerDataPacket Data { get; set; }
-
         private PlayerController PlayerController { get; set; }
         
         private void Awake()
@@ -30,11 +28,8 @@ namespace PLAYER
             
             transform.Translate(Data.CurrentVelocity);
             
-            //if (GetComponent<NetworkIdentity>().Id == 0)
-            // Debug.Log($"VELOCITY: {Data.CurrentVelocity} on frame {P2PHandler.Instance.FramesLapsed}");
-            //  Data.Position = Rigidbody.position;
+          //  Data.Position = Rigidbody.position;
         }
-
         private void CalculateVelocity()
         {
             //Temp Variables
@@ -44,19 +39,16 @@ namespace PLAYER
             float terminalVelocity;
                 
             deceleration = .01f;
-            gravity = -.025f;
-
+            gravity = -0;
             if (Data.RelativeLocation == PlayerDataPacket.PlayerLocation.Airborne)
                 terminalVelocity = -.075f;
             else
                 terminalVelocity = 0;
-
             if (Data.KnockbackVelocity != Vector2.zero)
             {
                 //Apply DI
                 
                 Data.CurrentVelocity = Data.KnockbackVelocity;
-
                 if (Data.KnockbackVelocity.x != 0)
                 {
                     if (Mathf.Abs(Data.KnockbackVelocity.x) > deceleration)
@@ -87,9 +79,13 @@ namespace PLAYER
                         Data.CurrentVelocity.x = Data.TargetVelocity.x;
                 }
                 //Perhaps decay X velocity if ignored, for now unknown
-
                 if (Data.VelocityModifier != ActionInfo.VelocityModifier.ModificationType.IgnoreY)
-                {                   
+                {
+                    if (Data.TargetVelocity.y == 99)
+                    {
+                        Debug.Log("What the fuck is happening");
+                    }
+                    
                     Data.CurrentVelocity.y = Data.TargetVelocity.y;
                 }
                 else
@@ -106,41 +102,37 @@ namespace PLAYER
                     Data.CurrentVelocity.y += gravity;
                 else               
                     Data.CurrentVelocity.y = terminalVelocity;   
+                
+                Debug.Log("this is it buster: " + Data.CurrentVelocity.y);
             }
+            
+            if (Data.CurrentAction == Types.ActionType.Jump)
+                Debug.Log("YEAH HERES SOME VELOCITY FAG " + Data.CurrentVelocity);
             
             /*
             if (Data.MovementVelocity.y > 0)
             {
                 Data.PlayerVelocity.y = Data.MovementVelocity.y;
-
                 Data.MovementVelocity.y -= Data.gravity;
-
                 if (Data.MovementVelocity.y > 0)
                     Data.MovementVelocity.y = 0;
             }
             else if (Data.MovementVelocity.y < 0)
             {
                 Data.PlayerVelocity.y = Data.MovementVelocity.y;
-
                 if (Data.PlayerVelocity.y > -Data.TerminalVelocity.y)
                 {
                     Data.MovementVelocity.y -= Data.gravity;
-
                     if (Data.MovementVelocity.y < -Data.TerminalVelocity.y)
                         Data.MovementVelocity.y = -Data.TerminalVelocity.y;
                 }
             }
             else
                 Data.PlayerVelocity.y = 0;
-
             Data.MovementVelocity.x *= (Data.Direction == Types.Direction.Left ? -1 : 1);
-
             Data.PlayerVelocity.x = Data.MovementVelocity.x;
-
             Data.PlayerVelocity += Data.KnockbackVelocity;
-
             Data.KnockbackVelocity /= 2;
-
             if (Data.KnockbackVelocity.x < 1)
                 Data.KnockbackVelocity.x = 0;
             if (Data.KnockbackVelocity.y < 1)
@@ -152,9 +144,7 @@ namespace PLAYER
             if (Data.KnockbackVelocity.x != 0 || Data.KnockbackVelocity.y != 0)
             {
                 Data.KnockbackVelocity.x -= Data.KnockbackVelocity.x - KnockbackDecay.x < 0 ? Data.KnockbackVelocity.x : KnockbackDecay.x;
-
                 _addedForce.x = Data.KnockbackVelocity.x - Data.CurrentVelocity.x;
-
             }else if (Data.CurrentVelocity.x != Data.TargetVelocity.x)
             {
                 if (Data.CurrentVelocity.x > Data.TargetVelocity.x)
@@ -168,7 +158,6 @@ namespace PLAYER
             }
             else
                 _addedForce.x = 0;
-
             if (Data.KnockbackVelocity.x != 0 || Data.KnockbackVelocity.y != 0)
                 _addedForce.y = Data.KnockbackVelocity.y - Data.CurrentVelocity.y;
             else if (Data.TargetVelocity.y != 0)
@@ -177,9 +166,7 @@ namespace PLAYER
                 _addedForce.y = 0;
                 
             */
-
         }
-
         /*
         public void MovePlayer(Vector2 addedForce, bool sendNetworkAction)
         {
