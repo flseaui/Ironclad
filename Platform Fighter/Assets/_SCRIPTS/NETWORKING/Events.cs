@@ -7,6 +7,11 @@ namespace NETWORKING
     {
         public static Action<NetworkIdentity, P2PInputSet.InputChange[], bool> OnInputsChanged;
         public static Action<NetworkIdentity> OnMatchJoined;
-        public static Action<NetworkIdentity, int> OnPingSent;
+        
+        // Users steam id, Recievers steam id, current frame
+        public static Action<ulong, ulong, int> OnPingSent;
+
+        public static Action<ulong, ulong, int> OnFirstNetworkLatencyCalculated;
+        public static Func<int, int> OnFinalNetworkLatencyCalculated;
     }
 }

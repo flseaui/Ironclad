@@ -28,7 +28,7 @@ namespace PLAYER
             
             transform.Translate(Data.CurrentVelocity);
             
-          //  Data.Position = Rigidbody.position;
+            Data.Position = transform.position;
         }
         private void CalculateVelocity()
         {

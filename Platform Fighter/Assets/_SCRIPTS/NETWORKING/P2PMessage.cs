@@ -5,14 +5,14 @@ namespace NETWORKING
     [Serializable]
     public struct P2PMessage
     {
-        public int PlayerId;
+        public ulong SteamId;
         public string Body;
 
         public P2PMessageKey Key;
 
-        public P2PMessage(int playerId, P2PMessageKey key, string body)
+        public P2PMessage(ulong steamId, P2PMessageKey key, string body)
         {
-            PlayerId = playerId;
+            SteamId = steamId;
             Key = key;
             Body = body;
         }
@@ -22,6 +22,7 @@ namespace NETWORKING
     {
         InputSet,
         Join,
-        Ping
+        Ping,
+        Latency
     }
 }

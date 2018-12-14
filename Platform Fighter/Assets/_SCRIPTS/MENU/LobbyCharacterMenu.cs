@@ -84,7 +84,10 @@ namespace MENU
                     if (_playerReady >= Client.Instance.Lobby.NumMembers && Client.Instance.Lobby.NumMembers > 0)
                     {
                         var tempCharacterArray = new List<Types.Character>();
-                        foreach (var id in Client.Instance.Lobby.GetMemberIDs())
+                        
+                        GameManager.Instance.SteamIds = Client.Instance.Lobby.GetMemberIDs();
+                        
+                        foreach (var id in GameManager.Instance.SteamIds)
                         {
                             tempCharacterArray.Add(CharacterStringToId(Client.Instance.Lobby.GetMemberData(id, "character")));
                         }

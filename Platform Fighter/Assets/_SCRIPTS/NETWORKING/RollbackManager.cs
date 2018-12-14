@@ -67,6 +67,8 @@ namespace NETWORKING
                 return;
             }
 
+            P2PHandler.Instance.Threshold = 0;
+            
             foreach (var snapshot in _snapshots[distance])
             {
                 var packet = JsonUtility.FromJson(snapshot.JsonData, snapshot.Type);

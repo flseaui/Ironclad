@@ -6,6 +6,7 @@ using MANAGERS;
 using MISC;
 using PLAYER;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace NETWORKING
 {
@@ -14,19 +15,25 @@ namespace NETWORKING
         private int _playersJoined = 1;
 
         public int FramesLapsed;
-        
+
+        public int Threshold = 0;
+
         private void Start()
         {
             Events.OnInputsChanged += SendP2PInputSet;
             Events.OnMatchJoined += SendP2PMatchJoined;
             Events.OnPingSent += SendP2PPing;
+            Events.OnFirstNetworkLatencyCalculated += SendP2PLatency;
             SubscribeToP2PEvents();          
         }
 
         private void FixedUpdate()
         {
-            if (MatchStateManager.Instance.ReadyToFight)
-                ++FramesLapsed;           
+            if (!MatchStateManager.Instance.ReadyToFight)
+                return;
+            
+            ++FramesLapsed;
+            ++Threshold;
         }
         
         private void Update()
@@ -59,18 +66,26 @@ namespace NETWORKING
             ParseP2PMessage(sender, serializedMessage);
         }
 
-        private void SendP2PPing(NetworkIdentity networkIdentity, int localFrame)
+        private void SendP2PPing(ulong steamId, ulong recipientSteamId, int localFrame)
         {
             var body = new P2PPing(localFrame);
-            var message = new P2PMessage(networkIdentity.Id, P2PMessageKey.Ping, body.Serialize());
+            var message = new P2PMessage(steamId, P2PMessageKey.Ping, body.Serialize());
             
-            SendP2PMessage(message);
+            SendP2PMessageToUser(message, recipientSteamId);
+        }
+        
+        private void SendP2PLatency(ulong steamId, ulong recipientSteamId, int localFrame)
+        {
+            var body = new P2PPing(localFrame);
+            var message = new P2PMessage(steamId, P2PMessageKey.Latency, body.Serialize());
+            
+            SendP2PMessageToUser(message, recipientSteamId);
         }
         
         private void SendP2PMatchJoined(NetworkIdentity networkIdentity)
         {
             var body = new P2PJoin();
-            var message = new P2PMessage(networkIdentity.Id, P2PMessageKey.Join, body.Serialize());
+            var message = new P2PMessage(networkIdentity.SteamId, P2PMessageKey.Join, body.Serialize());
             
             SendP2PMessage(message);
         }
@@ -81,7 +96,7 @@ namespace NETWORKING
             if (!sendNetworkAction) return;
 
             var body = new P2PInputSet(inputs);
-            var message = new P2PMessage(networkIdentity.Id, P2PMessageKey.InputSet, body.Serialize());
+            var message = new P2PMessage(networkIdentity.SteamId, P2PMessageKey.InputSet, body.Serialize());
            
             //Debug.Log(message.Body);
             
@@ -93,7 +108,6 @@ namespace NETWORKING
             if (Client.Instance.Lobby.NumMembers == 1) return;
             
             var serializedMessage = JsonUtility.ToJson(message);
-
             var data = Encoding.UTF8.GetBytes(serializedMessage);
 
             var numClients = 0;
@@ -103,21 +117,31 @@ namespace NETWORKING
                 ++numClients;
                 Client.Instance.Networking.SendP2PPacket(id, data, data.Length, Networking.SendType.Reliable, 0);
             }
-            //Debug.Log($"Sent {message.Body} on frame { FramesLapsed }");
         }
+        
+        public void SendP2PMessageToUser(P2PMessage message, ulong steamId)
+        {                       
+            var serializedMessage = JsonUtility.ToJson(message);
+            var data = Encoding.UTF8.GetBytes(serializedMessage);
 
+            Client.Instance.Networking.SendP2PPacket(steamId, data, data.Length, Networking.SendType.Reliable, 0);
+        }
+        
         public void ParseP2PMessage(ulong senderID, P2PMessage msg)
         {
-            var player = MatchStateManager.Instance.GetPlayer(msg.PlayerId);
-
-            //Debug.Log($"Recieved {msg.Body} on frame { FramesLapsed }");
+            var player = MatchStateManager.Instance.GetPlayerBySteamId(msg.SteamId);
             
             switch (msg.Key)
             {
                 case P2PMessageKey.InputSet:
-                    var inputSet = JsonUtility.FromJson<P2PInputSet>(msg.Body);
-   
-                    player.GetComponent<NetworkInput>().GiveInputs(inputSet.Inputs);
+                    if (Threshold > 0)
+                    {
+                        var inputSet = JsonUtility.FromJson<P2PInputSet>(msg.Body);
+
+                        --Threshold;
+
+                        player.GetComponent<NetworkInput>().GiveInputs(inputSet.Inputs);
+                    }
                     break;
                 case P2PMessageKey.Join:
                     var joinMessage = JsonUtility.FromJson<P2PJoin>(msg.Body);
@@ -127,10 +151,14 @@ namespace NETWORKING
                 case P2PMessageKey.Ping:
                     var pingMessage = JsonUtility.FromJson<P2PPing>(msg.Body);
 
-                    //Debug.Log($"Sent on frame {pingMessage.LocalFrame}, recieved on frame {FramesLapsed}");
+                    P2PHelper.Instance.ProgressLatencyTest(pingMessage, senderID);                  
                     
-                    Events.OnPingSent(MatchStateManager.Instance.GetPlayers().FirstOrDefault(p => p != player)?.GetComponent<NetworkIdentity>(),
-                        FramesLapsed);
+                    break;
+                case P2PMessageKey.Latency:
+                    var latencyMessage = JsonUtility.FromJson<P2PPing>(msg.Body);
+                    
+                    P2PHelper.Instance.ProgressLatencyTest(latencyMessage, senderID, true);
+                    
                     break;
 
             }

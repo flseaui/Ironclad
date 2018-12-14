@@ -14,6 +14,8 @@ namespace MANAGERS
             Types.Character.None
         };
 
+        public ulong[] SteamIds { get; set; }
+
         public Types.Stage Stage { get; set; } = Types.Stage.TestStage;
 
         private void StartGame() { }

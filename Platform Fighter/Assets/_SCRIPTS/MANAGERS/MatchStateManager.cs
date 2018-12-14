@@ -40,6 +40,9 @@ namespace MANAGERS
         public GameObject GetPlayer(int playerId) =>
             _activePlayers.FirstOrDefault(player => player.GetComponent<NetworkIdentity>().Id == playerId);
 
+        public GameObject GetPlayerBySteamId(ulong steamId) =>
+            _activePlayers.FirstOrDefault(player => player.GetComponent<NetworkIdentity>().SteamId == steamId);
+        
         private void MatchStart()
         {
             var spawnPoints = SpawnStage();
@@ -67,6 +70,7 @@ namespace MANAGERS
                         player.GetComponent<PlayerInput>().Id = i;
                         break;
                     case Types.MatchType.OnlineMultiplayer:
+                        // if is this clients controlled player
                         if (i == int.Parse(Client.Instance.Lobby.GetMemberData(Client.Instance.SteamId, "lobbySpot")))
                         {
                             player = Instantiate
@@ -86,9 +90,10 @@ namespace MANAGERS
                                 spawnPoints[i].rotation
                             );
                         }
-
+    
                         player.AddComponent<NetworkIdentity>();
                         player.GetComponent<NetworkIdentity>().Id = i;
+                        player.GetComponent<NetworkIdentity>().SteamId = GameManager.Instance.SteamIds[i];
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

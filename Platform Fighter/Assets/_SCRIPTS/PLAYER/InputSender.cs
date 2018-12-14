@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using MANAGERS;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -22,7 +23,7 @@ namespace PLAYER
             InputFramesHeld = new int[Inputs.Length];
             PlayerData = GetComponent<PlayerData>();
         }
-
+        
         private void Update()
         {
             if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && !MatchStateManager.Instance.ReadyToFight)

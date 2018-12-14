@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DATA;
 using MANAGERS;
 using NETWORKING;
 using UnityEngine;
+using Types = DATA.Types;
 
 namespace PLAYER
 {
     public class NetworkInput : InputSender
     {
         private bool _predicting;
-        private bool _rollbackScheduled;
-        private bool _gameSaveScheduled;
         private int _framesOfPrediction;
 
         private List<P2PInputSet.InputChange[]> _changedInputs;
@@ -28,101 +28,86 @@ namespace PLAYER
         {
             _changedInputs.Add(changedInputs);
         }
-
-        protected override void InputUpdate()
-        {
-            if (_changedInputs.Count > 0)
-            {
-                if (_predicting)
-                {
-                    Debug.Log("wow there are " + _changedInputs.Count + " epic input changes");
-                    var badPrediction = false;
-                    for (var i = 0; i < _changedInputs.Count; i++)
-                    {
-                        if (_changedInputs[i] != _predictedInputChanges[i])
-                        {
-                            ScheduleRollback();
-                            badPrediction = true;
-                            break;
-                        }
-                    }
-
-                    if (!badPrediction)
-                    {
-                        ScheduleGameSave();
-                        _predicting = false; 
-                        ParseInputs(ref _changedInputs);
-                    }
-                }
-                else
-                {
-                    ScheduleGameSave();
-                    ParseInputs(ref _changedInputs);
-                }
-            }
-            else
-            {
-                _predicting = true;
-                ++_framesOfPrediction;
-                
-                var predictedInputs = PredictInputs();
-                _predictedInputChanges.AddRange(predictedInputs);
-                
-                ParseInputs(ref predictedInputs);
-            }
-        }
         
         private void FixedUpdate()
         {
-            if (!MatchStateManager.Instance.ReadyToFight)
+            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && !MatchStateManager.Instance.ReadyToFight)
                 return;
 
-            if (_gameSaveScheduled)
+            /*
+             * if changed inputs has 1 item
+             *     parse the item
+             *     save game state
+             * else if changed inputs has 0 items
+             *     start predicting
+             * else if changed inputs has more than 1 item
+             *     for input in changed inputs
+             *         if changed inputs[i] != predicted inputs[i]
+             *             rollback
+             *             return
+             *     save game state
+             */
+
+            Debug.Log(_changedInputs.Count);
+            
+            if (_changedInputs.Count == 1 && _predictedInputChanges.Count == 0)
             {
+                ParseInputs(ref _changedInputs);
                 RollbackManager.Instance.SaveGameState();
-
-                _gameSaveScheduled = false;
+                return;
             }
 
-            if (_rollbackScheduled)
+            if (_changedInputs.Count == 0)
             {
-                RollbackManager.Instance.Rollback(0);
-
-                _rollbackScheduled = false;
+                _predictedInputChanges.Add(PredictInputs());
+                Debug.Log("predicting...");
+                return;
             }
+
+            if (_predictedInputChanges.Count != 0)
+            {
+                _predictedInputChanges.Add(PredictInputs());
+                Debug.Log("predicting again...");
+            }
+
+            for (var i = 0; i < _changedInputs.Count; i++)
+            {
+                if (!_changedInputs[i].SequenceEqual(_predictedInputChanges[i]))
+                {
+                    RollbackManager.Instance.Rollback(0);
+                    _changedInputs.Clear();
+                    _predictedInputChanges.Clear();
+                    return;
+                }
+            }
+            
+            Debug.Log("11111");
+            _changedInputs.Clear();
+            _predictedInputChanges.Clear();
+            RollbackManager.Instance.SaveGameState();           
         }
 
-        private List<P2PInputSet.InputChange[]> PredictInputs()
+        private P2PInputSet.InputChange[] PredictInputs()
         {
-            return new List<P2PInputSet.InputChange[]>
+            return new P2PInputSet.InputChange[]
             {
-                new P2PInputSet.InputChange[] { }
+              
             };
         }
     
         public void ParseInputs(ref List<P2PInputSet.InputChange[]> inputChanges)
         {
-            for (var index = 0; index < inputChanges.Count; index++)
+            for (int i = 0; i < inputChanges.Count; i++)
             {
-                var inputChangeList = inputChanges[index];
-                foreach (var inputChange in inputChangeList)
+                foreach (var inputChange in inputChanges[i])
                 {
-                    if (inputChange.State == false && inputChange.FramesHeld != InputFramesHeld[(int) inputChange.InputType])
-                    {
-                        ScheduleRollback();
-                    }
-                    else
-                    {
-                        Inputs[(int) inputChange.InputType] = inputChange.State;
-                    }
+                    Inputs[(int) inputChange.InputType] = inputChange.State;
                 }
-
-                inputChanges.RemoveAt(index);
             }
-        }
 
-        private void ScheduleGameSave() => _gameSaveScheduled = true;
-        private void ScheduleRollback() => _rollbackScheduled = true;
+            Debug.Log("2222fffffffffffffffffffffffffffffffffffffffffff22");
+            inputChanges.Clear();
+        }
 
     }
 }

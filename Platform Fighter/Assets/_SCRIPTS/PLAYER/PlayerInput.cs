@@ -26,12 +26,12 @@ namespace PLAYER
             _player = ReInput.players.GetPlayer(Id);
         }
 
-        protected override void ReleaseEvent(int index)
+        protected override void PressEvent(int index)
         {
             _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index]));
         }
 
-        protected override void PressEvent(int index)
+        protected override void ReleaseEvent(int index)
         {
             _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index], InputFramesHeld[index]));
         }
