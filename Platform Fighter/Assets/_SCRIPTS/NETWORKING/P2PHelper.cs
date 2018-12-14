@@ -31,26 +31,38 @@ namespace NETWORKING
         {
             if (!isFinal)
             {
+                // host just recieved first packet
                 if (Client.Instance.Lobby.Owner == Client.Instance.SteamId)
                 {
                     _hostSentFrame = P2PHandler.Instance.FramesLapsed;
                     Events.OnPingSent(Client.Instance.SteamId, senderId, P2PHandler.Instance.FramesLapsed);
                 }
+                // user just recieved first packet from host
                 else
                 {   
                     NetworkLatency = ping.LocalFrame - _sentFrame;
                     Events.OnFirstNetworkLatencyCalculated(Client.Instance.SteamId, senderId, P2PHandler.Instance.FramesLapsed);
                 }
             }
-            // host just recieved final packet
             else
             {
-                if (ping.LocalFrame - _hostSentFrame > NetworkLatency)
+                // host just recieved final packet
+                if (Client.Instance.Lobby.Owner == Client.Instance.SteamId)
                 {
-                    NetworkLatency = ping.LocalFrame - _hostSentFrame;
+                    if (ping.LocalFrame - _hostSentFrame > NetworkLatency)
+                    {
+                        NetworkLatency = ping.LocalFrame - _hostSentFrame;
+                    }
+
+                    Events.OnFinalNetworkLatencyCalculated(NetworkLatency);
+                    Events.OnFirstNetworkLatencyCalculated(Client.Instance.SteamId, senderId, NetworkLatency);
                 }
-                Events.OnFinalNetworkLatencyCalculated(NetworkLatency);
-                
+                // user just recieved final packet from host
+                else
+                {
+                    NetworkLatency = ping.LocalFrame;
+                    Events.OnFinalNetworkLatencyCalculated(NetworkLatency);
+                }
             }
             
             

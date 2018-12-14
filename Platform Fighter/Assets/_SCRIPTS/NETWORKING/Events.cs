@@ -12,6 +12,6 @@ namespace NETWORKING
         public static Action<ulong, ulong, int> OnPingSent;
 
         public static Action<ulong, ulong, int> OnFirstNetworkLatencyCalculated;
-        public static Func<int, int> OnFinalNetworkLatencyCalculated;
+        public static Action<int> OnFinalNetworkLatencyCalculated;
     }
 }

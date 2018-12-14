@@ -19,7 +19,7 @@ namespace MENU
         private bool _loadScene;
 
         protected override void SwitchToThis(params string[] args)
-        {          
+        {
             if (SceneManager.GetActiveScene().name.Equals("MENU_SCENE"))
             {
                 _loadScene = true;

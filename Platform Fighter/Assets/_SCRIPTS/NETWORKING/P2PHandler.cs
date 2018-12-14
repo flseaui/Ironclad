@@ -24,16 +24,21 @@ namespace NETWORKING
             Events.OnMatchJoined += SendP2PMatchJoined;
             Events.OnPingSent += SendP2PPing;
             Events.OnFirstNetworkLatencyCalculated += SendP2PLatency;
-            SubscribeToP2PEvents();          
+            SubscribeToP2PEvents();
+            
+            Events.OnFinalNetworkLatencyCalculated += i => Debug.Log($"LATENCY: {i}");
+            P2PHelper.Instance.TestLobbyNetworkLatency();
+
         }
 
         private void FixedUpdate()
         {
-            if (!MatchStateManager.Instance.ReadyToFight)
-                return;
+            FramesLapsed = ++FramesLapsed % 600;
             
-            ++FramesLapsed;
-            ++Threshold;
+            if (Threshold > 600)
+                Application.Quit();
+            else
+                ++Threshold;
         }
         
         private void Update()
