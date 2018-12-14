@@ -74,11 +74,14 @@ namespace PLAYER
         private void ExecuteAction()
         {
             // first frame of action
-            if (CurrentActionFrame == 0)
+            if (CurrentActionFrame == 0 || GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ResetAction) == Types.FlagState.Pending)
             {
                 _currentAction = AssetManager.Instance.GetAction(Types.Character.TestCharacter, _data.CurrentAction);
                 _animator.SetInteger("CurrentAction", (int) _currentAction.Type);
                 OnActionBegin?.Invoke();
+
+                if (GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ResetAction) == Types.FlagState.Pending)
+                    GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ResetAction, Types.FlagState.Resolved);
             }
 
             UpdateBoxes(CurrentActionFrame);

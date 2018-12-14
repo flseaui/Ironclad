@@ -41,7 +41,7 @@ namespace PLAYER
             deceleration = .01f;
             gravity = -0;
             if (Data.RelativeLocation == PlayerDataPacket.PlayerLocation.Airborne)
-                terminalVelocity = -.075f;
+                terminalVelocity = 0;
             else
                 terminalVelocity = 0;
             if (Data.KnockbackVelocity != Vector2.zero)

@@ -96,41 +96,6 @@ namespace PLAYER
             
             Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
 
-            if (Data.CurrentAction == Types.ActionType.Jump)
-            {
-                if (CurrentActionFrame >= 10 && CurrentActionFrame <= 14)
-                {
-                    if (Input.Inputs[(int) Types.Input.FullHop])
-                    {
-                        return Types.ActionType.Jump;
-                    }
-
-                    return Types.ActionType.Fall;
-                }
-
-                if (CurrentActionFrame == 15)
-                {
-                    return Types.ActionType.Fall;
-                }
-                /*
-                if (CurrentActionFrame > 10)
-                {
-                    
-                    if (Input.Inputs[(int) Types.Input.ShortHop])
-                    {
-                        //cancel current action
-                        return Types.ActionType.Jump;
-                    }
-                    
-
-                    if (Data.CurrentVelocity.y <= 0)
-                        return Types.ActionType.Fall;
-                }
-                */
-
-                return Types.ActionType.Jump;
-            }
-
             if (Input.Inputs[(int) Types.Input.Neutral])
             {
                 if (Input.Inputs[(int) Types.Input.Up]) return Types.ActionType.Uair;
@@ -151,6 +116,31 @@ namespace PLAYER
                     Input.Inputs[(int) Types.Input.LightLeft] || Input.Inputs[(int) Types.Input.StrongLeft])
                         return Types.ActionType.Fstrong;
                 return Types.ActionType.Nstrong;
+            }
+            
+            if (Data.CurrentAction == Types.ActionType.Jump)
+            {
+                if (CurrentActionFrame < 7)
+                    return Types.ActionType.Jump;
+                if (CurrentActionFrame > 7)
+                {
+                    if (GetComponent<PlayerFlags>().GetFlagState(Types.Flags.FullHop) == Types.FlagState.Pending)
+                    {
+                        GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ResetAction, Types.FlagState.Pending);
+                        return Types.ActionType.Jump;
+                    }
+                        
+                    if(Data.CurrentVelocity.y >= 0)
+                        return Types.ActionType.Jump;
+
+                    return Types.ActionType.Fall;
+                }
+                //Frame 7
+                
+                if(GetComponent<PlayerFlags>().GetFlagState(Types.Flags.FullHop) == Types.FlagState.Pending)
+                    return Types.ActionType.Jump;
+
+                return Types.ActionType.Fall;
             }
 
             return Types.ActionType.Fall;
