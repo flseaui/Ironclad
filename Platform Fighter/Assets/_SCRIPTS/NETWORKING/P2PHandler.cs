@@ -12,12 +12,14 @@ namespace NETWORKING
 {
     public class P2PHandler : Singleton<P2PHandler>
     {
-        private int _playersJoined = 1;
-
+       
         public int FramesLapsed;
-
         public int Threshold = 0;
 
+        private int _playersJoined = 1;
+
+        private bool _sentInputPacket;
+        
         private void Start()
         {
             Events.OnInputsChanged += SendP2PInputSet;
@@ -100,7 +102,13 @@ namespace NETWORKING
         {
             if (!sendNetworkAction) return;
 
-            var body = new P2PInputSet(inputs);
+            if (!_sentInputPacket)
+            {
+                FramesLapsed = 0;
+                _sentInputPacket = true;
+            }
+
+            var body = new P2PInputSet(inputs, FramesLapsed);
             var message = new P2PMessage(networkIdentity.SteamId, P2PMessageKey.InputSet, body.Serialize());
            
             //Debug.Log(message.Body);
@@ -145,7 +153,7 @@ namespace NETWORKING
 
                         --Threshold;
 
-                        player.GetComponent<NetworkInput>().GiveInputs(inputSet.Inputs);
+                        player.GetComponent<NetworkInput>().GiveInputs(inputSet);
                     }
                     break;
                 case P2PMessageKey.Join:

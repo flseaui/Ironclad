@@ -5,28 +5,34 @@ using DATA;
 using MANAGERS;
 using NETWORKING;
 using UnityEngine;
+using UnityScript.Steps;
 using Types = DATA.Types;
 
 namespace PLAYER
 {
     public class NetworkInput : InputSender
-    {
+    {            
+        private bool _queueEvaluation;
+        private bool _queueParse;
         private bool _predicting;
+        
         private int _framesOfPrediction;
-
-        private List<P2PInputSet.InputChange[]> _changedInputs;
-        private List<P2PInputSet.InputChange[]> _predictedInputChanges;
+        
+        private List<P2PInputSet> _receivedInputSets;
+        private List<P2PInputSet> _queuedInputSets;
+        private List<P2PInputSet> _predictedInputSets;
         
         protected override void Awake()
         {
             base.Awake();
-            _changedInputs = new List<P2PInputSet.InputChange[]>();
-            _predictedInputChanges = new List<P2PInputSet.InputChange[]>();
+            _receivedInputSets = new List<P2PInputSet>();
+            _queuedInputSets = new List<P2PInputSet>();
+            _predictedInputSets = new List<P2PInputSet>();
         }
 
-        public void GiveInputs(P2PInputSet.InputChange[] changedInputs)
+        public void GiveInputs(P2PInputSet recievedInputs)
         {
-            _changedInputs.Add(changedInputs);
+            _receivedInputSets.Add(recievedInputs);
         }
         
         private void FixedUpdate()
@@ -34,79 +40,101 @@ namespace PLAYER
             if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && !MatchStateManager.Instance.ReadyToFight)
                 return;
 
-            /*
-             * if changed inputs has 1 item
-             *     parse the item
-             *     save game state
-             * else if changed inputs has 0 items
-             *     start predicting
-             * else if changed inputs has more than 1 item
-             *     for input in changed inputs
-             *         if changed inputs[i] != predicted inputs[i]
-             *             rollback
-             *             return
-             *     save game state
-             */
-
-            Debug.Log(_changedInputs.Count);
+            Debug.Log(_receivedInputSets.Count);
             
-            if (_changedInputs.Count == 1 && _predictedInputChanges.Count == 0)
-            {
-                ParseInputs(ref _changedInputs);
-                RollbackManager.Instance.SaveGameState();
-                return;
-            }
+            HandleInputs();
+        }
 
-            if (_changedInputs.Count == 0)
+        private void HandleInputs()
+        {
+            _queueEvaluation = false;
+            _queueParse = false;
+            
+            if (_receivedInputSets.Count > 0)
             {
-                _predictedInputChanges.Add(PredictInputs());
+                var queuedParseInput = new P2PInputSet();
+                foreach (var receivedInputs in _receivedInputSets)
+                {
+                    var receivedInputFrame = receivedInputs.Frame % 600;
+                    
+                    var tempFramesLapsed = P2PHandler.Instance.FramesLapsed;
+                    if (P2PHandler.Instance.FramesLapsed < 300 && receivedInputs.Frame > 300)
+                        tempFramesLapsed += 600;
+
+                    if (receivedInputFrame == tempFramesLapsed)
+                    {
+                        queuedParseInput = receivedInputs;
+                        _queueParse = true;
+                    }
+                    else if (receivedInputFrame < tempFramesLapsed)
+                        _queueEvaluation = true;
+                    else if (receivedInputFrame > tempFramesLapsed)
+                        _queuedInputSets.Add(receivedInputs);
+                }
+
+                if (_queueEvaluation)
+                {
+                    for (var i = 0; i < _predictedInputSets.Count; i++)
+                    {
+                        foreach (var receivedInputSet in _receivedInputSets)
+                        {
+                            if (receivedInputSet.Frame == _predictedInputSets[i].Frame)
+                            {
+                                if (!_receivedInputSets[i].Inputs.SequenceEqual(_predictedInputSets[i].Inputs))
+                                {
+                                    RollbackManager.Instance.Rollback(0);
+                                    _receivedInputSets.Clear();
+                                    _predictedInputSets.Clear();
+                                    return;
+                                }
+
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (_queueParse)
+                {
+                    ParseInputs(queuedParseInput);   
+                    _receivedInputSets.Clear();
+                    RollbackManager.Instance.SaveGameState();
+                }        
+            }
+            else
+            {
+                if (_queuedInputSets.Count != 0)
+                {
+                    for (var i = 0; i < _queuedInputSets.Count; i++)
+                    {
+                        var queuedInputSet = _queuedInputSets[i];
+                        if (queuedInputSet.Frame == P2PHandler.Instance.FramesLapsed)
+                        {
+                            _receivedInputSets.Add(queuedInputSet);
+                            _queuedInputSets.RemoveAt(i);
+                            HandleInputs();
+                            return;
+                        }
+                    }
+                }
+                
+                _predictedInputSets.Add(PredictInputs());
                 Debug.Log("predicting...");
                 return;
             }
-
-            if (_predictedInputChanges.Count != 0)
-            {
-                _predictedInputChanges.Add(PredictInputs());
-                Debug.Log("predicting again...");
-            }
-
-            for (var i = 0; i < _changedInputs.Count; i++)
-            {
-                if (!_changedInputs[i].SequenceEqual(_predictedInputChanges[i]))
-                {
-                    RollbackManager.Instance.Rollback(0);
-                    _changedInputs.Clear();
-                    _predictedInputChanges.Clear();
-                    return;
-                }
-            }
-            
-            Debug.Log("11111");
-            _changedInputs.Clear();
-            _predictedInputChanges.Clear();
-            RollbackManager.Instance.SaveGameState();           
         }
-
-        private P2PInputSet.InputChange[] PredictInputs()
+        
+        private P2PInputSet PredictInputs()
         {
-            return new P2PInputSet.InputChange[]
-            {
-              
-            };
+            return new P2PInputSet();            
         }
     
-        public void ParseInputs(ref List<P2PInputSet.InputChange[]> inputChanges)
+        public void ParseInputs(P2PInputSet inputSet)
         {
-            for (int i = 0; i < inputChanges.Count; i++)
+            foreach (var inputChange in inputSet.Inputs)
             {
-                foreach (var inputChange in inputChanges[i])
-                {
-                    Inputs[(int) inputChange.InputType] = inputChange.State;
-                }
+                Inputs[(int) inputChange.InputType] = inputChange.State;
             }
-
-            Debug.Log("2222fffffffffffffffffffffffffffffffffffffffffff22");
-            inputChanges.Clear();
         }
 
     }

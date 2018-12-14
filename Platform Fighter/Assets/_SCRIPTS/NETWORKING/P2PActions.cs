@@ -31,9 +31,12 @@ namespace NETWORKING
 
         public InputChange[] Inputs;
         
-        public P2PInputSet(InputChange[] inputs)
+        public int Frame;
+        
+        public P2PInputSet(InputChange[] inputs, int frame)
         {
             Inputs = inputs;
+            Frame = frame;
         }
 
         public string Serialize() => JsonUtility.ToJson(this);

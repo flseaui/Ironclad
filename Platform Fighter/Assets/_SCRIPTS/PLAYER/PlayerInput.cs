@@ -93,7 +93,7 @@ namespace PLAYER
                     GetComponent<PlayerFlags>().SetFlagState(Types.Flags.FullHop, Types.FlagState.Resolved);
                     GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ShortHop, Types.FlagState.Pending);
                 }
-
+ 
                 ++_jumpFramesHeld;
             }
             else
@@ -116,12 +116,6 @@ namespace PLAYER
 
             PlayerData.DataPacket.MovementStickAngle.x = _player.GetAxis("Move");
             PlayerData.DataPacket.MovementStickAngle.y = _player.GetAxis("Crouch");
-        }
-
-        private void FixedUpdate()
-        {
-            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && !MatchStateManager.Instance.ReadyToFight)
-                return;
             
             if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer)
                 Events.OnInputsChanged(GetComponent<NetworkIdentity>(), _changedInputs.ToArray(), true);
