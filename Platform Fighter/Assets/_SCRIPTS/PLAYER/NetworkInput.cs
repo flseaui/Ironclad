@@ -32,6 +32,7 @@ namespace PLAYER
 
         public void GiveInputs(P2PInputSet recievedInputs)
         {
+            Debug.Log($"recieved on {P2PHandler.Instance.FramesLapsed} from {recievedInputs.Frame}");
             _receivedInputSets.Add(recievedInputs);
         }
         
@@ -39,8 +40,6 @@ namespace PLAYER
         {
             if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && !MatchStateManager.Instance.ReadyToFight)
                 return;
-
-            Debug.Log(_receivedInputSets.Count);
             
             HandleInputs();
         }
@@ -61,7 +60,7 @@ namespace PLAYER
                     if (P2PHandler.Instance.FramesLapsed < 300 && receivedInputs.Frame > 300)
                         tempFramesLapsed += 600;
 
-                    Debug.Log("recievedFrame: " + receivedInputFrame + " tempFrame: " + tempFramesLapsed);
+                    //Debug.Log("recievedFrame: " + receivedInputFrame + " tempFrame: " + tempFramesLapsed);
                     
                     if (receivedInputFrame == tempFramesLapsed)
                     {

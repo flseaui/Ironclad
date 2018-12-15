@@ -18,7 +18,7 @@ namespace NETWORKING
 
         private int _playersJoined = 1;
 
-        private bool _sentInputPacket;
+        private bool _recievedFirstInputPacket;
         
         private void Start()
         {
@@ -102,16 +102,8 @@ namespace NETWORKING
         {
             if (!sendNetworkAction) return;
 
-            if (!_sentInputPacket)
-            {
-                FramesLapsed = 0;
-                _sentInputPacket = true;
-            }
-
             var body = new P2PInputSet(inputs, FramesLapsed);
             var message = new P2PMessage(networkIdentity.SteamId, P2PMessageKey.InputSet, body.Serialize());
-           
-            //Debug.Log(message.Body);
             
             SendP2PMessage(message);
         }  
@@ -153,6 +145,12 @@ namespace NETWORKING
 
                         --Threshold;
 
+                        if (!_recievedFirstInputPacket)
+                        {
+                            FramesLapsed = inputSet.Frame;
+                            _recievedFirstInputPacket = true;
+                        }
+                        
                         player.GetComponent<NetworkInput>().GiveInputs(inputSet);
                     }
                     break;
