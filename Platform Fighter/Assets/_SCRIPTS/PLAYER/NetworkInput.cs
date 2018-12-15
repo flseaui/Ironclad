@@ -61,6 +61,8 @@ namespace PLAYER
                     if (P2PHandler.Instance.FramesLapsed < 300 && receivedInputs.Frame > 300)
                         tempFramesLapsed += 600;
 
+                    Debug.Log("recievedFrame: " + receivedInputFrame + " tempFrame: " + tempFramesLapsed);
+                    
                     if (receivedInputFrame == tempFramesLapsed)
                     {
                         queuedParseInput = receivedInputs;

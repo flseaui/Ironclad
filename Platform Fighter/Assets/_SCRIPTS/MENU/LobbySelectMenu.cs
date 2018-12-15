@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ATTRIBUTES;
 using Facepunch.Steamworks;
 using MANAGERS;
@@ -22,7 +23,7 @@ namespace MENU
         {
             MenuManager.Instance.SwitchToMenuWithArgs(Types.Menu.LobbyCharacterMenu, "create");
         }
-
+    
         public void FindLobbies()
         {
             Client.Instance.LobbyList.Refresh();

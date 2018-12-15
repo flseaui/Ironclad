@@ -116,7 +116,10 @@ namespace PLAYER
 
             PlayerData.DataPacket.MovementStickAngle.x = _player.GetAxis("Move");
             PlayerData.DataPacket.MovementStickAngle.y = _player.GetAxis("Crouch");
-            
+        }
+
+        private void FixedUpdate()
+        {
             if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer)
                 Events.OnInputsChanged(GetComponent<NetworkIdentity>(), _changedInputs.ToArray(), true);
             
