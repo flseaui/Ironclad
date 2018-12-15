@@ -80,9 +80,10 @@ namespace PLAYER
                         {
                             if (receivedInputSet.Frame == _predictedInputSets[i].Frame)
                             {
-                                if (!_receivedInputSets[i].Inputs.SequenceEqual(_predictedInputSets[i].Inputs))
+                                if (!receivedInputSet.Inputs.SequenceEqual(_predictedInputSets[i].Inputs))
                                 {
                                     RollbackManager.Instance.Rollback(0);
+                                    Debug.Log("Rollback");
                                     _receivedInputSets.Clear();
                                     _predictedInputSets.Clear();
                                     return;
@@ -98,6 +99,7 @@ namespace PLAYER
                 {
                     ParseInputs(queuedParseInput);   
                     _receivedInputSets.Clear();
+                    Debug.Log("Parsed");
                     RollbackManager.Instance.SaveGameState();
                 }        
             }
@@ -126,7 +128,7 @@ namespace PLAYER
         
         private P2PInputSet PredictInputs()
         {
-            return new P2PInputSet();            
+            return new P2PInputSet(new P2PInputSet.InputChange[]{ }, P2PHandler.Instance.FramesLapsed);            
         }
     
         public void ParseInputs(P2PInputSet inputSet)
@@ -136,6 +138,5 @@ namespace PLAYER
                 Inputs[(int) inputChange.InputType] = inputChange.State;
             }
         }
-
     }
 }
