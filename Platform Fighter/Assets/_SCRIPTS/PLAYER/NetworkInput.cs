@@ -94,6 +94,7 @@ namespace PLAYER
                             }
                         }
                     }
+                    Debug.Log("Evaluated");
                 }
 
                 if (_queueParse)

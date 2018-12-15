@@ -120,7 +120,7 @@ namespace PLAYER
 
         private void FixedUpdate()
         {
-            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer)
+            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && MatchStateManager.Instance.ReadyToFight)
                 Events.OnInputsChanged(GetComponent<NetworkIdentity>(), _changedInputs.ToArray(), true);
             
             _changedInputs.Clear();

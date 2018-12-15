@@ -25,13 +25,15 @@ namespace NETWORKING
             public Type BaseType;
             public Type Type;
             public string JsonData;
-
-            public Snapshot(int player, Type baseType, Type type, string json)
+            public int Frame;
+            
+            public Snapshot(int player, Type baseType, Type type, string json, int frame)
             {
                 Player = player;
                 BaseType = baseType;
                 Type = type;
                 JsonData = json;
+                frame = frame;
             }
         }
         
@@ -72,6 +74,7 @@ namespace NETWORKING
             foreach (var snapshot in _snapshots[distance])
             {
                 var packet = JsonUtility.FromJson(snapshot.JsonData, snapshot.Type);
+                P2PHandler.Instance.FramesLapsed = snapshot.Frame;
                 ((ISettable) MatchStateManager.Instance.GetPlayer(snapshot.Player).GetComponent(snapshot.BaseType)).SetData(packet);
                 Debug.Log("ROLLBACK PART 2");
             }
@@ -83,14 +86,14 @@ namespace NETWORKING
             _snapshots.Add(new List<Snapshot>());
             foreach (var player in MatchStateManager.Instance.GetPlayers())
             {
-                TakeSnapshot(player.GetComponent<NetworkIdentity>().Id, 0, typeof(PlayerData), player.GetComponent<PlayerData>().DataPacket);
+                TakeSnapshot(player.GetComponent<NetworkIdentity>().Id, 0, typeof(PlayerData), player.GetComponent<PlayerData>().DataPacket, P2PHandler.Instance.FramesLapsed);
             }
         }
 
-        public void TakeSnapshot<T>(int player, int depth, Type baseType, T structure)
+        public void TakeSnapshot<T>(int player, int depth, Type baseType, T structure, int frame)
         {
             var json = JsonUtility.ToJson(structure);
-            _snapshots[depth].Add(new Snapshot(player, baseType, structure.GetType(), json));
+            _snapshots[depth].Add(new Snapshot(player, baseType, structure.GetType(), json, frame));
         }        
     }
 }
