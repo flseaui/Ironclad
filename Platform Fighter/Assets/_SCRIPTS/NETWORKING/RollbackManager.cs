@@ -33,7 +33,7 @@ namespace NETWORKING
                 BaseType = baseType;
                 Type = type;
                 JsonData = json;
-                frame = frame;
+                Frame = frame;
             }
         }
         
