@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Boo.Lang.Environments;
 using DATA;
 using MANAGERS;
 using NETWORKING;
@@ -14,7 +15,8 @@ namespace PLAYER
     {
         private bool _queueEvaluation;
         private bool _queueParse;
-        private bool _predicting;
+
+        private bool _predictNext;
         
         private int _framesOfPrediction;
         
@@ -33,16 +35,67 @@ namespace PLAYER
         public void GiveInputs(P2PInputSet receivedInputs)
         {
             Debug.Log($"recieved on {P2PHandler.Instance.FramesLapsed} from {receivedInputs.PacketNumber}");
+
+            _predictNext = true;
             
             _receivedInputSets.Add(receivedInputs);
+
+            var receivedPacketNum = receivedInputs.PacketNumber % 600;
+                    
+            var curPacketsReceived = P2PHandler.Instance.PacketsReceived < 300 && receivedInputs.PacketNumber > 300
+                ? P2PHandler.Instance.PacketsReceived + 600
+                : P2PHandler.Instance.PacketsReceived;
+            
+            if (receivedPacketNum == curPacketsReceived)
+            {
+                ParseInputs(receivedInputs);
+            }
+            else if (receivedPacketNum > curPacketsReceived)
+            {
+                _queuedInputSets.Add(receivedInputs);
+            }           
+            else if (receivedPacketNum < curPacketsReceived)
+            {
+                var predictedInputSet = _predictedInputSets.FirstOrDefault(inputSet => inputSet.PacketNumber == receivedPacketNum);
+                if (!receivedInputs.Inputs.SequenceEqual(predictedInputSet.Inputs))
+                {
+                    RollbackManager.Instance.Rollback(0);
+                    _predictedInputSets.Clear();
+                }
+            }
         }
-        
+ 
+        private void LateUpdate()
+        {
+            for (var i = 0; i < _queuedInputSets.Count; i++)
+            {
+                var queuedInputSet = _queuedInputSets[i];
+                var curPacketsReceived = P2PHandler.Instance.PacketsReceived < 300 && queuedInputSet.PacketNumber > 300
+                    ? P2PHandler.Instance.PacketsReceived + 600
+                    : P2PHandler.Instance.PacketsReceived;
+
+                if (queuedInputSet.PacketNumber == curPacketsReceived)
+                {
+                    ParseInputs(queuedInputSet);
+                    _queuedInputSets.RemoveAt(i);
+                }
+            }
+
+            if (_predictNext)
+            {
+                var predictedInputSet = PredictInputs();
+                _predictedInputSets.Add(predictedInputSet);
+                ParseInputs(predictedInputSet);
+                _predictNext = false;
+            }      
+        }
+
         private void FixedUpdate()
         {
             if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && !MatchStateManager.Instance.ReadyToFight)
                 return;
             
-            HandleInputs();
+            //HandleInputs();
         }
 
         private void HandleInputs()
