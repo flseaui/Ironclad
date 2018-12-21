@@ -15,8 +15,8 @@ namespace NETWORKING
        
         public int FramesLapsed;
         public int Threshold = 0;
-        public int PacketsSent;
-        public int PacketsReceived;
+        public int InputPacketsSent;
+        public int InputPacketsReceived;
         
         private int _playersJoined = 1;
 
@@ -102,12 +102,12 @@ namespace NETWORKING
             if (!sendNetworkAction) return;
             if (!LatencyCalculated) return;
 
-            var body = new P2PInputSet(inputs, PacketsSent);
+            var body = new P2PInputSet(inputs, InputPacketsSent);
             var message = new P2PMessage(networkIdentity.SteamId, P2PMessageKey.InputSet, body.Serialize());
             
             SendP2PMessage(message);
 
-            PacketsSent = ++PacketsSent % 600;
+            InputPacketsSent = ++InputPacketsSent % 600;
         }  
         
         public void SendP2PMessage(P2PMessage message)
@@ -146,8 +146,6 @@ namespace NETWORKING
                         var inputSet = JsonUtility.FromJson<P2PInputSet>(msg.Body);
 
                         //--Threshold;
-
-                        PacketsReceived = ++PacketsReceived % 600;
                         
                         player.GetComponent<NetworkInput>().GiveInputs(inputSet);
                     //}
@@ -172,5 +170,11 @@ namespace NETWORKING
 
             }
         }
+
+        public void OnInputPacketsReceived()
+        {
+            InputPacketsReceived = ++InputPacketsReceived % 600;
+        }
+        
     }
 }
