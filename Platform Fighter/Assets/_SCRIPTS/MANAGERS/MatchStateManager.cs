@@ -14,9 +14,7 @@ namespace MANAGERS
     public class MatchStateManager : Singleton<MatchStateManager>
     {
         private List<GameObject> _activePlayers;
-     
-        public bool ReadyToFight;
-        
+
         // Prefabs
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private GameObject _networkPlayerPrefab;

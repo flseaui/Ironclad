@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using MANAGERS;
+using NETWORKING;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Types = DATA.Types;
@@ -26,7 +27,7 @@ namespace PLAYER
         
         private void Update()
         {
-            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && !MatchStateManager.Instance.ReadyToFight)
+            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && !P2PHandler.Instance.LatencyCalculated)
                 return;
             
             Inputs.CopyTo(PrevInputs, 0);
@@ -54,10 +55,13 @@ namespace PLAYER
                     }
                 }
             }
+            
+            InputLateUpdate();
         }
 
         // called after PrevInputs reset, before InputFramesHeld increased
         protected virtual void InputUpdate() { }
+        protected virtual void InputLateUpdate() { }
         protected virtual void ReleaseEvent(int index) { }
         protected virtual void PressEvent(int index) { }
 

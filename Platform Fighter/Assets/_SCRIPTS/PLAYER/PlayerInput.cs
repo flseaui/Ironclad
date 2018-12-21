@@ -47,7 +47,7 @@ namespace PLAYER
             {
                 Inputs[index] = false;
             }
-
+            
             if (_player.controllers.hasKeyboard)
             {
                 if (_player.GetAxis("Run") < -GameSettings.Instance.runThreshold)
@@ -120,7 +120,7 @@ namespace PLAYER
 
         private void FixedUpdate()
         {
-            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && MatchStateManager.Instance.ReadyToFight)
+            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && P2PHandler.Instance.LatencyCalculated)
                 Events.OnInputsChanged(GetComponent<NetworkIdentity>(), _changedInputs.ToArray(), true);
             
             _changedInputs.Clear();

@@ -20,7 +20,7 @@ namespace NETWORKING
         
         private int _playersJoined = 1;
 
-        private bool _recievedFirstInputPacket;
+        public bool LatencyCalculated;
         
         private void Start()
         {
@@ -30,9 +30,12 @@ namespace NETWORKING
             Events.OnFirstNetworkLatencyCalculated += SendP2PLatency;
             SubscribeToP2PEvents();
             
-            Events.OnFinalNetworkLatencyCalculated += i => Debug.Log($"LATENCY: {i}");
+            Events.OnFinalNetworkLatencyCalculated += i =>
+            {
+                Debug.Log($"LATENCY: {i}");
+                LatencyCalculated = true;
+            };
             P2PHelper.Instance.TestLobbyNetworkLatency();
-
         }
 
         private void FixedUpdate()
@@ -43,12 +46,6 @@ namespace NETWORKING
                 Application.Quit();
             else
                 ++Threshold;
-        }
-        
-        private void Update()
-        {
-            if (_playersJoined >= Client.Instance.Lobby.NumMembers)
-                MatchStateManager.Instance.ReadyToFight = true;
         }
         
         private void SubscribeToP2PEvents()
@@ -103,6 +100,7 @@ namespace NETWORKING
             bool sendNetworkAction)
         {
             if (!sendNetworkAction) return;
+            if (!LatencyCalculated) return;
 
             var body = new P2PInputSet(inputs, PacketsSent);
             var message = new P2PMessage(networkIdentity.SteamId, P2PMessageKey.InputSet, body.Serialize());
@@ -143,16 +141,16 @@ namespace NETWORKING
             switch (msg.Key)
             {
                 case P2PMessageKey.InputSet:
-                    if (Threshold > 0)
-                    {
+                    //if (Threshold > 0)
+                    //{
                         var inputSet = JsonUtility.FromJson<P2PInputSet>(msg.Body);
 
-                        --Threshold;
+                        //--Threshold;
 
                         PacketsReceived = ++PacketsReceived % 600;
                         
                         player.GetComponent<NetworkInput>().GiveInputs(inputSet);
-                    }
+                    //}
                     break;
                 case P2PMessageKey.Join:
                     var joinMessage = JsonUtility.FromJson<P2PJoin>(msg.Body);
