@@ -46,44 +46,55 @@ namespace PLAYER
 
         public void HandleInputs2()
         {
-            Debug.Log("HandleInputs");
-            if (_receivedInputSets.Count > 0)
+            
+            var numReceivedInputSets = _receivedInputSets.Count;
+            
+            
+            Debug.Log("HandleInputs: " + numReceivedInputSets);
+            if (numReceivedInputSets > 0)
             {
-                for (var index = 0; index < _receivedInputSets.Count; index++)
+                for (var index = 0; index < numReceivedInputSets; index++)
                 {
-                    var receivedPacketNum = _receivedInputSets[index].PacketNumber % 600;
+                    var receivedPacketNum = _receivedInputSets[0].PacketNumber % 600;
 
                     var curPacketsReceived =
-                        _p2pHandler.InputPacketsReceived < 300 && _receivedInputSets[index].PacketNumber > 300
+                        _p2pHandler.InputPacketsReceived < 300 && _receivedInputSets[0].PacketNumber > 300
                             ? _p2pHandler.InputPacketsReceived + 600
                             : _p2pHandler.InputPacketsReceived;
 
-                    Debug.Log($"receivedPacketNum: {receivedPacketNum}, curPacketsReceived: {curPacketsReceived} on {index}");
-                    if (receivedPacketNum == curPacketsReceived)
+                    var numPerdictedInputSets = _predictedInputSets.Count;
+
+                    var currentPacketIndex = curPacketsReceived + numPerdictedInputSets;
+
+                    Debug.Log($"receivedPacketNum: {receivedPacketNum}, curPacketsReceived: {curPacketsReceived} on {currentPacketIndex}");
+                    if (receivedPacketNum == currentPacketIndex)
                     {
-                        ParseInputs(_receivedInputSets[index]);
+                        ParseInputs(_receivedInputSets[0]);
                         RollbackManager.Instance.SaveGameState();
                         P2PHandler.Instance.OnInputPacketsReceived();
-                        _receivedInputSets.RemoveAt(index);
+                        _receivedInputSets.RemoveAt(0);
+                        _queuePrediction = false;
                     }
                     else
                     {
-                        _queuePrediction = true;
-                        
-                        if (receivedPacketNum > curPacketsReceived)
+                        if (receivedPacketNum > currentPacketIndex)
                         {
-                            _queuedInputSets.Add(_receivedInputSets[index]);
+                            _queuedInputSets.Add(_receivedInputSets[0]);
+                            _receivedInputSets.RemoveAt(0);
                         }
-                        else if (receivedPacketNum < curPacketsReceived + _predictedInputSets.Count)
+                        else if (receivedPacketNum < currentPacketIndex)
                         {
                             var i = 0;
-                            for (; i < _predictedInputSets.Count; i++)
+                            for (; i < numPerdictedInputSets; i++)
                             {
+                                Debug.Log(
+                                    $"predicted {_predictedInputSets[i].PacketNumber}, received: {receivedPacketNum}");
                                 if (_predictedInputSets[i].PacketNumber == receivedPacketNum)
                                 {
-                                    if (_receivedInputSets[index].Inputs.SequenceEqual(_predictedInputSets[i].Inputs))
+                                    if (_receivedInputSets[0].Inputs.SequenceEqual(_predictedInputSets[i].Inputs))
                                     {
                                         _predictedInputSets.RemoveAt(i);
+                                        _receivedInputSets.RemoveAt(0);
                                     }
                                     else
                                     {
@@ -104,8 +115,14 @@ namespace PLAYER
                     }
                 }
             }
+            else
+            {
+                _queuePrediction = true;
+            }
 
-            for (var i = 0; i < _queuedInputSets.Count; i++)
+            var numQueuedInputSet = _queuedInputSets.Count;
+
+            for (var i = 0; i < numQueuedInputSet; i++)
             {
                 var queuedInputSet = _queuedInputSets[i];
                 var curPacketsReceived = _p2pHandler.InputPacketsReceived < 300 && queuedInputSet.PacketNumber > 300
@@ -116,7 +133,7 @@ namespace PLAYER
                 {
                     ParseInputs(queuedInputSet);
                     P2PHandler.Instance.OnInputPacketsReceived();
-                    _queuedInputSets.RemoveAt(i);
+                    _queuedInputSets.RemoveAt(0);
                 }
             }
 
@@ -226,7 +243,7 @@ namespace PLAYER
         
         private P2PInputSet PredictInputs()
         {
-            return new P2PInputSet(new P2PInputSet.InputChange[]{ }, P2PHandler.Instance.InputPacketsReceived + _predictedInputSets.Count + 1);
+            return new P2PInputSet(new P2PInputSet.InputChange[]{ }, P2PHandler.Instance.InputPacketsReceived + _predictedInputSets.Count);
         }
     
         public void ParseInputs(P2PInputSet inputSet)
