@@ -24,6 +24,8 @@ namespace PLAYER
         private List<P2PInputSet> _receivedInputSets;
         private List<P2PInputSet> _queuedInputSets;
         private List<P2PInputSet> _predictedInputSets;
+
+        private P2PHandler _p2pHandler;
         
         protected override void Awake()
         {
@@ -31,36 +33,35 @@ namespace PLAYER
             _receivedInputSets = new List<P2PInputSet>();
             _queuedInputSets = new List<P2PInputSet>();
             _predictedInputSets = new List<P2PInputSet>();
+            _p2pHandler = P2PHandler.Instance;
         }
 
         public void GiveInputs(P2PInputSet receivedInputs)
         {
             _receivedFirstInput = true;
             
-            Debug.Log(receivedInputs.PacketNumber);
             _receivedInputSets.Add(receivedInputs);
+            Debug.Log(receivedInputs.PacketNumber);
         }
 
         public void HandleInputs2()
         {
-            var numPacketsReceived = P2PHandler.Instance.InputPacketsReceived;
-            
+            Debug.Log("HandleInputs");
             if (_receivedInputSets.Count > 0)
             {
                 for (var index = 0; index < _receivedInputSets.Count; index++)
                 {
-                    var receivedInputs = _receivedInputSets[index];
-                    var receivedPacketNum = receivedInputs.PacketNumber % 600;
+                    var receivedPacketNum = _receivedInputSets[index].PacketNumber % 600;
 
                     var curPacketsReceived =
-                        numPacketsReceived < 300 && receivedInputs.PacketNumber > 300
-                            ? numPacketsReceived + 600
-                            : numPacketsReceived;
+                        _p2pHandler.InputPacketsReceived < 300 && _receivedInputSets[index].PacketNumber > 300
+                            ? _p2pHandler.InputPacketsReceived + 600
+                            : _p2pHandler.InputPacketsReceived;
 
                     Debug.Log($"receivedPacketNum: {receivedPacketNum}, curPacketsReceived: {curPacketsReceived} on {index}");
                     if (receivedPacketNum == curPacketsReceived)
                     {
-                        ParseInputs(receivedInputs);
+                        ParseInputs(_receivedInputSets[index]);
                         RollbackManager.Instance.SaveGameState();
                         P2PHandler.Instance.OnInputPacketsReceived();
                         _receivedInputSets.RemoveAt(index);
@@ -71,7 +72,7 @@ namespace PLAYER
                         
                         if (receivedPacketNum > curPacketsReceived)
                         {
-                            _queuedInputSets.Add(receivedInputs);
+                            _queuedInputSets.Add(_receivedInputSets[index]);
                         }
                         else if (receivedPacketNum < curPacketsReceived + _predictedInputSets.Count)
                         {
@@ -80,7 +81,7 @@ namespace PLAYER
                             {
                                 if (_predictedInputSets[i].PacketNumber == receivedPacketNum)
                                 {
-                                    if (receivedInputs.Inputs.SequenceEqual(_predictedInputSets[i].Inputs))
+                                    if (_receivedInputSets[index].Inputs.SequenceEqual(_predictedInputSets[i].Inputs))
                                     {
                                         _predictedInputSets.RemoveAt(i);
                                     }
@@ -107,9 +108,9 @@ namespace PLAYER
             for (var i = 0; i < _queuedInputSets.Count; i++)
             {
                 var queuedInputSet = _queuedInputSets[i];
-                var curPacketsReceived = numPacketsReceived < 300 && queuedInputSet.PacketNumber > 300
-                    ? numPacketsReceived + 600
-                    : numPacketsReceived;
+                var curPacketsReceived = _p2pHandler.InputPacketsReceived < 300 && queuedInputSet.PacketNumber > 300
+                    ? _p2pHandler.InputPacketsReceived + 600
+                    : _p2pHandler.InputPacketsReceived;
 
                 if (queuedInputSet.PacketNumber == curPacketsReceived)
                 {
