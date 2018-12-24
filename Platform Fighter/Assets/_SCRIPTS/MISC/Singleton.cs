@@ -1,8 +1,14 @@
 using JetBrains.Annotations;
+using NETWORKING;
 using UnityEngine;
 
 namespace MISC
 {
+    public abstract class SettableSingleton<T> : Singleton<T>, ISettable where T : MonoBehaviour
+    {
+        public abstract void SetData(object newData);
+    }
+
     public abstract class Singleton<T> : Singleton where T : MonoBehaviour
     {
         #region  Properties

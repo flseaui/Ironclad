@@ -73,8 +73,8 @@ namespace NETWORKING
                 
                 if (snapshotPiece.BaseType.IsSubclassOf(typeof(Singleton)))
                 {
-                    dynamic type = typeof(Singleton<>).MakeGenericType(snapshotPiece.BaseType);
-                    ((ISettable) type).SetData(packet);
+                    dynamic type = typeof(SettableSingleton<>).MakeGenericType(snapshotPiece.BaseType);
+                    type.Instance.SetData(packet);
                 }
                 else
                 {

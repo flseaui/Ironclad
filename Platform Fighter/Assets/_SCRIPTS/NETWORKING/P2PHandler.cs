@@ -10,6 +10,7 @@ using UnityEngine.Serialization;
 
 namespace NETWORKING
 {
+    [Serializable]
     public class P2PHandlerPacket
     {
         public int FramesLapsed;
@@ -17,7 +18,7 @@ namespace NETWORKING
         public int InputPacketsReceived;
     }
     
-    public class P2PHandler : Singleton<P2PHandler>, ISettable
+    public class P2PHandler : SettableSingleton<P2PHandler>
     {
         public P2PHandlerPacket DataPacket;
         
