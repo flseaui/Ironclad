@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using MANAGERS;
 using NETWORKING;
 using UnityEngine;
@@ -14,6 +15,8 @@ namespace PLAYER
 
         protected bool[] PrevInputs;
         protected int[] InputFramesHeld;
+        
+        public List<P2PInputSet> ArchivedInputSets;
         
         protected PlayerData PlayerData { get; set; }
         
@@ -59,6 +62,14 @@ namespace PLAYER
             InputLateUpdate();
         }
 
+        public void ApplyArchivedInputSet(int index)
+        {
+            foreach (var input in ArchivedInputSets[index].Inputs)
+            {
+                Inputs[(int) input.InputType] = input.State;
+            }
+        }
+        
         // called after PrevInputs reset, before InputFramesHeld increased
         protected virtual void InputUpdate() { }
         protected virtual void InputLateUpdate() { }

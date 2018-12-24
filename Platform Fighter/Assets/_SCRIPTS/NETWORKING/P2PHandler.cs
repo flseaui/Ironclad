@@ -10,13 +10,18 @@ using UnityEngine.Serialization;
 
 namespace NETWORKING
 {
-    public class P2PHandler : Singleton<P2PHandler>
+    public class P2PHandlerPacket
     {
-       
         public int FramesLapsed;
-        public int Threshold = 0;
         public int InputPacketsSent;
         public int InputPacketsReceived;
+    }
+    
+    public class P2PHandler : Singleton<P2PHandler>, ISettable
+    {
+        public P2PHandlerPacket DataPacket;
+        
+        public int Threshold = 0;
         
         private int _playersJoined = 1;
 
@@ -40,7 +45,7 @@ namespace NETWORKING
 
         private void FixedUpdate()
         {
-            FramesLapsed = ++FramesLapsed % 600;
+            DataPacket.FramesLapsed = ++DataPacket.FramesLapsed % 600;
             
             if (Threshold > 600)
                 Application.Quit();
@@ -102,12 +107,12 @@ namespace NETWORKING
             if (!sendNetworkAction) return;
             if (!LatencyCalculated) return;
 
-            var body = new P2PInputSet(inputs, InputPacketsSent);
+            var body = new P2PInputSet(inputs, DataPacket.InputPacketsSent);
             var message = new P2PMessage(networkIdentity.SteamId, P2PMessageKey.InputSet, body.Serialize());
             
             SendP2PMessage(message);
 
-            InputPacketsSent = ++InputPacketsSent % 600;
+            DataPacket.InputPacketsSent = ++DataPacket.InputPacketsSent % 600;
         }  
         
         public void SendP2PMessage(P2PMessage message)
@@ -173,8 +178,16 @@ namespace NETWORKING
 
         public void OnInputPacketsReceived()
         {
-            InputPacketsReceived = ++InputPacketsReceived % 600;
+            DataPacket.InputPacketsReceived = ++DataPacket.InputPacketsReceived % 600;
         }
-        
+
+        public void SetData(object newData)
+        {
+            var data = (P2PHandlerPacket) newData;
+
+            DataPacket.FramesLapsed = data.FramesLapsed;
+            DataPacket.InputPacketsReceived = data.InputPacketsReceived;
+            DataPacket.InputPacketsSent = data.InputPacketsSent;
+        }
     }
 }

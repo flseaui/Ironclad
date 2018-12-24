@@ -33,7 +33,7 @@ namespace MANAGERS
             MatchStart();
         }
 
-        public List<GameObject> GetPlayers() => _activePlayers;
+        public List<GameObject> Players => _activePlayers;
         
         public GameObject GetPlayer(int playerId) =>
             _activePlayers.FirstOrDefault(player => player.GetComponent<NetworkIdentity>().Id == playerId);

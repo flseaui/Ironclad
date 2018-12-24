@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using MISC;
+using UnityEngine;
 using Types = DATA.Types;
 
 namespace PLAYER
 {
     [RequireComponent(typeof(InputSender)), RequireComponent(typeof(PlayerData))]
-    public abstract class ActionsBase : MonoBehaviour
+    public abstract class ActionsBase : MonoBehaviour, ISteppable
     {
         private PlayerController _playerController;
         
@@ -28,9 +29,14 @@ namespace PLAYER
 
         private void FixedUpdate()
         {
-            Data.CurrentAction = GetCurrentAction();
+            Step();
         }
 
         protected abstract Types.ActionType GetCurrentAction();
+        
+        public void Step()
+        {
+            Data.CurrentAction = GetCurrentAction();
+        }
     }
 }

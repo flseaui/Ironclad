@@ -20,9 +20,9 @@ namespace NETWORKING
                 (
                     Client.Instance.SteamId,
                     Client.Instance.Lobby.Owner,
-                    P2PHandler.Instance.FramesLapsed
+                    P2PHandler.Instance.DataPacket.FramesLapsed
                 );
-                _sentFrame = P2PHandler.Instance.FramesLapsed;
+                _sentFrame = P2PHandler.Instance.DataPacket.FramesLapsed;
             }
         }
 
@@ -34,14 +34,14 @@ namespace NETWORKING
                 // host just recieved first packet
                 if (Client.Instance.Lobby.Owner == Client.Instance.SteamId)
                 {
-                    _hostSentFrame = P2PHandler.Instance.FramesLapsed;
-                    Events.OnPingSent(Client.Instance.SteamId, senderId, P2PHandler.Instance.FramesLapsed);
+                    _hostSentFrame = P2PHandler.Instance.DataPacket.FramesLapsed;
+                    Events.OnPingSent(Client.Instance.SteamId, senderId, P2PHandler.Instance.DataPacket.FramesLapsed);
                 }
                 // user just recieved first packet from host
                 else
                 {   
                     NetworkLatency = ping.LocalFrame - _sentFrame;
-                    Events.OnFirstNetworkLatencyCalculated(Client.Instance.SteamId, senderId, P2PHandler.Instance.FramesLapsed);
+                    Events.OnFirstNetworkLatencyCalculated(Client.Instance.SteamId, senderId, P2PHandler.Instance.DataPacket.FramesLapsed);
                 }
             }
             else

@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using MISC;
+using UnityEngine;
 
 namespace PLAYER
 {
     [RequireComponent(typeof(PlayerData))]
-    public abstract class Behaviors : MonoBehaviour
+    public abstract class Behaviors : MonoBehaviour, ISteppable
     {
         protected PlayerDataPacket Data { get; private set; }
 
@@ -17,9 +18,14 @@ namespace PLAYER
 
         private void FixedUpdate()
         {
-            RunAction();
+            Step();
         }
 
         public abstract void RunAction();
+        
+        public void Step()
+        {
+            RunAction();
+        }
     }
 }

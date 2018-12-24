@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DATA;
 using MANAGERS;
+using MISC;
 using NETWORKING;
 using UnityEngine;
 using Types = DATA.Types;
@@ -13,7 +14,7 @@ namespace PLAYER
     public delegate void OnActionBeginCallback();
 
     [RequireComponent(typeof(PlayerData))]
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, ISteppable
     {
         private Animator _animator;
 
@@ -60,17 +61,18 @@ namespace PLAYER
             var Position = PlayerDataPacket.PlayerLocation.Grounded;
 
             PoolBoxes();
-
-            //Events.OnPingSent(GetComponent<NetworkIdentity>(), P2PHandler.Instance.FramesLapsed);
         }
 
         private void FixedUpdate()
         {
-            //Debug.Log($"{_data.CurrentAction} {_data.Direction}");
-
-            ExecuteAction();
+            Step();
         }
 
+        public void Step()
+        {
+            ExecuteAction();
+        }
+        
         private void ExecuteAction()
         {
             // first frame of action
