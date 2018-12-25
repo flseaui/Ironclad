@@ -14,13 +14,14 @@ namespace NETWORKING
     public class P2PHandlerPacket
     {
         public int FramesLapsed;
-        public int InputPacketsSent;
-        public int InputPacketsReceived;
     }
     
     public class P2PHandler : SettableSingleton<P2PHandler>
     {
         public P2PHandlerPacket DataPacket;
+        
+        public int InputPacketsSent;
+        public int InputPacketsReceived;
         
         public int Threshold = 0;
         
@@ -108,12 +109,12 @@ namespace NETWORKING
             if (!sendNetworkAction) return;
             if (!LatencyCalculated) return;
 
-            var body = new P2PInputSet(inputs, DataPacket.InputPacketsSent);
+            var body = new P2PInputSet(inputs, InputPacketsSent);
             var message = new P2PMessage(networkIdentity.SteamId, P2PMessageKey.InputSet, body.Serialize());
             
             SendP2PMessage(message);
 
-            DataPacket.InputPacketsSent = ++DataPacket.InputPacketsSent % 600;
+            InputPacketsSent = ++InputPacketsSent % 600;
         }  
         
         public void SendP2PMessage(P2PMessage message)
@@ -179,7 +180,7 @@ namespace NETWORKING
 
         public void OnInputPacketsReceived()
         {
-            DataPacket.InputPacketsReceived = ++DataPacket.InputPacketsReceived % 600;
+            InputPacketsReceived = ++InputPacketsReceived % 600;
         }
 
         public override void SetData(object newData)
@@ -187,8 +188,6 @@ namespace NETWORKING
             var data = (P2PHandlerPacket) newData;
 
             DataPacket.FramesLapsed = data.FramesLapsed;
-            DataPacket.InputPacketsReceived = data.InputPacketsReceived;
-            DataPacket.InputPacketsSent = data.InputPacketsSent;
         }
     }
 }

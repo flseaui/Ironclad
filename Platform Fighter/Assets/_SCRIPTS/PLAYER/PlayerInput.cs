@@ -125,7 +125,7 @@ namespace PLAYER
             {
                 var inputArray = _changedInputs.ToArray();
                 Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, true);
-                ArchivedInputSets.Add(new P2PInputSet(inputArray, P2PHandler.Instance.DataPacket.InputPacketsSent));
+                ArchivedInputSets.Add(new P2PInputSet(inputArray, P2PHandler.Instance.InputPacketsSent));
             }
 
             _changedInputs.Clear();

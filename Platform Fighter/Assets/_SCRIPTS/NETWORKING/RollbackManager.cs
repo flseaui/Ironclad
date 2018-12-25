@@ -12,6 +12,8 @@ namespace NETWORKING
     {
         private List<List<Snapshot>> _snapshots;
 
+        private int _age;
+        
         private struct Snapshot
         {
             /// <summary>
@@ -66,7 +68,7 @@ namespace NETWORKING
 
             P2PHandler.Instance.Threshold = 0;
             
-            var prevInputPacketsSent = P2PHandler.Instance.DataPacket.InputPacketsSent;
+            var prevInputPacketsSent = P2PHandler.Instance.InputPacketsSent;
             
             foreach (var snapshotPiece in _snapshots[distance])
             {
@@ -87,7 +89,7 @@ namespace NETWORKING
                 Debug.Log("ROLLBACK PART 2");
             }
 
-            var snapshotAge = prevInputPacketsSent - P2PHandler.Instance.DataPacket.InputPacketsSent;
+            var snapshotAge = (P2PHandler.Instance.InputPacketsSent - _age) % 600;
             for (var i = 0; i < snapshotAge; ++i)
             {
                 foreach (var player in MatchStateManager.Instance.Players)
@@ -123,6 +125,7 @@ namespace NETWORKING
         {
             var json = JsonUtility.ToJson(structure);
             _snapshots[depth].Add(new Snapshot(player, baseType, structure.GetType(), json));
+            _age = P2PHandler.Instance.InputPacketsSent;
         }        
     }
 }

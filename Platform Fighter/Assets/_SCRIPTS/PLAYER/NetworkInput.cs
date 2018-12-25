@@ -57,9 +57,9 @@ namespace PLAYER
                     var receivedPacketNum = _receivedInputSets[0].PacketNumber % 600;
 
                     var curPacketsReceived =
-                        _p2pHandler.DataPacket.InputPacketsReceived < 300 && _receivedInputSets[0].PacketNumber > 300
-                            ? _p2pHandler.DataPacket.InputPacketsReceived + 600
-                            : _p2pHandler.DataPacket.InputPacketsReceived;
+                        _p2pHandler.InputPacketsReceived < 300 && _receivedInputSets[0].PacketNumber > 300
+                            ? _p2pHandler.InputPacketsReceived + 600
+                            : _p2pHandler.InputPacketsReceived;
 
                     var numPerdictedInputSets = _predictedInputSets.Count;
 
@@ -100,9 +100,11 @@ namespace PLAYER
                                     }
                                     else
                                     {
+                                        ArchivedInputSets.AddRange(_receivedInputSets);
                                         RollbackManager.Instance.Rollback(0);
                                         _predictedInputSets.Clear();
                                         _receivedInputSets.Clear();
+                                        return;
                                     }
 
                                     break;
@@ -126,10 +128,10 @@ namespace PLAYER
 
             for (var i = 0; i < numQueuedInputSet; i++)
             {
-                var queuedInputSet = _queuedInputSets[i];
-                var curPacketsReceived = _p2pHandler.DataPacket.InputPacketsReceived < 300 && queuedInputSet.PacketNumber > 300
-                    ? _p2pHandler.DataPacket.InputPacketsReceived + 600
-                    : _p2pHandler.DataPacket.InputPacketsReceived;
+                var queuedInputSet = _queuedInputSets[0];
+                var curPacketsReceived = _p2pHandler.InputPacketsReceived < 300 && queuedInputSet.PacketNumber > 300
+                    ? _p2pHandler.InputPacketsReceived + 600
+                    : _p2pHandler.InputPacketsReceived;
 
                 if (queuedInputSet.PacketNumber == curPacketsReceived)
                 {
@@ -173,9 +175,9 @@ namespace PLAYER
                 {
                     var receivedPacketNum = receivedInputs.PacketNumber % 600;
                     
-                    var curPacketsReceived = P2PHandler.Instance.DataPacket.InputPacketsReceived < 300 && receivedInputs.PacketNumber > 300
-                        ? P2PHandler.Instance.DataPacket.InputPacketsReceived + 600
-                        : P2PHandler.Instance.DataPacket.InputPacketsReceived;
+                    var curPacketsReceived = P2PHandler.Instance.InputPacketsReceived < 300 && receivedInputs.PacketNumber > 300
+                        ? P2PHandler.Instance.InputPacketsReceived + 600
+                        : P2PHandler.Instance.InputPacketsReceived;
 
                     //Debug.Log("recievedFrame: " + receivedInputFrame + " tempFrame: " + tempFramesLapsed);
                     
@@ -228,7 +230,7 @@ namespace PLAYER
                     for (var i = 0; i < _queuedInputSets.Count; i++)
                     {
                         var queuedInputSet = _queuedInputSets[i];
-                        if (queuedInputSet.PacketNumber == P2PHandler.Instance.DataPacket.InputPacketsReceived)
+                        if (queuedInputSet.PacketNumber == P2PHandler.Instance.InputPacketsReceived)
                         {
                             _receivedInputSets.Add(queuedInputSet);
                             _queuedInputSets.RemoveAt(i);
@@ -246,7 +248,7 @@ namespace PLAYER
         
         private P2PInputSet PredictInputs()
         {
-            return new P2PInputSet(new P2PInputSet.InputChange[]{ }, (P2PHandler.Instance.DataPacket.InputPacketsReceived + _predictedInputSets.Count) % 600);
+            return new P2PInputSet(new P2PInputSet.InputChange[]{ }, (P2PHandler.Instance.InputPacketsReceived + _predictedInputSets.Count) % 600);
         }
     
         public void ParseInputs(P2PInputSet inputSet)
