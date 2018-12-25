@@ -64,6 +64,7 @@ namespace PLAYER
 
         public void ApplyArchivedInputSet(int index)
         {
+            Debug.Log($"index: {index}, length: {ArchivedInputSets.Count}");
             foreach (var input in ArchivedInputSets[index].Inputs)
             {
                 Inputs[(int) input.InputType] = input.State;

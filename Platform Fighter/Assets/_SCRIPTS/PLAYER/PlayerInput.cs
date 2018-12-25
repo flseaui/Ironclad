@@ -120,9 +120,14 @@ namespace PLAYER
 
         private void FixedUpdate()
         {
-            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && P2PHandler.Instance.LatencyCalculated)
-                Events.OnInputsChanged(GetComponent<NetworkIdentity>(), _changedInputs.ToArray(), true);
-            
+            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer &&
+                P2PHandler.Instance.LatencyCalculated)
+            {
+                var inputArray = _changedInputs.ToArray();
+                Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, true);
+                ArchivedInputSets.Add(new P2PInputSet(inputArray, P2PHandler.Instance.DataPacket.InputPacketsSent));
+            }
+
             _changedInputs.Clear();
         }
     }

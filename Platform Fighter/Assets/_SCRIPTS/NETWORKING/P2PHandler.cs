@@ -182,7 +182,7 @@ namespace NETWORKING
             DataPacket.InputPacketsReceived = ++DataPacket.InputPacketsReceived % 600;
         }
 
-        public void SetData(object newData)
+        public override void SetData(object newData)
         {
             var data = (P2PHandlerPacket) newData;
 

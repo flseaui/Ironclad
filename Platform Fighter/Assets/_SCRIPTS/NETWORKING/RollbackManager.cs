@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using MANAGERS;
 using MISC;
 using PLAYER;
@@ -64,7 +65,7 @@ namespace NETWORKING
             }
 
             P2PHandler.Instance.Threshold = 0;
-
+            
             var prevInputPacketsSent = P2PHandler.Instance.DataPacket.InputPacketsSent;
             
             foreach (var snapshotPiece in _snapshots[distance])
@@ -73,8 +74,9 @@ namespace NETWORKING
                 
                 if (snapshotPiece.BaseType.IsSubclassOf(typeof(Singleton)))
                 {
-                    dynamic type = typeof(SettableSingleton<>).MakeGenericType(snapshotPiece.BaseType);
-                    type.Instance.SetData(packet);
+                    P2PHandler.Instance.SetData(packet);
+                    //var type = typeof(SettableSingleton<>).MakeGenericType(snapshotPiece.BaseType);
+                    //(type.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static)?.GetValue(null) as dynamic)?.SetData(packet);                              
                 }
                 else
                 {
@@ -113,6 +115,8 @@ namespace NETWORKING
             {
                 player.GetComponent<InputSender>().ArchivedInputSets.Clear();
             }
+
+            Debug.Log("SAVE GAME STATE");
         }
 
         public void TakeSnapshot<T>(int player, int depth, Type baseType, T structure)
