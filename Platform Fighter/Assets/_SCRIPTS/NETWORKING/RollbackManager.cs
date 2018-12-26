@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using MANAGERS;
 using MISC;
@@ -68,8 +69,6 @@ namespace NETWORKING
 
             P2PHandler.Instance.Threshold = 0;
             
-            var prevInputPacketsSent = P2PHandler.Instance.InputPacketsSent;
-            
             foreach (var snapshotPiece in _snapshots[distance])
             {
                 var packet = JsonUtility.FromJson(snapshotPiece.JsonData, snapshotPiece.Type);
@@ -90,16 +89,24 @@ namespace NETWORKING
             }
 
             var snapshotAge = (P2PHandler.Instance.InputPacketsSent - _age) % 600;
+            Debug.Log("SnapshotAge: " + snapshotAge);
             for (var i = 0; i < snapshotAge; ++i)
             {
-                foreach (var player in MatchStateManager.Instance.Players)
+                for (var j = 0; j < MatchStateManager.Instance.Players.Count; j++)
                 {
+                    var player = MatchStateManager.Instance.Players[j];
+                    if (j == 0)
+                    {
+                        P2PHandler.Instance.InputPacketsReceived = player.GetComponent<InputSender>()
+                            .ArchivedInputSets.Last().PacketNumber;
+                    }
+
                     player.GetComponent<InputSender>().ApplyArchivedInputSet(i);
                     foreach (var steppable in player.GetComponents(typeof(ISteppable)))
                     {
                         ((ISteppable) steppable).Step();
                     }
-                }   
+                }
             }
         }
 

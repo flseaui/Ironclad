@@ -44,9 +44,8 @@ namespace PLAYER
             Debug.Log(receivedInputs.PacketNumber);
         }
 
-        public void HandleInputs2()
+        public void HandleInputs()
         {
-            
             var numReceivedInputSets = _receivedInputSets.Count;
             
             Debug.Log("HandleInputs: " + numReceivedInputSets);
@@ -65,7 +64,7 @@ namespace PLAYER
 
                     var currentPacketIndex = curPacketsReceived + numPerdictedInputSets;
 
-                    Debug.Log($"receivedPacketNum: {receivedPacketNum}, curPacketsReceived: {curPacketsReceived} on {currentPacketIndex}");
+                    Debug.Log($"received: {receivedPacketNum}, total: {curPacketsReceived}, total+predicted: {currentPacketIndex}");
                     if (receivedPacketNum == currentPacketIndex)
                     {
                         ParseInputs(_receivedInputSets[0]);
@@ -91,6 +90,19 @@ namespace PLAYER
                                     $"predicted {_predictedInputSets[i].PacketNumber}, received: {receivedPacketNum}");
                                 if (_predictedInputSets[i].PacketNumber == receivedPacketNum)
                                 {
+                                    var temp = "==RECEIVED==" + Environment.NewLine;
+                                    var temp2 = "==PREDICTED==" + Environment.NewLine;
+                                    foreach (var input in _receivedInputSets[0].Inputs)
+                                    {
+                                        var state = input.State ? "Pressed" : "Released";
+                                        temp += $"[{input.InputType}]->{state}{Environment.NewLine}";
+                                    }
+                                    foreach (var input in _predictedInputSets[i].Inputs)
+                                    {
+                                        var state = input.State ? "Pressed" : "Released";    
+                                        temp2 += $"[{input.InputType}]->{state}{Environment.NewLine}";
+                                    }
+                                    Debug.Log(temp + temp2);
                                     if (_receivedInputSets[0].Inputs.SequenceEqual(_predictedInputSets[i].Inputs))
                                     {
                                         P2PHandler.Instance.OnInputPacketsReceived();
@@ -160,92 +172,9 @@ namespace PLAYER
             if (!_receivedFirstInput) return;
             
             //HandleInputs();
-            HandleInputs2();
+            HandleInputs();
         }
 
-        private void HandleInputs()
-        {
-            _queueEvaluation = false;
-            _queueParse = false;
-            
-            if (_receivedInputSets.Count > 0)
-            {
-                var queuedParseInput = new P2PInputSet();
-                foreach (var receivedInputs in _receivedInputSets)
-                {
-                    var receivedPacketNum = receivedInputs.PacketNumber % 600;
-                    
-                    var curPacketsReceived = P2PHandler.Instance.InputPacketsReceived < 300 && receivedInputs.PacketNumber > 300
-                        ? P2PHandler.Instance.InputPacketsReceived + 600
-                        : P2PHandler.Instance.InputPacketsReceived;
-
-                    //Debug.Log("recievedFrame: " + receivedInputFrame + " tempFrame: " + tempFramesLapsed);
-                    
-                    if (receivedPacketNum == curPacketsReceived)
-                    {
-                        queuedParseInput = receivedInputs;
-                        _queueParse = true;
-                    }
-                    else if (receivedPacketNum < curPacketsReceived)
-                        _queueEvaluation = true;
-                    else if (receivedPacketNum > curPacketsReceived)
-                        _queuedInputSets.Add(receivedInputs);
-                }
-
-                if (_queueEvaluation)
-                {
-                    for (var i = 0; i < _predictedInputSets.Count; i++)
-                    {
-                        foreach (var receivedInputSet in _receivedInputSets)
-                        {
-                            if (receivedInputSet.PacketNumber == _predictedInputSets[i].PacketNumber)
-                            {
-                                if (!receivedInputSet.Inputs.SequenceEqual(_predictedInputSets[i].Inputs))
-                                {
-                                    RollbackManager.Instance.Rollback(0);
-                                    Debug.Log("Rollback");
-                                    _receivedInputSets.Clear();
-                                    _predictedInputSets.Clear();
-                                    return;
-                                }
-
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (_queueParse)
-                {
-                    ParseInputs(queuedParseInput);   
-                    _receivedInputSets.Clear();
-                    Debug.Log("Parsed");
-                    RollbackManager.Instance.SaveGameState();
-                }        
-            }
-            else
-            {
-                if (_queuedInputSets.Count != 0)
-                {
-                    for (var i = 0; i < _queuedInputSets.Count; i++)
-                    {
-                        var queuedInputSet = _queuedInputSets[i];
-                        if (queuedInputSet.PacketNumber == P2PHandler.Instance.InputPacketsReceived)
-                        {
-                            _receivedInputSets.Add(queuedInputSet);
-                            _queuedInputSets.RemoveAt(i);
-                            HandleInputs();
-                            return;
-                        }
-                    }
-                }
-                
-                _predictedInputSets.Add(PredictInputs());
-                Debug.Log("predicting...");
-                return;
-            }
-        }
-        
         private P2PInputSet PredictInputs()
         {
             return new P2PInputSet(new P2PInputSet.InputChange[]{ }, (P2PHandler.Instance.InputPacketsReceived + _predictedInputSets.Count) % 600);
