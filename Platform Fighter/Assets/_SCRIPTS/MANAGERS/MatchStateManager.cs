@@ -33,6 +33,8 @@ namespace MANAGERS
             MatchStart();
         }
 
+        public int ClientPlayerId { get; private set; }
+        
         public List<GameObject> Players => _activePlayers;
         
         public GameObject GetPlayer(int playerId) =>
@@ -78,6 +80,7 @@ namespace MANAGERS
                                 spawnPoints[i].rotation
                             );
                             player.GetComponent<PlayerInput>().Id = 0;
+                            ClientPlayerId = i;
                         }
                         else
                         {

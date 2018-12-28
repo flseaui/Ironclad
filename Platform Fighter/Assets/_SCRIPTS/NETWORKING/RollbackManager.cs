@@ -92,20 +92,13 @@ namespace NETWORKING
             Debug.Log("SnapshotAge: " + snapshotAge);
             for (var i = 0; i < snapshotAge; ++i)
             {
-                for (var j = 0; j < MatchStateManager.Instance.Players.Count; j++)
+                foreach (var player in MatchStateManager.Instance.Players)
                 {
-                    var player = MatchStateManager.Instance.Players[j];
-                    if (j == 0)
-                    {
-                        P2PHandler.Instance.InputPacketsReceived = player.GetComponent<InputSender>()
-                            .ArchivedInputSets.Last().PacketNumber;
-                    }
-
-                    player.GetComponent<InputSender>().ApplyArchivedInputSet(i);
                     foreach (var steppable in player.GetComponents(typeof(ISteppable)))
                     {
                         ((ISteppable) steppable).Step();
                     }
+                    player.GetComponent<InputSender>().ApplyArchivedInputSet(i);
                 }
             }
         }
