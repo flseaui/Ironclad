@@ -14,8 +14,9 @@ namespace MENU
     {
         [SerializeField] private PlayerProfilePanel _playerProfilerPanel;
         
+        [SerializeField]
         private int _playerReady;
-
+        
         protected override void SwitchToThis(params string[] args)
         {
             Client.Instance.Lobby.OnLobbyCreated = OnCreated;
@@ -55,17 +56,25 @@ namespace MENU
         private void OnJoined(bool success)
         {
             if (!success) return;
-
+            
             SetupMemberData();
             
-            foreach (var member in Client.Instance.Lobby.GetMemberIDs()) _playerProfilerPanel.AddPlayerProfile(member);
+            foreach (var member in Client.Instance.Lobby.GetMemberIDs())
+            {
+                _playerProfilerPanel.AddPlayerProfile(member);
+
+                if (member != Client.Instance.SteamId)
+                {
+                    CheckMemberData(member, false);
+                }
+            }
         }
 
         private void SetupMemberData()
         {
             Client.Instance.Lobby.SetMemberData("character", "testCharacter");
-            Client.Instance.Lobby.SetMemberData("ready", "false");
             Client.Instance.Lobby.SetMemberData("lobbySpot", (Client.Instance.Lobby.NumMembers - 1).ToString());
+            Client.Instance.Lobby.SetMemberData("ready", "false");
         }
         
         private void OnDataUpdated()
@@ -76,12 +85,23 @@ namespace MENU
 
         private void OnMemberDataUpdated(ulong steamId)
         {
+            CheckMemberData(steamId, true);
+        }
+
+        public void CheckMemberData(ulong steamId, bool update)
+        {
+            _playerReady = 0;
+            foreach (var member in Client.Instance.Lobby.GetMemberIDs())
+            {
+                if (Client.Instance.Lobby.GetMemberData(member, "ready") == "true")
+                    _playerReady++;
+            }
+            
             switch(Client.Instance.Lobby.GetMemberData(steamId, "ready"))
             {
                 case "true":
                     _playerProfilerPanel.ReadyPlayerProfile(steamId);
-                    ++_playerReady;
-                    if (_playerReady >= Client.Instance.Lobby.NumMembers && Client.Instance.Lobby.NumMembers > 0)
+                    if (_playerReady >= Client.Instance.Lobby.NumMembers && Client.Instance.Lobby.NumMembers > 1 && update)
                     {
                         var tempCharacterArray = new List<Types.Character>();
                         
@@ -99,10 +119,10 @@ namespace MENU
 
                     break;
                 case "false":
-                    _playerProfilerPanel.UnreadyPlayerProfile(steamId);
-                    if (_playerReady > 0)
-                        --_playerReady;
+                    if (!update) return;
                     
+                    _playerProfilerPanel.UnreadyPlayerProfile(steamId);
+
                     break;
             }
         }
@@ -140,6 +160,13 @@ namespace MENU
                 Client.Instance.Lobby.SetMemberData("ready", "true");
             else
                 Client.Instance.Lobby.SetMemberData("ready", "false");
+
+            _playerReady = 0;
+            foreach (var member in Client.Instance.Lobby.GetMemberIDs())
+            {
+                if (Client.Instance.Lobby.GetMemberData(member, "ready") == "true")
+                    _playerReady++;
+            }
         }
 
         public Types.Character CharacterStringToId(string character)
@@ -154,7 +181,7 @@ namespace MENU
         }
 
         public void OnCharacterChanged(int character)
-        {
+        {   
             Client.Instance.Lobby.SetMemberData
             (
                 "character", 
