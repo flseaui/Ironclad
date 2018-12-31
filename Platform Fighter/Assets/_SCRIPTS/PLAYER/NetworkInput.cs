@@ -63,7 +63,7 @@ namespace PLAYER
                     {
                         var queuedInputSet = _queuedInputSets[i];
 
-                        if (queuedInputSet.PacketNumber - _p2pHandler.Delay == _p2pHandler.InputPacketsReceived)
+                        if ((queuedInputSet.PacketNumber - _p2pHandler.Delay) % 600  == _p2pHandler.InputPacketsReceived)
                         {
                             _receivedInputSets.Insert(0, _queuedInputSets[i]);
                             numReceivedInputSets++;
@@ -84,7 +84,7 @@ namespace PLAYER
                     var currentPacketIndex = curPacketsReceived + numPerdictedInputSets;
 
                     Debug.Log($"received: {receivedPacketNum}, total: {curPacketsReceived}, total+predicted: {currentPacketIndex}");
-                    if (receivedPacketNum - _p2pHandler.Delay == currentPacketIndex)
+                    if ((receivedPacketNum - _p2pHandler.Delay) % 600 == currentPacketIndex)
                     {
                         ParseInputs(_receivedInputSets[0]);
                         RollbackManager.Instance.SaveGameState();
