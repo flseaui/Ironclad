@@ -62,10 +62,10 @@ namespace PLAYER
 
                     var numPerdictedInputSets = _predictedInputSets.Count;
 
-                    var currentPacketIndex = curPacketsReceived - _p2pHandler.Delay + numPerdictedInputSets;
+                    var currentPacketIndex = curPacketsReceived + numPerdictedInputSets;
 
                     Debug.Log($"received: {receivedPacketNum}, total: {curPacketsReceived}, total+predicted: {currentPacketIndex}");
-                    if (receivedPacketNum == currentPacketIndex)
+                    if (receivedPacketNum - _p2pHandler.Delay == currentPacketIndex)
                     {
                         ParseInputs(_receivedInputSets[0]);
                         RollbackManager.Instance.SaveGameState();
@@ -76,7 +76,7 @@ namespace PLAYER
                     }
                     else
                     {
-                        if (receivedPacketNum > currentPacketIndex)
+                        if (receivedPacketNum >= currentPacketIndex)
                         {
                             _queuedInputSets.Add(_receivedInputSets[0]);
                             _receivedInputSets.RemoveAt(0);
@@ -137,6 +137,9 @@ namespace PLAYER
             }
 
             var numQueuedInputSet = _queuedInputSets.Count;
+            
+            if(numQueuedInputSet > 0)
+                Debug.Log("Dark Kankeiieieieo: " + numQueuedInputSet);
 
             for (var i = 0; i < numQueuedInputSet; i++)
             {
@@ -145,12 +148,13 @@ namespace PLAYER
                     ? _p2pHandler.InputPacketsReceived + 600
                     : _p2pHandler.InputPacketsReceived;
 
-                if (queuedInputSet.PacketNumber == curPacketsReceived)
+                if (queuedInputSet.PacketNumber - _p2pHandler.Delay == curPacketsReceived)
                 {
                     ParseInputs(queuedInputSet);
                     P2PHandler.Instance.OnInputPacketsReceived();
-                    ArchivedInputSets.Add(_queuedInputSets[0]);
-                    _queuedInputSets.RemoveAt(0);
+                    ArchivedInputSets.Add(_queuedInputSets[i]);
+                    _queuedInputSets.RemoveAt(i);
+                    break;
                 }
             }
 
