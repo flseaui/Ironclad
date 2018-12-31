@@ -46,11 +46,36 @@ namespace PLAYER
 
         public void HandleInputs()
         {
+            
+            
             var numReceivedInputSets = _receivedInputSets.Count;
             
+            var numQueuedInputSets = _queuedInputSets.Count;
+            
             Debug.Log("HandleInputs: " + numReceivedInputSets);
-            if (numReceivedInputSets > 0)
+            
+            if (numReceivedInputSets > 0 && numQueuedInputSets != 0)
             {
+                if (numReceivedInputSets == 0)
+                {
+                    
+                    for (var i = 0; i < numQueuedInputSets; i++)
+                    {
+                        var queuedInputSet = _queuedInputSets[0];
+                        var curPacketsReceived = _p2pHandler.InputPacketsReceived < 300 && queuedInputSet.PacketNumber > 300
+                            ? _p2pHandler.InputPacketsReceived + 600
+                            : _p2pHandler.InputPacketsReceived;
+
+                        if (queuedInputSet.PacketNumber - _p2pHandler.Delay == curPacketsReceived)
+                        {
+                            _receivedInputSets.Add(_queuedInputSets[0]);
+                            numReceivedInputSets++;
+                            _queuedInputSets.RemoveAt(0);
+                            break;
+                        }
+                    }
+                }
+
                 for (var index = 0; index < numReceivedInputSets; index++)
                 {
                     var receivedPacketNum = _receivedInputSets[0].PacketNumber % 600;
@@ -134,28 +159,6 @@ namespace PLAYER
             else
             {
                 _queuePrediction = true;
-            }
-
-            var numQueuedInputSet = _queuedInputSets.Count;
-            
-            if(numQueuedInputSet > 0)
-                Debug.Log("Dark Kankeiieieieo: " + numQueuedInputSet);
-
-            for (var i = 0; i < numQueuedInputSet; i++)
-            {
-                var queuedInputSet = _queuedInputSets[0];
-                var curPacketsReceived = _p2pHandler.InputPacketsReceived < 300 && queuedInputSet.PacketNumber > 300
-                    ? _p2pHandler.InputPacketsReceived + 600
-                    : _p2pHandler.InputPacketsReceived;
-
-                if (queuedInputSet.PacketNumber - _p2pHandler.Delay == curPacketsReceived)
-                {
-                    ParseInputs(queuedInputSet);
-                    P2PHandler.Instance.OnInputPacketsReceived();
-                    ArchivedInputSets.Add(_queuedInputSets[i]);
-                    _queuedInputSets.RemoveAt(i);
-                    break;
-                }
             }
 
             if (_queuePrediction)
