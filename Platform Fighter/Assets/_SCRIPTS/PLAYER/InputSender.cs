@@ -71,7 +71,7 @@ namespace PLAYER
                 Inputs[(int) input.InputType] = input.State;
             } 
             
-            if (GetComponent<NetworkIdentity>().Id != MatchStateManager.Instance.ClientPlayerId)
+            if (GetComponent<NetworkIdentity>().Id !=  MatchStateManager.Instance.ClientPlayerId)
                 if (ArchivedInputSets[index].PacketNumber > P2PHandler.Instance.InputPacketsReceived)
                     P2PHandler.Instance.OnInputPacketsReceived();
         }

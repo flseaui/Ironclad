@@ -14,6 +14,8 @@ namespace PLAYER
 
         private List<P2PInputSet.InputChange> _changedInputs;
 
+        private P2PInputSet _lastInputSet;
+        
         private Player _player;
         
         private int _jumpFramesHeld;
@@ -125,10 +127,17 @@ namespace PLAYER
             {
                 var inputArray = _changedInputs.ToArray();
                 Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, true);
-                ArchivedInputSets.Add(new P2PInputSet(inputArray, P2PHandler.Instance.InputPacketsSent));
+                _lastInputSet = new P2PInputSet(inputArray, P2PHandler.Instance.InputPacketsSent);
+                ArchivedInputSets.Add(_lastInputSet);
             }
 
             _changedInputs.Clear();
         }
+
+        public void ApplyLastInputSet()
+        {
+            ArchivedInputSets.Add(_lastInputSet);
+        }
+        
     }
 }

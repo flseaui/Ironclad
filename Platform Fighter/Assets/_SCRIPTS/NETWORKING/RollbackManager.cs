@@ -88,7 +88,7 @@ namespace NETWORKING
                 Debug.Log("ROLLBACK PART 2");
             }
 
-            var snapshotAge = (P2PHandler.Instance.InputPacketsSent - _age) % 600;
+            var snapshotAge = (P2PHandler.Instance.InputPacketsSent - _age) % 600 + 1;
             Debug.Log("SnapshotAge: " + snapshotAge);
             for (var i = 0; i < snapshotAge; ++i)
             {
@@ -116,6 +116,7 @@ namespace NETWORKING
             foreach (var player in MatchStateManager.Instance.Players)
             {
                 player.GetComponent<InputSender>().ArchivedInputSets.Clear();
+                player.GetComponent<PlayerInput>()?.ApplyLastInputSet();
             }
 
             Debug.Log("SAVE GAME STATE");
