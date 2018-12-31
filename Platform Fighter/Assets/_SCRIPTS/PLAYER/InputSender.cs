@@ -13,6 +13,7 @@ namespace PLAYER
     public class InputSender : MonoBehaviour
     {
         public bool[] Inputs;
+        public bool[] RealTimeInputs;
 
         protected bool[] PrevInputs;
         protected int[] InputFramesHeld;
@@ -24,6 +25,7 @@ namespace PLAYER
         protected virtual void Awake()
         {
             Inputs = new bool[Enum.GetNames(typeof(Types.Input)).Length];
+            RealTimeInputs = new bool[Inputs.Length];
             PrevInputs = new bool[Inputs.Length];
             InputFramesHeld = new int[Inputs.Length];
             PlayerData = GetComponent<PlayerData>();
@@ -34,21 +36,21 @@ namespace PLAYER
             if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && !P2PHandler.Instance.LatencyCalculated)
                 return;
             
-            Inputs.CopyTo(PrevInputs, 0);
+            RealTimeInputs.CopyTo(PrevInputs, 0);
             
             InputUpdate();
             
-            for (var i = 0; i < Inputs.Length; i++)
+            for (var i = 0; i < RealTimeInputs.Length; i++)
             {
                 // if input is held from previous frame increase frames held counter
-                if (Inputs[i] == PrevInputs[i])
+                if (RealTimeInputs[i] == PrevInputs[i])
                 {
                     InputFramesHeld[i]++;
                 }
-                else if (Inputs[i] != PrevInputs[i])
+                else if (RealTimeInputs[i] != PrevInputs[i])
                 {
                     // if input change is a release
-                    if (!Inputs[i])
+                    if (!RealTimeInputs[i])
                     {
                         ReleaseEvent(i);
                         InputFramesHeld[i] = 0;

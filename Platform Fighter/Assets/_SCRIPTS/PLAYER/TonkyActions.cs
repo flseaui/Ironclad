@@ -25,7 +25,7 @@ namespace PLAYER
             
             if (Data.RelativeLocation == PlayerDataPacket.PlayerLocation.Grounded)
             {   
-                if (Input.Inputs[(int) Types.Input.ShortHop])
+                if (Input.Inputs[(int) Types.Input.Jump])
                 {                  
                     Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
                     return Types.ActionType.Jump;

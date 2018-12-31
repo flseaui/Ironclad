@@ -62,7 +62,7 @@ namespace PLAYER
 
                     var numPerdictedInputSets = _predictedInputSets.Count;
 
-                    var currentPacketIndex = curPacketsReceived + numPerdictedInputSets;
+                    var currentPacketIndex = curPacketsReceived - _p2pHandler.Delay + numPerdictedInputSets;
 
                     Debug.Log($"received: {receivedPacketNum}, total: {curPacketsReceived}, total+predicted: {currentPacketIndex}");
                     if (receivedPacketNum == currentPacketIndex)
