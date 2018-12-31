@@ -54,23 +54,20 @@ namespace PLAYER
             
             Debug.Log("HandleInputs: " + numReceivedInputSets);
             
-            if (numReceivedInputSets > 0 && numQueuedInputSets != 0)
+            if (numReceivedInputSets > 0 || numQueuedInputSets != 0)
             {
                 if (numReceivedInputSets == 0)
                 {
                     
                     for (var i = 0; i < numQueuedInputSets; i++)
                     {
-                        var queuedInputSet = _queuedInputSets[0];
-                        var curPacketsReceived = _p2pHandler.InputPacketsReceived < 300 && queuedInputSet.PacketNumber > 300
-                            ? _p2pHandler.InputPacketsReceived + 600
-                            : _p2pHandler.InputPacketsReceived;
+                        var queuedInputSet = _queuedInputSets[i];
 
-                        if (queuedInputSet.PacketNumber - _p2pHandler.Delay == curPacketsReceived)
+                        if (queuedInputSet.PacketNumber - _p2pHandler.Delay == _p2pHandler.InputPacketsReceived)
                         {
-                            _receivedInputSets.Add(_queuedInputSets[0]);
+                            _receivedInputSets.Insert(0, _queuedInputSets[i]);
                             numReceivedInputSets++;
-                            _queuedInputSets.RemoveAt(0);
+                            _queuedInputSets.RemoveAt(i);
                             break;
                         }
                     }
@@ -81,7 +78,7 @@ namespace PLAYER
                     var receivedPacketNum = _receivedInputSets[0].PacketNumber % 600;
 
                     var curPacketsReceived =
-                        _p2pHandler.InputPacketsReceived < 300 && _receivedInputSets[0].PacketNumber > 300
+                        _p2pHandler.InputPacketsReceived - _p2pHandler.Delay < 300 && _receivedInputSets[0].PacketNumber > 300
                             ? _p2pHandler.InputPacketsReceived + 600
                             : _p2pHandler.InputPacketsReceived;
 
