@@ -77,10 +77,7 @@ namespace PLAYER
                 {
                     var receivedPacketNum = _receivedInputSets[0].PacketNumber % 600;
 
-                    var curPacketsReceived =
-                        _p2pHandler.InputPacketsReceived - _p2pHandler.Delay < 300 && _receivedInputSets[0].PacketNumber > 300
-                            ? _p2pHandler.InputPacketsReceived + 600
-                            : _p2pHandler.InputPacketsReceived;
+                    var curPacketsReceived = _p2pHandler.InputPacketsReceived;
 
                     var numPerdictedInputSets = _predictedInputSets.Count;
 
@@ -103,7 +100,7 @@ namespace PLAYER
                             _queuedInputSets.Add(_receivedInputSets[0]);
                             _receivedInputSets.RemoveAt(0);
                         }
-                        else if (receivedPacketNum < currentPacketIndex)
+                        else
                         {
                             var i = 0;
                             for (; i < numPerdictedInputSets; i++)
@@ -143,11 +140,6 @@ namespace PLAYER
 
                                     break;
                                 }
-                            }
-
-                            if (i == _predictedInputSets.Count)
-                            {
-                                //Debug.Log("THIS SHOULDNT HAPPEN");
                             }
                         }
                     }
