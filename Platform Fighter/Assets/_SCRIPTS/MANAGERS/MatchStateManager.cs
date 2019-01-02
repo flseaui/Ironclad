@@ -80,7 +80,7 @@ namespace MANAGERS
                                 spawnPoints[i].position,
                                 spawnPoints[i].rotation
                             );
-                            player.GetComponent<UserInput>().Id = 0;
+                            player.GetComponent<NetworkUserInput>().Id = 0;
                             ClientPlayerId = i;
                         }
                         else

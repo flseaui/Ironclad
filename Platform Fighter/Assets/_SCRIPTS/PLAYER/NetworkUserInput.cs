@@ -15,6 +15,7 @@ namespace PLAYER
 
         private List<P2PInputSet.InputChange> _changedInputs;
 
+        [SerializeField]
         private List<P2PInputSet> _delayedInputSets;
         
         private P2PInputSet _lastInputSet;
@@ -33,12 +34,12 @@ namespace PLAYER
 
         protected override void PressEvent(int index)
         {
-            _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index]));
+            _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, RealTimeInputs[index]));
         }
 
         protected override void ReleaseEvent(int index)
         {
-            _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index], InputFramesHeld[index]));
+            _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, RealTimeInputs[index], InputFramesHeld[index]));
         }
         
         protected override void InputUpdate()
@@ -48,15 +49,12 @@ namespace PLAYER
 
         private void ApplyDelayedInputSets()
         {
-            for (var index = 0; index < Inputs.Length; index++)
+            foreach (var input in _delayedInputSets.First().Inputs)
             {
-                Inputs[index] = false;
-            }
-
-            foreach (var input in _delayedInputSets.Last().Inputs)
-            {
+                Debug.Log("wasssss poppppppin");
                 Inputs[(int) input.InputType] = input.State;
             }
+            _delayedInputSets.RemoveAt(0);
             
             if(Inputs[(int) Types.Input.Jump])
             {
@@ -76,7 +74,7 @@ namespace PLAYER
         }
         
         private void UpdatePlayerInput()
-        {                       
+        {
             for (var index = 0; index < RealTimeInputs.Length; index++)
             {
                RealTimeInputs[index] = false;
@@ -150,7 +148,8 @@ namespace PLAYER
                     _lastInputSet = new P2PInputSet(inputArray, P2PHandler.Instance.InputPacketsSent);
                     _delayedInputSets.Add(_lastInputSet);
                     ArchivedInputSets.Add(_lastInputSet);
-                    ApplyDelayedInputSets();
+                    if (_delayedInputSets.Count == P2PHandler.Instance.Delay)
+                        ApplyDelayedInputSets();
                 }
             }
 
