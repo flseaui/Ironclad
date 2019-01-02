@@ -46,8 +46,6 @@ namespace PLAYER
 
         public void HandleInputs()
         {
-            
-            
             var numReceivedInputSets = _receivedInputSets.Count;
             
             var numQueuedInputSets = _queuedInputSets.Count;

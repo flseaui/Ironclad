@@ -16,7 +16,8 @@ namespace MANAGERS
         private List<GameObject> _activePlayers;
 
         // Prefabs
-        [SerializeField] private GameObject _playerPrefab;
+        [SerializeField] private GameObject _offlinePlayerPrefab;
+        [SerializeField] private GameObject _onlinePlayerPrefab;
         [SerializeField] private GameObject _networkPlayerPrefab;
         [SerializeField] private GameObject _p2pHandlerPrefab;
         [SerializeField] private GameObject _rollbackHandlerPrefab;
@@ -63,11 +64,11 @@ namespace MANAGERS
                     case Types.MatchType.OfflineSingleplayer:
                         player = Instantiate
                         (
-                            _playerPrefab,
+                            _offlinePlayerPrefab,
                             spawnPoints[i].position,
                             spawnPoints[i].rotation
                         );
-                        player.GetComponent<PlayerInput>().Id = i;
+                        player.GetComponent<UserInput>().Id = i;
                         break;
                     case Types.MatchType.OnlineMultiplayer:
                         // if is this clients controlled player
@@ -75,11 +76,11 @@ namespace MANAGERS
                         {
                             player = Instantiate
                             (
-                                _playerPrefab,
+                                _onlinePlayerPrefab,
                                 spawnPoints[i].position,
                                 spawnPoints[i].rotation
                             );
-                            player.GetComponent<PlayerInput>().Id = 0;
+                            player.GetComponent<UserInput>().Id = 0;
                             ClientPlayerId = i;
                         }
                         else

@@ -1030,8 +1030,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistent: 0
-  ReadyToFight: 0
-  _playerPrefab: {fileID: 1110542900291582, guid: ef974447b27e81c46a37f3f94c813048,
+  _offlinePlayerPrefab: {fileID: 1110542900291582, guid: 3ba389822d1584882b2b85171b886f69,
+    type: 3}
+  _onlinePlayerPrefab: {fileID: 1110542900291582, guid: ef974447b27e81c46a37f3f94c813048,
     type: 3}
   _networkPlayerPrefab: {fileID: 1110542900291582, guid: 595c937a4acff594584dd97a2c5e93a3,
     type: 3}

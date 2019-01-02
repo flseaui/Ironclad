@@ -18,9 +18,11 @@ namespace PLAYER
         private void Awake()
         {
             _playerController = GetComponent<PlayerController>();
-            
-            if (GetComponent<PlayerInput>() != null)
-                Input = GetComponent<PlayerInput>();
+
+            if (GetComponent<UserInput>() != null)
+                Input = GetComponent<UserInput>();
+            else if (GetComponent<NetworkUserInput>() != null)
+                Input = GetComponent<NetworkUserInput>();
             else
                 Input = GetComponent<NetworkInput>();
             

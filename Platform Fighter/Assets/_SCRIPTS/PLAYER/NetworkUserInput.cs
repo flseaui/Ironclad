@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using MANAGERS;
 using MISC;
@@ -9,7 +9,7 @@ using Types = DATA.Types;
 
 namespace PLAYER
 {
-    public class PlayerInput : InputSender
+    public class NetworkUserInput : InputSender
     {
         public int Id { get; set; }
 
@@ -76,7 +76,12 @@ namespace PLAYER
         }
         
         private void UpdatePlayerInput()
-        {                            
+        {                       
+            for (var index = 0; index < RealTimeInputs.Length; index++)
+            {
+               RealTimeInputs[index] = false;
+            }
+            
             if (_player.controllers.hasKeyboard)
             {
                 if (_player.GetAxis("Run") < -GameSettings.Instance.runThreshold)
@@ -136,15 +141,17 @@ namespace PLAYER
 
         private void FixedUpdate()
         {
-            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer &&
-                P2PHandler.Instance.LatencyCalculated)
+            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer)
             {
-                var inputArray = _changedInputs.ToArray();
-                Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, true);
-                _lastInputSet = new P2PInputSet(inputArray, P2PHandler.Instance.InputPacketsSent);
-                _delayedInputSets.Add(_lastInputSet);
-                ArchivedInputSets.Add(_lastInputSet);
-                ApplyDelayedInputSets();
+                if (P2PHandler.Instance.LatencyCalculated)
+                {
+                    var inputArray = _changedInputs.ToArray();
+                    Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, true);
+                    _lastInputSet = new P2PInputSet(inputArray, P2PHandler.Instance.InputPacketsSent);
+                    _delayedInputSets.Add(_lastInputSet);
+                    ArchivedInputSets.Add(_lastInputSet);
+                    ApplyDelayedInputSets();
+                }
             }
 
             _changedInputs.Clear();

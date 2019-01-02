@@ -116,7 +116,7 @@ namespace NETWORKING
             foreach (var player in MatchStateManager.Instance.Players)
             {
                 player.GetComponent<InputSender>().ArchivedInputSets.Clear();
-                player.GetComponent<PlayerInput>()?.ApplyLastInputSet();
+                player.GetComponent<NetworkUserInput>()?.ApplyLastInputSet();
             }
 
             Debug.Log("SAVE GAME STATE");
