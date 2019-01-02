@@ -63,9 +63,9 @@ namespace PLAYER
                     {
                         var queuedInputSet = _queuedInputSets[i];
 
-                        if ((queuedInputSet.PacketNumber - _p2pHandler.Delay) % 600  == _p2pHandler.InputPacketsReceived)
+                        if (Mod(queuedInputSet.PacketNumber - _p2pHandler.Delay, 600) % 600  == _p2pHandler.InputPacketsReceived)
                         {
-                            _receivedInputSets.Insert(0, _queuedInputSets[i]);
+                            _receivedInputSets.Insert(numReceivedInputSets, _queuedInputSets[i]);
                             numReceivedInputSets++;
                             _queuedInputSets.RemoveAt(i);
                             break;
@@ -75,7 +75,7 @@ namespace PLAYER
 
                 for (var index = 0; index < numReceivedInputSets; index++)
                 {
-                    var receivedPacketNum = _receivedInputSets[0].PacketNumber % 600;
+                    var receivedPacketNum = Mod(_receivedInputSets[0].PacketNumber, 600);
 
                     var curPacketsReceived = _p2pHandler.InputPacketsReceived;
 
@@ -84,7 +84,7 @@ namespace PLAYER
                     var currentPacketIndex = curPacketsReceived + numPerdictedInputSets;
 
                     Debug.Log($"received: {receivedPacketNum}, total: {curPacketsReceived}, total+predicted: {currentPacketIndex}");
-                    if ((receivedPacketNum - _p2pHandler.Delay) % 600 == currentPacketIndex)
+                    if (Mod(receivedPacketNum - _p2pHandler.Delay, 600)== currentPacketIndex)
                     {
                         ParseInputs(_receivedInputSets[0]);
                         RollbackManager.Instance.SaveGameState();
@@ -95,7 +95,10 @@ namespace PLAYER
                     }
                     else
                     {
-                        if (receivedPacketNum >= currentPacketIndex)
+                        if (receivedPacketNum < 200 && currentPacketIndex > 400)
+                            receivedPacketNum += 600;
+                        
+                        if (receivedPacketNum >= currentPacketIndex )
                         {
                             _queuedInputSets.Add(_receivedInputSets[0]);
                             _receivedInputSets.RemoveAt(0);
@@ -159,6 +162,14 @@ namespace PLAYER
                 _queuePrediction = false;
             }
         }
+
+        private int Mod(int value, int modVal)
+        {
+            if (value >= 0)
+                return value % modVal;
+            return modVal + (value % modVal);
+        }
+        
 
         private void FixedUpdate()
         {
