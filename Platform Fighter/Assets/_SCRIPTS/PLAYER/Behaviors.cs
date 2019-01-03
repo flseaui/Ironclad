@@ -16,7 +16,7 @@ namespace PLAYER
             PlayerController = GetComponent<PlayerController>();
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             Step();
         }

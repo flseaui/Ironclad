@@ -1,3 +1,4 @@
+using NETWORKING;
 using Rewired;
 using UnityEngine;
 using Types = DATA.Types;
@@ -11,11 +12,12 @@ namespace PLAYER
 
         private void Start()
         {
-            Data.RelativeLocation = PlayerDataPacket.PlayerLocation.Airborne;
+            Data.RelativeLocation = PlayerDataPacket.PlayerLocation.Grounded;
         }
 
         protected override Types.ActionType GetCurrentAction()
         {
+            Debug.Log("GetCurrentAction() " + P2PHandler.Instance.InputPacketsSent);
             bool inputRight =
                 Input.Inputs[(int) Types.Input.LightRight] || Input.Inputs[(int) Types.Input.StrongRight] ? true : 
                     (Input.Inputs[(int) Types.Input.LightLeft] || Input.Inputs[(int) Types.Input.StrongLeft] ? false : 
@@ -26,7 +28,7 @@ namespace PLAYER
             if (Data.RelativeLocation == PlayerDataPacket.PlayerLocation.Grounded)
             {   
                 if (Input.Inputs[(int) Types.Input.Jump])
-                {                  
+                {
                     Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
                     return Types.ActionType.Jump;
                 }

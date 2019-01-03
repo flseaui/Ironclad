@@ -55,7 +55,7 @@ namespace PLAYER
                     {
                         var queuedInputSet = _queuedInputSets[i];
 
-                        if (Mod(queuedInputSet.PacketNumber - _p2pHandler.Delay, 600) == _p2pHandler.InputPacketsReceived)
+                        if (Mod(queuedInputSet.PacketNumber + _p2pHandler.Delay, 600) == _p2pHandler.InputPacketsReceived)
                         {
                             _receivedInputSets.Insert(numReceivedInputSets, _queuedInputSets[i]);
                             numReceivedInputSets++;
@@ -71,12 +71,12 @@ namespace PLAYER
 
                     var curPacketsReceived = _p2pHandler.InputPacketsReceived;
 
-                    var numPerdictedInputSets = _predictedInputSets.Count;
+                    var numPredictedInputSets = _predictedInputSets.Count;
 
-                    var currentPacketIndex = curPacketsReceived + numPerdictedInputSets;
+                    var currentPacketIndex = curPacketsReceived + numPredictedInputSets;
 
                     //Debug.Log($"received: {receivedPacketNum}, total: {curPacketsReceived}, total+predicted: {currentPacketIndex}");
-                    if (Mod(receivedPacketNum - _p2pHandler.Delay, 600)== currentPacketIndex)
+                    if (Mod(receivedPacketNum + _p2pHandler.Delay, 600) == currentPacketIndex)
                     {
                         ParseInputs(_receivedInputSets[0]);
                         RollbackManager.Instance.SaveGameState();
@@ -98,7 +98,7 @@ namespace PLAYER
                         else
                         {
                             var i = 0;
-                            for (; i < numPerdictedInputSets; i++)
+                            for (; i < numPredictedInputSets; i++)
                             {
                                 Debug.Log(
                                     $"predicted {_predictedInputSets[i].PacketNumber}, received: {receivedPacketNum}");
@@ -174,7 +174,7 @@ namespace PLAYER
         {
             if (inputSet.Inputs.Length > 0)
             {
-                var temp = $"PARSED [{inputSet.PacketNumber}] {Environment.NewLine}";
+                var temp = $"PARSED [{inputSet.PacketNumber}] on {P2PHandler.Instance.InputPacketsSent} {Environment.NewLine}";
                 foreach (var input in inputSet.Inputs)
                 {
                     var state = input.State ? "Pressed" : "Released";

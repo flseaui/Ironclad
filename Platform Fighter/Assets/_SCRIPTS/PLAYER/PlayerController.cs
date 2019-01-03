@@ -63,7 +63,7 @@ namespace PLAYER
             PoolBoxes();
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             Step();
         }
@@ -79,6 +79,7 @@ namespace PLAYER
             if (CurrentActionFrame == 0 || GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ResetAction) == Types.FlagState.Pending)
             {
                 _currentAction = AssetManager.Instance.GetAction(Types.Character.TestCharacter, _data.CurrentAction);
+                Debug.Log($"Player: {GetComponent<NetworkIdentity>().Id} started: {_currentAction.Name} on {P2PHandler.Instance.InputPacketsSent}");
                 _animator.SetInteger("CurrentAction", (int) _currentAction.Type);
                 OnActionBegin?.Invoke();
 

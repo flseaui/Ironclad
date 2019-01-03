@@ -144,11 +144,11 @@ namespace PLAYER
                 if (P2PHandler.Instance.LatencyCalculated)
                 {
                     var inputArray = _changedInputs.ToArray();
-                    Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, true);
                     _lastInputSet = new P2PInputSet(inputArray, P2PHandler.Instance.InputPacketsSent);
+                    Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, true);
                     if (_lastInputSet.Inputs.Length > 0)
                     {
-                        var temp = $"LOCALINPUT [{_lastInputSet.PacketNumber}] {Environment.NewLine}";
+                        var temp = $"LOCALINPUT [{_lastInputSet.PacketNumber}] on {P2PHandler.Instance.InputPacketsSent} {Environment.NewLine}";
                         foreach (var input in _lastInputSet.Inputs)
                         {
                             var state = input.State ? "Pressed" : "Released";
