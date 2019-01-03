@@ -6,6 +6,7 @@ using MANAGERS;
 using MISC;
 using PLAYER;
 using UnityEngine;
+using static MISC.MathUtils;
 
 namespace NETWORKING
 {
@@ -88,7 +89,7 @@ namespace NETWORKING
                 Debug.Log("ROLLBACK PART 2");
             }
 
-            var snapshotAge = (P2PHandler.Instance.InputPacketsSent - _age) % 600 + 1;
+            var snapshotAge = Mod(P2PHandler.Instance.InputPacketsSent - _age, 600) + 1;
             Debug.Log("SnapshotAge: " + snapshotAge);
             for (var i = 0; i < snapshotAge; ++i)
             {
@@ -118,8 +119,6 @@ namespace NETWORKING
                 player.GetComponent<InputSender>().ArchivedInputSets.Clear();
                 player.GetComponent<NetworkUserInput>()?.ApplyLastInputSet();
             }
-
-            Debug.Log("SAVE GAME STATE");
         }
 
         public void TakeSnapshot<T>(int player, int depth, Type baseType, T structure)

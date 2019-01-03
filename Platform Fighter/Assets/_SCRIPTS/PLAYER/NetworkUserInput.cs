@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MANAGERS;
@@ -51,7 +52,6 @@ namespace PLAYER
         {
             foreach (var input in _delayedInputSets.First().Inputs)
             {
-                Debug.Log("wasssss poppppppin");
                 Inputs[(int) input.InputType] = input.State;
             }
             _delayedInputSets.RemoveAt(0);
@@ -146,6 +146,16 @@ namespace PLAYER
                     var inputArray = _changedInputs.ToArray();
                     Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, true);
                     _lastInputSet = new P2PInputSet(inputArray, P2PHandler.Instance.InputPacketsSent);
+                    if (_lastInputSet.Inputs.Length > 0)
+                    {
+                        var temp = $"LOCALINPUT [{_lastInputSet.PacketNumber}] {Environment.NewLine}";
+                        foreach (var input in _lastInputSet.Inputs)
+                        {
+                            var state = input.State ? "Pressed" : "Released";
+                            temp += $"[{input.InputType}]->{state}{Environment.NewLine}";
+                        }
+                        Debug.Log(temp);
+                    }
                     _delayedInputSets.Add(_lastInputSet);
                     ArchivedInputSets.Add(_lastInputSet);
                     if (_delayedInputSets.Count == P2PHandler.Instance.Delay)

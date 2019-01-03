@@ -6,7 +6,7 @@ using MANAGERS;
 using MISC;
 using PLAYER;
 using UnityEngine;
-using UnityEngine.Serialization;
+using static MISC.MathUtils;
 
 namespace NETWORKING
 {
@@ -49,7 +49,7 @@ namespace NETWORKING
 
         private void FixedUpdate()
         {
-            DataPacket.FramesLapsed = ++DataPacket.FramesLapsed % 600;
+            DataPacket.FramesLapsed = Mod(++DataPacket.FramesLapsed, 600);
             
             if (Threshold > 600)
                 Application.Quit();
@@ -116,7 +116,7 @@ namespace NETWORKING
             
             SendP2PMessage(message);
 
-            InputPacketsSent = ++InputPacketsSent % 600;
+            InputPacketsSent = Mod(++InputPacketsSent, 600);
         }  
         
         public void SendP2PMessage(P2PMessage message)
@@ -182,7 +182,7 @@ namespace NETWORKING
 
         public void OnInputPacketsReceived()
         {
-            InputPacketsReceived = ++InputPacketsReceived % 600;
+            InputPacketsReceived = Mod(++InputPacketsReceived, 600);
         }
 
         public override void SetData(object newData)

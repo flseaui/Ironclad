@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Boo.Lang.Environments;
-using DATA;
 using MANAGERS;
 using NETWORKING;
 using UnityEngine;
-using UnityScript.Steps;
+using static MISC.MathUtils;
 using Types = DATA.Types;
 
 namespace PLAYER
@@ -41,7 +39,6 @@ namespace PLAYER
             _receivedFirstInput = true;
             
             _receivedInputSets.Add(receivedInputs);
-            Debug.Log(receivedInputs.PacketNumber);
         }
 
         public void HandleInputs()
@@ -50,18 +47,15 @@ namespace PLAYER
             
             var numQueuedInputSets = _queuedInputSets.Count;
             
-            Debug.Log("HandleInputs: " + numReceivedInputSets);
-            
             if (numReceivedInputSets > 0 || numQueuedInputSets != 0)
             {
                 if (numReceivedInputSets == 0)
                 {
-                    
                     for (var i = 0; i < numQueuedInputSets; i++)
                     {
                         var queuedInputSet = _queuedInputSets[i];
 
-                        if (Mod(queuedInputSet.PacketNumber - _p2pHandler.Delay, 600) % 600  == _p2pHandler.InputPacketsReceived)
+                        if (Mod(queuedInputSet.PacketNumber - _p2pHandler.Delay, 600) == _p2pHandler.InputPacketsReceived)
                         {
                             _receivedInputSets.Insert(numReceivedInputSets, _queuedInputSets[i]);
                             numReceivedInputSets++;
@@ -81,7 +75,7 @@ namespace PLAYER
 
                     var currentPacketIndex = curPacketsReceived + numPerdictedInputSets;
 
-                    Debug.Log($"received: {receivedPacketNum}, total: {curPacketsReceived}, total+predicted: {currentPacketIndex}");
+                    //Debug.Log($"received: {receivedPacketNum}, total: {curPacketsReceived}, total+predicted: {currentPacketIndex}");
                     if (Mod(receivedPacketNum - _p2pHandler.Delay, 600)== currentPacketIndex)
                     {
                         ParseInputs(_receivedInputSets[0]);
@@ -155,19 +149,10 @@ namespace PLAYER
             {
                 var predictedInputSet = PredictInputs();
                 _predictedInputSets.Add(predictedInputSet);
-                Debug.Log("PredictedInputSets: " + _predictedInputSets.Count);
                 ParseInputs(predictedInputSet);
                 _queuePrediction = false;
             }
         }
-
-        private int Mod(int value, int modVal)
-        {
-            if (value >= 0)
-                return value % modVal;
-            return modVal + (value % modVal);
-        }
-        
 
         private void FixedUpdate()
         {
@@ -182,11 +167,22 @@ namespace PLAYER
 
         private P2PInputSet PredictInputs()
         {
-            return new P2PInputSet(new P2PInputSet.InputChange[]{ }, (P2PHandler.Instance.InputPacketsReceived + _predictedInputSets.Count) % 600);
+            return new P2PInputSet(new P2PInputSet.InputChange[]{ }, Mod(P2PHandler.Instance.InputPacketsReceived + _predictedInputSets.Count, 600));
         }
     
         public void ParseInputs(P2PInputSet inputSet)
         {
+            if (inputSet.Inputs.Length > 0)
+            {
+                var temp = $"PARSED [{inputSet.PacketNumber}] {Environment.NewLine}";
+                foreach (var input in inputSet.Inputs)
+                {
+                    var state = input.State ? "Pressed" : "Released";
+                    temp += $"[{input.InputType}]->{state}{Environment.NewLine}";
+                }
+                Debug.Log(temp);
+            }
+
             foreach (var inputChange in inputSet.Inputs)
             {
                 Inputs[(int) inputChange.InputType] = inputChange.State;
