@@ -44,11 +44,11 @@ namespace PLAYER
             float terminalVelocity;
 
             deceleration = .01f;
-            gravity = -0;
+            gravity = -0.0f;
             if (Data.RelativeLocation == PlayerDataPacket.PlayerLocation.Airborne)
-                terminalVelocity = 0;
+                terminalVelocity = 0.00f;
             else
-                terminalVelocity = 0;
+                terminalVelocity = 0.00f;
             if (Data.KnockbackVelocity != Vector2.zero)
             {
                 //Apply DI
