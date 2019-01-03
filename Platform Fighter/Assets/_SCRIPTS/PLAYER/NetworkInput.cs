@@ -47,21 +47,18 @@ namespace PLAYER
             
             var numQueuedInputSets = _queuedInputSets.Count;
             
-            if (numReceivedInputSets > 0 || numQueuedInputSets != 0)
+            if (numReceivedInputSets > 0 || numQueuedInputSets > 0)
             {
-                if (numReceivedInputSets == 0)
+                for (var i = 0; i < numQueuedInputSets; i++)
                 {
-                    for (var i = 0; i < numQueuedInputSets; i++)
-                    {
-                        var queuedInputSet = _queuedInputSets[i];
+                    var queuedInputSet = _queuedInputSets[i];
 
-                        if (Mod(queuedInputSet.PacketNumber + _p2pHandler.Delay, 600) == _p2pHandler.InputPacketsReceived)
-                        {
-                            _receivedInputSets.Insert(numReceivedInputSets, _queuedInputSets[i]);
-                            numReceivedInputSets++;
-                            _queuedInputSets.RemoveAt(i);
-                            break;
-                        }
+                    if (Mod(queuedInputSet.PacketNumber + _p2pHandler.Delay, 600) == _p2pHandler.InputPacketsReceived)
+                    {
+                        _receivedInputSets.Add(_queuedInputSets[i]);
+                        numReceivedInputSets++;
+                        _queuedInputSets.RemoveAt(i);
+                        break;
                     }
                 }
 
