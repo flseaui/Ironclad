@@ -20,6 +20,7 @@ namespace PLAYER
         private int _framesOfPrediction;
         
         private List<P2PInputSet> _receivedInputSets;
+        [SerializeField]
         private List<P2PInputSet> _queuedInputSets;
         private List<P2PInputSet> _predictedInputSets;
 
@@ -38,6 +39,9 @@ namespace PLAYER
         {
             _receivedFirstInput = true;
             
+            if (receivedInputs.Inputs.Length > 0)
+                Debug.Log($"Received: {receivedInputs.PacketNumber} on {P2PHandler.Instance.InputPacketsSent}");
+            
             _receivedInputSets.Add(receivedInputs);
         }
 
@@ -53,7 +57,7 @@ namespace PLAYER
                 {
                     var queuedInputSet = _queuedInputSets[i];
 
-                    if (Mod(queuedInputSet.PacketNumber + _p2pHandler.Delay, 600) == _p2pHandler.InputPacketsReceived)
+                    if (Mod(queuedInputSet.PacketNumber - _p2pHandler.Delay, 600) == _p2pHandler.InputPacketsReceived)
                     {
                         _receivedInputSets.Add(_queuedInputSets[i]);
                         numReceivedInputSets++;
@@ -73,7 +77,7 @@ namespace PLAYER
                     var currentPacketIndex = curPacketsReceived + numPredictedInputSets;
 
                     //Debug.Log($"received: {receivedPacketNum}, total: {curPacketsReceived}, total+predicted: {currentPacketIndex}");
-                    if (Mod(receivedPacketNum + _p2pHandler.Delay, 600) == currentPacketIndex)
+                    if (Mod(receivedPacketNum - _p2pHandler.Delay, 600) == currentPacketIndex)
                     {
                         ParseInputs(_receivedInputSets[0]);
                         RollbackManager.Instance.SaveGameState();
