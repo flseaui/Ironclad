@@ -38,6 +38,9 @@ namespace PLAYER
         
         public void Step()
         {
+            if(Data.CurrentAction != GetCurrentAction())
+                GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ResetAction, Types.FlagState.Pending);
+                
             Data.CurrentAction = GetCurrentAction();
         }
     }
