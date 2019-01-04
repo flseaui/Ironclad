@@ -91,7 +91,7 @@ namespace PLAYER
                         if (receivedPacketNum < 200 && currentPacketIndex > 400)
                             receivedPacketNum += 600;
                         
-                        if (receivedPacketNum >= currentPacketIndex )
+                        if (receivedPacketNum >= currentPacketIndex)
                         {
                             _queuedInputSets.Add(_receivedInputSets[0]);
                             _receivedInputSets.RemoveAt(0);

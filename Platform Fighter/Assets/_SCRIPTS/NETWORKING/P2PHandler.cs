@@ -25,7 +25,7 @@ namespace NETWORKING
         
         public int Threshold = 0;
         
-        public int Delay = 2;
+        public int Delay = 100;
         
         private int _playersJoined = 1;
 
