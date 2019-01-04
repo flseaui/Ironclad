@@ -26,6 +26,8 @@ namespace PLAYER
             base.Awake();
             _changedInputs = new List<P2PInputSet.InputChange>();
             _player = ReInput.players.GetPlayer(Id);
+            _player.controllers.maps.SetMapsEnabled(false, "Default");
+            _player.controllers.maps.SetMapsEnabled(true, "Menu");
         }
 
         protected override void PressEvent(int index)
@@ -44,7 +46,7 @@ namespace PLAYER
         }
         
         private void UpdatePlayerInput()
-        {                       
+        {
             for (var index = 0; index < Inputs.Length; index++)
             {
                 Inputs[index] = false;

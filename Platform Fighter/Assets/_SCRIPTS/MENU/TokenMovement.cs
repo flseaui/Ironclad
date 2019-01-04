@@ -40,8 +40,6 @@ namespace MENU
             if (Back)
             {
                 Dropped = false;
-
-                MainMenuManager.Instance.SetCharacter(Id, Types.Character.None);
             }
         }
 
@@ -53,12 +51,13 @@ namespace MENU
 
             if (Dropped) return;
 
+            var anchoredPosition = _transform.anchoredPosition;
             _transform.anchoredPosition = Vector2.Lerp
             (
-                _transform.anchoredPosition,
+                anchoredPosition,
                 new Vector2
                 (
-                    _transform.anchoredPosition.x + _player.GetAxis("Horizontal") * _speed * Time.deltaTime,
+                    anchoredPosition.x + _player.GetAxis("Horizontal") * _speed * Time.deltaTime,
                     _transform.anchoredPosition.y + _player.GetAxis("Vertical") * _speed * Time.deltaTime
                 ),
                 _speed * Time.deltaTime

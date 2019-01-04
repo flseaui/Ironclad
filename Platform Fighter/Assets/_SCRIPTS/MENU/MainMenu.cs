@@ -13,7 +13,7 @@ namespace MENU
             throw new NotImplementedException();
         }
 
-        public void SwitchToSingleplayerMenu() => MenuManager.Instance.MenuState = Types.Menu.SingleplayerMenu;
+        public void SwitchToSingleplayerMenu() => MenuManager.Instance.MenuState = Types.Menu.CharacterSelectMenu;
 
         public void SwitchToMultiplayerMenu() => MenuManager.Instance.MenuState = Types.Menu.MultiplayerMenu;
     }

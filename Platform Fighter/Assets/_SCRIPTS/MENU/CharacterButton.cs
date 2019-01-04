@@ -30,7 +30,6 @@ namespace MENU
                     if (movement.Select && !movement.Dropped)
                     {
                         movement.Dropped = true;
-                        MainMenuManager.Instance.SetCharacter(movement.Id, _character);
                     }
 
                     if (movement.Dropped)

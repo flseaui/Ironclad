@@ -83,7 +83,7 @@ namespace PLAYER
                     CurrentActionFrame = 0;
                 
                 _currentAction = AssetManager.Instance.GetAction(Types.Character.TestCharacter, _data.CurrentAction);
-                Debug.Log($"Player: {GetComponent<NetworkIdentity>().Id} started: {_currentAction.Name} on {P2PHandler.Instance.InputPacketsSent}");
+                //Debug.Log($"Player: {GetComponent<NetworkIdentity>().Id} started: {_currentAction.Name} on {P2PHandler.Instance.InputPacketsSent}");
                 _animator.SetInteger("CurrentAction", (int) _currentAction.Type);
                 OnActionBegin?.Invoke();
 

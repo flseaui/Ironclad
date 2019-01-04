@@ -24,8 +24,8 @@ namespace NETWORKING
         public int InputPacketsReceived;
         
         public int Threshold = 0;
-        
-        public int Delay = 100;
+
+        public int Delay = 2;
         
         private int _playersJoined = 1;
 

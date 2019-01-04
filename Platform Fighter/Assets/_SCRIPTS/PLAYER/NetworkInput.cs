@@ -93,13 +93,13 @@ namespace PLAYER
                         
                         if (receivedPacketNum >= currentPacketIndex)
                         {
+                            Debug.Log($"received: {receivedPacketNum} index: {currentPacketIndex}");
                             _queuedInputSets.Add(_receivedInputSets[0]);
                             _receivedInputSets.RemoveAt(0);
                         }
                         else
                         {
-                            var i = 0;
-                            for (; i < numPredictedInputSets; i++)
+                            for (var i = 0; i < numPredictedInputSets; i++)
                             {
                                 Debug.Log(
                                     $"predicted {_predictedInputSets[i].PacketNumber}, received: {receivedPacketNum}");
@@ -121,7 +121,7 @@ namespace PLAYER
                                     if (_receivedInputSets[0].Inputs.SequenceEqual(_predictedInputSets[i].Inputs))
                                     {
                                         P2PHandler.Instance.OnInputPacketsReceived();
-                                        _predictedInputSets.RemoveAt(i);
+                                        _predictedInputSets.RemoveAt(0);
                                         ArchivedInputSets.Add(_receivedInputSets[0]);
                                         _receivedInputSets.RemoveAt(0);
                                     }

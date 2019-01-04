@@ -17,7 +17,7 @@ namespace PLAYER
 
         protected override Types.ActionType GetCurrentAction()
         {
-            Debug.Log($"Right is {Input.Inputs[(int) Types.Input.LightRight]} on {P2PHandler.Instance.InputPacketsSent}");
+            //Debug.Log($"Right is {Input.Inputs[(int) Types.Input.LightRight]} on {P2PHandler.Instance.InputPacketsSent}");
             bool inputRight =
                 Input.Inputs[(int) Types.Input.LightRight] || Input.Inputs[(int) Types.Input.StrongRight] ? true : 
                     (Input.Inputs[(int) Types.Input.LightLeft] || Input.Inputs[(int) Types.Input.StrongLeft] ? false : 
@@ -79,7 +79,6 @@ namespace PLAYER
                 {
                     if (Data.Direction == (inputRight ? Types.Direction.Right : Types.Direction.Left))
                     {
-                        GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ResetAction, Types.FlagState.Pending);
                         return Types.ActionType.Walk;
                     }
 
@@ -96,7 +95,6 @@ namespace PLAYER
                     return Types.ActionType.Turn;
                 } 
                 
-                GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ResetAction, Types.FlagState.Pending);
                 return Types.ActionType.Idle;
             }
             // if in the air

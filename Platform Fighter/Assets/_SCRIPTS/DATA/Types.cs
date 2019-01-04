@@ -69,7 +69,8 @@
             LobbySelectMenu,
             LobbyCharacterMenu,
             PrivateMatchMenu,
-            GameStartMenu
+            GameStartMenu,
+            CharacterSelectMenu
         }
 
         public enum Stage
