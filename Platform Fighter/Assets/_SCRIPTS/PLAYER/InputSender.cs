@@ -74,8 +74,9 @@ namespace PLAYER
             } 
             
             if (GetComponent<NetworkIdentity>().Id !=  MatchStateManager.Instance.ClientPlayerId)
-                if (ArchivedInputSets[index].PacketNumber > P2PHandler.Instance.InputPacketsReceived)
-                    P2PHandler.Instance.OnInputPacketsReceived();
+                if (ArchivedInputSets[index].PacketNumber > P2PHandler.Instance.InputPacketsProcessed)
+                    P2PHandler.Instance.OnInputPacketsProcessed();
+            
         }
         
         // called after PrevInputs reset, before InputFramesHeld increased

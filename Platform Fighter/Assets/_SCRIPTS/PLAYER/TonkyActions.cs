@@ -78,9 +78,7 @@ namespace PLAYER
                 if (Input.Inputs[(int) Types.Input.LightRight] || Input.Inputs[(int) Types.Input.LightLeft])
                 {
                     if (Data.Direction == (inputRight ? Types.Direction.Right : Types.Direction.Left))
-                    {
                         return Types.ActionType.Walk;
-                    }
 
                     Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
 

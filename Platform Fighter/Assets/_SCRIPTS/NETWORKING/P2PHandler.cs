@@ -21,6 +21,7 @@ namespace NETWORKING
         public P2PHandlerPacket DataPacket;
         
         public int InputPacketsSent;
+        public int InputPacketsProcessed;
         public int InputPacketsReceived;
         
         public int Threshold = 0;
@@ -155,6 +156,8 @@ namespace NETWORKING
                         var inputSet = JsonUtility.FromJson<P2PInputSet>(msg.Body);
 
                         //--Threshold;
+
+                        InputPacketsReceived = ++InputPacketsReceived % 600;
                         
                         player.GetComponent<NetworkInput>().GiveInputs(inputSet);
                     //}
@@ -180,9 +183,9 @@ namespace NETWORKING
             }
         }
 
-        public void OnInputPacketsReceived()
+        public void OnInputPacketsProcessed()
         {
-            InputPacketsReceived = ++InputPacketsReceived % 600;
+            InputPacketsProcessed = ++InputPacketsProcessed % 600;
         }
 
         public override void SetData(object newData)
