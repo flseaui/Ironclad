@@ -38,10 +38,11 @@ namespace PLAYER
         
         public void Step()
         {
-            if(Data.CurrentAction != GetCurrentAction())
+            var newAction = GetCurrentAction();
+            if (Data.CurrentAction != newAction)
                 GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ResetAction, Types.FlagState.Pending);
-                
-            Data.CurrentAction = GetCurrentAction();
+
+            Data.CurrentAction = newAction;
         }
     }
 }

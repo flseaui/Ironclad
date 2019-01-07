@@ -31,6 +31,8 @@ namespace PLAYER
             _changedInputs = new List<P2PInputSet.InputChange>();
             _delayedInputSets = new List<P2PInputSet>();
             _player = ReInput.players.GetPlayer(Id);
+            _player.controllers.maps.SetMapsEnabled(true, "Default");
+            _player.controllers.maps.SetMapsEnabled(false, "Menu");
         }
 
         protected override void PressEvent(int index)

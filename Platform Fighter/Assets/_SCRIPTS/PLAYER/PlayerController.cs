@@ -80,8 +80,11 @@ namespace PLAYER
             {
                 // if we just reset
                 if (GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ResetAction) == Types.FlagState.Pending)
+                {
+                    Debug.Log("CANCELLED");
                     CurrentActionFrame = 0;
-                
+                }
+
                 _currentAction = AssetManager.Instance.GetAction(Types.Character.TestCharacter, _data.CurrentAction);
                 //Debug.Log($"Player: {GetComponent<NetworkIdentity>().Id} started: {_currentAction.Name} on {P2PHandler.Instance.InputPacketsSent}");
                 _animator.SetInteger("CurrentAction", (int) _currentAction.Type);

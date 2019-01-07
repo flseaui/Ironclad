@@ -26,18 +26,8 @@ namespace PLAYER
             base.Awake();
             _changedInputs = new List<P2PInputSet.InputChange>();
             _player = ReInput.players.GetPlayer(Id);
-            _player.controllers.maps.SetMapsEnabled(false, "Default");
-            _player.controllers.maps.SetMapsEnabled(true, "Menu");
-        }
-
-        protected override void PressEvent(int index)
-        {
-            _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index]));
-        }
-
-        protected override void ReleaseEvent(int index)
-        {
-            _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, Inputs[index], InputFramesHeld[index]));
+            _player.controllers.maps.SetMapsEnabled(true, "Default");
+            _player.controllers.maps.SetMapsEnabled(false, "Menu");
         }
         
         protected override void InputUpdate()
@@ -123,8 +113,6 @@ namespace PLAYER
 
             PlayerData.DataPacket.MovementStickAngle.x = _player.GetAxis("Move");
             PlayerData.DataPacket.MovementStickAngle.y = _player.GetAxis("Crouch");
-            
-            _changedInputs.Clear();
         }     
     }
 }

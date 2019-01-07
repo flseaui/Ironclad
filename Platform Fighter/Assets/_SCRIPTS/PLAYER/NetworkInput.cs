@@ -44,8 +44,7 @@ namespace PLAYER
         {
             _receivedFirstInput = true;
             
-            if (receivedInputs.Inputs.Length > 0)
-                Debug.Log($"Received: {receivedInputs.PacketNumber} on {P2PHandler.Instance.InputPacketsSent}");
+            Debug.Log($"Received: {receivedInputs.PacketNumber} on {_frameCounter}");
             
             _receivedInputSets.Add(receivedInputs);
         }
@@ -53,7 +52,10 @@ namespace PLAYER
         public void HandleInputs()
         {
             //_frameCounter += Mod(1 + (previousDelay - _p2pHandler.Delay), 600);
-            _frameCounter += (1 + (previousDelay - _p2pHandler.Delay)) % 600;
+            _frameCounter += (1 + (previousDelay - _p2pHandler.Delay));
+            _frameCounter = _frameCounter % 600;
+         
+            Debug.Log($"-----HANDLE INPUTS [{_frameCounter}]----------------------------------------");
             
             previousDelay = _p2pHandler.Delay;        
             
@@ -71,8 +73,8 @@ namespace PLAYER
                     {
                         _receivedInputSets.Add(_queuedInputSets[i]);
                         numReceivedInputSets++;
+                        Debug.Log($"removed {_queuedInputSets[i].PacketNumber}");
                         _queuedInputSets.RemoveAt(i);
-                        Debug.Log($"removed {i}");
                         break;
                     }
                 }
@@ -86,12 +88,12 @@ namespace PLAYER
                     var curPacketsProcessed = _p2pHandler.InputPacketsProcessed;
 
                     var numPredictedInputSets = _predictedInputSets.Count;
-
-                    var currentPacketIndex = curPacketsProcessed + numPredictedInputSets - _p2pHandler.Delay + (_p2pHandler.InputPacketsReceived - curPacketsProcessed) - 1;
-
-                    //Debug.Log($"received: {receivedPacketNum}, total: {curPacketsReceived}, total+predicted: {currentPacketIndex}");
+                    
+                    Debug.Log($"receivedNum: {receivedPacketNum}, processed: {curPacketsProcessed}, numPredicted: {numPredictedInputSets}");
+                    
                     if (receivedPacketNum == _frameCounter && !ParsedForFrame)
                     {
+                        Debug.Log($"parsed: {receivedPacketNum} counter: {_frameCounter}");
                         ParseInputs(_receivedInputSets[0]);
                         RollbackManager.Instance.SaveGameState();
                         P2PHandler.Instance.OnInputPacketsProcessed();
@@ -102,43 +104,41 @@ namespace PLAYER
                     }
                     else
                     {
-                        if (receivedPacketNum < 200 && _frameCounter > 400)
-                            receivedPacketNum += 600;
-
-                        if (receivedPacketNum >= 600)
-                            receivedPacketNum -= 600;
-                        
-                        if (receivedPacketNum + _p2pHandler.Delay >= _frameCounter)
+                        if (receivedPacketNum > _frameCounter || (receivedPacketNum < 250 && _frameCounter > 450))
                         {
-                            Debug.Log($"received: {receivedPacketNum} counter: {_frameCounter}");
+                            Debug.Log($"queued: {receivedPacketNum} counter: {_frameCounter}");
                             _queuedInputSets.Add(_receivedInputSets[0]);
                             _receivedInputSets.RemoveAt(0);
                         }
                         else
                         {
-                            for (var i = 0; i < numPredictedInputSets; i++)
+                            if (numPredictedInputSets > 0)
                             {
-                                Debug.Log($"predicted {_predictedInputSets[0].PacketNumber}, received: {receivedPacketNum}");
-                            
+                                Debug.Log(
+                                    $"predicted {_predictedInputSets[0].PacketNumber}, counter: {_frameCounter}");
+
                                 var temp = "==RECEIVED==" + Environment.NewLine;
                                 var temp2 = "==PREDICTED==" + Environment.NewLine;
-                            
-                                foreach (var input in _receivedInputSets[i].Inputs)
+
+                                foreach (var input in _receivedInputSets[0].Inputs)
                                 {
                                     var state = input.State ? "Pressed" : "Released";
                                     temp += $"[{input.InputType}]->{state}{Environment.NewLine}";
                                 }
+
                                 foreach (var input in _predictedInputSets[0].Inputs)
                                 {
-                                    var state = input.State ? "Pressed" : "Released";    
+                                    var state = input.State ? "Pressed" : "Released";
                                     temp2 += $"[{input.InputType}]->{state}{Environment.NewLine}";
                                 }
+
                                 Debug.Log(temp + temp2);
-                                if (_receivedInputSets[i].Inputs.SequenceEqual(_predictedInputSets[0].Inputs))
+                                if (_receivedInputSets[0].Inputs.SequenceEqual(_predictedInputSets[0].Inputs))
                                 {
                                     P2PHandler.Instance.OnInputPacketsProcessed();
                                     _predictedInputSets.RemoveAt(0);
-                                    ArchivedInputSets.Add(_receivedInputSets[i]);
+                                    ArchivedInputSets.Add(_receivedInputSets[0]);
+                                    _receivedInputSets.RemoveAt(0);
                                 }
                                 else
                                 {
@@ -148,7 +148,15 @@ namespace PLAYER
                                     _receivedInputSets.Clear();
                                     return;
                                 }
-                            }                              
+                            }
+                            else
+                            {
+                                Debug.Log($"parsed2: {receivedPacketNum} counter: {_frameCounter}");
+                                ParseInputs(_receivedInputSets[0]);
+                                P2PHandler.Instance.OnInputPacketsProcessed();
+                                ArchivedInputSets.Add(_receivedInputSets[0]);
+                                _receivedInputSets.RemoveAt(0);
+                            }
                         }
                     }
                 }
@@ -188,7 +196,7 @@ namespace PLAYER
         {
             if (inputSet.Inputs.Length > 0)
             {
-                var temp = $"PARSED [{inputSet.PacketNumber}] on {P2PHandler.Instance.InputPacketsSent} {Environment.NewLine}";
+                var temp = $"PARSED [{inputSet.PacketNumber}] on {_frameCounter} {Environment.NewLine}";
                 foreach (var input in inputSet.Inputs)
                 {
                     var state = input.State ? "Pressed" : "Released";
