@@ -52,8 +52,9 @@ namespace PLAYER
 
         public void HandleInputs()
         {
-            _frameCounter += Mod(1 +(previousDelay - _p2pHandler.Delay), 600);
-
+            //_frameCounter += Mod(1 + (previousDelay - _p2pHandler.Delay), 600);
+            _frameCounter += (1 + (previousDelay - _p2pHandler.Delay)) % 600;
+            
             previousDelay = _p2pHandler.Delay;        
             
             var numReceivedInputSets = _receivedInputSets.Count;
@@ -71,6 +72,7 @@ namespace PLAYER
                         _receivedInputSets.Add(_queuedInputSets[i]);
                         numReceivedInputSets++;
                         _queuedInputSets.RemoveAt(i);
+                        Debug.Log($"removed {i}");
                         break;
                     }
                 }
@@ -102,10 +104,13 @@ namespace PLAYER
                     {
                         if (receivedPacketNum < 200 && _frameCounter > 400)
                             receivedPacketNum += 600;
+
+                        if (receivedPacketNum >= 600)
+                            receivedPacketNum -= 600;
                         
                         if (receivedPacketNum + _p2pHandler.Delay >= _frameCounter)
                         {
-                            Debug.Log($"received: {receivedPacketNum} index: {currentPacketIndex}");
+                            Debug.Log($"received: {receivedPacketNum} counter: {_frameCounter}");
                             _queuedInputSets.Add(_receivedInputSets[0]);
                             _receivedInputSets.RemoveAt(0);
                         }
@@ -156,6 +161,7 @@ namespace PLAYER
             if (_queuePrediction)
             {
                 var predictedInputSet = PredictInputs();
+                Debug.Log($"predicted: {predictedInputSet.PacketNumber}");
                 _predictedInputSets.Add(predictedInputSet);
                 ParseInputs(predictedInputSet);
                 _queuePrediction = false;
