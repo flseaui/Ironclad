@@ -21,7 +21,6 @@ namespace PLAYER
         private bool ParsedForFrame;
         
         private List<P2PInputSet> _receivedInputSets;
-        [SerializeField]
         private List<P2PInputSet> _queuedInputSets;
         private List<P2PInputSet> _predictedInputSets;
 
@@ -130,11 +129,14 @@ namespace PLAYER
                                 }
                                 else
                                 {
-                                    var archiveNum = Math.Min(_predictedInputSets.Count, _receivedInputSets.Count);
-                                    for (var i = 0; i < archiveNum; i++)
+                                    for (var i = 0; i < _predictedInputSets.Count; i++)
                                     {
+                                        if (_receivedInputSets[0].PacketNumber >= _p2pHandler.FrameCounter)
+                                            break;
+                                        
                                         ArchivedInputSets.Add(_receivedInputSets[0]);
                                         _receivedInputSets.RemoveAt(0);
+                                        --numReceivedInputSets;
                                     }
                                     RollbackManager.Instance.Rollback(0);
                                     _predictedInputSets.Clear();

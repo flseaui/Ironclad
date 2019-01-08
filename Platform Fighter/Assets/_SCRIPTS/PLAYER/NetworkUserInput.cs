@@ -146,6 +146,9 @@ namespace PLAYER
             {
                 if (P2PHandler.Instance.LatencyCalculated)
                 {
+                    if (_delayedInputSets.Count == P2PHandler.Instance.Delay)
+                        ApplyDelayedInputSets();
+                    
                     var inputArray = _changedInputs.ToArray();
                     _lastInputSet = new P2PInputSet(inputArray, P2PHandler.Instance.InputPacketsSent);
                     Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, true);
@@ -161,8 +164,6 @@ namespace PLAYER
                     }
                     _delayedInputSets.Add(_lastInputSet);
                     ArchivedInputSets.Add(_lastInputSet);
-                    if (_delayedInputSets.Count == P2PHandler.Instance.Delay)
-                        ApplyDelayedInputSets();
                 }
             }
 
