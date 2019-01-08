@@ -81,8 +81,17 @@ namespace PLAYER
                 // if we just reset
                 if (GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ResetAction) == Types.FlagState.Pending)
                 {
-                    Debug.Log("CANCELLED");
+                    if (_currentAction != null)
+                        if (_currentAction.Type != _data.CurrentAction)
+                            Debug.Log($"CANCELLED {_currentAction.Type} into {_data.CurrentAction} on ActionFrame: {CurrentActionFrame} on frame: {P2PHandler.Instance.FrameCounter}");
+                    
                     CurrentActionFrame = 0;
+                }
+                else
+                {
+                    if (_currentAction != null)
+                        if (_currentAction.Type != _data.CurrentAction)
+                            Debug.Log($"SWITCHED FROM {_currentAction.Type} to {_data.CurrentAction} on ActionFrame: {CurrentActionFrame} on frame: {P2PHandler.Instance.FrameCounter}");
                 }
 
                 _currentAction = AssetManager.Instance.GetAction(Types.Character.TestCharacter, _data.CurrentAction);

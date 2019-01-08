@@ -26,8 +26,8 @@ namespace PLAYER
             base.Awake();
             _changedInputs = new List<P2PInputSet.InputChange>();
             _player = ReInput.players.GetPlayer(Id);
-            _player.controllers.maps.SetMapsEnabled(true, "Default");
             _player.controllers.maps.SetMapsEnabled(false, "Menu");
+            _player.controllers.maps.SetMapsEnabled(true, "Default");
         }
         
         protected override void InputUpdate()

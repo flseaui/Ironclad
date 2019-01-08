@@ -23,6 +23,8 @@ namespace NETWORKING
         public int InputPacketsSent;
         public int InputPacketsProcessed;
         public int InputPacketsReceived;
+        public int FrameCounter = -1;
+        private int _previousDelay = 0;
         
         public int Threshold = 0;
 
@@ -51,6 +53,11 @@ namespace NETWORKING
         private void FixedUpdate()
         {
             DataPacket.FramesLapsed = ++DataPacket.FramesLapsed % 600;
+         
+            FrameCounter += 1 + (_previousDelay - Delay);
+            FrameCounter %= 600;
+
+            _previousDelay = Delay;
             
             if (Threshold > 600)
                 Application.Quit();

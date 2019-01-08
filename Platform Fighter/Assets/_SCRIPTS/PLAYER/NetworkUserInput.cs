@@ -31,8 +31,9 @@ namespace PLAYER
             _changedInputs = new List<P2PInputSet.InputChange>();
             _delayedInputSets = new List<P2PInputSet>();
             _player = ReInput.players.GetPlayer(Id);
-            _player.controllers.maps.SetMapsEnabled(true, "Default");
+            
             _player.controllers.maps.SetMapsEnabled(false, "Menu");
+            _player.controllers.maps.SetMapsEnabled(true, "Default");
         }
 
         protected override void PressEvent(int index)
@@ -150,7 +151,7 @@ namespace PLAYER
                     Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, true);
                     if (_lastInputSet.Inputs.Length > 0)
                     {
-                        var temp = $"LOCALINPUT [{_lastInputSet.PacketNumber}] on {P2PHandler.Instance.InputPacketsSent} {Environment.NewLine}";
+                        var temp = $"LOCALINPUT [{_lastInputSet.PacketNumber}] on {P2PHandler.Instance.FrameCounter} {Environment.NewLine}";
                         foreach (var input in _lastInputSet.Inputs)
                         {
                             var state = input.State ? "Pressed" : "Released";

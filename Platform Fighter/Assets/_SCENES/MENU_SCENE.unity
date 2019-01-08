@@ -3427,7 +3427,7 @@ MonoBehaviour:
       _defaultMouseMaps: []
       _defaultKeyboardMaps:
       - _enabled: 1
-        _categoryId: 1
+        _categoryId: 0
         _layoutId: 0
       _defaultCustomControllerMaps: []
       _startingCustomControllers: []
@@ -3445,7 +3445,7 @@ MonoBehaviour:
       _defaultMouseMaps: []
       _defaultKeyboardMaps:
       - _enabled: 1
-        _categoryId: 1
+        _categoryId: 0
         _layoutId: 0
       _defaultCustomControllerMaps: []
       _startingCustomControllers: []
