@@ -7,6 +7,7 @@ using MISC;
 using PLAYER;
 using UnityEngine;
 using static MISC.MathUtils;
+using Types = DATA.Types;
 
 namespace NETWORKING
 {
@@ -24,10 +25,10 @@ namespace NETWORKING
         public int InputPacketsProcessed;
         public int InputPacketsReceived;
         public int FrameCounter = -1;
-        private int _previousDelay = 0;
         
-        public int Threshold = 0;
-
+        private int _previousDelay = 0;   
+        public bool ReceivedFirstInput;
+        
         public int Delay = 2;
         
         private int _playersJoined = 1;
@@ -53,16 +54,15 @@ namespace NETWORKING
         private void FixedUpdate()
         {
             DataPacket.FramesLapsed = ++DataPacket.FramesLapsed % 600;
+            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && !LatencyCalculated)
+                return;
+            
+            if (!ReceivedFirstInput) return;
          
             FrameCounter += 1 + (_previousDelay - Delay);
             FrameCounter %= 600;
 
             _previousDelay = Delay;
-            
-            if (Threshold > 600)
-                Application.Quit();
-            else
-                ++Threshold;
         }
         
         private void SubscribeToP2PEvents()
@@ -166,6 +166,8 @@ namespace NETWORKING
 
                         InputPacketsReceived = ++InputPacketsReceived % 600;
                         
+                        ReceivedFirstInput = true;
+                    
                         player.GetComponent<NetworkInput>().GiveInputs(inputSet);
                     //}
                     break;

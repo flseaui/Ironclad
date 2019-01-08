@@ -67,8 +67,6 @@ namespace NETWORKING
             {
                 return;
             }
-
-            P2PHandler.Instance.Threshold = 0;
             
             foreach (var snapshotPiece in _snapshots[distance])
             {

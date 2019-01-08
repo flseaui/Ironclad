@@ -15,7 +15,6 @@ namespace PLAYER
         private bool _queueParse;
 
         private bool _queuePrediction;
-        private bool _receivedFirstInput;
         
         private int _framesOfPrediction;
 
@@ -38,9 +37,7 @@ namespace PLAYER
         }
 
         public void GiveInputs(P2PInputSet receivedInputs)
-        {
-            _receivedFirstInput = true;
-            
+        {            
             Debug.Log($"Received: {receivedInputs.PacketNumber} on {_p2pHandler.FrameCounter}");
             
             _receivedInputSets.Add(receivedInputs);
@@ -133,11 +130,14 @@ namespace PLAYER
                                 }
                                 else
                                 {
-                                    ArchivedInputSets.AddRange(_receivedInputSets);
+                                    var archiveNum = Math.Min(_predictedInputSets.Count, _receivedInputSets.Count);
+                                    for (var i = 0; i < archiveNum; i++)
+                                    {
+                                        ArchivedInputSets.Add(_receivedInputSets[0]);
+                                        _receivedInputSets.RemoveAt(0);
+                                    }
                                     RollbackManager.Instance.Rollback(0);
                                     _predictedInputSets.Clear();
-                                    _receivedInputSets.Clear();
-                                    return;
                                 }
                             }
                             else
@@ -172,7 +172,7 @@ namespace PLAYER
             if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && !P2PHandler.Instance.LatencyCalculated)
                 return;
             
-            if (!_receivedFirstInput) return;
+            if (!P2PHandler.Instance.ReceivedFirstInput) return;
             
             //HandleInputs();
             HandleInputs();
