@@ -29,7 +29,7 @@ namespace PLAYER
             Data = GetComponent<PlayerData>().DataPacket;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             Step();
         }

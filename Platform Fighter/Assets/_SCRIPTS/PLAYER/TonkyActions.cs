@@ -82,9 +82,10 @@ namespace PLAYER
 
                     Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
 
-                    return Types.ActionType.Turn;
+                    //return Types.ActionType.Turn;
                 }
-                
+               
+                /*
                 if (Input.Inputs[(int) Types.Input.StrongRight] || Input.Inputs[(int) Types.Input.StrongLeft])
                 {
                     if (Data.Direction == (inputRight ? Types.Direction.Right : Types.Direction.Left)) return Types.ActionType.Run;
@@ -92,7 +93,7 @@ namespace PLAYER
                     Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
                     return Types.ActionType.Turn;
                 } 
-                
+                */
                 return Types.ActionType.Idle;
             }
             // if in the air
