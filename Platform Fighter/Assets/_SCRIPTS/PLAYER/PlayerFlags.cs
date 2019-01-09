@@ -17,9 +17,14 @@ namespace PLAYER
                 _flags.Add(flag, Types.FlagState.Inactive);
         }
 
-        public Types.FlagState GetFlagState(Types.Flags flag) => _flags[flag];
-        
-        public void SetFlagState(Types.Flags flag, Types.FlagState flagState) => _flags[flag] = flagState;
+        public Types.FlagState GetFlagState(Types.Flags flag)
+        {
+            return _flags[flag];
+        }
 
+        public void SetFlagState(Types.Flags flag, Types.FlagState flagState)
+        {
+            _flags[flag] = flagState;
+        }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using Facepunch.Steamworks;
 using MISC;
 
@@ -6,11 +5,11 @@ namespace NETWORKING
 {
     public class P2PHelper : Singleton<P2PHelper>
     {
-        public int NetworkLatency { get; set; }
-        
-        private int _sentFrame;
         private int _hostSentFrame;
-        
+
+        private int _sentFrame;
+        public int NetworkLatency { get; set; }
+
         // should only be called while in a lobby
         public void TestLobbyNetworkLatency()
         {
@@ -39,9 +38,10 @@ namespace NETWORKING
                 }
                 // user just recieved first packet from host
                 else
-                {   
+                {
                     NetworkLatency = ping.LocalFrame - _sentFrame;
-                    Events.OnFirstNetworkLatencyCalculated(Client.Instance.SteamId, senderId, P2PHandler.Instance.DataPacket.FramesLapsed);
+                    Events.OnFirstNetworkLatencyCalculated(Client.Instance.SteamId, senderId,
+                        P2PHandler.Instance.DataPacket.FramesLapsed);
                 }
             }
             else
@@ -50,9 +50,7 @@ namespace NETWORKING
                 if (Client.Instance.Lobby.Owner == Client.Instance.SteamId)
                 {
                     if (ping.LocalFrame - _hostSentFrame > NetworkLatency)
-                    {
                         NetworkLatency = ping.LocalFrame - _hostSentFrame;
-                    }
 
                     Events.OnFinalNetworkLatencyCalculated(NetworkLatency);
                     Events.OnFirstNetworkLatencyCalculated(Client.Instance.SteamId, senderId, NetworkLatency);
@@ -64,8 +62,6 @@ namespace NETWORKING
                     Events.OnFinalNetworkLatencyCalculated(NetworkLatency);
                 }
             }
-            
-            
         }
     }
 }

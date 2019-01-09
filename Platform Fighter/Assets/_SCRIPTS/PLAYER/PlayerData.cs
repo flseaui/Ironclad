@@ -1,17 +1,15 @@
 ﻿using System;
-using ATTRIBUTES;
 using DATA;
 using NETWORKING;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Types = DATA.Types;
 
 namespace PLAYER
-{    
+{
     public class PlayerData : MonoBehaviour, ISettable
     {
         public PlayerDataPacket DataPacket;
-        
+
         public void SetData(object data)
         {
             var newData = (PlayerDataPacket) data;
@@ -26,21 +24,19 @@ namespace PLAYER
             DataPacket.TerminalVelocity = newData.TerminalVelocity;
             DataPacket.Position = newData.Position;
             DataPacket.VelocityModifier = newData.VelocityModifier;
-            transform.position = newData.Position; 
+            transform.position = newData.Position;
         }
-        
     }
-    
+
     [Serializable]
     public class PlayerDataPacket
     {
-        
         public enum PlayerLocation
         {
             Grounded,
             Airborne
         }
-        
+
         //These have just become actions
         public enum PlayerState
         {
@@ -50,34 +46,34 @@ namespace PLAYER
             FreeFall
         }
 
-        public Vector2 MovementStickAngle;
-        
+        public Vector2 Acceleration;
+
         public int ArialActions;
-        
+
         public int ArialActionsMax;
 
         public Types.ActionType CurrentAction;
 
         public Vector2 CurrentVelocity;
 
-        public Vector2 TargetVelocity;
-
-        public ActionInfo.VelocityModifier.ModificationType VelocityModifier;
-
-        public Vector2 Acceleration;
-
-        public Vector2 KnockbackVelocity;
-
         public Types.Direction Direction;
 
         public float Gravity;
 
-        public double Percent;
+        public Vector2 KnockbackVelocity;
 
-        public Vector2 TerminalVelocity;
+        public Vector2 MovementStickAngle;
+
+        public double Percent;
 
         public Vector2 Position;
 
         public PlayerLocation RelativeLocation;
+
+        public Vector2 TargetVelocity;
+
+        public Vector2 TerminalVelocity;
+
+        public ActionInfo.VelocityModifier.ModificationType VelocityModifier;
     }
 }

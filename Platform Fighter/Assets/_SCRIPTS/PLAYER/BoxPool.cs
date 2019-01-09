@@ -53,10 +53,7 @@ namespace PLAYER
             foreach (var box in GameObject.FindGameObjectsWithTag("EnabledBox"))
             {
                 var info = box.GetComponent<BoxInfo>();
-                if (info.Lifespan > 0)
-                {
-                    info.Lifespan--;
-                }
+                if (info.Lifespan > 0) info.Lifespan--;
                 if (info.Lifespan <= 0)
                 {
                     box.tag = "DisabledBox";

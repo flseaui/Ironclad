@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 namespace NETWORKING
 {
@@ -7,7 +6,7 @@ namespace NETWORKING
     {
         public static Action<NetworkIdentity, P2PInputSet.InputChange[], bool> OnInputsChanged;
         public static Action<NetworkIdentity> OnMatchJoined;
-        
+
         // Users steam id, Recievers steam id, current frame
         public static Action<ulong, ulong, int> OnPingSent;
 

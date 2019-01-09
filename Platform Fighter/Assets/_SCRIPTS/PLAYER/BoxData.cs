@@ -21,7 +21,10 @@ namespace PLAYER
         public Types.ActionType ParentAction { get; private set; }
         public int ParentFrame { get; private set; }
 
-        public void SetAsNull() => Type = ActionInfo.Box.BoxType.Null;
+        public void SetAsNull()
+        {
+            Type = ActionInfo.Box.BoxType.Null;
+        }
 
         public void SetData(ActionInfo.Box box, Types.ActionType actionType, int frame)
         {

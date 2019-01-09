@@ -1,26 +1,22 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using MANAGERS;
+using DATA;
 using MISC;
 using NETWORKING;
 using Rewired;
-using UnityEngine;
-using Types = DATA.Types;
 
 namespace PLAYER
 {
     public class UserInput : InputSender
     {
+        private List<P2PInputSet.InputChange> _changedInputs;
+
+        private int _jumpFramesHeld;
+
+        private P2PInputSet _lastInputSet;
+
+        private Player _player;
         public int Id { get; set; }
 
-        private List<P2PInputSet.InputChange> _changedInputs;
-        
-        private P2PInputSet _lastInputSet;
-        
-        private Player _player;
-        
-        private int _jumpFramesHeld;
-        
         private void Start()
         {
             base.Awake();
@@ -29,19 +25,16 @@ namespace PLAYER
             _player.controllers.maps.SetMapsEnabled(false, "Menu");
             _player.controllers.maps.SetMapsEnabled(true, "Default");
         }
-        
+
         protected override void InputUpdate()
         {
             UpdatePlayerInput();
         }
-        
+
         private void UpdatePlayerInput()
         {
-            for (var index = 0; index < Inputs.Length; index++)
-            {
-                Inputs[index] = false;
-            }
-            
+            for (var index = 0; index < Inputs.Length; index++) Inputs[index] = false;
+
             if (_player.controllers.hasKeyboard)
             {
                 if (_player.GetAxis("Run") < -GameSettings.Instance.runThreshold)
@@ -77,28 +70,32 @@ namespace PLAYER
                     Inputs[(int) Types.Input.Up] = true;
             }
 
-            if(Inputs[(int) Types.Input.Jump])
+            if (Inputs[(int) Types.Input.Jump])
             {
-                if(_jumpFramesHeld == 0 && GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ShortHop) != Types.FlagState.Pending)
+                if (_jumpFramesHeld == 0 && GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ShortHop) !=
+                    Types.FlagState.Pending)
                     GetComponent<PlayerFlags>().SetFlagState(Types.Flags.FullHop, Types.FlagState.Pending);
-                
-                if (_jumpFramesHeld < 7 && GetComponent<PlayerFlags>().GetFlagState(Types.Flags.FullHop) != Types.FlagState.Pending)
+
+                if (_jumpFramesHeld < 7 && GetComponent<PlayerFlags>().GetFlagState(Types.Flags.FullHop) !=
+                    Types.FlagState.Pending)
                 {
                     GetComponent<PlayerFlags>().SetFlagState(Types.Flags.FullHop, Types.FlagState.Resolved);
                     GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ShortHop, Types.FlagState.Pending);
                 }
- 
+
                 ++_jumpFramesHeld;
             }
             else
+            {
                 _jumpFramesHeld = 0;
-            
+            }
+
             if (_player.GetButton("Hop"))
                 Inputs[(int) Types.Input.Jump] = true;
-            
+
             if (_player.GetButtonDown("Neutral"))
                 Inputs[(int) Types.Input.Neutral] = true;
-            
+
             if (_player.GetButton("Strong"))
                 Inputs[(int) Types.Input.Strong] = true;
 
@@ -113,6 +110,6 @@ namespace PLAYER
 
             PlayerData.DataPacket.MovementStickAngle.x = _player.GetAxis("Move");
             PlayerData.DataPacket.MovementStickAngle.y = _player.GetAxis("Crouch");
-        }     
+        }
     }
 }

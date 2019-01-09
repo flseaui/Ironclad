@@ -1,8 +1,6 @@
-﻿using MANAGERS;
-using Rewired;
+﻿using Rewired;
 using UnityEngine;
 using UnityEngine.UI;
-using Types = DATA.Types;
 
 namespace MENU
 {
@@ -37,10 +35,7 @@ namespace MENU
             else
                 _image.overrideSprite = null;
 
-            if (Back)
-            {
-                Dropped = false;
-            }
+            if (Back) Dropped = false;
         }
 
         private void UpdateInput()

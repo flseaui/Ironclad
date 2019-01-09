@@ -1,3 +1,4 @@
+using System;
 using ATTRIBUTES;
 using DATA;
 using MANAGERS;
@@ -9,9 +10,12 @@ namespace MENU
     {
         protected override void SwitchToThis(params string[] args)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
-        
-        public void GoBack() => MenuManager.Instance.SwitchToPreviousMenu();
+
+        public void GoBack()
+        {
+            MenuManager.Instance.SwitchToPreviousMenu();
+        }
     }
 }

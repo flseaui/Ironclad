@@ -74,7 +74,9 @@ namespace MISC
             OnAwake();
         }
 
-        protected virtual void OnAwake() { }
+        protected virtual void OnAwake()
+        {
+        }
 
         #endregion
     }

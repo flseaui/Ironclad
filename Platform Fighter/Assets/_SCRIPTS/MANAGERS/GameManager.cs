@@ -1,4 +1,3 @@
-using System;
 using DATA;
 using MISC;
 
@@ -7,7 +6,7 @@ namespace MANAGERS
     public class GameManager : Singleton<GameManager>
     {
         public Types.MatchType MatchType { get; set; }
-        
+
         public Types.Character[] Characters { get; set; } =
         {
             Types.Character.TestCharacter,
@@ -18,6 +17,8 @@ namespace MANAGERS
 
         public Types.Stage Stage { get; set; } = Types.Stage.TestStage;
 
-        private void StartGame() { }
+        private void StartGame()
+        {
+        }
     }
 }

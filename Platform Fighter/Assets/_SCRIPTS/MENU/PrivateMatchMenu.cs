@@ -32,6 +32,9 @@ namespace MENU
             }*/
         }
 
-        public void GoBack() => MenuManager.Instance.SwitchToPreviousMenu();
+        public void GoBack()
+        {
+            MenuManager.Instance.SwitchToPreviousMenu();
+        }
     }
 }

@@ -4,16 +4,26 @@ using Types = DATA.Types;
 
 namespace PLAYER
 {
-    [RequireComponent(typeof(InputSender)), RequireComponent(typeof(PlayerData))]
+    [RequireComponent(typeof(InputSender))]
+    [RequireComponent(typeof(PlayerData))]
     public abstract class ActionsBase : MonoBehaviour, ISteppable
     {
         private PlayerController _playerController;
-        
-        protected InputSender Input;
 
         protected PlayerDataPacket Data;
-        
+
+        protected InputSender Input;
+
         protected int CurrentActionFrame => _playerController.CurrentActionFrame;
+
+        public void Step()
+        {
+            var newAction = GetCurrentAction();
+            if (Data.CurrentAction != newAction)
+                GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ResetAction, Types.FlagState.Pending);
+
+            Data.CurrentAction = newAction;
+        }
 
         private void Awake()
         {
@@ -25,7 +35,7 @@ namespace PLAYER
                 Input = GetComponent<NetworkUserInput>();
             else
                 Input = GetComponent<NetworkInput>();
-            
+
             Data = GetComponent<PlayerData>().DataPacket;
         }
 
@@ -35,14 +45,5 @@ namespace PLAYER
         }
 
         protected abstract Types.ActionType GetCurrentAction();
-        
-        public void Step()
-        {
-            var newAction = GetCurrentAction();
-            if (Data.CurrentAction != newAction)
-                GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ResetAction, Types.FlagState.Pending);
-
-            Data.CurrentAction = newAction;
-        }
     }
 }

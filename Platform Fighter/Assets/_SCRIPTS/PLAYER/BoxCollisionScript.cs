@@ -7,13 +7,13 @@ namespace PLAYER
     {
         private BoxData _boxData;
         private DamageScript _damageScript;
-        
+
         private void Awake()
         {
             _boxData = GetComponentInParent<BoxData>();
             _damageScript = GetComponentInParent<DamageScript>();
         }
-        
+
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Box"))

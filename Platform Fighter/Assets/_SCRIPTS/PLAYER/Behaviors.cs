@@ -10,6 +10,11 @@ namespace PLAYER
 
         protected PlayerController PlayerController { get; private set; }
 
+        public void Step()
+        {
+            RunAction();
+        }
+
         private void Awake()
         {
             Data = GetComponent<PlayerData>().DataPacket;
@@ -22,10 +27,5 @@ namespace PLAYER
         }
 
         public abstract void RunAction();
-        
-        public void Step()
-        {
-            RunAction();
-        }
     }
 }

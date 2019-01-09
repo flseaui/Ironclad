@@ -1,7 +1,5 @@
 ﻿using System;
 using DATA;
-using UnityEngine;
-using Types = DATA.Types;
 
 namespace PLAYER
 {
@@ -87,10 +85,14 @@ namespace PLAYER
                 case Types.ActionType.Spotdodge:
                     break;
                 case Types.ActionType.Jump:
-                    ApplyArielMovement(Data.MovementStickAngle.x, Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreBoth || Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreY);
+                    ApplyArielMovement(Data.MovementStickAngle.x,
+                        Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreBoth ||
+                        Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreY);
                     break;
                 case Types.ActionType.Fall:
-                    ApplyArielMovement(Data.MovementStickAngle.x, Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreBoth || Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreY);
+                    ApplyArielMovement(Data.MovementStickAngle.x,
+                        Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreBoth ||
+                        Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreY);
                     break;
                 case Types.ActionType.Dash:
                     break;
@@ -113,9 +115,6 @@ namespace PLAYER
                 Data.VelocityModifier = ActionInfo.VelocityModifier.ModificationType.IgnoreY;
             else
                 Data.VelocityModifier = ActionInfo.VelocityModifier.ModificationType.Target;
-
         }
-        
-        
     }
 }

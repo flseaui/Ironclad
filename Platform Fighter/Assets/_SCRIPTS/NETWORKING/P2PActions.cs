@@ -11,7 +11,7 @@ namespace NETWORKING
         public struct InputChange
         {
             public Types.Input InputType;
-            
+
             // false = down/left
             // true = up/right
             public bool State;
@@ -26,28 +26,33 @@ namespace NETWORKING
                 State = state;
                 FramesHeld = framesHeld;
             }
-            
         }
 
         public InputChange[] Inputs;
-        
+
         public int PacketNumber;
-        
+
         public P2PInputSet(InputChange[] inputs, int packetNumber)
         {
             Inputs = inputs;
             PacketNumber = packetNumber;
         }
 
-        public string Serialize() => JsonUtility.ToJson(this);
+        public string Serialize()
+        {
+            return JsonUtility.ToJson(this);
+        }
     }
 
     [Serializable]
     public struct P2PJoin : IP2PAction
     {
-        public string Serialize() => JsonUtility.ToJson(this);
+        public string Serialize()
+        {
+            return JsonUtility.ToJson(this);
+        }
     }
-    
+
     [Serializable]
     public struct P2PPing : IP2PAction
     {
@@ -57,8 +62,10 @@ namespace NETWORKING
         {
             LocalFrame = localFrame;
         }
-        
-        public string Serialize() => JsonUtility.ToJson(this);
+
+        public string Serialize()
+        {
+            return JsonUtility.ToJson(this);
+        }
     }
-    
 }

@@ -60,7 +60,7 @@ namespace MENU
             profile.Profile.transform.Find("ReadyBadge").GetComponent<Image>().color = Color.white;
         }
 
-    public void RemovePlayerProfile(ulong id)
+        public void RemovePlayerProfile(ulong id)
         {
             --_playerCount;
             var profile = _playerProfiles.FirstOrDefault(x => x.PlayerId == id);

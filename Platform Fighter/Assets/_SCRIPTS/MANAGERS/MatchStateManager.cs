@@ -1,49 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Facepunch.Steamworks;
 using MISC;
 using NETWORKING;
 using PLAYER;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Client = Facepunch.Steamworks.Client;
 using Types = DATA.Types;
 
 namespace MANAGERS
 {
     public class MatchStateManager : Singleton<MatchStateManager>
     {
-        private List<GameObject> _activePlayers;
+        [SerializeField] private GameObject _networkPlayerPrefab;
 
         // Prefabs
         [SerializeField] private GameObject _offlinePlayerPrefab;
         [SerializeField] private GameObject _onlinePlayerPrefab;
-        [SerializeField] private GameObject _networkPlayerPrefab;
         [SerializeField] private GameObject _p2pHandlerPrefab;
         [SerializeField] private GameObject _rollbackHandlerPrefab;
-        
+
+        public int ClientPlayerId { get; private set; }
+
+        public List<GameObject> Players { get; private set; }
+
         private void OnParticleCollision(GameObject other)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         private void Start()
         {
-            _activePlayers = new List<GameObject>();
-            
+            Players = new List<GameObject>();
+
             MatchStart();
         }
 
-        public int ClientPlayerId { get; private set; }
-        
-        public List<GameObject> Players => _activePlayers;
-        
-        public GameObject GetPlayer(int playerId) =>
-            _activePlayers.FirstOrDefault(player => player.GetComponent<NetworkIdentity>().Id == playerId);
+        public GameObject GetPlayer(int playerId)
+        {
+            return Players.FirstOrDefault(player => player.GetComponent<NetworkIdentity>().Id == playerId);
+        }
 
-        public GameObject GetPlayerBySteamId(ulong steamId) =>
-            _activePlayers.FirstOrDefault(player => player.GetComponent<NetworkIdentity>().SteamId == steamId);
-        
+        public GameObject GetPlayerBySteamId(ulong steamId)
+        {
+            return Players.FirstOrDefault(player => player.GetComponent<NetworkIdentity>().SteamId == steamId);
+        }
+
         private void MatchStart()
         {
             var spawnPoints = SpawnStage();
@@ -53,7 +55,7 @@ namespace MANAGERS
                 Instantiate(_p2pHandlerPrefab);
                 Instantiate(_rollbackHandlerPrefab);
             }
-            
+
             for (var i = 0;
                 i < GameManager.Instance.Characters.Count(character => character != Types.Character.None);
                 ++i)
@@ -92,7 +94,7 @@ namespace MANAGERS
                                 spawnPoints[i].rotation
                             );
                         }
-    
+
                         player.AddComponent<NetworkIdentity>();
                         player.GetComponent<NetworkIdentity>().Id = i;
                         player.GetComponent<NetworkIdentity>().SteamId = GameManager.Instance.SteamIds[i];
@@ -100,10 +102,10 @@ namespace MANAGERS
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                
+
                 AssetManager.Instance.PopulateActions(GameManager.Instance.Characters);
 
-                _activePlayers.Add(player);
+                Players.Add(player);
             }
         }
 

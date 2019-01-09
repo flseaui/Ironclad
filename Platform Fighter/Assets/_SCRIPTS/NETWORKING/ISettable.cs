@@ -1,5 +1,3 @@
-using System;
-
 namespace NETWORKING
 {
     public interface ISettable

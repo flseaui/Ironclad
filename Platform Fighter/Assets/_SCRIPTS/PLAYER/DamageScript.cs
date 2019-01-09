@@ -21,7 +21,6 @@ namespace PLAYER
                 ); //* positive or negitive for left or right
             _playerData.KnockbackVelocity.y = (float) ((knockbackStrength + knockbackStrength * _playerData.Percent) *
                                                        Mathf.Sin((float) knockbackAngle));
-
         }
     }
 }

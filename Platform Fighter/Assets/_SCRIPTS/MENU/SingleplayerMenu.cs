@@ -1,8 +1,6 @@
-﻿using System;
-using ATTRIBUTES;
+﻿using ATTRIBUTES;
+using DATA;
 using MANAGERS;
-using UnityEngine;
-using Types = DATA.Types;
 
 namespace MENU
 {
@@ -25,6 +23,9 @@ namespace MENU
             MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;
         }
 
-        public void GoBack() => MenuManager.Instance.SwitchToPreviousMenu();
+        public void GoBack()
+        {
+            MenuManager.Instance.SwitchToPreviousMenu();
+        }
     }
 }

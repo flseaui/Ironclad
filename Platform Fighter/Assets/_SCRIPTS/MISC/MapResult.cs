@@ -56,6 +56,9 @@ namespace MISC
             return Result;
         }
 
-        public static implicit operator TResult(MapResult<TValue, TResult> value) => value.Result;
+        public static implicit operator TResult(MapResult<TValue, TResult> value)
+        {
+            return value.Result;
+        }
     }
 }

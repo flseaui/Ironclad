@@ -1,20 +1,28 @@
-﻿using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using DATA;
+﻿using DATA;
 using MISC;
-using NETWORKING;
 using UnityEngine;
 using Types = DATA.Types;
+
 namespace PLAYER
 {
-    [RequireComponent(typeof(PlayerData)), RequireComponent(typeof(PlayerController))]
+    [RequireComponent(typeof(PlayerData))]
+    [RequireComponent(typeof(PlayerController))]
     public class PlayerMovement : MonoBehaviour, ISteppable
     {
-        [SerializeField]
-        private Vector2 _addedForce;
+        [SerializeField] private Vector2 _addedForce;
+
         private PlayerDataPacket Data { get; set; }
         private PlayerController PlayerController { get; set; }
-        
+
+        public void Step()
+        {
+            CalculateVelocity();
+
+            transform.Translate(Data.CurrentVelocity);
+
+            Data.Position = transform.position;
+        }
+
         private void Awake()
         {
             Data = GetComponent<PlayerData>().DataPacket;
@@ -23,18 +31,9 @@ namespace PLAYER
 
         private void FixedUpdate()
         {
-           Step();
+            Step();
         }
 
-        public void Step()
-        {
-            CalculateVelocity();
-            
-            transform.Translate(Data.CurrentVelocity);
-            
-            Data.Position = transform.position;
-        }
-        
         private void CalculateVelocity()
         {
             //Temp Variables
@@ -81,16 +80,15 @@ namespace PLAYER
                             Data.CurrentVelocity.x = 0;
                     }
                     else
+                    {
                         Data.CurrentVelocity.x = Data.TargetVelocity.x;
+                    }
                 }
 
                 //Perhaps decay X velocity if ignored, for now unknown
                 if (Data.VelocityModifier != ActionInfo.VelocityModifier.ModificationType.IgnoreY)
                 {
-                    if (Data.TargetVelocity.y == 99)
-                    {
-                        Debug.Log("What the fuck is happening");
-                    }
+                    if (Data.TargetVelocity.y == 99) Debug.Log("What the fuck is happening");
 
                     Data.CurrentVelocity.y = Data.TargetVelocity.y;
                 }
@@ -114,7 +112,6 @@ namespace PLAYER
 
             if (Data.CurrentAction == Types.ActionType.Jump)
                 Debug.Log("YEAH HERES SOME VELOCITY FAG " + Data.CurrentVelocity);
-
         }
     }
 }

@@ -13,10 +13,9 @@ namespace MENU
     public class LobbyCharacterMenu : Menu
     {
         [SerializeField] private PlayerProfilePanel _playerProfilerPanel;
-        
-        [SerializeField]
-        private int _playerReady;
-        
+
+        [SerializeField] private int _playerReady;
+
         protected override void SwitchToThis(params string[] args)
         {
             Client.Instance.Lobby.OnLobbyCreated = OnCreated;
@@ -25,25 +24,25 @@ namespace MENU
             Client.Instance.Lobby.OnLobbyMemberDataUpdated = OnMemberDataUpdated;
             Client.Instance.Lobby.OnLobbyStateChanged = OnStateChange;
             Client.Instance.Lobby.OnChatMessageRecieved = OnChatMessage;
-            
+
             if (args.Length > 0)
             {
                 if (args[0] == "create")
                     Client.Instance.Lobby.Create(Lobby.Type.Public, 2);
-                else if (args[0] == "join") 
+                else if (args[0] == "join")
                     Client.Instance.Lobby.Join(ulong.Parse(args[1]));
             }
-            
+
             GameManager.Instance.MatchType = Types.MatchType.OnlineMultiplayer;
         }
 
-        
+
         private void OnCreated(bool success)
         {
             if (!success) return;
 
             SetupMemberData();
-            
+
             _playerProfilerPanel.ClearPlayerProfiles();
             _playerProfilerPanel.AddPlayerProfile(Client.Instance.SteamId);
 
@@ -56,17 +55,14 @@ namespace MENU
         private void OnJoined(bool success)
         {
             if (!success) return;
-            
+
             SetupMemberData();
-            
+
             foreach (var member in Client.Instance.Lobby.GetMemberIDs())
             {
                 _playerProfilerPanel.AddPlayerProfile(member);
 
-                if (member != Client.Instance.SteamId)
-                {
-                    CheckMemberData(member, false);
-                }
+                if (member != Client.Instance.SteamId) CheckMemberData(member, false);
             }
         }
 
@@ -76,7 +72,7 @@ namespace MENU
             Client.Instance.Lobby.SetMemberData("lobbySpot", (Client.Instance.Lobby.NumMembers - 1).ToString());
             Client.Instance.Lobby.SetMemberData("ready", "false");
         }
-        
+
         private void OnDataUpdated()
         {
             //_playerProfilerPanel.ClearPlayerProfiles();
@@ -92,35 +88,33 @@ namespace MENU
         {
             _playerReady = 0;
             foreach (var member in Client.Instance.Lobby.GetMemberIDs())
-            {
                 if (Client.Instance.Lobby.GetMemberData(member, "ready") == "true")
                     _playerReady++;
-            }
-            
-            switch(Client.Instance.Lobby.GetMemberData(steamId, "ready"))
+
+            switch (Client.Instance.Lobby.GetMemberData(steamId, "ready"))
             {
                 case "true":
                     _playerProfilerPanel.ReadyPlayerProfile(steamId);
-                    if (_playerReady >= Client.Instance.Lobby.NumMembers && Client.Instance.Lobby.NumMembers > 1 && update)
+                    if (_playerReady >= Client.Instance.Lobby.NumMembers && Client.Instance.Lobby.NumMembers > 1 &&
+                        update)
                     {
                         var tempCharacterArray = new List<Types.Character>();
-                        
+
                         GameManager.Instance.SteamIds = Client.Instance.Lobby.GetMemberIDs();
-                        
+
                         foreach (var id in GameManager.Instance.SteamIds)
-                        {
-                            tempCharacterArray.Add(CharacterStringToId(Client.Instance.Lobby.GetMemberData(id, "character")));
-                        }
-                        
+                            tempCharacterArray.Add(
+                                CharacterStringToId(Client.Instance.Lobby.GetMemberData(id, "character")));
+
                         GameManager.Instance.Characters = tempCharacterArray.ToArray();
-                        
+
                         MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;
                     }
 
                     break;
                 case "false":
                     if (!update) return;
-                    
+
                     _playerProfilerPanel.UnreadyPlayerProfile(steamId);
 
                     break;
@@ -163,10 +157,8 @@ namespace MENU
 
             _playerReady = 0;
             foreach (var member in Client.Instance.Lobby.GetMemberIDs())
-            {
                 if (Client.Instance.Lobby.GetMemberData(member, "ready") == "true")
                     _playerReady++;
-            }
         }
 
         public Types.Character CharacterStringToId(string character)
@@ -181,15 +173,15 @@ namespace MENU
         }
 
         public void OnCharacterChanged(int character)
-        {   
+        {
             Client.Instance.Lobby.SetMemberData
             (
-                "character", 
+                "character",
                 character
-                .Map(0, "testCharacter" )
+                    .Map(0, "testCharacter")
             );
         }
-        
+
         public void GoBack()
         {
             _playerProfilerPanel.ClearPlayerProfiles();

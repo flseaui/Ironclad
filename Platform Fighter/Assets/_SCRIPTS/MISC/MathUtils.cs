@@ -6,7 +6,7 @@ namespace MISC
         {
             if (value >= 0)
                 return value % modVal;
-            return modVal + (value % modVal);
+            return modVal + value % modVal;
         }
     }
 }

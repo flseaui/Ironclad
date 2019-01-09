@@ -27,18 +27,21 @@ namespace PLAYER
         private SpriteRenderer _spriteRenderer;
 
         public int CurrentActionFrame { get; private set; }
-        
+
         public ActionInfo.FrameProperty CurrentActionProperties
         {
             get
             {
                 if (_currentAction?.FrameProperties == null || CurrentActionFrame < 0)
-                {
                     return new ActionInfo.FrameProperty();
-                }
-                
+
                 return _currentAction.FrameProperties[CurrentActionFrame];
             }
+        }
+
+        public void Step()
+        {
+            ExecuteAction();
         }
 
         public static event OnActionEndCallback OnActionEnd;
@@ -68,30 +71,28 @@ namespace PLAYER
             Step();
         }
 
-        public void Step()
-        {
-            ExecuteAction();
-        }
-        
         private void ExecuteAction()
         {
             // first frame of action
-            if (CurrentActionFrame == 0 || GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ResetAction) == Types.FlagState.Pending)
+            if (CurrentActionFrame == 0 || GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ResetAction) ==
+                Types.FlagState.Pending)
             {
                 // if we just reset
                 if (GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ResetAction) == Types.FlagState.Pending)
                 {
                     if (_currentAction != null)
                         if (_currentAction.Type != _data.CurrentAction)
-                            Debug.Log($"CANCELLED {_currentAction.Type} into {_data.CurrentAction} on ActionFrame: {CurrentActionFrame} on frame: {P2PHandler.Instance.FrameCounter}");
-                    
+                            Debug.Log(
+                                $"CANCELLED {_currentAction.Type} into {_data.CurrentAction} on ActionFrame: {CurrentActionFrame} on frame: {P2PHandler.Instance.FrameCounter}");
+
                     CurrentActionFrame = 0;
                 }
                 else
                 {
                     if (_currentAction != null)
                         if (_currentAction.Type != _data.CurrentAction)
-                            Debug.Log($"SWITCHED FROM {_currentAction.Type} to {_data.CurrentAction} on ActionFrame: {CurrentActionFrame} on frame: {P2PHandler.Instance.FrameCounter}");
+                            Debug.Log(
+                                $"SWITCHED FROM {_currentAction.Type} to {_data.CurrentAction} on ActionFrame: {CurrentActionFrame} on frame: {P2PHandler.Instance.FrameCounter}");
                 }
 
                 _currentAction = AssetManager.Instance.GetAction(Types.Character.TestCharacter, _data.CurrentAction);
@@ -132,7 +133,8 @@ namespace PLAYER
                                 box.transform.localPosition = new Vector2(hitbox.X, hitbox.Y);
                                 box.name = $"{hitbox.Type.ToString()}Box";
 
-                                box.GetComponent<BoxCollider2D>().size = new Vector2((float)hitbox.Width, (float)hitbox.Height);
+                                box.GetComponent<BoxCollider2D>().size =
+                                    new Vector2((float) hitbox.Width, (float) hitbox.Height);
 
                                 var boxData = box.GetComponent<BoxData>();
                                 boxData.SetData(hitbox, actionType, frameCount);

@@ -59,23 +59,18 @@
             Right
         }
 
-        public enum Menu
+        public enum Flags
         {
-            BlankMenu,
-            MainMenu,
-            SingleplayerMenu,
-            MultiplayerMenu,
-            OptionsMenu,
-            LobbySelectMenu,
-            LobbyCharacterMenu,
-            PrivateMatchMenu,
-            GameStartMenu,
-            CharacterSelectMenu
+            ShortHop,
+            FullHop,
+            ResetAction
         }
 
-        public enum Stage
+        public enum FlagState
         {
-            TestStage
+            Inactive,
+            Pending,
+            Resolved
         }
 
         public enum Input
@@ -104,19 +99,23 @@
             OnlineMultiplayer
         }
 
-        public enum Flags
+        public enum Menu
         {
-            ShortHop,
-            FullHop,
-            ResetAction
+            BlankMenu,
+            MainMenu,
+            SingleplayerMenu,
+            MultiplayerMenu,
+            OptionsMenu,
+            LobbySelectMenu,
+            LobbyCharacterMenu,
+            PrivateMatchMenu,
+            GameStartMenu,
+            CharacterSelectMenu
         }
-        
-        public enum FlagState
+
+        public enum Stage
         {
-            Inactive,
-            Pending,
-            Resolved
+            TestStage
         }
-        
     }
 }

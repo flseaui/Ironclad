@@ -14,23 +14,33 @@ namespace MANAGERS
         private List<ActionSet> _actionSets;
         [SerializeField] private GameObject[] _stagePrefabs;
 
-        private void Awake() => _actionSets = new List<ActionSet>();
+        private void Awake()
+        {
+            _actionSets = new List<ActionSet>();
+        }
 
         /**
          * STAGES
          */
 
-        public GameObject GetStage(Types.Stage stage) =>
-            _stagePrefabs.FirstOrDefault(prefab => prefab.name == stage.ToString());
+        public GameObject GetStage(Types.Stage stage)
+        {
+            return _stagePrefabs.FirstOrDefault(prefab => prefab.name == stage.ToString());
+        }
 
-        public GameObject GetStageByIndex(int index) => _stagePrefabs[index];
+        public GameObject GetStageByIndex(int index)
+        {
+            return _stagePrefabs[index];
+        }
 
         /**
          * ACTIONS
          */
 
-        public ActionInfo GetAction(Types.Character characterType, Types.ActionType actionType) =>
-            GetActionSet(characterType).GetAction(actionType);
+        public ActionInfo GetAction(Types.Character characterType, Types.ActionType actionType)
+        {
+            return GetActionSet(characterType).GetAction(actionType);
+        }
 
         public ActionSet GetActionSet(Types.Character characterType)
         {
@@ -48,8 +58,10 @@ namespace MANAGERS
             }
         }
 
-        public void LogAction(ActionInfo action) =>
+        public void LogAction(ActionInfo action)
+        {
             Debug.Log($"ACTION: {action.Name}");
+        }
 
         // reads in all of a characters actions and returns a list of them
         private Dictionary<Types.ActionType, ActionInfo> LoadActions(
@@ -79,7 +91,10 @@ namespace MANAGERS
         {
             private readonly Dictionary<Types.ActionType, ActionInfo> _actionsDictionary;
 
-            public ActionSet() => _actionsDictionary = new Dictionary<Types.ActionType, ActionInfo>();
+            public ActionSet()
+            {
+                _actionsDictionary = new Dictionary<Types.ActionType, ActionInfo>();
+            }
 
             public ActionSet(Types.Character character, Dictionary<Types.ActionType, ActionInfo> actionsDictionary)
             {
@@ -91,9 +106,12 @@ namespace MANAGERS
 
             public IEnumerable<ActionInfo> Actions => _actionsDictionary.Values;
 
-            public ActionInfo GetAction(Types.ActionType actionType) => _actionsDictionary.ContainsKey(actionType)
-                ? _actionsDictionary[actionType]
-                : _actionsDictionary[Types.ActionType.Idle];
+            public ActionInfo GetAction(Types.ActionType actionType)
+            {
+                return _actionsDictionary.ContainsKey(actionType)
+                    ? _actionsDictionary[actionType]
+                    : _actionsDictionary[Types.ActionType.Idle];
+            }
         }
     }
 }

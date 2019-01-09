@@ -8,12 +8,11 @@ namespace MISC
 {
     public class SteamClient : MonoBehaviour
     {
+        private static bool Instantiated;
         public uint AppId;
 
         private Client client;
-        
-        private static bool Instantiated;
-        
+
         private void Start()
         {
             if (Instantiated)
@@ -21,11 +20,11 @@ namespace MISC
                 Destroy(gameObject);
                 return;
             }
-            
+
             DontDestroyOnLoad(gameObject);
 
             Instantiated = true;
-            
+
             if (AppId == 0)
                 throw new Exception("You need to set the AppId to your game");
 
