@@ -14,13 +14,15 @@ namespace PLAYER
         private int _framesOfPrediction;
 
         private P2PHandler _p2pHandler;
+        [SerializeField]
         private List<P2PInputSet> _predictedInputSets;
+        [SerializeField]
         private List<P2PInputSet> _queuedInputSets;
         private bool _queueEvaluation;
         private bool _queueParse;
 
         private bool _queuePrediction;
-
+        [SerializeField]
         private List<P2PInputSet> _receivedInputSets;
 
         private bool ParsedForFrame;
@@ -84,6 +86,7 @@ namespace PLAYER
                         ParseInputs(_receivedInputSets[0]);
                         RollbackManager.Instance.SaveGameState();
                         P2PHandler.Instance.OnInputPacketsProcessed();
+                        Debug.Log($"[ARCHIVED-parsed]: {_receivedInputSets[0].PacketNumber} on {_p2pHandler.FrameCounter}");
                         ArchivedInputSets.Add(_receivedInputSets[0]);
                         _receivedInputSets.RemoveAt(0);
                         _queuePrediction = false;
@@ -126,16 +129,19 @@ namespace PLAYER
                                     RollbackManager.Instance.SaveGameState();
                                     P2PHandler.Instance.OnInputPacketsProcessed();
                                     _predictedInputSets.RemoveAt(0);
+                                    Debug.Log($"[ARCHIVED-check]: {_receivedInputSets[0].PacketNumber} on {_p2pHandler.FrameCounter}");
                                     ArchivedInputSets.Add(_receivedInputSets[0]);
                                     _receivedInputSets.RemoveAt(0);
                                 }
                                 else
                                 {
+                                    int highestPacket;
                                     for (var i = 0; i < _receivedInputSets.Count; i++)
                                     {
-                                        if (_receivedInputSets[0].PacketNumber >= _p2pHandler.FrameCounter)
+                                        if (_receivedInputSets[0].PacketNumber > _p2pHandler.FrameCounter)
                                             break;
 
+                                        Debug.Log($"[ARCHIVED-predict]: {_receivedInputSets[0].PacketNumber} on {_p2pHandler.FrameCounter}");
                                         ArchivedInputSets.Add(_receivedInputSets[0]);
                                         _receivedInputSets.RemoveAt(0);
                                         --numReceivedInputSets;
@@ -151,6 +157,7 @@ namespace PLAYER
                                 ParseInputs(_receivedInputSets[0]);
                                 RollbackManager.Instance.SaveGameState();
                                 P2PHandler.Instance.OnInputPacketsProcessed();
+                                Debug.Log($"[ARCHIVED-parsed2]: {_receivedInputSets[0].PacketNumber} on {_p2pHandler.FrameCounter}");
                                 ArchivedInputSets.Add(_receivedInputSets[0]);
                                 _receivedInputSets.RemoveAt(0);
                             }

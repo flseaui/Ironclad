@@ -11,7 +11,7 @@ namespace PLAYER
     {
         private bool[] _prevInputs;
 
-        [NonSerialized] public List<P2PInputSet> ArchivedInputSets;
+         public List<P2PInputSet> ArchivedInputSets;
 
         [NonSerialized] protected int[] InputFramesHeld;
 

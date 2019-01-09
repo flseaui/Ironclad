@@ -9,7 +9,7 @@ namespace PLAYER
     public class PlayerData : MonoBehaviour, ISettable
     {
         public PlayerDataPacket DataPacket;
-
+        
         public void SetData(object data)
         {
             var newData = (PlayerDataPacket) data;
@@ -31,6 +31,7 @@ namespace PLAYER
     [Serializable]
     public class PlayerDataPacket
     {
+        public (int, double) TotalMove;
         public enum PlayerLocation
         {
             Grounded,

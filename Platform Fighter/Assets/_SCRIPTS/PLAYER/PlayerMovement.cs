@@ -13,11 +13,17 @@ namespace PLAYER
 
         private PlayerDataPacket Data { get; set; }
         private PlayerController PlayerController { get; set; }
-
+        
         public void Step()
         {
             CalculateVelocity();
 
+            if (Data.CurrentVelocity.x > 0)
+                ++Data.TotalMove.Item1;
+            
+            Debug.Log($"Moved for the {Data.TotalMove.Item1} time by {Data.CurrentVelocity.x}");
+            Data.TotalMove.Item2 += Data.CurrentVelocity.x;
+            
             transform.Translate(Data.CurrentVelocity);
 
             Data.Position = transform.position;

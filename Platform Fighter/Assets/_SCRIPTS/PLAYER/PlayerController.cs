@@ -82,8 +82,12 @@ namespace PLAYER
                 {
                     if (_currentAction != null)
                         if (_currentAction.Type != _data.CurrentAction)
+                        {
+                            
                             Debug.Log(
                                 $"CANCELLED {_currentAction.Type} into {_data.CurrentAction} on ActionFrame: {CurrentActionFrame} on frame: {P2PHandler.Instance.FrameCounter}");
+                            Debug.Log($"TotalMove: {_data.TotalMove.Item2} for {_data.TotalMove.Item1}");
+                        }
 
                     CurrentActionFrame = 0;
                 }

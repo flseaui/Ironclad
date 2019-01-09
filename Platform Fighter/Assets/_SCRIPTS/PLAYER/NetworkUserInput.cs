@@ -162,6 +162,7 @@ namespace PLAYER
                     }
 
                     _delayedInputSets.Add(_lastInputSet);
+                    Debug.Log($"[LOCALARCHIVED]: {_lastInputSet.PacketNumber} on {P2PHandler.Instance.FrameCounter}");
                     ArchivedInputSets.Add(_lastInputSet);
                 }
 
