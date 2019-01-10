@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using MANAGERS;
 using MISC;
 using PLAYER;
+using UnityEditor;
 using UnityEngine;
 using static MISC.MathUtils;
 
@@ -53,7 +55,13 @@ namespace NETWORKING
             for (var i = 0; i < snapshotAge; ++i)
                 foreach (var player in MatchStateManager.Instance.Players)
                 {
-                    foreach (var steppable in player.GetComponents(typeof(Steppable))) ((Steppable) steppable).ControlledStep();
+                    var steppables = player.GetComponents(typeof(Steppable)).Select(steppable =>
+                        (MonoImporter.GetExecutionOrder(MonoScript.FromMonoBehaviour((MonoBehaviour) steppable)),
+                            (Steppable) steppable)).ToList();
+
+                    steppables.OrderBy(steppable => steppable.Item1).ToList()
+                        .ForEach(steppable => steppable.Item2.ControlledStep());
+                    
                     player.GetComponent<InputSender>().ApplyArchivedInputSet(i);
                 }
         }
