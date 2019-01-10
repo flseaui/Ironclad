@@ -135,7 +135,6 @@ namespace PLAYER
                                 }
                                 else
                                 {
-                                    int highestPacket;
                                     for (var i = 0; i < _receivedInputSets.Count; i++)
                                     {
                                         if (_receivedInputSets[0].PacketNumber > _p2pHandler.FrameCounter)
