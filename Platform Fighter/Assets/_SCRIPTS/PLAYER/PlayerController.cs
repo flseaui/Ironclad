@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ATTRIBUTES;
 using DATA;
 using MANAGERS;
 using MISC;
@@ -13,7 +14,7 @@ namespace PLAYER
 
     public delegate void OnActionBeginCallback();
 
-    [RequireComponent(typeof(PlayerData))]
+    [StepOrder(1), RequireComponent(typeof(PlayerData))]
     public class PlayerController : Steppable
     {
         private Animator _animator;
@@ -47,7 +48,7 @@ namespace PLAYER
         public static event OnActionEndCallback OnActionEnd;
         public static event OnActionBeginCallback OnActionBegin;
 
-        private void Awake()
+        protected override void LateAwake()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
 

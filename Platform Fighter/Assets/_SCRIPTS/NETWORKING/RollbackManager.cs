@@ -14,12 +14,34 @@ namespace NETWORKING
     {
         private int _age;
         private List<List<Snapshot>> _snapshots;
+        
+        private List<(int, Steppable)> _steppables;
+
+        public void AddSteppable(Steppable steppable, int stepOrder)
+        {
+            _steppables.Add((stepOrder, steppable));
+            Debug.Log($"Added Steppable {steppable.name} with stepOrder {stepOrder}");
+        }
+
+        
+        private void Awake()
+        {
+            _snapshots = new List<List<Snapshot>>();
+            _steppables = new List<(int, Steppable)>();
+        }
 
         private void Start()
         {
-            _snapshots = new List<List<Snapshot>>();
-        }
+            _steppables = _steppables.OrderBy(x => x.Item2.GetComponent<NetworkIdentity>().Id).ThenBy(x => x.Item1).ToList();
+            //_steppables = _steppables.OrderBy(steppable => steppable.Key).ThenBy(steppable => steppable.Value.Item1.GetComponent<NetworkIdentity>().Id)
+              //  .ToDictionary(x => x.Key, x => x.Value);
 
+            foreach (var s in _steppables)
+            {
+                Debug.Log($"[STEPPABLE] stepOrder: {s.Item1}, networkId: {s.Item2.GetComponent<NetworkIdentity>().Id}");
+            }
+        }
+        
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.F1)) SaveGameState();
@@ -52,24 +74,19 @@ namespace NETWORKING
 
             var snapshotAge = Mod(P2PHandler.Instance.InputPacketsSent - _age, 600) + 1;
             Debug.Log("SnapshotAge: " + snapshotAge);
-            var playersSteppables = new List<(Action<int>, List<Steppable>)>();
-            foreach (var player in MatchStateManager.Instance.Players)
-            {
-                var unsortedSteppables = player.GetComponents(typeof(Steppable)).Select(steppable =>
-                    (MonoImporter.GetExecutionOrder(MonoScript.FromMonoBehaviour((MonoBehaviour) steppable)),
-                        (Steppable) steppable)).ToList();
 
-                unsortedSteppables.Sort((x, y) => x.Item1.CompareTo(y.Item1));
-                playersSteppables.Add((i => player.GetComponent<InputSender>().ApplyArchivedInputSet(i), unsortedSteppables.Select(steppable => steppable.Item2).ToList()));
-            }
-
+            int lastOrder = _steppables[0].Item1;
             for (var i = 0; i < snapshotAge; ++i)
             {
-                playersSteppables.ForEach(steppables =>
+                for (var j = 0; j < _steppables.Count; j++)
                 {
-                    steppables.Item2.ForEach(steppable => steppable.ControlledStep());
-                    steppables.Item1(i);
-                });
+                    _steppables[j].Item2.ControlledStep();
+                    
+                    if (_steppables[j].Item1 < lastOrder || _steppables[j].Item1 == 0)
+                        _steppables[j].Item2.GetComponent<InputSender>().ApplyArchivedInputSet(i);
+                    
+                    lastOrder = _steppables[j].Item1;
+                }
             }
         }
 

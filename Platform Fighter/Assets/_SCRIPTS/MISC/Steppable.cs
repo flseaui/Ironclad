@@ -1,3 +1,6 @@
+using System.Reflection;
+using ATTRIBUTES;
+using NETWORKING;
 using UnityEngine;
 
 namespace MISC
@@ -7,10 +10,20 @@ namespace MISC
     /// <para>
     /// Auto-steps on FixedUpdate unless ControlledStep() has previously been called that frame.
     /// </para>
+    /// <para>
+    /// StepOrderAttribute can be used to denote stepping order during a rollback, defaults to last.
+    /// </para>
     /// </summary>
+    [StepOrder(999)]
     public abstract class Steppable : MonoBehaviour
     {
         private bool _stepNext;
+
+        private void Awake()
+        {
+            RollbackManager.Instance.AddSteppable(this, GetType().GetCustomAttribute<StepOrderAttribute>()?.StepOrder ?? 999);
+            LateAwake();
+        }
 
         private void FixedUpdate()
         {
@@ -34,5 +47,10 @@ namespace MISC
         /// Simulates one game frame, called from FixedUpdate.
         /// </summary>
         protected abstract void Step();
+
+        /// <summary>
+        /// Called after Steppable's Awake
+        /// </summary>
+        protected virtual void LateAwake() { }
     }
 }

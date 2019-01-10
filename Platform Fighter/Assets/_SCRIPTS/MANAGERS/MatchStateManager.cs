@@ -94,7 +94,7 @@ namespace MANAGERS
                                 spawnPoints[i].rotation
                             );
                         }
-
+                        
                         player.AddComponent<NetworkIdentity>();
                         player.GetComponent<NetworkIdentity>().Id = i;
                         player.GetComponent<NetworkIdentity>().SteamId = GameManager.Instance.SteamIds[i];
@@ -107,6 +107,7 @@ namespace MANAGERS
 
                 Players.Add(player);
             }
+
         }
 
         // spawns stage and returns list of that stages spawn points

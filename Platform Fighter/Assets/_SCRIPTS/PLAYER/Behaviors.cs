@@ -1,9 +1,10 @@
-﻿using MISC;
+﻿using ATTRIBUTES;
+using MISC;
 using UnityEngine;
 
 namespace PLAYER
 {
-    [RequireComponent(typeof(PlayerData))]
+    [StepOrder(2), RequireComponent(typeof(PlayerData))]
     public abstract class Behaviors : Steppable
     {
         protected PlayerDataPacket Data { get; private set; }
@@ -15,7 +16,7 @@ namespace PLAYER
             RunAction();
         }
 
-        private void Awake()
+        protected override void LateAwake()
         {
             Data = GetComponent<PlayerData>().DataPacket;
             PlayerController = GetComponent<PlayerController>();

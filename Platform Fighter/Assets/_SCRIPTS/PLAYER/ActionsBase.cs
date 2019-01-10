@@ -1,11 +1,11 @@
-﻿using MISC;
+﻿using ATTRIBUTES;
+using MISC;
 using UnityEngine;
 using Types = DATA.Types;
 
 namespace PLAYER
 {
-    [RequireComponent(typeof(InputSender))]
-    [RequireComponent(typeof(PlayerData))]
+    [StepOrder(0), RequireComponent(typeof(InputSender)), RequireComponent(typeof(PlayerData))]
     public abstract class ActionsBase : Steppable
     {
         private PlayerController _playerController;
@@ -25,7 +25,7 @@ namespace PLAYER
             Data.CurrentAction = newAction;
         }
 
-        private void Awake()
+        protected override void LateAwake()
         {
             _playerController = GetComponent<PlayerController>();
 

@@ -1,12 +1,12 @@
-﻿using DATA;
+﻿using ATTRIBUTES;
+using DATA;
 using MISC;
 using UnityEngine;
 using Types = DATA.Types;
 
 namespace PLAYER
 {
-    [RequireComponent(typeof(PlayerData))]
-    [RequireComponent(typeof(PlayerController))]
+    [StepOrder(3), RequireComponent(typeof(PlayerData)), RequireComponent(typeof(PlayerController))]
     public class PlayerMovement : Steppable
     {
         [SerializeField] private Vector2 _addedForce;
@@ -29,7 +29,7 @@ namespace PLAYER
             Data.Position = transform.position;
         }
 
-        private void Awake()
+        protected override void LateAwake()
         {
             Data = GetComponent<PlayerData>().DataPacket;
             PlayerController = GetComponent<PlayerController>();
