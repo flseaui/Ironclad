@@ -52,18 +52,25 @@ namespace NETWORKING
 
             var snapshotAge = Mod(P2PHandler.Instance.InputPacketsSent - _age, 600) + 1;
             Debug.Log("SnapshotAge: " + snapshotAge);
-            for (var i = 0; i < snapshotAge; ++i)
-                foreach (var player in MatchStateManager.Instance.Players)
-                {
-                    var steppables = player.GetComponents(typeof(Steppable)).Select(steppable =>
-                        (MonoImporter.GetExecutionOrder(MonoScript.FromMonoBehaviour((MonoBehaviour) steppable)),
-                            (Steppable) steppable)).ToList();
+            var playersSteppables = new List<(Action<int>, List<Steppable>)>();
+            foreach (var player in MatchStateManager.Instance.Players)
+            {
+                var unsortedSteppables = player.GetComponents(typeof(Steppable)).Select(steppable =>
+                    (MonoImporter.GetExecutionOrder(MonoScript.FromMonoBehaviour((MonoBehaviour) steppable)),
+                        (Steppable) steppable)).ToList();
 
-                    steppables.OrderBy(steppable => steppable.Item1).ToList()
-                        .ForEach(steppable => steppable.Item2.ControlledStep());
-                    
-                    player.GetComponent<InputSender>().ApplyArchivedInputSet(i);
-                }
+                unsortedSteppables.Sort((x, y) => x.Item1.CompareTo(y.Item1));
+                playersSteppables.Add((i => player.GetComponent<InputSender>().ApplyArchivedInputSet(i), unsortedSteppables.Select(steppable => steppable.Item2).ToList()));
+            }
+
+            for (var i = 0; i < snapshotAge; ++i)
+            {
+                playersSteppables.ForEach(steppables =>
+                {
+                    steppables.Item2.ForEach(steppable => steppable.ControlledStep());
+                    steppables.Item1(i);
+                });
+            }
         }
 
         public void SaveGameState()
