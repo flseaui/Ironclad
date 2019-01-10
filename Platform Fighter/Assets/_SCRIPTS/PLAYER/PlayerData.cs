@@ -24,6 +24,7 @@ namespace PLAYER
             DataPacket.TerminalVelocity = newData.TerminalVelocity;
             DataPacket.Position = newData.Position;
             DataPacket.VelocityModifier = newData.VelocityModifier;
+            DataPacket.TotalMove = newData.TotalMove;
             transform.position = newData.Position;
         }
     }

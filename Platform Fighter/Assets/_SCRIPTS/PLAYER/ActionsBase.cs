@@ -6,7 +6,7 @@ namespace PLAYER
 {
     [RequireComponent(typeof(InputSender))]
     [RequireComponent(typeof(PlayerData))]
-    public abstract class ActionsBase : MonoBehaviour, ISteppable
+    public abstract class ActionsBase : Steppable
     {
         private PlayerController _playerController;
 
@@ -16,7 +16,7 @@ namespace PLAYER
 
         protected int CurrentActionFrame => _playerController.CurrentActionFrame;
 
-        public void Step()
+        protected sealed override void Step()
         {
             var newAction = GetCurrentAction();
             if (Data.CurrentAction != newAction)
@@ -37,11 +37,6 @@ namespace PLAYER
                 Input = GetComponent<NetworkInput>();
 
             Data = GetComponent<PlayerData>().DataPacket;
-        }
-
-        private void FixedUpdate()
-        {
-            Step();
         }
 
         protected abstract Types.ActionType GetCurrentAction();

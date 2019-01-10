@@ -53,7 +53,7 @@ namespace NETWORKING
             for (var i = 0; i < snapshotAge; ++i)
                 foreach (var player in MatchStateManager.Instance.Players)
                 {
-                    foreach (var steppable in player.GetComponents(typeof(ISteppable))) ((ISteppable) steppable).Step();
+                    foreach (var steppable in player.GetComponents(typeof(Steppable))) ((Steppable) steppable).ControlledStep();
                     player.GetComponent<InputSender>().ApplyArchivedInputSet(i);
                 }
         }

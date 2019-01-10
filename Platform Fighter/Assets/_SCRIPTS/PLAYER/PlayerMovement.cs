@@ -7,14 +7,14 @@ namespace PLAYER
 {
     [RequireComponent(typeof(PlayerData))]
     [RequireComponent(typeof(PlayerController))]
-    public class PlayerMovement : MonoBehaviour, ISteppable
+    public class PlayerMovement : Steppable
     {
         [SerializeField] private Vector2 _addedForce;
 
         private PlayerDataPacket Data { get; set; }
         private PlayerController PlayerController { get; set; }
         
-        public void Step()
+        protected sealed override void Step()
         {
             CalculateVelocity();
 
@@ -33,11 +33,6 @@ namespace PLAYER
         {
             Data = GetComponent<PlayerData>().DataPacket;
             PlayerController = GetComponent<PlayerController>();
-        }
-
-        private void FixedUpdate()
-        {
-            Step();
         }
 
         private void CalculateVelocity()

@@ -150,6 +150,10 @@ namespace PLAYER
                                     RollbackManager.Instance.Rollback(0);
                                     _predictedInputSets.Clear();
                                 }
+
+                                if (_receivedInputSets.Count == 0)
+                                    if (ArchivedInputSets[0].PacketNumber < _p2pHandler.FrameCounter)
+                                        _queuePrediction = true;
                             }
                             else
                             {

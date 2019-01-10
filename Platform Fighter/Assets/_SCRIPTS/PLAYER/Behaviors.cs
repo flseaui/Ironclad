@@ -4,13 +4,13 @@ using UnityEngine;
 namespace PLAYER
 {
     [RequireComponent(typeof(PlayerData))]
-    public abstract class Behaviors : MonoBehaviour, ISteppable
+    public abstract class Behaviors : Steppable
     {
         protected PlayerDataPacket Data { get; private set; }
 
         protected PlayerController PlayerController { get; private set; }
 
-        public void Step()
+        protected sealed override void Step()
         {
             RunAction();
         }
@@ -19,11 +19,6 @@ namespace PLAYER
         {
             Data = GetComponent<PlayerData>().DataPacket;
             PlayerController = GetComponent<PlayerController>();
-        }
-
-        private void FixedUpdate()
-        {
-            Step();
         }
 
         public abstract void RunAction();

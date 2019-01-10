@@ -14,7 +14,7 @@ namespace PLAYER
     public delegate void OnActionBeginCallback();
 
     [RequireComponent(typeof(PlayerData))]
-    public class PlayerController : MonoBehaviour, ISteppable
+    public class PlayerController : Steppable
     {
         private Animator _animator;
 
@@ -39,7 +39,7 @@ namespace PLAYER
             }
         }
 
-        public void Step()
+        protected sealed override void Step()
         {
             ExecuteAction();
         }
@@ -64,11 +64,6 @@ namespace PLAYER
             var Position = PlayerDataPacket.PlayerLocation.Grounded;
 
             PoolBoxes();
-        }
-
-        private void FixedUpdate()
-        {
-            Step();
         }
 
         private void ExecuteAction()
