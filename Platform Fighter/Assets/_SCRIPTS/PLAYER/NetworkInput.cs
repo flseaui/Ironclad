@@ -160,7 +160,7 @@ namespace PLAYER
                                         --numReceivedInputSets;
                                     }
 
-                                    RollbackManager.Instance.Rollback(0);
+                                    RollbackManager.Instance.Rollback(_receivedInputSets.Last().PacketNumber - _predictedInputSets[0].PacketNumber);
                                     _predictedInputSets.Clear();
                                 }
                             }

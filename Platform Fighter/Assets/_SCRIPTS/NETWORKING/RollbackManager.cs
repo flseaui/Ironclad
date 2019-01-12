@@ -52,14 +52,11 @@ namespace NETWORKING
         /// <summary>
         ///     Rollback the game state to a previous iteration
         /// </summary>
-        /// <param name="distance"> Number of snapshots to rollback. </param>
-        public void Rollback(int distance)
+        public void Rollback(int difference)
         {
             Debug.Log("ROLLBACK PART 1");
 
-            if (distance < 0 || distance > _snapshots.Count) return;
-
-            foreach (var snapshotPiece in _snapshots[distance])
+            foreach (var snapshotPiece in _snapshots[0])
             {
                 var packet = JsonUtility.FromJson(snapshotPiece.JsonData, snapshotPiece.Type);
 
@@ -72,7 +69,7 @@ namespace NETWORKING
                 Debug.Log("ROLLBACK PART 2");
             }
 
-            var snapshotAge = Mod(P2PHandler.Instance.InputPacketsSent - _age, 600) + 1;
+            var snapshotAge = Mod(P2PHandler.Instance.InputPacketsSent - difference - _age, 600) + 1;
             Debug.Log("SnapshotAge: " + snapshotAge);
 
             int lastOrder = _steppables[0].Item1;
