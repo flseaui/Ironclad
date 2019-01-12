@@ -68,6 +68,7 @@ namespace PLAYER
                 }
 
                 ParsedForFrame = false;
+                _queuePrediction = true;
 
                 for (var index = 0; index < numReceivedInputSets; index++)
                 {
@@ -149,10 +150,6 @@ namespace PLAYER
                                     RollbackManager.Instance.Rollback(0);
                                     _predictedInputSets.Clear();
                                 }
-
-                                if (_receivedInputSets.Count == 0)
-                                    if (ArchivedInputSets[0].PacketNumber < _p2pHandler.FrameCounter)
-                                        _queuePrediction = true;
                             }
                             else
                             {
