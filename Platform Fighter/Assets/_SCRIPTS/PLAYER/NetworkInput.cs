@@ -38,7 +38,20 @@ namespace PLAYER
 
         public void GiveInputs(P2PInputSet receivedInputs)
         {
-            Debug.Log($"Received: {receivedInputs.PacketNumber} on {_p2pHandler.FrameCounter}");
+
+            var temp = Environment.NewLine;
+
+
+            if (receivedInputs.Inputs.Length > 0)
+            {
+                foreach (var input in receivedInputs.Inputs)
+                {
+                    var state = input.State ? "Pressed" : "Released";
+                    temp += $"[{input.InputType}]->{state}{Environment.NewLine}";
+                }
+            }
+
+            Debug.Log($"Received: {receivedInputs.PacketNumber} on {_p2pHandler.FrameCounter} containing {temp}");
 
             _receivedInputSets.Add(receivedInputs);
         }
@@ -194,7 +207,7 @@ namespace PLAYER
 
         private P2PInputSet PredictInputs()
         {
-            return new P2PInputSet(new P2PInputSet.InputChange[] { }, Mod(_p2pHandler.FrameCounter, 600));
+            return new P2PInputSet(new P2PInputSet.InputChange[] { }, _p2pHandler.FrameCounter % 600);
         }
 
         public void ParseInputs(P2PInputSet inputSet)
