@@ -46,13 +46,13 @@ namespace NETWORKING
         {
             if (Input.GetKeyDown(KeyCode.F1)) SaveGameState();
 
-            if (Input.GetKeyDown(KeyCode.F2)) Rollback(0);
+            if (Input.GetKeyDown(KeyCode.F2)) Rollback();
         }
 
         /// <summary>
         ///     Rollback the game state to a previous iteration
         /// </summary>
-        public void Rollback(int difference)
+        public void Rollback()
         {
             Debug.Log("ROLLBACK PART 1");
 
@@ -69,7 +69,15 @@ namespace NETWORKING
                 Debug.Log("ROLLBACK PART 2");
             }
 
-            var snapshotAge = Mod(P2PHandler.Instance.InputPacketsSent - difference - _age, 600) + 1;
+            //var snapshotAge = Mod(P2PHandler.Instance.InputPacketsSent - _age, 600) + 1;
+            var snapshotAge = 0;
+            foreach (var player in MatchStateManager.Instance.Players)
+            {
+                if (player.GetComponent<NetworkInput>())
+                    snapshotAge = player.GetComponent<NetworkInput>().ArchivedInputSets.Count;
+                else
+                    snapshotAge = player.GetComponent<NetworkUserInput>().ArchivedInputSets.Count;
+            }
             Debug.Log("SnapshotAge: " + snapshotAge);
 
             int lastOrder = _steppables[0].Item1;
