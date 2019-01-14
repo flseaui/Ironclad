@@ -38,7 +38,6 @@ namespace MISC
         /// </summary>
         public void ControlledStep()
         {
-            Debug.Log("[[[[[[{STEP]]]]]]]");
             Step();
             _stepNext = false;
         }

@@ -70,14 +70,19 @@ namespace NETWORKING
             }
 
             //var snapshotAge = Mod(P2PHandler.Instance.InputPacketsSent - _age, 600) + 1;
-            var snapshotAge = 0;
-            foreach (var player in MatchStateManager.Instance.Players)
+            var player0 = MatchStateManager.Instance.GetPlayer(0);
+            var snapshotAge = player0.GetComponent<NetworkInput>()
+                ? player0.GetComponent<NetworkInput>().ArchivedInputSets.Count
+                : player0.GetComponent<NetworkUserInput>().ArchivedInputSets.Count;
+            for (var index = 1; index < MatchStateManager.Instance.Players.Count; index++)
             {
-                if (player.GetComponent<NetworkInput>())
-                    snapshotAge = player.GetComponent<NetworkInput>().ArchivedInputSets.Count;
-                else
-                    snapshotAge = player.GetComponent<NetworkUserInput>().ArchivedInputSets.Count;
+                var player = MatchStateManager.Instance.Players[index];
+                var count = player.GetComponent<NetworkInput>()
+                    ? player.GetComponent<NetworkInput>().ArchivedInputSets.Count
+                    : player.GetComponent<NetworkUserInput>().ArchivedInputSets.Count;
+                if (count <= snapshotAge) snapshotAge = count;
             }
+
             Debug.Log("SnapshotAge: " + snapshotAge);
 
             int lastOrder = _steppables[0].Item1;
