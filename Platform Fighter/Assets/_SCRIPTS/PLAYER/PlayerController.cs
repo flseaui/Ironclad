@@ -81,7 +81,7 @@ namespace PLAYER
                         {
                             
                             Debug.Log(
-                                $"CANCELLED {_currentAction.Type} into {_data.CurrentAction} on ActionFrame: {CurrentActionFrame} on frame: {P2PHandler.Instance.FrameCounter}");
+                                $"CANCELLED {_currentAction.Type} into {_data.CurrentAction} on ActionFrame: {CurrentActionFrame} on frame: {P2PHandler.Instance.DataPacket.FrameCounter}");
                             Debug.Log($"TotalMove: {_data.TotalMove.Item2} for {_data.TotalMove.Item1}");
                         }
 
@@ -92,7 +92,7 @@ namespace PLAYER
                     if (_currentAction != null)
                         if (_currentAction.Type != _data.CurrentAction)
                             Debug.Log(
-                                $"SWITCHED FROM {_currentAction.Type} to {_data.CurrentAction} on ActionFrame: {CurrentActionFrame} on frame: {P2PHandler.Instance.FrameCounter}");
+                                $"SWITCHED FROM {_currentAction.Type} to {_data.CurrentAction} on ActionFrame: {CurrentActionFrame} on frame: {P2PHandler.Instance.DataPacket.FrameCounter}");
                 }
 
                 _currentAction = AssetManager.Instance.GetAction(Types.Character.TestCharacter, _data.CurrentAction);

@@ -90,10 +90,11 @@ namespace NETWORKING
             {
                 for (var j = 0; j < _steppables.Count; j++)
                 {
-                    _steppables[j].Item2.ControlledStep();
-                    
                     if (_steppables[j].Item1 < lastOrder || _steppables[j].Item1 == 0)
                         _steppables[j].Item2.GetComponent<InputSender>().ApplyArchivedInputSet(i);
+                    
+                    Debug.Log($"[STEPPED - {_steppables[j].Item1}]: {_steppables[j].Item2.GetType()}");
+                    _steppables[j].Item2.ControlledStep();
                     
                     lastOrder = _steppables[j].Item1;
                 }

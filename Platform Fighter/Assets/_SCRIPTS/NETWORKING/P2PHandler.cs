@@ -15,6 +15,8 @@ namespace NETWORKING
     {
         [NonSerialized]
         public int FramesLapsed;
+        [NonSerialized]
+        public int FrameCounter = 1;
     }
 
     public class P2PHandler : SettableSingleton<P2PHandler>
@@ -29,8 +31,6 @@ namespace NETWORKING
 
         
         public int Delay = 2;
-        [NonSerialized]
-        public int FrameCounter;
         [NonSerialized]
         public int InputPacketsProcessed;
         [NonSerialized]
@@ -67,8 +67,8 @@ namespace NETWORKING
 
             //if (!ReceivedFirstInput) return;
             
-            FrameCounter += 1 + (_previousDelay - Delay);
-            FrameCounter %= 600;
+            DataPacket.FrameCounter += 1 + (_previousDelay - Delay);
+            DataPacket.FrameCounter %= 600;
 
             _previousDelay = Delay;
         }
@@ -212,6 +212,7 @@ namespace NETWORKING
             var data = (P2PHandlerPacket) newData;
 
             DataPacket.FramesLapsed = data.FramesLapsed;
+            DataPacket.FrameCounter = data.FrameCounter;
         }
     }
 }

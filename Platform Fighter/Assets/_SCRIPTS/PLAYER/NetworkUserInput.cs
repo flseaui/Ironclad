@@ -151,7 +151,7 @@ namespace PLAYER
                 if (_lastInputSet.Inputs.Length > 0)
                 {
                     var temp =
-                        $"LOCALINPUT [{_lastInputSet.PacketNumber}] on {P2PHandler.Instance.FrameCounter} {Environment.NewLine}";
+                        $"LOCALINPUT [{_lastInputSet.PacketNumber}] on {P2PHandler.Instance.DataPacket.FrameCounter} {Environment.NewLine}";
                     foreach (var input in _lastInputSet.Inputs)
                     {
                         var state = input.State ? "Pressed" : "Released";
@@ -162,7 +162,7 @@ namespace PLAYER
                 }
 
                 _delayedInputSets.Add(_lastInputSet);
-                Debug.Log($"[LOCALARCHIVED]: {_lastInputSet.PacketNumber} on {P2PHandler.Instance.FrameCounter}");
+                Debug.Log($"[LOCALARCHIVED]: {_lastInputSet.PacketNumber} on {P2PHandler.Instance.DataPacket.FrameCounter}");
                 ArchivedInputSets.Add(_lastInputSet);
             }
 

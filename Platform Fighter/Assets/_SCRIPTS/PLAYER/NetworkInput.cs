@@ -13,7 +13,7 @@ namespace PLAYER
     {
         private int _framesOfPrediction;
 
-        private P2PHandler _p2pHandler;
+        private P2PHandlerPacket _p2pHandler;
         [SerializeField]
         private List<P2PInputSet> _predictedInputSets;
         [SerializeField]
@@ -33,7 +33,7 @@ namespace PLAYER
             _receivedInputSets = new List<P2PInputSet>();
             _queuedInputSets = new List<P2PInputSet>();
             _predictedInputSets = new List<P2PInputSet>();
-            _p2pHandler = P2PHandler.Instance;
+            _p2pHandler = P2PHandler.Instance.DataPacket;
         }
 
         public void GiveInputs(P2PInputSet receivedInputs)
@@ -87,12 +87,10 @@ namespace PLAYER
                 {
                     var receivedPacketNum = Mod(_receivedInputSets[0].PacketNumber, 600);
 
-                    var curPacketsProcessed = _p2pHandler.InputPacketsProcessed;
-
                     var numPredictedInputSets = _predictedInputSets.Count;
 
                     Debug.Log(
-                        $"receivedNum: {receivedPacketNum}, processed: {curPacketsProcessed}, numPredicted: {numPredictedInputSets}");
+                        $"receivedNum: {receivedPacketNum}, numPredicted: {numPredictedInputSets}");
 
                     if (receivedPacketNum == _p2pHandler.FrameCounter && !ParsedForFrame)
                     {
@@ -149,19 +147,21 @@ namespace PLAYER
                                 }
                                 else
                                 {
-                                    for (var i = 0; i < _receivedInputSets.Count; i++)
+                                    var receivedInputSetsCount = _receivedInputSets.Count;
+                                    for (var i = 0; i < receivedInputSetsCount; i++)
                                     {
                                         if (_receivedInputSets[0].PacketNumber > _p2pHandler.FrameCounter)
                                             break;
 
-                                        Debug.Log($"[ARCHIVED-predict]: {_receivedInputSets[0].PacketNumber} on {_p2pHandler.FrameCounter}");
+                                        Debug.Log(
+                                            $"[ARCHIVED-predict]: {_receivedInputSets[0].PacketNumber} on {_p2pHandler.FrameCounter}");
                                         ArchivedInputSets.Add(_receivedInputSets[0]);
                                         _receivedInputSets.RemoveAt(0);
+                                        _predictedInputSets.RemoveAt(0);
                                         --numReceivedInputSets;
                                     }
 
                                     RollbackManager.Instance.Rollback();
-                                    _predictedInputSets.Clear();
                                 }
                             }
                             else

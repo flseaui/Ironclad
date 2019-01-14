@@ -17,7 +17,7 @@ namespace PLAYER
         protected int CurrentActionFrame => _playerController.CurrentActionFrame;
 
         protected sealed override void Step()
-        {
+        {           
             var newAction = GetCurrentAction();
             if (Data.CurrentAction != newAction)
                 GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ResetAction, Types.FlagState.Pending);
