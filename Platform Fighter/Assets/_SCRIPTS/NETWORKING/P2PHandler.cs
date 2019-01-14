@@ -64,13 +64,11 @@ namespace NETWORKING
                 return;
 
             //if (!ReceivedFirstInput) return;
-            
-            DataPacket.FrameCounter += 1 + (_previousDelay - Delay);
-            DataPacket.FrameCounter %= 600;
+            IncrementFrameCounter();
 
             _previousDelay = Delay;
         }
-
+        
         private void SubscribeToP2PEvents()
         {
             Client.Instance.Networking.SetListenChannel(0, true);
@@ -205,6 +203,12 @@ namespace NETWORKING
             InputPacketsProcessed = ++InputPacketsProcessed % 600;
         }
 
+        public void IncrementFrameCounter()
+        {
+            DataPacket.FrameCounter += 1 + (_previousDelay - Delay);
+            DataPacket.FrameCounter %= 600;
+        }
+        
         public override void SetData(object newData)
         {
             var data = (P2PHandlerPacket) newData;

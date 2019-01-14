@@ -54,8 +54,6 @@ namespace NETWORKING
         /// </summary>
         public void Rollback()
         {
-            Debug.Log("ROLLBACK PART 1");
-
             foreach (var snapshotPiece in _snapshots[0])
             {
                 var packet = JsonUtility.FromJson(snapshotPiece.JsonData, snapshotPiece.Type);
@@ -65,8 +63,6 @@ namespace NETWORKING
                 else
                     ((ISettable) MatchStateManager.Instance.GetPlayer(snapshotPiece.Player)
                         .GetComponent(snapshotPiece.BaseType)).SetData(packet);
-
-                Debug.Log("ROLLBACK PART 2");
             }
 
             //var snapshotAge = Mod(P2PHandler.Instance.InputPacketsSent - _age, 600) + 1;
@@ -83,6 +79,8 @@ namespace NETWORKING
                 if (count <= snapshotAge) snapshotAge = count;
             }
 
+            Debug.Log($"ROLLED BACK TO {P2PHandler.Instance.DataPacket.FrameCounter}");
+            
             Debug.Log("SnapshotAge: " + snapshotAge);
 
             int lastOrder = _steppables[0].Item1;
@@ -91,18 +89,24 @@ namespace NETWORKING
                 for (var j = 0; j < _steppables.Count; j++)
                 {
                     if (_steppables[j].Item1 < lastOrder || _steppables[j].Item1 == 0)
+                    {
+                        Debug.Log($"Applying on {P2PHandler.Instance.DataPacket.FrameCounter} +");
                         _steppables[j].Item2.GetComponent<InputSender>().ApplyArchivedInputSet(i);
-                    
+                    }
+
                     Debug.Log($"[STEPPED - {_steppables[j].Item1}]: {_steppables[j].Item2.GetType()}");
                     _steppables[j].Item2.ControlledStep();
                     
                     lastOrder = _steppables[j].Item1;
                 }
+
+                P2PHandler.Instance.IncrementFrameCounter();
             }
         }
 
         public void SaveGameState(int frame)
         {
+            Debug.Log($"[SaveGameState] on: {frame}");
             _snapshots.Clear();
             _snapshots.Add(new List<Snapshot>());
             foreach (var player in MatchStateManager.Instance.Players)
