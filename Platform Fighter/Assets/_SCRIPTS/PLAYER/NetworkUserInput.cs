@@ -139,32 +139,32 @@ namespace PLAYER
 
         private void FixedUpdate()
         {
-            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer)
-                if (P2PHandler.Instance.LatencyCalculated)
+            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer
+                && P2PHandler.Instance.LatencyCalculated)
+            {
+                if (_delayedInputSets.Count == P2PHandler.Instance.Delay)
+                    ApplyDelayedInputSets();
+
+                var inputArray = _changedInputs.ToArray();
+                _lastInputSet = new P2PInputSet(inputArray, P2PHandler.Instance.InputPacketsSent);
+                Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, true);
+                if (_lastInputSet.Inputs.Length > 0)
                 {
-                    if (_delayedInputSets.Count == P2PHandler.Instance.Delay)
-                        ApplyDelayedInputSets();
-
-                    var inputArray = _changedInputs.ToArray();
-                    _lastInputSet = new P2PInputSet(inputArray, P2PHandler.Instance.InputPacketsSent);
-                    Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, true);
-                    if (_lastInputSet.Inputs.Length > 0)
+                    var temp =
+                        $"LOCALINPUT [{_lastInputSet.PacketNumber}] on {P2PHandler.Instance.FrameCounter} {Environment.NewLine}";
+                    foreach (var input in _lastInputSet.Inputs)
                     {
-                        var temp =
-                            $"LOCALINPUT [{_lastInputSet.PacketNumber}] on {P2PHandler.Instance.FrameCounter} {Environment.NewLine}";
-                        foreach (var input in _lastInputSet.Inputs)
-                        {
-                            var state = input.State ? "Pressed" : "Released";
-                            temp += $"[{input.InputType}]->{state}{Environment.NewLine}";
-                        }
-
-                        Debug.Log(temp);
+                        var state = input.State ? "Pressed" : "Released";
+                        temp += $"[{input.InputType}]->{state}{Environment.NewLine}";
                     }
 
-                    _delayedInputSets.Add(_lastInputSet);
-                    Debug.Log($"[LOCALARCHIVED]: {_lastInputSet.PacketNumber} on {P2PHandler.Instance.FrameCounter}");
-                    ArchivedInputSets.Add(_lastInputSet);
+                    Debug.Log(temp);
                 }
+
+                _delayedInputSets.Add(_lastInputSet);
+                Debug.Log($"[LOCALARCHIVED]: {_lastInputSet.PacketNumber} on {P2PHandler.Instance.FrameCounter}");
+                ArchivedInputSets.Add(_lastInputSet);
+            }
 
             _changedInputs.Clear();
         }

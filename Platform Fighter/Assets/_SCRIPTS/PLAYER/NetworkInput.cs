@@ -199,7 +199,7 @@ namespace PLAYER
                 !P2PHandler.Instance.LatencyCalculated)
                 return;
 
-            if (!P2PHandler.Instance.ReceivedFirstInput) return;
+            //if (!P2PHandler.Instance.ReceivedFirstInput) return;
 
             //HandleInputs();
             HandleInputs();
@@ -207,7 +207,7 @@ namespace PLAYER
 
         private P2PInputSet PredictInputs()
         {
-            return new P2PInputSet(new P2PInputSet.InputChange[] { }, _p2pHandler.FrameCounter % 600);
+            return new P2PInputSet(new P2PInputSet.InputChange[] { }, Mod(_p2pHandler.FrameCounter, 600));
         }
 
         public void ParseInputs(P2PInputSet inputSet)

@@ -13,6 +13,7 @@ namespace NETWORKING
     [Serializable]
     public class P2PHandlerPacket
     {
+        [NonSerialized]
         public int FramesLapsed;
     }
 
@@ -21,16 +22,25 @@ namespace NETWORKING
         private int _playersJoined = 1;
 
         private int _previousDelay;
+
+        private bool _started;
+        
         public P2PHandlerPacket DataPacket;
 
+        
         public int Delay = 2;
-        public int FrameCounter = -1;
+        [NonSerialized]
+        public int FrameCounter;
+        [NonSerialized]
         public int InputPacketsProcessed;
+        [NonSerialized]
         public int InputPacketsReceived;
-
+        [NonSerialized]
         public int InputPacketsSent;
 
+        [NonSerialized]
         public bool LatencyCalculated;
+        [NonSerialized]
         public bool ReceivedFirstInput;
 
         private void Start()
@@ -55,8 +65,8 @@ namespace NETWORKING
             if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && !LatencyCalculated)
                 return;
 
-            if (!ReceivedFirstInput) return;
-
+            //if (!ReceivedFirstInput) return;
+            
             FrameCounter += 1 + (_previousDelay - Delay);
             FrameCounter %= 600;
 
