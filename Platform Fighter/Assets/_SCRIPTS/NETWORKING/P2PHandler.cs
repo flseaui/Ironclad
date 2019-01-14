@@ -13,9 +13,7 @@ namespace NETWORKING
     [Serializable]
     public class P2PHandlerPacket
     {
-        [NonSerialized]
         public int FramesLapsed;
-        [NonSerialized]
         public int FrameCounter = 1;
     }
 

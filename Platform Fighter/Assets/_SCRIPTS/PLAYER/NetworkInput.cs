@@ -96,7 +96,7 @@ namespace PLAYER
                     {
                         Debug.Log($"parsed: {receivedPacketNum} counter: {_p2pHandler.FrameCounter}");
                         ParseInputs(_receivedInputSets[0]);
-                        RollbackManager.Instance.SaveGameState();
+                        RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber);
                         P2PHandler.Instance.OnInputPacketsProcessed();
                         Debug.Log($"[ARCHIVED-parsed]: {_receivedInputSets[0].PacketNumber} on {_p2pHandler.FrameCounter}");
                         ArchivedInputSets.Add(_receivedInputSets[0]);
@@ -138,7 +138,7 @@ namespace PLAYER
                                 Debug.Log(temp + temp2);
                                 if (_receivedInputSets[0].Inputs.SequenceEqual(_predictedInputSets[0].Inputs))
                                 {
-                                    RollbackManager.Instance.SaveGameState();
+                                    RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber);
                                     P2PHandler.Instance.OnInputPacketsProcessed();
                                     _predictedInputSets.RemoveAt(0);
                                     Debug.Log($"[ARCHIVED-check]: {_receivedInputSets[0].PacketNumber} on {_p2pHandler.FrameCounter}");
@@ -168,7 +168,7 @@ namespace PLAYER
                             {
                                 Debug.Log($"parsed2: {receivedPacketNum} counter: {_p2pHandler.FrameCounter}");
                                 ParseInputs(_receivedInputSets[0]);
-                                RollbackManager.Instance.SaveGameState();
+                                RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber);
                                 P2PHandler.Instance.OnInputPacketsProcessed();
                                 Debug.Log($"[ARCHIVED-parsed2]: {_receivedInputSets[0].PacketNumber} on {_p2pHandler.FrameCounter}");
                                 ArchivedInputSets.Add(_receivedInputSets[0]);

@@ -44,7 +44,7 @@ namespace NETWORKING
         
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.F1)) SaveGameState();
+            if (Input.GetKeyDown(KeyCode.F1)) SaveGameState(-1);
 
             if (Input.GetKeyDown(KeyCode.F2)) Rollback();
         }
@@ -101,7 +101,7 @@ namespace NETWORKING
             }
         }
 
-        public void SaveGameState()
+        public void SaveGameState(int frame)
         {
             _snapshots.Clear();
             _snapshots.Add(new List<Snapshot>());
@@ -112,8 +112,25 @@ namespace NETWORKING
 
             foreach (var player in MatchStateManager.Instance.Players)
             {
-                player.GetComponent<InputSender>().ArchivedInputSets.Clear();
-                player.GetComponent<NetworkUserInput>()?.ApplyLastInputSet();
+                if (frame < 0)
+                {
+                    player.GetComponent<InputSender>().ArchivedInputSets.Clear();
+                }
+                else
+                {
+                    var sets = player.GetComponent<InputSender>().ArchivedInputSets;
+                    var setCount = sets.Count;
+                    for (var i = 0; i < setCount; i++)
+                    {
+                        if (sets[0].PacketNumber > frame)
+                            break;
+                        else
+                            player.GetComponent<InputSender>().ArchivedInputSets.RemoveAt(0);
+
+                        if (i == setCount)
+                            player.GetComponent<NetworkUserInput>()?.ApplyLastInputSet();
+                    }
+                }
             }
         }
 
