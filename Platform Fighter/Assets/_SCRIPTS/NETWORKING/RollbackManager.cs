@@ -17,6 +17,8 @@ namespace NETWORKING
         
         private List<(int, Steppable)> _steppables;
 
+        private readonly int _maxSnapshots = 20;
+        
         public void AddSteppable(Steppable steppable, int stepOrder)
         {
             _steppables.Add((stepOrder, steppable));
@@ -41,20 +43,13 @@ namespace NETWORKING
                 Debug.Log($"[STEPPABLE] stepOrder: {s.Item1}, networkId: {s.Item2.GetComponent<NetworkIdentity>().Id}");
             }
         }
-        
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.F1)) SaveGameState(-1);
-
-            if (Input.GetKeyDown(KeyCode.F2)) Rollback();
-        }
 
         /// <summary>
         ///     Rollback the game state to a previous iteration
         /// </summary>
-        public void Rollback()
+        public void Rollback(int distance)
         {
-            foreach (var snapshotPiece in _snapshots[0])
+            foreach (var snapshotPiece in _snapshots[distance])
             {
                 var packet = JsonUtility.FromJson(snapshotPiece.JsonData, snapshotPiece.Type);
 
@@ -66,7 +61,7 @@ namespace NETWORKING
             }
 
             //var snapshotAge = Mod(P2PHandler.Instance.InputPacketsSent - _age, 600) + 1;
-            var player0 = MatchStateManager.Instance.GetPlayer(0);
+            /*var player0 = MatchStateManager.Instance.GetPlayer(0);
             var snapshotAge = player0.GetComponent<NetworkInput>()
                 ? player0.GetComponent<NetworkInput>().ArchivedInputSets.Count
                 : player0.GetComponent<NetworkUserInput>().ArchivedInputSets.Count;
@@ -77,8 +72,10 @@ namespace NETWORKING
                     ? player.GetComponent<NetworkInput>().ArchivedInputSets.Count
                     : player.GetComponent<NetworkUserInput>().ArchivedInputSets.Count;
                 if (count <= snapshotAge) snapshotAge = count;
-            }
+            }*/
 
+            var snapshotAge = distance;
+            
             Debug.Log($"ROLLED BACK TO {P2PHandler.Instance.DataPacket.FrameCounter}");
             
             Debug.Log("SnapshotAge: " + snapshotAge);
@@ -90,7 +87,7 @@ namespace NETWORKING
                 {
                     if (_steppables[j].Item1 < lastOrder || _steppables[j].Item1 == 0)
                     {
-                        Debug.Log($"Applying on {P2PHandler.Instance.DataPacket.FrameCounter} +");
+                        Debug.Log($"Applying on {P2PHandler.Instance.DataPacket.FrameCounter}");
                         _steppables[j].Item2.GetComponent<InputSender>().ApplyArchivedInputSet(i);
                     }
 
@@ -106,13 +103,16 @@ namespace NETWORKING
 
         public void SaveGameState(int frame)
         {
-            Debug.Log($"[SaveGameState] on: {frame}");
-            _snapshots.Clear();
+            Debug.Log($"[SaveGameState] on: {P2PHandler.Instance.DataPacket.FrameCounter}, from: {frame}");
+            if (_snapshots.Count > _maxSnapshots)
+            {
+                _snapshots.RemoveAt(0);
+            }
             _snapshots.Add(new List<Snapshot>());
             foreach (var player in MatchStateManager.Instance.Players)
-                TakeSnapshot(player.GetComponent<NetworkIdentity>().Id, 0, typeof(PlayerData),
+                TakeSnapshot(player.GetComponent<NetworkIdentity>().Id, _snapshots.Count - 1, typeof(PlayerData),
                     player.GetComponent<PlayerData>().DataPacket);
-            TakeSnapshot(-1, 0, typeof(P2PHandler), P2PHandler.Instance.DataPacket);
+            TakeSnapshot(-1, _snapshots.Count - 1, typeof(P2PHandler), P2PHandler.Instance.DataPacket);
 
             foreach (var player in MatchStateManager.Instance.Players)
             {
@@ -134,6 +134,14 @@ namespace NETWORKING
                         if (i == setCount)
                             player.GetComponent<NetworkUserInput>()?.ApplyLastInputSet();
                     }
+
+                    
+                    string temp = "";
+                    foreach (var input in player.GetComponent<InputSender>().ArchivedInputSets)
+                    {
+                        temp += input.PacketNumber + Environment.NewLine;
+                    }
+                    Debug.Log("ArchivedInputSets contains: " + temp);
                 }
             }
         }
