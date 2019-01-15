@@ -13,7 +13,7 @@ namespace NETWORKING
     public class RollbackManager : Singleton<RollbackManager>
     {
         private int _age;
-        private List<(int, List<Snapshot>)> _snapshots;
+        private Dictionary<int, List<Snapshot>> _snapshots;
         
         private List<(int, Steppable)> _steppables;
 
@@ -27,7 +27,7 @@ namespace NETWORKING
 
         private void Awake()
         {
-            _snapshots = new List<(int, List<Snapshot>)>();
+            _snapshots = new Dictionary<int, List<Snapshot>>();
             _steppables = new List<(int, Steppable)>();
         }
 
@@ -48,7 +48,14 @@ namespace NETWORKING
         /// </summary>
         public void Rollback(int distance)
         {
-            foreach (var snapshotPiece in _snapshots.FirstOrDefault(x => x.Item1 == distance).Item2)
+            var closestKey = 0;
+            foreach (var snapshot in _snapshots)
+            {
+                if (snapshot.Key > distance) continue;
+                if (Math.Abs(closestKey - snapshot.Key) < closestKey)
+                    closestKey = snapshot.Key;
+            }
+            foreach (var snapshotPiece in _snapshots[closestKey])
             {
                 var packet = JsonUtility.FromJson(snapshotPiece.JsonData, snapshotPiece.Type);
 
@@ -105,9 +112,9 @@ namespace NETWORKING
             Debug.Log($"[SaveGameState] on: {P2PHandler.Instance.DataPacket.FrameCounter}, from: {frame}");
             if (_snapshots.Count > MAX_SNAPSHOTS)
             {
-                _snapshots.RemoveAt(0);
+                _snapshots.Remove(0);
             }
-            _snapshots.Add((frame, new List<Snapshot>()));
+            _snapshots.Add(frame, new List<Snapshot>());
             foreach (var player in MatchStateManager.Instance.Players)
                 TakeSnapshot(player.GetComponent<NetworkIdentity>().Id, _snapshots.Count - 1, typeof(PlayerData),
                     player.GetComponent<PlayerData>().DataPacket);
@@ -148,7 +155,7 @@ namespace NETWORKING
         public void TakeSnapshot<T>(int player, int depth, Type baseType, T structure)
         {
             var json = JsonUtility.ToJson(structure);
-            _snapshots[depth].Item2.Add(new Snapshot(player, baseType, structure.GetType(), json));
+            _snapshots[depth].Add(new Snapshot(player, baseType, structure.GetType(), json));
             _age = P2PHandler.Instance.InputPacketsSent;
         }
 
