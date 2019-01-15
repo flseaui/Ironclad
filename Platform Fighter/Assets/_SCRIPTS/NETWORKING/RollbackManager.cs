@@ -13,22 +13,21 @@ namespace NETWORKING
     public class RollbackManager : Singleton<RollbackManager>
     {
         private int _age;
-        private List<List<Snapshot>> _snapshots;
+        private List<(int, List<Snapshot>)> _snapshots;
         
         private List<(int, Steppable)> _steppables;
 
-        private readonly int _maxSnapshots = 20;
-        
+        private readonly int MAX_SNAPSHOTS = 20;
+
         public void AddSteppable(Steppable steppable, int stepOrder)
         {
             _steppables.Add((stepOrder, steppable));
             Debug.Log($"Added Steppable {steppable.name} with stepOrder {stepOrder}");
         }
 
-        
         private void Awake()
         {
-            _snapshots = new List<List<Snapshot>>();
+            _snapshots = new List<(int, List<Snapshot>)>();
             _steppables = new List<(int, Steppable)>();
         }
 
@@ -49,7 +48,7 @@ namespace NETWORKING
         /// </summary>
         public void Rollback(int distance)
         {
-            foreach (var snapshotPiece in _snapshots[distance])
+            foreach (var snapshotPiece in _snapshots.FirstOrDefault(x => x.Item1 == distance).Item2)
             {
                 var packet = JsonUtility.FromJson(snapshotPiece.JsonData, snapshotPiece.Type);
 
@@ -104,11 +103,11 @@ namespace NETWORKING
         public void SaveGameState(int frame)
         {
             Debug.Log($"[SaveGameState] on: {P2PHandler.Instance.DataPacket.FrameCounter}, from: {frame}");
-            if (_snapshots.Count > _maxSnapshots)
+            if (_snapshots.Count > MAX_SNAPSHOTS)
             {
                 _snapshots.RemoveAt(0);
             }
-            _snapshots.Add(new List<Snapshot>());
+            _snapshots.Add((frame, new List<Snapshot>()));
             foreach (var player in MatchStateManager.Instance.Players)
                 TakeSnapshot(player.GetComponent<NetworkIdentity>().Id, _snapshots.Count - 1, typeof(PlayerData),
                     player.GetComponent<PlayerData>().DataPacket);
@@ -149,7 +148,7 @@ namespace NETWORKING
         public void TakeSnapshot<T>(int player, int depth, Type baseType, T structure)
         {
             var json = JsonUtility.ToJson(structure);
-            _snapshots[depth].Add(new Snapshot(player, baseType, structure.GetType(), json));
+            _snapshots[depth].Item2.Add(new Snapshot(player, baseType, structure.GetType(), json));
             _age = P2PHandler.Instance.InputPacketsSent;
         }
 

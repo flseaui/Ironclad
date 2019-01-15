@@ -148,7 +148,7 @@ namespace PLAYER
                                 else
                                 {
                                     var receivedInputSetsCount = _receivedInputSets.Count;
-                                    var distance = _p2pHandler.FrameCounter - _receivedInputSets[0].PacketNumber;
+                                    var distance = _receivedInputSets[0].PacketNumber;
                                     for (var i = 0; i < receivedInputSetsCount; i++)
                                     {
                                         if (_receivedInputSets[0].PacketNumber > _p2pHandler.FrameCounter)
