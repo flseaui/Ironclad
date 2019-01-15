@@ -13,7 +13,7 @@ namespace NETWORKING
     public class RollbackManager : Singleton<RollbackManager>
     {
         private int _age;
-        private Dictionary<int, List<Snapshot>> _snapshots;
+        private RollingList<KeyValuePair<int, List<Snapshot>>> _snapshots;
         
         private List<(int, Steppable)> _steppables;
 
@@ -27,7 +27,7 @@ namespace NETWORKING
 
         private void Awake()
         {
-            _snapshots = new Dictionary<int, List<Snapshot>>();
+            _snapshots = new  RollingList<KeyValuePair<int, List<Snapshot>>>(MAX_SNAPSHOTS);
             _steppables = new List<(int, Steppable)>();
         }
 
@@ -51,11 +51,13 @@ namespace NETWORKING
             var closestKey = 0;
             foreach (var snapshot in _snapshots)
             {
+                Debug.Log($"[SnapshotFrame]: {snapshot.Key}");
                 if (snapshot.Key > distance) continue;
-                if (Math.Abs(closestKey - snapshot.Key) < closestKey)
+                if (Math.Abs(closestKey - snapshot.Key) > closestKey)
                     closestKey = snapshot.Key;
             }
-            foreach (var snapshotPiece in _snapshots[closestKey])
+            Debug.Log("Closest Key: " + closestKey);
+            foreach (var snapshotPiece in _snapshots[closestKey].Value)
             {
                 var packet = JsonUtility.FromJson(snapshotPiece.JsonData, snapshotPiece.Type);
 
@@ -66,6 +68,26 @@ namespace NETWORKING
                         .GetComponent(snapshotPiece.BaseType)).SetData(packet);
             }
 
+            foreach (var player in MatchStateManager.Instance.Players)
+            {
+                var sets = player.GetComponent<InputSender>().ArchivedInputSets;
+                var setCount = sets.Count;
+                for (var i = 0; i < setCount; i++)
+                {
+                    if (sets[0].PacketNumber >= distance)
+                        break;
+                    
+                    player.GetComponent<InputSender>().ArchivedInputSets.RemoveAt(0);
+                }
+                
+                string temp = "";
+                foreach (var input in player.GetComponent<InputSender>().ArchivedInputSets)
+                {
+                    temp += input.PacketNumber + Environment.NewLine;
+                }
+                Debug.Log("ArchivedInputSets contains: " + temp);
+            }
+            
             //var snapshotAge = Mod(P2PHandler.Instance.InputPacketsSent - _age, 600) + 1;
             /*var player0 = MatchStateManager.Instance.GetPlayer(0);
             var snapshotAge = player0.GetComponent<NetworkInput>()
@@ -110,52 +132,17 @@ namespace NETWORKING
         public void SaveGameState(int frame)
         {
             Debug.Log($"[SaveGameState] on: {P2PHandler.Instance.DataPacket.FrameCounter}, from: {frame}");
-            if (_snapshots.Count > MAX_SNAPSHOTS)
-            {
-                _snapshots.Remove(0);
-            }
-            _snapshots.Add(frame, new List<Snapshot>());
+            _snapshots.Add(new KeyValuePair<int, List<Snapshot>>(frame, new List<Snapshot>()));
             foreach (var player in MatchStateManager.Instance.Players)
                 TakeSnapshot(player.GetComponent<NetworkIdentity>().Id, _snapshots.Count - 1, typeof(PlayerData),
                     player.GetComponent<PlayerData>().DataPacket);
             TakeSnapshot(-1, _snapshots.Count - 1, typeof(P2PHandler), P2PHandler.Instance.DataPacket);
-
-            foreach (var player in MatchStateManager.Instance.Players)
-            {
-                if (frame < 0)
-                {
-                    player.GetComponent<InputSender>().ArchivedInputSets.Clear();
-                }
-                else
-                {
-                    var sets = player.GetComponent<InputSender>().ArchivedInputSets;
-                    var setCount = sets.Count;
-                    for (var i = 0; i < setCount; i++)
-                    {
-                        if (sets[0].PacketNumber > frame)
-                            break;
-                        else
-                            player.GetComponent<InputSender>().ArchivedInputSets.RemoveAt(0);
-
-                        if (i == setCount)
-                            player.GetComponent<NetworkUserInput>()?.ApplyLastInputSet();
-                    }
-
-                    
-                    string temp = "";
-                    foreach (var input in player.GetComponent<InputSender>().ArchivedInputSets)
-                    {
-                        temp += input.PacketNumber + Environment.NewLine;
-                    }
-                    Debug.Log("ArchivedInputSets contains: " + temp);
-                }
-            }
         }
 
         public void TakeSnapshot<T>(int player, int depth, Type baseType, T structure)
         {
             var json = JsonUtility.ToJson(structure);
-            _snapshots[depth].Add(new Snapshot(player, baseType, structure.GetType(), json));
+            _snapshots[depth].Value.Add(new Snapshot(player, baseType, structure.GetType(), json));
             _age = P2PHandler.Instance.InputPacketsSent;
         }
 
