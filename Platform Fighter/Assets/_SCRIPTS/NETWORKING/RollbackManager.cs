@@ -48,16 +48,16 @@ namespace NETWORKING
         /// </summary>
         public void Rollback(int distance)
         {
-            var closestKey = 0;
+            var closestKey = _snapshots[0].Key;
             foreach (var snapshot in _snapshots)
             {
                 Debug.Log($"[SnapshotFrame]: {snapshot.Key}");
                 if (snapshot.Key > distance) continue;
-                if (Math.Abs(closestKey - snapshot.Key) > closestKey)
+                if (Math.Abs(distance - snapshot.Key) < closestKey)
                     closestKey = snapshot.Key;
             }
             Debug.Log("Closest Key: " + closestKey);
-            foreach (var snapshotPiece in _snapshots[closestKey].Value)
+            foreach (var snapshotPiece in _snapshots.FirstOrDefault(x => x.Key == closestKey).Value)
             {
                 var packet = JsonUtility.FromJson(snapshotPiece.JsonData, snapshotPiece.Type);
 
@@ -66,26 +66,6 @@ namespace NETWORKING
                 else
                     ((ISettable) MatchStateManager.Instance.GetPlayer(snapshotPiece.Player)
                         .GetComponent(snapshotPiece.BaseType)).SetData(packet);
-            }
-
-            foreach (var player in MatchStateManager.Instance.Players)
-            {
-                var sets = player.GetComponent<InputSender>().ArchivedInputSets;
-                var setCount = sets.Count;
-                for (var i = 0; i < setCount; i++)
-                {
-                    if (sets[0].PacketNumber >= distance)
-                        break;
-                    
-                    player.GetComponent<InputSender>().ArchivedInputSets.RemoveAt(0);
-                }
-                
-                string temp = "";
-                foreach (var input in player.GetComponent<InputSender>().ArchivedInputSets)
-                {
-                    temp += input.PacketNumber + Environment.NewLine;
-                }
-                Debug.Log("ArchivedInputSets contains: " + temp);
             }
             
             //var snapshotAge = Mod(P2PHandler.Instance.InputPacketsSent - _age, 600) + 1;
@@ -102,7 +82,7 @@ namespace NETWORKING
                 if (count <= snapshotAge) snapshotAge = count;
             }*/
 
-            var snapshotAge = distance;
+            var snapshotAge = Math.Abs(distance - P2PHandler.Instance.DataPacket.FrameCounter);
             
             Debug.Log($"ROLLED BACK TO {P2PHandler.Instance.DataPacket.FrameCounter}");
             
@@ -126,6 +106,26 @@ namespace NETWORKING
                 }
 
                 P2PHandler.Instance.IncrementFrameCounter();
+            }
+            
+            foreach (var player in MatchStateManager.Instance.Players)
+            {
+                var sets = player.GetComponent<InputSender>().ArchivedInputSets;
+                var setCount = sets.Count;
+                for (var i = 0; i < setCount; i++)
+                {
+                    if (sets[0].PacketNumber >= distance)
+                        break;
+                    
+                    player.GetComponent<InputSender>().ArchivedInputSets.RemoveAt(0);
+                }
+                
+                string temp = "";
+                foreach (var input in player.GetComponent<InputSender>().ArchivedInputSets)
+                {
+                    temp += input.PacketNumber + Environment.NewLine;
+                }
+                Debug.Log("ArchivedInputSets contains: " + temp);
             }
         }
 
