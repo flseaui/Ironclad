@@ -68,8 +68,19 @@ namespace PLAYER
         {
             Debug.Log(
                 $"[player{GetComponent<NetworkIdentity>().Id}] index: {index}, length: {ArchivedInputSets.Count}");
+            var temp = Environment.NewLine;
+            if (ArchivedInputSets[index].Inputs.Length > 0)
+            {
+                foreach (var input in ArchivedInputSets[index].Inputs)
+                {
+                    var state = input.State ? "Pressed" : "Released";
+                    temp += $"[{input.InputType}]->{state}{Environment.NewLine}";
+                }
+            }
             foreach (var input in ArchivedInputSets[index].Inputs) Inputs[(int) input.InputType] = input.State;
-
+            
+            Debug.Log($"Applied {ArchivedInputSets[index].PacketNumber} on {P2PHandler.Instance.DataPacket.FrameCounter} containing {temp}");
+            
             if (GetComponent<NetworkIdentity>().Id != MatchStateManager.Instance.ClientPlayerId)
                 if (ArchivedInputSets[index].PacketNumber > P2PHandler.Instance.InputPacketsProcessed)
                     P2PHandler.Instance.OnInputPacketsProcessed();

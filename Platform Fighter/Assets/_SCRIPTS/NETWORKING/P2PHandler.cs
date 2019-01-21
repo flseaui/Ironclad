@@ -24,6 +24,7 @@ namespace NETWORKING
         private int _previousDelay;
 
         private bool _started;
+        private bool _initialSave;
         
         public P2PHandlerPacket DataPacket;
 
@@ -207,6 +208,13 @@ namespace NETWORKING
         {
             DataPacket.FrameCounter += 1 + (_previousDelay - Delay);
             DataPacket.FrameCounter %= 600;
+            
+            if (!_initialSave)
+                if (DataPacket.FrameCounter == 0)
+                {
+                    RollbackManager.Instance.SaveGameState(0);
+                    _initialSave = true;
+                }
         }
         
         public override void SetData(object newData)

@@ -138,8 +138,6 @@ namespace PLAYER
                                 Debug.Log(temp + temp2);
                                 if (_receivedInputSets[0].Inputs.SequenceEqual(_predictedInputSets[0].Inputs))
                                 {
-                                    RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber);
-                                    P2PHandler.Instance.OnInputPacketsProcessed();
                                     _predictedInputSets.RemoveAt(0);
                                     Debug.Log($"[ARCHIVED-check]: {_receivedInputSets[0].PacketNumber} on {_p2pHandler.FrameCounter}");
                                     ArchivedInputSets.Add(_receivedInputSets[0]);
@@ -151,7 +149,7 @@ namespace PLAYER
                                     var distance = _receivedInputSets[0].PacketNumber;
                                     for (var i = 0; i < receivedInputSetsCount; i++)
                                     {
-                                        if (_receivedInputSets[0].PacketNumber > _p2pHandler.FrameCounter)
+                                        if (_receivedInputSets[0].PacketNumber > distance)
                                             break;
 
                                         Debug.Log(
