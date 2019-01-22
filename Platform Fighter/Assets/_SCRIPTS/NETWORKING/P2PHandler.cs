@@ -15,6 +15,7 @@ namespace NETWORKING
     {
         public int FramesLapsed;
         public int FrameCounter = 1;
+        public int FrameCounterLoops;
     }
 
     public class P2PHandler : SettableSingleton<P2PHandler>
@@ -36,6 +37,8 @@ namespace NETWORKING
         public int InputPacketsReceived;
         [NonSerialized]
         public int InputPacketsSent;
+        [NonSerialized] 
+        public int InputPacketsSentLoops;
 
         [NonSerialized]
         public bool LatencyCalculated;
@@ -127,11 +130,13 @@ namespace NETWORKING
             if (!sendNetworkAction) return;
             if (!LatencyCalculated) return;
 
-            var body = new P2PInputSet(inputs, InputPacketsSent);
+            var body = new P2PInputSet(inputs, InputPacketsSent, InputPacketsSentLoops);
             var message = new P2PMessage(networkIdentity.SteamId, P2PMessageKey.InputSet, body.Serialize());
 
             SendP2PMessage(message);
 
+            if (InputPacketsSent == 599)
+                InputPacketsSentLoops = ++InputPacketsSentLoops % 600;
             InputPacketsSent = ++InputPacketsSent % 600;
         }
 
@@ -206,8 +211,11 @@ namespace NETWORKING
 
         public void IncrementFrameCounter()
         {
+            var prevFrameCount = DataPacket.FrameCounter;
             DataPacket.FrameCounter += 1 + (_previousDelay - Delay);
             DataPacket.FrameCounter %= 600;
+            if (DataPacket.FrameCounter < prevFrameCount)
+                DataPacket.FrameCounterLoops = ++DataPacket.FrameCounterLoops % 600;
             
             if (!_initialSave)
                 if (DataPacket.FrameCounter == 0)
@@ -223,6 +231,7 @@ namespace NETWORKING
 
             DataPacket.FramesLapsed = data.FramesLapsed;
             DataPacket.FrameCounter = data.FrameCounter;
+            DataPacket.FrameCounterLoops = data.FrameCounterLoops;
         }
     }
 }

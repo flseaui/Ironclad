@@ -146,7 +146,7 @@ namespace PLAYER
                     ApplyDelayedInputSets();
 
                 var inputArray = _changedInputs.ToArray();
-                _lastInputSet = new P2PInputSet(inputArray, P2PHandler.Instance.InputPacketsSent);
+                _lastInputSet = new P2PInputSet(inputArray, P2PHandler.Instance.InputPacketsSent, P2PHandler.Instance.InputPacketsSentLoops);
                 Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, true);
                 if (_lastInputSet.Inputs.Length > 0)
                 {

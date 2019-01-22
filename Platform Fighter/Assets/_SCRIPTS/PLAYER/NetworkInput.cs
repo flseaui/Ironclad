@@ -206,7 +206,7 @@ namespace PLAYER
 
         private P2PInputSet PredictInputs()
         {
-            return new P2PInputSet(new P2PInputSet.InputChange[] { }, Mod(_p2pHandler.FrameCounter, 600));
+            return new P2PInputSet(new P2PInputSet.InputChange[] { }, Mod(_p2pHandler.FrameCounter, 600), -1);
         }
 
         public void ParseInputs(P2PInputSet inputSet)

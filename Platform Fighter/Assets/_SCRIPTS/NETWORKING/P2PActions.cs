@@ -30,12 +30,13 @@ namespace NETWORKING
 
         public InputChange[] Inputs;
 
-        public int PacketNumber;
+        public int PacketNumber, LoopNumber;
 
-        public P2PInputSet(InputChange[] inputs, int packetNumber)
+        public P2PInputSet(InputChange[] inputs, int packetNumber, int loopNumber)
         {
             Inputs = inputs;
             PacketNumber = packetNumber;
+            LoopNumber = loopNumber;
         }
 
         public string Serialize()
