@@ -81,14 +81,15 @@ namespace NETWORKING
             Client.Instance.Networking.OnConnectionFailed += OnConnectionFailed;
         }
 
-        private void OnConnectionFailed(ulong arg1, Networking.SessionError arg2)
+        private void OnConnectionFailed(ulong steamid, Networking.SessionError error)
         {
-            throw new NotImplementedException();
+            Debug.Log( "Connection Error: " + steamid + " - " + error );
         }
 
-        private bool OnIncomingConnection(ulong arg)
+        private bool OnIncomingConnection(ulong steamid)
         {
-            throw new NotImplementedException();
+            Debug.Log( "Incoming P2P Connection: " + steamid );
+            return true;
         }
 
         private void OnP2PData(ulong sender, byte[] bytes, int length, int channel)
