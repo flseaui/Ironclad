@@ -79,7 +79,7 @@ namespace PLAYER
             }
             foreach (var input in ArchivedInputSets[index].Inputs) Inputs[(int) input.InputType] = input.State;
             
-            Debug.Log($"Applied {ArchivedInputSets[index].PacketNumber} on {P2PHandler.Instance.DataPacket.FrameCounter} containing {temp}");
+            Debug.Log($"Applied ({ArchivedInputSets[index].PacketNumber}, {ArchivedInputSets[index]}) on ({P2PHandler.Instance.DataPacket.FrameCounter}, {P2PHandler.Instance.DataPacket.FrameCounterLoops}) containing {temp}");
             
             if (GetComponent<NetworkIdentity>().Id != MatchStateManager.Instance.ClientPlayerId)
                 if (ArchivedInputSets[index].PacketNumber > P2PHandler.Instance.InputPacketsProcessed)

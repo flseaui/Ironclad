@@ -162,7 +162,7 @@ namespace PLAYER
                 }
 
                 _delayedInputSets.Add(_lastInputSet);
-                Debug.Log($"[LOCALARCHIVED]: {_lastInputSet.PacketNumber} on {P2PHandler.Instance.DataPacket.FrameCounter}");
+                Debug.Log($"[LOCALARCHIVED]: ({_lastInputSet.PacketNumber}, {_lastInputSet.LoopNumber}) on ({P2PHandler.Instance.DataPacket.FrameCounter}, {P2PHandler.Instance.DataPacket.FrameCounterLoops})");
                 ArchivedInputSets.Add(_lastInputSet);
             }
 

@@ -15,7 +15,7 @@ namespace NETWORKING
     {
         public int FramesLapsed;
         public int FrameCounter = 1;
-        public int FrameCounterLoops;
+        public int FrameCounterLoops = 0;
     }
 
     public class P2PHandler : SettableSingleton<P2PHandler>
@@ -220,6 +220,7 @@ namespace NETWORKING
             if (!_initialSave)
                 if (DataPacket.FrameCounter == 0)
                 {
+                    DataPacket.FrameCounterLoops = 0;
                     RollbackManager.Instance.SaveGameState(0);
                     _initialSave = true;
                 }

@@ -95,7 +95,7 @@ namespace NETWORKING
 
             var snapshotAge = Math.Abs(distance - P2PHandler.Instance.DataPacket.FrameCounter);
             
-            Debug.Log($"ROLLED BACK TO {P2PHandler.Instance.DataPacket.FrameCounter}");
+            Debug.Log($"ROLLED BACK TO ({P2PHandler.Instance.DataPacket.FrameCounter}, {P2PHandler.Instance.DataPacket.FrameCounterLoops})");
             
             Debug.Log("SnapshotAge: " + snapshotAge);
                         
@@ -114,7 +114,7 @@ namespace NETWORKING
                 var temp = "";
                 foreach (var input in player.GetComponent<InputSender>().ArchivedInputSets)
                 {
-                    temp += input.PacketNumber + Environment.NewLine;
+                    temp += $"({input.PacketNumber}, {input.LoopNumber}){Environment.NewLine}";
                 }
                 Debug.Log("ArchivedInputSets contains: " + temp);
             }
