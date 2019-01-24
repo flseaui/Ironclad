@@ -39,26 +39,33 @@ namespace NETWORKING
         public int InputPacketsSentLoops;
 
         [NonSerialized]
-        public bool LatencyCalculated;
-        [NonSerialized]
         public bool ReceivedFirstInput;
-
+        
+        [NonSerialized] 
+        public bool GameStarted;
+        
         [NonSerialized]
         public int Ping;
+
+        public void Start()
+        {
+            Events.OnPingSent += SendP2PPing;
+        }
         
-        private void Start()
+        public void StartGame()
         {
             Events.OnInputsChanged += SendP2PInputSet;
             Events.OnMatchJoined += SendP2PMatchJoined;
-            Events.OnPingSent += SendP2PPing;
             SubscribeToP2PEvents();
+            
+            GameStarted = true;
         }
         
         private void FixedUpdate()
         {
-            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && !LatencyCalculated)
+            if (!GameStarted) 
                 return;
-
+            
             //if (!ReceivedFirstInput) return;
             IncrementFrameCounter();
 
@@ -73,6 +80,16 @@ namespace NETWORKING
             Client.Instance.Networking.OnConnectionFailed += OnConnectionFailed;
         }
 
+        public void BeginTesting()
+        {
+            InvokeRepeating(nameof(SendPing), 0, .5f);
+        }
+        
+        public void SendPing()
+        {
+            Events.OnPingSent?.Invoke(DateTime.Now.Millisecond);
+        }
+        
         private void OnConnectionFailed(ulong steamid, Networking.SessionError error)
         {
             Debug.Log( "Connection Error: " + steamid + " - " + error );
@@ -93,7 +110,7 @@ namespace NETWORKING
             ParseP2PMessage(sender, serializedMessage);
         }
 
-        private void SendP2PPing(float sentTime)
+        private void SendP2PPing(int sentTime)
         {
             var body = new P2PPing(sentTime);
             var message = new P2PMessage(Client.Instance.SteamId, P2PMessageKey.Ping, body.Serialize());
@@ -113,7 +130,6 @@ namespace NETWORKING
             Vector2 angle, bool sendNetworkAction)
         {
             if (!sendNetworkAction) return;
-            if (!LatencyCalculated) return;
 
             var body = new P2PInputSet(inputs, angle, InputPacketsSent, InputPacketsSentLoops);
             var message = new P2PMessage(networkIdentity.SteamId, P2PMessageKey.InputSet, body.Serialize());
@@ -151,11 +167,10 @@ namespace NETWORKING
 
         public void ParseP2PMessage(ulong senderID, P2PMessage msg)
         {
-            var player = MatchStateManager.Instance.GetPlayerBySteamId(msg.SteamId);
-
             switch (msg.Key)
             {
                 case P2PMessageKey.InputSet:
+                    var player = MatchStateManager.Instance.GetPlayerBySteamId(msg.SteamId);
                     var inputSet = JsonUtility.FromJson<P2PInputSet>(msg.Body);
 
                     InputPacketsReceived = ++InputPacketsReceived % 600;
@@ -171,8 +186,8 @@ namespace NETWORKING
                 case P2PMessageKey.Ping:
                     var pingMessage = JsonUtility.FromJson<P2PPing>(msg.Body);
 
-                    LatencyTester.Instance.ReceivePing(pingMessage, senderID);
-                    LatencyCalculated = true;
+                    var ping = DateTime.Now.Millisecond - pingMessage.SentTime;
+                    Events.OnPingCalculated?.Invoke(ping, senderID);
                     break;
             }
         }

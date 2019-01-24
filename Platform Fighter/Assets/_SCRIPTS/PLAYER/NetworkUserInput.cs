@@ -142,8 +142,7 @@ namespace PLAYER
 
         private void FixedUpdate()
         {
-            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer
-                && P2PHandler.Instance.LatencyCalculated)
+            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer)
             {
                 if (_delayedInputSets.Count == P2PHandler.Instance.Delay)
                     ApplyDelayedInputSets();

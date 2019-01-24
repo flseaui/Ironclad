@@ -60,9 +60,9 @@ namespace NETWORKING
     [Serializable]
     public struct P2PPing : IP2PAction
     {
-        public float SentTime;
+        public int SentTime;
 
-        public P2PPing(float sentTime)
+        public P2PPing(int sentTime)
         {
             SentTime = sentTime;
         }

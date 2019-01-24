@@ -16,10 +16,13 @@ namespace MENU
     {
         [SerializeField] private PlayerProfilePanel _playerProfilerPanel;
         
+        [SerializeField] private GameObject _p2pHandlerPrefab;
+        
         [SerializeField] private int _playerReady;
-
+        
         protected override void SwitchToThis(params string[] args)
         {
+            Instantiate(_p2pHandlerPrefab);
             Client.Instance.Lobby.OnLobbyCreated = OnCreated;
             Client.Instance.Lobby.OnLobbyJoined = OnJoined;
             Client.Instance.Lobby.OnLobbyDataUpdated = OnDataUpdated;
@@ -48,7 +51,7 @@ namespace MENU
             _playerProfilerPanel.ClearPlayerProfiles();
             _playerProfilerPanel.AddPlayerProfile(Client.Instance.SteamId);
 
-            LatencyTester.Instance.BeginTesting();
+            P2PHandler.Instance.BeginTesting();
             
             /*Debug.Log("lobby created: " + Client.Instance.Lobby.CurrentLobby);
             Debug.Log($"Owner: {Client.Instance.Lobby.Owner}");
@@ -69,7 +72,7 @@ namespace MENU
                 if (member != Client.Instance.SteamId) CheckMemberData(member, false);
             }
             
-            LatencyTester.Instance.BeginTesting();
+            P2PHandler.Instance.BeginTesting();
         }
 
         private void SetupMemberData()
@@ -112,6 +115,7 @@ namespace MENU
                             tempCharacterArray.Add(
                                 CharacterStringToId(Client.Instance.Lobby.GetMemberData(id, "character")));
 
+                        Events.OnPingCalculated -= _playerProfilerPanel.SetPlayerProfilePing;
                         GameManager.Instance.Characters = tempCharacterArray.ToArray();
 
                         MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;
@@ -190,6 +194,7 @@ namespace MENU
 
         public void GoBack()
         {
+            Destroy(P2PHandler.Instance);
             _playerProfilerPanel.ClearPlayerProfiles();
             Client.Instance.Lobby.Leave();
             MenuManager.Instance.SwitchToPreviousMenu();

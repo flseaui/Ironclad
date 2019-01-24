@@ -43,4 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6511efb16e7f48ed85e337fabc989557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _persistent: 0
+  _persistent: 1
+  DataPacket:
+    FrameCounter: 1
+    FrameCounterLoops: 0
+  Delay: 2

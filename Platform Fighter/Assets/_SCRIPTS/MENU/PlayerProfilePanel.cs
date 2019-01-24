@@ -49,7 +49,7 @@ namespace MENU
             _playerProfiles.Add(new ProfileInfo(playerProfile, playerId));
         }
 
-        public void SetPlayerProfilePing(float ping, ulong id)
+        public void SetPlayerProfilePing(int ping, ulong id)
         {
             var profile = _playerProfiles.FirstOrDefault(x => x.PlayerId == id);
             profile.Profile.transform.Find("PingText").GetComponent<TextMeshProUGUI>().text = ping.ToString();

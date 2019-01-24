@@ -194,13 +194,6 @@ namespace PLAYER
 
         private void FixedUpdate()
         {
-            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer &&
-                !P2PHandler.Instance.LatencyCalculated)
-                return;
-
-            //if (!P2PHandler.Instance.ReceivedFirstInput) return;
-
-            //HandleInputs();
             HandleInputs();
         }
 

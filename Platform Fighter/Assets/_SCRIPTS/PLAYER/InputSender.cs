@@ -33,10 +33,6 @@ namespace PLAYER
 
         private void Update()
         {
-            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer &&
-                !P2PHandler.Instance.LatencyCalculated)
-                return;
-
             RealTimeInputs.CopyTo(_prevInputs, 0);
 
             InputUpdate();

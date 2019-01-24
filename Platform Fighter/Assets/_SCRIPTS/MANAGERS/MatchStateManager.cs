@@ -17,7 +17,6 @@ namespace MANAGERS
         // Prefabs
         [SerializeField] private GameObject _offlinePlayerPrefab;
         [SerializeField] private GameObject _onlinePlayerPrefab;
-        [SerializeField] private GameObject _p2pHandlerPrefab;
         [SerializeField] private GameObject _rollbackHandlerPrefab;
 
         public int ClientPlayerId { get; private set; }
@@ -52,7 +51,6 @@ namespace MANAGERS
 
             if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer)
             {
-                Instantiate(_p2pHandlerPrefab);
                 Instantiate(_rollbackHandlerPrefab);
             }
 
@@ -98,6 +96,7 @@ namespace MANAGERS
                         player.AddComponent<NetworkIdentity>();
                         player.GetComponent<NetworkIdentity>().Id = i;
                         player.GetComponent<NetworkIdentity>().SteamId = GameManager.Instance.SteamIds[i];
+                        P2PHandler.Instance.StartGame();
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -107,7 +106,6 @@ namespace MANAGERS
 
                 Players.Add(player);
             }
-
         }
 
         // spawns stage and returns list of that stages spawn points
