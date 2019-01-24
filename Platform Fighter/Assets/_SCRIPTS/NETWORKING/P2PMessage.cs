@@ -22,7 +22,6 @@ namespace NETWORKING
     {
         InputSet,
         Join,
-        Ping,
-        Latency
+        Ping
     }
 }

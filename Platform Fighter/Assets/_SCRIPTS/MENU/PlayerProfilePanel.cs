@@ -2,6 +2,7 @@
 using System.Linq;
 using Facepunch.Steamworks;
 using MISC;
+using TMPro;
 using UnityEngine;
 using Color = UnityEngine.Color;
 using Image = UnityEngine.UI.Image;
@@ -48,6 +49,12 @@ namespace MENU
             _playerProfiles.Add(new ProfileInfo(playerProfile, playerId));
         }
 
+        public void SetPlayerProfilePing(float ping, ulong id)
+        {
+            var profile = _playerProfiles.FirstOrDefault(x => x.PlayerId == id);
+            profile.Profile.transform.Find("PingText").GetComponent<TextMeshProUGUI>().text = ping.ToString();
+        }
+        
         public void ReadyPlayerProfile(ulong id)
         {
             var profile = _playerProfiles.FirstOrDefault(x => x.PlayerId == id);

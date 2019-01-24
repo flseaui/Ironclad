@@ -13,7 +13,6 @@ namespace NETWORKING
     [Serializable]
     public class P2PHandlerPacket
     {
-        public int FramesLapsed;
         public int FrameCounter = 1;
         public int FrameCounterLoops = 0;
     }
@@ -28,7 +27,6 @@ namespace NETWORKING
         private bool _initialSave;
         
         public P2PHandlerPacket DataPacket;
-
         
         public int Delay = 2;
         [NonSerialized]
@@ -45,25 +43,19 @@ namespace NETWORKING
         [NonSerialized]
         public bool ReceivedFirstInput;
 
+        [NonSerialized]
+        public int Ping;
+        
         private void Start()
         {
             Events.OnInputsChanged += SendP2PInputSet;
             Events.OnMatchJoined += SendP2PMatchJoined;
             Events.OnPingSent += SendP2PPing;
-            Events.OnFirstNetworkLatencyCalculated += SendP2PLatency;
             SubscribeToP2PEvents();
-
-            Events.OnFinalNetworkLatencyCalculated += i =>
-            {
-                Debug.Log($"LATENCY: {i}");
-                LatencyCalculated = true;
-            };
-            P2PHelper.Instance.TestLobbyNetworkLatency();
         }
-
+        
         private void FixedUpdate()
         {
-            DataPacket.FramesLapsed = ++DataPacket.FramesLapsed % 600;
             if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && !LatencyCalculated)
                 return;
 
@@ -101,22 +93,14 @@ namespace NETWORKING
             ParseP2PMessage(sender, serializedMessage);
         }
 
-        private void SendP2PPing(ulong steamId, ulong recipientSteamId, int localFrame)
+        private void SendP2PPing(float sentTime)
         {
-            var body = new P2PPing(localFrame);
-            var message = new P2PMessage(steamId, P2PMessageKey.Ping, body.Serialize());
+            var body = new P2PPing(sentTime);
+            var message = new P2PMessage(Client.Instance.SteamId, P2PMessageKey.Ping, body.Serialize());
 
-            SendP2PMessageToUser(message, recipientSteamId);
+            SendP2PMessage(message);
         }
-
-        private void SendP2PLatency(ulong steamId, ulong recipientSteamId, int localFrame)
-        {
-            var body = new P2PPing(localFrame);
-            var message = new P2PMessage(steamId, P2PMessageKey.Latency, body.Serialize());
-
-            SendP2PMessageToUser(message, recipientSteamId);
-        }
-
+        
         private void SendP2PMatchJoined(NetworkIdentity networkIdentity)
         {
             var body = new P2PJoin();
@@ -172,35 +156,23 @@ namespace NETWORKING
             switch (msg.Key)
             {
                 case P2PMessageKey.InputSet:
-                    //if (Threshold > 0)
-                    //{
                     var inputSet = JsonUtility.FromJson<P2PInputSet>(msg.Body);
-
-                    //--Threshold;
 
                     InputPacketsReceived = ++InputPacketsReceived % 600;
 
                     ReceivedFirstInput = true;
 
                     player.GetComponent<NetworkInput>().GiveInputs(inputSet);
-                    //}
                     break;
                 case P2PMessageKey.Join:
-                    var joinMessage = JsonUtility.FromJson<P2PJoin>(msg.Body);
 
                     ++_playersJoined;
                     break;
                 case P2PMessageKey.Ping:
                     var pingMessage = JsonUtility.FromJson<P2PPing>(msg.Body);
 
-                    P2PHelper.Instance.ProgressLatencyTest(pingMessage, senderID);
-
-                    break;
-                case P2PMessageKey.Latency:
-                    var latencyMessage = JsonUtility.FromJson<P2PPing>(msg.Body);
-
-                    P2PHelper.Instance.ProgressLatencyTest(latencyMessage, senderID, true);
-
+                    LatencyTester.Instance.ReceivePing(pingMessage, senderID);
+                    LatencyCalculated = true;
                     break;
             }
         }
@@ -231,7 +203,6 @@ namespace NETWORKING
         {
             var data = (P2PHandlerPacket) newData;
 
-            DataPacket.FramesLapsed = data.FramesLapsed;
             DataPacket.FrameCounter = data.FrameCounter;
             DataPacket.FrameCounterLoops = data.FrameCounterLoops;
         }

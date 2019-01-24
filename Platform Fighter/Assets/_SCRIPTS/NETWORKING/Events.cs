@@ -9,9 +9,8 @@ namespace NETWORKING
         public static Action<NetworkIdentity> OnMatchJoined;
 
         // Users steam id, Recievers steam id, current frame
-        public static Action<ulong, ulong, int> OnPingSent;
-
-        public static Action<ulong, ulong, int> OnFirstNetworkLatencyCalculated;
-        public static Action<int> OnFinalNetworkLatencyCalculated;
+        public static Action<float> OnPingSent;
+        
+        public static Action<float, ulong> OnPingCalculated;
     }
 }

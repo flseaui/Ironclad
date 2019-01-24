@@ -4,6 +4,8 @@ using ATTRIBUTES;
 using Facepunch.Steamworks;
 using MANAGERS;
 using MISC;
+using NETWORKING;
+using TMPro;
 using UnityEngine;
 using Types = DATA.Types;
 
@@ -13,7 +15,7 @@ namespace MENU
     public class LobbyCharacterMenu : Menu
     {
         [SerializeField] private PlayerProfilePanel _playerProfilerPanel;
-
+        
         [SerializeField] private int _playerReady;
 
         protected override void SwitchToThis(params string[] args)
@@ -34,9 +36,9 @@ namespace MENU
             }
 
             GameManager.Instance.MatchType = Types.MatchType.OnlineMultiplayer;
+            Events.OnPingCalculated += _playerProfilerPanel.SetPlayerProfilePing;
         }
-
-
+        
         private void OnCreated(bool success)
         {
             if (!success) return;
@@ -46,6 +48,8 @@ namespace MENU
             _playerProfilerPanel.ClearPlayerProfiles();
             _playerProfilerPanel.AddPlayerProfile(Client.Instance.SteamId);
 
+            LatencyTester.Instance.BeginTesting();
+            
             /*Debug.Log("lobby created: " + Client.Instance.Lobby.CurrentLobby);
             Debug.Log($"Owner: {Client.Instance.Lobby.Owner}");
             Debug.Log($"Max Members: {Client.Instance.Lobby.MaxMembers}");
@@ -64,6 +68,8 @@ namespace MENU
 
                 if (member != Client.Instance.SteamId) CheckMemberData(member, false);
             }
+            
+            LatencyTester.Instance.BeginTesting();
         }
 
         private void SetupMemberData()
