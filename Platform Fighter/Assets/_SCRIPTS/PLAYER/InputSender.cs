@@ -11,7 +11,7 @@ namespace PLAYER
     {
         private bool[] _prevInputs;
 
-         public List<P2PInputSet> ArchivedInputSets;
+        public List<P2PInputSet> ArchivedInputSets;
 
         [NonSerialized] protected int[] InputFramesHeld;
 
@@ -33,6 +33,9 @@ namespace PLAYER
 
         private void Update()
         {
+            if (!P2PHandler.Instance.AllPlayersReady)
+                return;
+            
             RealTimeInputs.CopyTo(_prevInputs, 0);
 
             InputUpdate();

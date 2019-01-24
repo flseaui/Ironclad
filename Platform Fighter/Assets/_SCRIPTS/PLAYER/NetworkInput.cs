@@ -194,6 +194,8 @@ namespace PLAYER
 
         private void FixedUpdate()
         {
+            if (!P2PHandler.Instance.AllPlayersReady)
+                return;
             HandleInputs();
         }
 

@@ -47,6 +47,9 @@ namespace NETWORKING
         [NonSerialized]
         public int Ping;
 
+        [NonSerialized]
+        public bool AllPlayersReady;
+        
         public void Start()
         {
             Events.OnPingSent += SendP2PPing;
@@ -55,7 +58,7 @@ namespace NETWORKING
         public void StartGame()
         {
             Events.OnInputsChanged += SendP2PInputSet;
-            Events.OnMatchJoined += SendP2PMatchJoined;
+            Events.OnGameStarted += SendP2PGameStart;
             SubscribeToP2PEvents();
             
             GameStarted = true;
@@ -63,7 +66,7 @@ namespace NETWORKING
         
         private void FixedUpdate()
         {
-            if (!GameStarted) 
+            if (!AllPlayersReady)
                 return;
             
             //if (!ReceivedFirstInput) return;
@@ -118,10 +121,10 @@ namespace NETWORKING
             SendP2PMessage(message);
         }
         
-        private void SendP2PMatchJoined(NetworkIdentity networkIdentity)
+        private void SendP2PGameStart(NetworkIdentity networkIdentity)
         {
-            var body = new P2PJoin();
-            var message = new P2PMessage(networkIdentity.SteamId, P2PMessageKey.Join, body.Serialize());
+            var body = new P2PGameStart();
+            var message = new P2PMessage(networkIdentity.SteamId, P2PMessageKey.GameStart, body.Serialize());
 
             SendP2PMessage(message);
         }
@@ -179,9 +182,11 @@ namespace NETWORKING
 
                     player.GetComponent<NetworkInput>().GiveInputs(inputSet);
                     break;
-                case P2PMessageKey.Join:
+                case P2PMessageKey.GameStart:
 
                     ++_playersJoined;
+                    if (_playersJoined >= Client.Instance.Lobby.NumMembers)
+                        AllPlayersReady = true;
                     break;
                 case P2PMessageKey.Ping:
                     var pingMessage = JsonUtility.FromJson<P2PPing>(msg.Body);

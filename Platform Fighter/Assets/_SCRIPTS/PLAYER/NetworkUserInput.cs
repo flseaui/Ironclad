@@ -34,6 +34,8 @@ namespace PLAYER
 
             _player.controllers.maps.SetMapsEnabled(false, "Menu");
             _player.controllers.maps.SetMapsEnabled(true, "Default");
+
+            Events.OnGameStarted?.Invoke(GetComponent<NetworkIdentity>());
         }
 
         protected override void PressEvent(int index)
@@ -142,7 +144,7 @@ namespace PLAYER
 
         private void FixedUpdate()
         {
-            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer)
+            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && P2PHandler.Instance.AllPlayersReady)
             {
                 if (_delayedInputSets.Count == P2PHandler.Instance.Delay)
                     ApplyDelayedInputSets();

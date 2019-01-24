@@ -21,7 +21,7 @@ namespace NETWORKING
     public enum P2PMessageKey
     {
         InputSet,
-        Join,
-        Ping
+        Ping,
+        GameStart
     }
 }

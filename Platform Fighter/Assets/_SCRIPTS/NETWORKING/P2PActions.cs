@@ -49,7 +49,7 @@ namespace NETWORKING
     }
 
     [Serializable]
-    public struct P2PJoin : IP2PAction
+    public struct P2PGameStart : IP2PAction
     {
         public string Serialize()
         {
