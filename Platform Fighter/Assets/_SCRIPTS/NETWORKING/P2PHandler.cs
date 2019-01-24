@@ -85,7 +85,7 @@ namespace NETWORKING
         {
             Debug.Log( "Connection Error: " + steamid + " - " + error );
         }
-
+  
         private bool OnIncomingConnection(ulong steamid)
         {
             Debug.Log( "Incoming P2P Connection: " + steamid );
@@ -125,13 +125,13 @@ namespace NETWORKING
             SendP2PMessage(message);
         }
 
-        private void SendP2PInputSet(NetworkIdentity networkIdentity, P2PInputSet.InputChange[] inputs,
-            bool sendNetworkAction)
+        private void SendP2PInputSet(NetworkIdentity networkIdentity, InputChange[] inputs,
+            Vector2 angle, bool sendNetworkAction)
         {
             if (!sendNetworkAction) return;
             if (!LatencyCalculated) return;
 
-            var body = new P2PInputSet(inputs, InputPacketsSent, InputPacketsSentLoops);
+            var body = new P2PInputSet(inputs, angle, InputPacketsSent, InputPacketsSentLoops);
             var message = new P2PMessage(networkIdentity.SteamId, P2PMessageKey.InputSet, body.Serialize());
 
             SendP2PMessage(message);

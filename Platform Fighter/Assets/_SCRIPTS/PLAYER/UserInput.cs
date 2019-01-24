@@ -8,7 +8,7 @@ namespace PLAYER
 {
     public class UserInput : InputSender
     {
-        private List<P2PInputSet.InputChange> _changedInputs;
+        private List<InputChange> _changedInputs;
 
         private int _jumpFramesHeld;
 
@@ -20,7 +20,7 @@ namespace PLAYER
         private void Start()
         {
             base.Awake();
-            _changedInputs = new List<P2PInputSet.InputChange>();
+            _changedInputs = new List<InputChange>();
             _player = ReInput.players.GetPlayer(Id);
             _player.controllers.maps.SetMapsEnabled(false, "Menu");
             _player.controllers.maps.SetMapsEnabled(true, "Default");

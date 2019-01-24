@@ -206,7 +206,7 @@ namespace PLAYER
 
         private P2PInputSet PredictInputs()
         {
-            return new P2PInputSet(new P2PInputSet.InputChange[] { }, Mod(_p2pHandler.FrameCounter, 600), -1);
+            return new P2PInputSet(new InputChange[] { }, PlayerData.DataPacket.MovementStickAngle,Mod(_p2pHandler.FrameCounter, 600), -1);
         }
 
         public void ParseInputs(P2PInputSet inputSet)
@@ -223,6 +223,7 @@ namespace PLAYER
                 Debug.Log(temp);
             }
 
+            PlayerData.DataPacket.MovementStickAngle = inputSet.Angle;
             foreach (var inputChange in inputSet.Inputs) Inputs[(int) inputChange.InputType] = inputChange.State;
         }
     }

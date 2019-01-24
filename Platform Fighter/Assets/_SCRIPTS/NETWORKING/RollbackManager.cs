@@ -105,8 +105,12 @@ namespace NETWORKING
                 var setCount = sets.Count;
                 for (var i = 0; i < setCount; i++)
                 {
-                    if (sets[0].PacketNumber >= P2PHandler.Instance.DataPacket.FrameCounter && sets[0].LoopNumber >= P2PHandler.Instance.DataPacket.FrameCounterLoops)
+                    if (sets[0].LoopNumber > P2PHandler.Instance.DataPacket.FrameCounterLoops)
                         break;
+                    
+                    if (sets[0].LoopNumber == P2PHandler.Instance.DataPacket.FrameCounterLoops)
+                        if (sets[0].PacketNumber >= P2PHandler.Instance.DataPacket.FrameCounter)
+                            break;
                     
                     player.GetComponent<InputSender>().ArchivedInputSets.RemoveAt(0);
                 }

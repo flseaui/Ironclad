@@ -12,7 +12,7 @@ namespace PLAYER
 {
     public class NetworkUserInput : InputSender
     {
-        private List<P2PInputSet.InputChange> _changedInputs;
+        private List<InputChange> _changedInputs;
 
         private List<P2PInputSet> _delayedInputSets;
 
@@ -20,13 +20,15 @@ namespace PLAYER
 
         private P2PInputSet _lastInputSet;
 
+        private Vector2 _realTimeAngle;
+        
         private Player _player;
         public int Id { get; set; }
 
         private void Start()
         {
             base.Awake();
-            _changedInputs = new List<P2PInputSet.InputChange>();
+            _changedInputs = new List<InputChange>();
             _delayedInputSets = new List<P2PInputSet>();
             _player = ReInput.players.GetPlayer(Id);
 
@@ -36,12 +38,12 @@ namespace PLAYER
 
         protected override void PressEvent(int index)
         {
-            _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, RealTimeInputs[index]));
+            _changedInputs.Add(new InputChange((Types.Input) index, RealTimeInputs[index]));
         }
 
         protected override void ReleaseEvent(int index)
         {
-            _changedInputs.Add(new P2PInputSet.InputChange((Types.Input) index, RealTimeInputs[index],
+            _changedInputs.Add(new InputChange((Types.Input) index, RealTimeInputs[index],
                 InputFramesHeld[index]));
         }
 
@@ -52,6 +54,7 @@ namespace PLAYER
 
         private void ApplyDelayedInputSets()
         {
+            PlayerData.DataPacket.MovementStickAngle = _delayedInputSets.First().Angle;
             foreach (var input in _delayedInputSets.First().Inputs) Inputs[(int) input.InputType] = input.State;
             _delayedInputSets.RemoveAt(0);
 
@@ -133,8 +136,8 @@ namespace PLAYER
             if (_player.GetButtonDown("Grab"))
                 RealTimeInputs[(int) Types.Input.Grab] = true;
 
-            PlayerData.DataPacket.MovementStickAngle.x = _player.GetAxis("Move");
-            PlayerData.DataPacket.MovementStickAngle.y = _player.GetAxis("Crouch");
+            _realTimeAngle.x = _player.GetAxis("Move");
+            _realTimeAngle.y = _player.GetAxis("Crouch");
         }
 
         private void FixedUpdate()
@@ -146,8 +149,8 @@ namespace PLAYER
                     ApplyDelayedInputSets();
 
                 var inputArray = _changedInputs.ToArray();
-                _lastInputSet = new P2PInputSet(inputArray, P2PHandler.Instance.InputPacketsSent, P2PHandler.Instance.InputPacketsSentLoops);
-                Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, true);
+                _lastInputSet = new P2PInputSet(inputArray, _realTimeAngle, P2PHandler.Instance.InputPacketsSent, P2PHandler.Instance.InputPacketsSentLoops);
+                Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, _realTimeAngle, true);
                 if (_lastInputSet.Inputs.Length > 0)
                 {
                     var temp =
