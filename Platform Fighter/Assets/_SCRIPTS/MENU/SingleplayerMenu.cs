@@ -1,5 +1,4 @@
-﻿using System;
-using ATTRIBUTES;
+﻿using ATTRIBUTES;
 using DATA;
 using MANAGERS;
 
@@ -10,7 +9,7 @@ namespace MENU
     {
         protected override void SwitchToThis(params string[] args)
         {
-            throw new NotImplementedException();
+            GameManager.Instance.MatchType = Types.MatchType.OfflineSingleplayer;
         }
 
         public void ReadyButton()
@@ -24,6 +23,9 @@ namespace MENU
             MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;
         }
 
-        public void GoBack() => MenuManager.Instance.SwitchToPreviousMenu();
+        public void GoBack()
+        {
+            MenuManager.Instance.SwitchToPreviousMenu();
+        }
     }
 }

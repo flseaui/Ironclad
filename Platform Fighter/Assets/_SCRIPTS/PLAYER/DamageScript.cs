@@ -1,26 +1,26 @@
-﻿using TOOLS;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace PLAYER 
+namespace PLAYER
 {
-	public class DamageScript : MonoBehaviour
-	{
-		private PlayerData _playerData;
+    public class DamageScript : MonoBehaviour
+    {
+        private PlayerDataPacket _playerData;
 
-		private void Awake()
-		{
-			_playerData = GetComponent<PlayerData>();
-		}
+        private void Awake()
+        {
+            _playerData = GetComponent<PlayerData>().DataPacket;
+        }
 
-		public void ApplyDamage(double Damage, double KnockbackStrength, double KnockbackAngle)
-		{
-			_playerData.Percent += Damage;
+        public void ApplyDamage(double damage, double knockbackStrength, double knockbackAngle)
+        {
+            _playerData.Percent += damage;
 
-			//Find some way to determine direction
-			_playerData.KnockbackVelocity.x = (float)((KnockbackStrength + KnockbackStrength * _playerData.Percent) * Mathf.Cos((float)KnockbackAngle)); //* positive or negitive for left or right
-			_playerData.KnockbackVelocity.x = (float)((KnockbackStrength + KnockbackStrength * _playerData.Percent) * Mathf.Sin((float)KnockbackAngle));
-
-			Debug.Log("DAMAGE BITCH");
-		}
-	}
+            //Find some way to determine direction
+            _playerData.KnockbackVelocity.x = (float) ((knockbackStrength + knockbackStrength * _playerData.Percent) *
+                                                       Mathf.Cos((float) knockbackAngle)
+                ); //* positive or negitive for left or right
+            _playerData.KnockbackVelocity.y = (float) ((knockbackStrength + knockbackStrength * _playerData.Percent) *
+                                                       Mathf.Sin((float) knockbackAngle));
+        }
+    }
 }

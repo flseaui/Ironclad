@@ -1,8 +1,6 @@
-﻿using MANAGERS;
-using Rewired;
+﻿using Rewired;
 using UnityEngine;
 using UnityEngine.UI;
-using Types = DATA.Types;
 
 namespace MENU
 {
@@ -37,12 +35,7 @@ namespace MENU
             else
                 _image.overrideSprite = null;
 
-            if (Back)
-            {
-                Dropped = false;
-
-                MainMenuManager.Instance.SetCharacter(Id, Types.Character.None);
-            }
+            if (Back) Dropped = false;
         }
 
         private void UpdateInput()
@@ -53,12 +46,13 @@ namespace MENU
 
             if (Dropped) return;
 
+            var anchoredPosition = _transform.anchoredPosition;
             _transform.anchoredPosition = Vector2.Lerp
             (
-                _transform.anchoredPosition,
+                anchoredPosition,
                 new Vector2
                 (
-                    _transform.anchoredPosition.x + _player.GetAxis("Horizontal") * _speed * Time.deltaTime,
+                    anchoredPosition.x + _player.GetAxis("Horizontal") * _speed * Time.deltaTime,
                     _transform.anchoredPosition.y + _player.GetAxis("Vertical") * _speed * Time.deltaTime
                 ),
                 _speed * Time.deltaTime

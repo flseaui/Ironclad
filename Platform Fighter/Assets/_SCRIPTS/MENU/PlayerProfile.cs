@@ -14,8 +14,14 @@ namespace MENU
             _nameText = GetComponentInChildren<Text>();
         }
 
-        public void SetBorderColor(Color color) => _borderImage.color = color;
+        public void SetBorderColor(Color color)
+        {
+            _borderImage.color = color;
+        }
 
-        public void SetPlayerName(string playerName) => _nameText.text = playerName;
+        public void SetPlayerName(string playerName)
+        {
+            _nameText.text = playerName;
+        }
     }
 }

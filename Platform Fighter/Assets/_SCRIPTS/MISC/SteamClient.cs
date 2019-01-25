@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Facepunch.Steamworks;
-using TOOLS;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -9,13 +8,22 @@ namespace MISC
 {
     public class SteamClient : MonoBehaviour
     {
+        private static bool Instantiated;
         public uint AppId;
 
         private Client client;
 
         private void Start()
         {
+            if (Instantiated)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             DontDestroyOnLoad(gameObject);
+
+            Instantiated = true;
 
             if (AppId == 0)
                 throw new Exception("You need to set the AppId to your game");

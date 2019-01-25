@@ -4,8 +4,6 @@ using System.Linq;
 using DATA;
 using MISC;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using TOOLS;
 using UnityEngine;
 using Types = DATA.Types;
 
@@ -13,55 +11,36 @@ namespace MANAGERS
 {
     public class AssetManager : Singleton<AssetManager>
     {
-        [SerializeField] private GameObject[] _stagePrefabs;
-        
         private List<ActionSet> _actionSets;
+        [SerializeField] private GameObject[] _stagePrefabs;
 
-        public class ActionSet
+        private void Awake()
         {
-            private Dictionary<Types.ActionType, ActionInfo> _actionsDictionary;
-
-            public Types.Character Character { get; }
-            
-            public ActionSet()
-            {
-                _actionsDictionary = new Dictionary<Types.ActionType, ActionInfo>();
-            }
-
-            public ActionSet(Types.Character character, Dictionary<Types.ActionType, ActionInfo> actionsDictionary)
-            {
-                Character = character;
-                _actionsDictionary = actionsDictionary;
-            }
-
-            public IEnumerable<ActionInfo> Actions => _actionsDictionary.Values;
-
-            public ActionInfo GetAction(Types.ActionType actionType)
-            {
-                return _actionsDictionary.ContainsKey(actionType)
-                    ? _actionsDictionary[actionType]
-                    : _actionsDictionary[Types.ActionType.Idle];
-            }
-            
+            _actionSets = new List<ActionSet>();
         }
 
-        private void Awake() => _actionSets = new List<ActionSet>();
-        
         /**
          * STAGES
          */
 
-        public GameObject GetStage(Types.Stage stage) =>
-            _stagePrefabs.FirstOrDefault(prefab => prefab.name == stage.ToString());
+        public GameObject GetStage(Types.Stage stage)
+        {
+            return _stagePrefabs.FirstOrDefault(prefab => prefab.name == stage.ToString());
+        }
 
-        public GameObject GetStageByIndex(int index) => _stagePrefabs[index];
-        
+        public GameObject GetStageByIndex(int index)
+        {
+            return _stagePrefabs[index];
+        }
+
         /**
          * ACTIONS
          */
 
-        public ActionInfo GetAction(Types.Character characterType, Types.ActionType actionType) =>
-            GetActionSet(characterType).GetAction(actionType);
+        public ActionInfo GetAction(Types.Character characterType, Types.ActionType actionType)
+        {
+            return GetActionSet(characterType).GetAction(actionType);
+        }
 
         public ActionSet GetActionSet(Types.Character characterType)
         {
@@ -74,13 +53,15 @@ namespace MANAGERS
             {
                 if (character == Types.Character.None)
                     continue;
-                
+
                 _actionSets.Add(new ActionSet(character, LoadActions(character)));
             }
         }
 
-        public void LogAction(ActionInfo action) =>
+        public void LogAction(ActionInfo action)
+        {
             Debug.Log($"ACTION: {action.Name}");
+        }
 
         // reads in all of a characters actions and returns a list of them
         private Dictionary<Types.ActionType, ActionInfo> LoadActions(
@@ -95,7 +76,7 @@ namespace MANAGERS
 
             foreach (var file in Directory.GetFiles(actionPath).Where(s => s.EndsWith(".json")))
             {
-                Debug.Log($"READ FILE: {file}");
+                //Debug.Log($"READ FILE: {file}");
 
                 var jsonData = File.ReadAllText(file);
                 var action = JsonConvert.DeserializeObject<ActionInfo>(jsonData);
@@ -104,6 +85,33 @@ namespace MANAGERS
             }
 
             return actions;
+        }
+
+        public class ActionSet
+        {
+            private readonly Dictionary<Types.ActionType, ActionInfo> _actionsDictionary;
+
+            public ActionSet()
+            {
+                _actionsDictionary = new Dictionary<Types.ActionType, ActionInfo>();
+            }
+
+            public ActionSet(Types.Character character, Dictionary<Types.ActionType, ActionInfo> actionsDictionary)
+            {
+                Character = character;
+                _actionsDictionary = actionsDictionary;
+            }
+
+            public Types.Character Character { get; }
+
+            public IEnumerable<ActionInfo> Actions => _actionsDictionary.Values;
+
+            public ActionInfo GetAction(Types.ActionType actionType)
+            {
+                return _actionsDictionary.ContainsKey(actionType)
+                    ? _actionsDictionary[actionType]
+                    : _actionsDictionary[Types.ActionType.Idle];
+            }
         }
     }
 }

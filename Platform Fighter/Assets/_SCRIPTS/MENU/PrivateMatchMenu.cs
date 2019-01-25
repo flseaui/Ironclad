@@ -1,7 +1,7 @@
-﻿using ATTRIBUTES;
+﻿using System;
+using ATTRIBUTES;
 using Facepunch.Steamworks;
 using MANAGERS;
-using TOOLS;
 using UnityEngine;
 using Types = DATA.Types;
 
@@ -12,12 +12,13 @@ namespace MENU
     {
         protected override void SwitchToThis(params string[] args)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
-        
+
         public void InviteFriend()
         {
-            Client.Instance.Lobby.OpenFriendInviteOverlay();
+            //TODO Add friend inviting code here
+            //Client.Instance.Overlay.
 
             Client.Instance.Lobby.OnLobbyJoined = delegate(bool successfullyJoined)
             {
@@ -30,8 +31,10 @@ namespace MENU
                NLog.Log(LogType.Message,  $"{friend.Id}: {friend.Name}" );
             }*/
         }
-        
-        public void GoBack() => MenuManager.Instance.SwitchToPreviousMenu();
-        
+
+        public void GoBack()
+        {
+            MenuManager.Instance.SwitchToPreviousMenu();
+        }
     }
 }

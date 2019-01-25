@@ -16,6 +16,10 @@
             Uair,
             Bair,
             Dashatk,
+            Nstrong,
+            Fstrong,
+            Dstrong,
+            Ustrong,
             Nspecial,
             Fspecial,
             Airfspecial,
@@ -30,13 +34,17 @@
             Roll,
             Airdodge,
             Spotdodge,
-            Fhop,
-            Shop,
+            Jump,
+            Fall,
+            FreeFall,
+            LedgeGrab,
             Walk,
             Run,
             Dash,
             Assist,
-            Turn
+            Turn,
+            Stun,
+            KnockedDown
         }
 
         public enum Character
@@ -51,6 +59,46 @@
             Right
         }
 
+        public enum Flags
+        {
+            ShortHop,
+            FullHop,
+            ResetAction
+        }
+
+        public enum FlagState
+        {
+            Inactive,
+            Pending,
+            Resolved
+        }
+
+        public enum Input
+        {
+            LightLeft,
+            StrongLeft,
+            LightRight,
+            StrongRight,
+            Up,
+            Down,
+            Jump,
+            Neutral,
+            Strong,
+            Special,
+            Shield,
+            Grab,
+            UpC,
+            DownC,
+            LeftC,
+            RightC
+        }
+
+        public enum MatchType
+        {
+            OfflineSingleplayer,
+            OnlineMultiplayer
+        }
+
         public enum Menu
         {
             BlankMenu,
@@ -61,7 +109,8 @@
             LobbySelectMenu,
             LobbyCharacterMenu,
             PrivateMatchMenu,
-            GameStartMenu
+            GameStartMenu,
+            CharacterSelectMenu
         }
 
         public enum Stage

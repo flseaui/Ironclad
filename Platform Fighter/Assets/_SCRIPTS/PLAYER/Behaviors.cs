@@ -1,23 +1,25 @@
-﻿using UnityEngine;
+﻿using ATTRIBUTES;
+using MISC;
+using UnityEngine;
 
 namespace PLAYER
 {
-    [RequireComponent(typeof(PlayerData))]
-    public abstract class Behaviors : MonoBehaviour
+    [StepOrder(2), RequireComponent(typeof(PlayerData))]
+    public abstract class Behaviors : Steppable
     {
-        protected PlayerData Data { get; private set; }
+        protected PlayerDataPacket Data { get; private set; }
 
         protected PlayerController PlayerController { get; private set; }
-        
-        private void Awake()
-        {
-            Data = GetComponent<PlayerData>();
-            PlayerController = GetComponent<PlayerController>();
-        }
 
-        private void Update()
+        protected sealed override void Step()
         {
             RunAction();
+        }
+
+        protected override void LateAwake()
+        {
+            Data = GetComponent<PlayerData>().DataPacket;
+            PlayerController = GetComponent<PlayerController>();
         }
 
         public abstract void RunAction();

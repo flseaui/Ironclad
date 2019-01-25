@@ -9,25 +9,20 @@ namespace PLAYER
     public class BoxPool
     {
         // List of actions of frames of boxes
-        private List<List<List<BoxData>>> _boxes;
-        private List<(int, BoxData)> _enabledBoxes;
- 
+        private readonly List<List<List<BoxData>>> _boxes;
+
         public BoxPool()
         {
             _boxes = new List<List<List<BoxData>>>(Enum.GetNames(typeof(Types.ActionType)).Length);
             for (var i = 0; i < Enum.GetNames(typeof(Types.ActionType)).Length; ++i)
-            {
                 _boxes.Add(new List<List<BoxData>>());
-            }
-            
-            _enabledBoxes = new List<(int, BoxData)>();
         }
 
         public void AddBox(BoxData boxData)
-        {                      
+        {
             if (_boxes[(int) boxData.ParentAction].Count <= boxData.ParentFrame)
                 _boxes[(int) boxData.ParentAction].Add(new List<BoxData>());
-            
+
             _boxes[(int) boxData.ParentAction][boxData.ParentFrame].Add(boxData);
         }
 
@@ -36,39 +31,38 @@ namespace PLAYER
             var nullBox = new GameObject();
             nullBox.SetActive(false);
             nullBox.name = "NullBox";
+            nullBox.AddComponent<BoxInfo>();
             nullBox.AddComponent<BoxData>();
             nullBox.GetComponent<BoxData>().SetAsNull();
 
             if (_boxes[(int) action].Count <= frame)
                 _boxes[(int) action].Add(new List<BoxData>());
-            
+
             _boxes[(int) action][frame].Add(nullBox.GetComponent<BoxData>());
             return nullBox.GetComponent<BoxData>();
         }
-        
+
         public void SwitchFrames(Types.ActionType action, int frame)
         {
             DisableEnabledBoxes();
             EnableBoxesOnFrame(action, frame);
         }
-        
+
         private void DisableEnabledBoxes()
         {
-            for (var i = 0; i < _enabledBoxes.Count; i++)
+            foreach (var box in GameObject.FindGameObjectsWithTag("EnabledBox"))
             {
-                var box = _enabledBoxes[i];
-                if (box.Item1 > 0)
+                var info = box.GetComponent<BoxInfo>();
+                if (info.Lifespan > 0) info.Lifespan--;
+                if (info.Lifespan <= 0)
                 {
-                    box.Item1--;
-                    if (box.Item1 <= 0)
-                    {
-                        box.Item2.gameObject.SetActive(false);
-                        _enabledBoxes.Remove(box);
-                    }
+                    box.tag = "DisabledBox";
+                    box.SetActive(false);
+                    //_enabledBoxes.Remove(box);
                 }
             }
         }
-        
+
         private void EnableBoxesOnFrame(Types.ActionType action, int frame)
         {
             //Debug.Log($"count1: {_boxes.Count}, index1: {(int) action}");
@@ -79,11 +73,11 @@ namespace PLAYER
                 if (box.Type == ActionInfo.Box.BoxType.Null) continue;
 
                 if (box.gameObject.activeSelf) continue;
-                
+
                 box.gameObject.SetActive(true);
-                _enabledBoxes.Add((box.Lifespan, box));
+                box.gameObject.tag = "EnabledBox";
+                box.GetComponent<BoxInfo>().Lifespan = box.GetComponent<BoxData>().Lifespan;
             }
         }
-
     }
 }

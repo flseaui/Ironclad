@@ -46,6 +46,11 @@ namespace Editor.Generated
     [MenuItem("Menu/GameStartMenu", true)]
     private static bool SwapToGameStartMenuValidation() => MenuSwap.SwapMenuValidation("GameStartMenu");
 
+    [MenuItem("Menu/CharacterSelectMenu")]
+    private static void SwapToCharacterSelectMenu() => MenuSwap.SwapMenu("CharacterSelectMenu");
+    [MenuItem("Menu/CharacterSelectMenu", true)]
+    private static bool SwapToCharacterSelectMenuValidation() => MenuSwap.SwapMenuValidation("CharacterSelectMenu");
+
 
     }
 }

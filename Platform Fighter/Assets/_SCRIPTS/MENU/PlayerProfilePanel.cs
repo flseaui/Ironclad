@@ -2,7 +2,7 @@
 using System.Linq;
 using Facepunch.Steamworks;
 using MISC;
-using UnityEditor.Sprites;
+using TMPro;
 using UnityEngine;
 using Color = UnityEngine.Color;
 using Image = UnityEngine.UI.Image;
@@ -34,7 +34,7 @@ namespace MENU
             steamAvatar.Fetch();
 
             var d = new Vector2();
-            
+
             playerProfile.GetComponent<PlayerProfile>().SetBorderColor
             (
                 _playerCount
@@ -45,14 +45,26 @@ namespace MENU
                     .Else(Color.white)
             );
 
-            playerProfile.GetComponent<PlayerProfile>().SetPlayerName($"Player {_playerCount}");
+            playerProfile.GetComponent<PlayerProfile>().SetPlayerName(Client.Instance.Friends.GetName(playerId));
             _playerProfiles.Add(new ProfileInfo(playerProfile, playerId));
         }
 
+        public void SetPlayerProfilePing(int ping, ulong id)
+        {
+            var profile = _playerProfiles.FirstOrDefault(x => x.PlayerId == id);
+            profile.Profile.transform.Find("PingText").GetComponent<TextMeshProUGUI>().text = ping.ToString();
+        }
+        
         public void ReadyPlayerProfile(ulong id)
         {
             var profile = _playerProfiles.FirstOrDefault(x => x.PlayerId == id);
             profile.Profile.transform.Find("ReadyBadge").GetComponent<Image>().color = Color.green;
+        }
+
+        public void UnreadyPlayerProfile(ulong id)
+        {
+            var profile = _playerProfiles.FirstOrDefault(x => x.PlayerId == id);
+            profile.Profile.transform.Find("ReadyBadge").GetComponent<Image>().color = Color.white;
         }
 
         public void RemovePlayerProfile(ulong id)

@@ -14,10 +14,13 @@
   },
     "FrameProperties": [
 		{
-			"Velocity": {
-				"x": 5.0,
-				"y": 0.0
-			}
+          "DetailedVelocity": {
+            "Velocity": {
+              "x": 0.05,
+              "y": 0.0
+            },
+            "Modification": "IgnoreY"
+          }
 		}
 	],
   "Hitboxes": [
@@ -29,11 +32,11 @@
         "Damage": 0.0,
         "KnockbackStrength": 0.0,
         "KnockbackAngle": 0.0,
-        "Lifespan": 1,
+        "Lifespan": 100,
         "X": 0,
         "Y": 0,
-        "Width": 1,
-        "Height": 1,
+        "Width": 0.72,
+        "Height": 0.64,
         "Type": "Hurt"
       }
     ]

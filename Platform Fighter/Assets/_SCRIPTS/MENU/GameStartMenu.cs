@@ -31,7 +31,7 @@ namespace MENU
 
         private IEnumerator LoadNewScene(string scene)
         {
-            yield return new WaitForSeconds(3);
+            //yield return new WaitForSeconds(3);
 
             var async = SceneManager.LoadSceneAsync(scene);
 

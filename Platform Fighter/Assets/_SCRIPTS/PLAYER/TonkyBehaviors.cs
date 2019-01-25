@@ -7,9 +7,17 @@ namespace PLAYER
     {
         public override void RunAction()
         {
-            Data.TargetVelocity = PlayerController.CurrentActionProperties.DetailedVelocity.Velocity * (Data.Direction == Types.Direction.Left ? -1 : 1);
-            Data.Acceleration.x = .5f;
-            
+            Data.VelocityModifier = PlayerController.CurrentActionProperties.DetailedVelocity.Modification;
+
+            Data.TargetVelocity.x =
+                PlayerController.CurrentActionProperties.DetailedVelocity.Velocity.x *
+                (Data.Direction == Types.Direction.Left ? -1 : 1);
+
+            Data.TargetVelocity.y =
+                PlayerController.CurrentActionProperties.DetailedVelocity.Velocity.y;
+
+            Data.Acceleration.x = 5f;
+
             switch (Data.CurrentAction)
             {
                 case Types.ActionType.Walk:
@@ -40,6 +48,14 @@ namespace PLAYER
                     break;
                 case Types.ActionType.Dashatk:
                     break;
+                case Types.ActionType.Nstrong:
+                    break;
+                case Types.ActionType.Fstrong:
+                    break;
+                case Types.ActionType.Dstrong:
+                    break;
+                case Types.ActionType.Ustrong:
+                    break;
                 case Types.ActionType.Nspecial:
                     break;
                 case Types.ActionType.Fspecial:
@@ -68,9 +84,15 @@ namespace PLAYER
                     break;
                 case Types.ActionType.Spotdodge:
                     break;
-                case Types.ActionType.Fhop:
+                case Types.ActionType.Jump:
+                    ApplyArielMovement(Data.MovementStickAngle.x,
+                        Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreBoth ||
+                        Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreY);
                     break;
-                case Types.ActionType.Shop:
+                case Types.ActionType.Fall:
+                    ApplyArielMovement(Data.MovementStickAngle.x,
+                        Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreBoth ||
+                        Data.VelocityModifier == ActionInfo.VelocityModifier.ModificationType.IgnoreY);
                     break;
                 case Types.ActionType.Dash:
                     break;
@@ -83,6 +105,16 @@ namespace PLAYER
                 default:
                     throw new ArgumentOutOfRangeException(nameof(Data.CurrentAction), Data.CurrentAction, null);
             }
+        }
+
+        public void ApplyArielMovement(float amount, bool modAsIgnoreBoth)
+        {
+            Data.TargetVelocity.x += amount * 0.025f;
+
+            if (modAsIgnoreBoth)
+                Data.VelocityModifier = ActionInfo.VelocityModifier.ModificationType.IgnoreY;
+            else
+                Data.VelocityModifier = ActionInfo.VelocityModifier.ModificationType.Target;
         }
     }
 }

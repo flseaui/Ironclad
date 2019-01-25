@@ -1,0 +1,64 @@
+{
+  "Name": "Fall",
+  "_frames": [
+    "Startup"
+  ],
+  "Type": "Fall",
+  "_infinite": {
+    "x": 0.0,
+    "y": 2.0
+  },
+  "Anchor": {
+    "x": 0.0,
+    "y": 0.0
+  },
+  "FrameProperties": [
+    {
+      "DetailedVelocity": {
+        "Velocity": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "Modification": "IgnoreBoth"
+      }
+    }
+  ],
+  "Hitboxes": [
+    []
+  ],
+  "Hurtboxes": [
+    [
+      {
+        "Damage": 0.0,
+        "KnockbackStrength": 0.0,
+        "KnockbackAngle": 0.0,
+        "Lifespan": 100,
+        "X": 0,
+        "Y": 0,
+        "Width": 0.72,
+        "Height": 0.64,
+        "Type": "Hurt"
+      }
+    ]
+  ],
+  "Grabboxes": [
+    [],
+    [],
+    []
+  ],
+  "Armorboxes": [
+    [],
+    [],
+    []
+  ],
+  "Collisionboxes": [
+    [],
+    [],
+    []
+  ],
+  "Databoxes": [
+    [],
+    [],
+    []
+  ]
+}

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
+using ATTRIBUTES;
 using DATA;
 using MANAGERS;
-using TOOLS;
+using MISC;
+using NETWORKING;
 using UnityEngine;
 using Types = DATA.Types;
 
@@ -14,80 +14,107 @@ namespace PLAYER
 
     public delegate void OnActionBeginCallback();
 
-    [RequireComponent(typeof(PlayerData))]
-    public class PlayerController : MonoBehaviour
+    [StepOrder(1), RequireComponent(typeof(PlayerData))]
+    public class PlayerController : Steppable
     {
-        public static event OnActionEndCallback OnActionEnd;
-        public static event OnActionBeginCallback OnActionBegin;
+        private Animator _animator;
+
+        private BoxPool _boxPool;
+
+        [SerializeField] private GameObject _boxPrefab;
+        private ActionInfo _currentAction;
+
+        private PlayerDataPacket _data;
+        private SpriteRenderer _spriteRenderer;
+
+        public int CurrentActionFrame { get; private set; }
 
         public ActionInfo.FrameProperty CurrentActionProperties
         {
             get
             {
-                if (_currentAction?.FrameProperties == null || _currentActionFrame < 0) return new ActionInfo.FrameProperty();
-                
-                return _currentAction.FrameProperties[_currentActionFrame]; 
+                if (_currentAction?.FrameProperties == null || CurrentActionFrame < 0)
+                    return new ActionInfo.FrameProperty();
+
+                return _currentAction.FrameProperties[CurrentActionFrame];
             }
         }
 
-        private int _currentActionFrame;
-        
-        private PlayerData _data;
-        private SpriteRenderer _spriteRenderer;
-        private Animator _animator;
-        private ActionInfo _currentAction;
+        protected sealed override void Step()
+        {
+            ExecuteAction();
+        }
 
-        private BoxPool _boxPool;
+        public static event OnActionEndCallback OnActionEnd;
+        public static event OnActionBeginCallback OnActionBegin;
 
-        [SerializeField] private GameObject _boxPrefab;
-        
-        private void Awake()
+        protected override void LateAwake()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
 
             _animator = GetComponent<Animator>();
-            
-            _data = GetComponent<PlayerData>();
-            
+
+            _data = GetComponent<PlayerData>().DataPacket;
+
             _boxPool = new BoxPool();
         }
 
         private void Start()
         {
             _data.Direction = Types.Direction.Right;
-            PlayerData.PlayerLocation Position = PlayerData.PlayerLocation.Grounded;
-            
-            PoolBoxes();
-        }
-        
-        private void Update()
-        {
-           //Debug.Log($"{_data.CurrentAction} {_data.Direction}");
+            var Position = PlayerDataPacket.PlayerLocation.Grounded;
 
-            ExecuteAction();
+            PoolBoxes();
         }
 
         private void ExecuteAction()
         {
             // first frame of action
-            if (_currentActionFrame == 0)
+            if (CurrentActionFrame == 0 || GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ResetAction) ==
+                Types.FlagState.Pending)
             {
+                // if we just reset
+                if (GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ResetAction) == Types.FlagState.Pending)
+                {
+                    if (_currentAction != null)
+                        if (_currentAction.Type != _data.CurrentAction)
+                        {
+                            
+                            Debug.Log(
+                                $"CANCELLED {_currentAction.Type} into {_data.CurrentAction} on ActionFrame: {CurrentActionFrame} on frame: {P2PHandler.Instance.DataPacket.FrameCounter}");
+                            Debug.Log($"TotalMove: {_data.TotalMove.Item2} for {_data.TotalMove.Item1}");
+                        }
+
+                    CurrentActionFrame = 0;
+                }
+                else
+                {
+                    if (_currentAction != null)
+                        if (_currentAction.Type != _data.CurrentAction)
+                            Debug.Log(
+                                $"SWITCHED FROM {_currentAction.Type} to {_data.CurrentAction} on ActionFrame: {CurrentActionFrame} on frame: {P2PHandler.Instance.DataPacket.FrameCounter}");
+                }
+
                 _currentAction = AssetManager.Instance.GetAction(Types.Character.TestCharacter, _data.CurrentAction);
+                //Debug.Log($"Player: {GetComponent<NetworkIdentity>().Id} started: {_currentAction.Name} on {P2PHandler.Instance.InputPacketsSent}");
                 _animator.SetInteger("CurrentAction", (int) _currentAction.Type);
                 OnActionBegin?.Invoke();
-            }
-            
-           UpdateBoxes(_currentActionFrame);
-            
-            UpdateSprite();
 
-            ++_currentActionFrame;
-           
+                if (GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ResetAction) == Types.FlagState.Pending)
+                    GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ResetAction, Types.FlagState.Resolved);
+            }
+
+            UpdateBoxes(CurrentActionFrame);
+
+            UpdateSprite();
+            ++CurrentActionFrame;
+
+
             // last frame of action
-            if (_currentActionFrame >= _currentAction.FrameCount - 1)
+            if (CurrentActionFrame >= _currentAction.FrameCount - 1)
             {
                 OnActionEnd?.Invoke();
-                _currentActionFrame = 0;
+                CurrentActionFrame = 0;
             }
         }
 
@@ -100,30 +127,27 @@ namespace PLAYER
                     foreach (var frame in boxes)
                     {
                         if (frame.Count > 0)
-                        {
                             foreach (var hitbox in frame)
                             {
                                 var box = Instantiate(_boxPrefab, transform);
                                 box.transform.localPosition = new Vector2(hitbox.X, hitbox.Y);
                                 box.name = $"{hitbox.Type.ToString()}Box";
 
-                                box.GetComponent<BoxCollider2D>().size = new Vector2(hitbox.Width, hitbox.Height);
+                                box.GetComponent<BoxCollider2D>().size =
+                                    new Vector2((float) hitbox.Width, (float) hitbox.Height);
 
                                 var boxData = box.GetComponent<BoxData>();
                                 boxData.SetData(hitbox, actionType, frameCount);
 
                                 _boxPool.AddBox(boxData);
                             }
-                        }
                         else
-                        {
                             _boxPool.AddNullBox(actionType, frameCount).gameObject.transform.parent = transform;
-                        }
 
                         ++frameCount;
                     }
                 };
-            
+
             var actionSet = AssetManager.Instance.GetActionSet(Types.Character.TestCharacter);
             foreach (var action in actionSet.Actions)
             {
@@ -135,7 +159,7 @@ namespace PLAYER
                 CreateBoxes(action.Databoxes, action.Type);
             }
         }
-        
+
         private void UpdateBoxes(int frame)
         {
             // TODO disable old boxes and enable new ones<w
