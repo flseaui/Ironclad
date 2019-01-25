@@ -50,17 +50,16 @@ namespace NETWORKING
         [NonSerialized]
         public bool AllPlayersReady;
         
-        public void Start()
+        private void Start()
         {
             Events.OnPingSent += SendP2PPing;
+            Events.OnInputsChanged += SendP2PInputSet;
+            Events.OnGameStarted += SendP2PGameStart;
+            SubscribeToP2PEvents();
         }
         
         public void StartGame()
         {
-            Events.OnInputsChanged += SendP2PInputSet;
-            Events.OnGameStarted += SendP2PGameStart;
-            SubscribeToP2PEvents();
-            
             GameStarted = true;
         }
         
