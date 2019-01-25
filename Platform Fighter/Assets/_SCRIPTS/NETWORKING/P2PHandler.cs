@@ -27,8 +27,9 @@ namespace NETWORKING
         private bool _initialSave;
         
         public P2PHandlerPacket DataPacket;
+
+        public int Delay => Ping / 100;
         
-        public int Delay = 2;
         [NonSerialized]
         public int InputPacketsProcessed;
         [NonSerialized]
@@ -191,6 +192,7 @@ namespace NETWORKING
                     var pingMessage = JsonUtility.FromJson<P2PPing>(msg.Body);
 
                     var ping = DateTime.Now.Millisecond - pingMessage.SentTime;
+                    Ping = ping;
                     Events.OnPingCalculated?.Invoke(ping, senderID);
                     break;
             }
