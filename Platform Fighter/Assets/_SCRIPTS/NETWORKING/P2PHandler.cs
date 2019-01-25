@@ -210,14 +210,13 @@ namespace NETWORKING
             DataPacket.FrameCounter %= 600;
             if (DataPacket.FrameCounter < prevFrameCount)
                 DataPacket.FrameCounterLoops = ++DataPacket.FrameCounterLoops % 600;
-            
+
             if (!_initialSave)
-                if (DataPacket.FrameCounter == 0)
-                {
-                    DataPacket.FrameCounterLoops = 0;
-                    RollbackManager.Instance.SaveGameState(0);
-                    _initialSave = true;
-                }
+            {
+                DataPacket.FrameCounterLoops = 0;
+                RollbackManager.Instance.SaveGameState(0);
+                _initialSave = true;
+            }
         }
         
         public override void SetData(object newData)

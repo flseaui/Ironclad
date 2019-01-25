@@ -174,7 +174,6 @@ namespace PLAYER
         public void ApplyLastInputSet()
         {
             ArchivedInputSets.Add(_lastInputSet);
-            Debug.Log("APPLIED LAST INPUT SET: " + _lastInputSet.PacketNumber);
         }
     }
 }

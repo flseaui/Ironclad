@@ -22,7 +22,6 @@ namespace NETWORKING
         public void AddSteppable(Steppable steppable, int stepOrder)
         {
             _steppables.Add((stepOrder, steppable));
-            Debug.Log($"Added Steppable {steppable.name} with stepOrder {stepOrder}");
         }
 
         private void Awake()
@@ -34,13 +33,6 @@ namespace NETWORKING
         private void Start()
         {
             _steppables = _steppables.OrderBy(x => x.Item2.GetComponent<NetworkIdentity>().Id).ThenBy(x => x.Item1).ToList();
-            //_steppables = _steppables.OrderBy(steppable => steppable.Key).ThenBy(steppable => steppable.Value.Item1.GetComponent<NetworkIdentity>().Id)
-              //  .ToDictionary(x => x.Key, x => x.Value);
-
-            foreach (var s in _steppables)
-            {
-                Debug.Log($"[STEPPABLE] stepOrder: {s.Item1}, networkId: {s.Item2.GetComponent<NetworkIdentity>().Id}");
-            }
         }
 
         /// <summary>
@@ -48,17 +40,14 @@ namespace NETWORKING
         /// </summary>
         public void Rollback(int distance)
         {
+            Debug.Log($"index: {_snapshots.Count - 1}, count: {_snapshots.Count}");
             var closestKey = _snapshots[_snapshots.Count - 1].Key;
-
-            Debug.Log("Distance: " + distance);
             
             if (closestKey > distance)
             {
                 for (var i = _snapshots.Count - 1; i >= 0; i--)
                 {
                     var snapshot = _snapshots[i];
-                 
-                    Debug.Log($"[SnapshotFrame]: {snapshot.Key}");
                     
                     if (snapshot.Key > distance) continue;
 
@@ -67,7 +56,6 @@ namespace NETWORKING
                 }
             }
 
-            Debug.Log("Closest Key: " + closestKey);
             foreach (var snapshotPiece in _snapshots.FirstOrDefault(x => x.Key == closestKey).Value)
             {
                 var packet = JsonUtility.FromJson(snapshotPiece.JsonData, snapshotPiece.Type);
@@ -94,10 +82,6 @@ namespace NETWORKING
             }*/
 
             var snapshotAge = Math.Abs(distance - P2PHandler.Instance.DataPacket.FrameCounter);
-            
-            Debug.Log($"ROLLED BACK TO ({P2PHandler.Instance.DataPacket.FrameCounter}, {P2PHandler.Instance.DataPacket.FrameCounterLoops})");
-            
-            Debug.Log("SnapshotAge: " + snapshotAge);
                         
             foreach (var player in MatchStateManager.Instance.Players)
             {
@@ -114,13 +98,6 @@ namespace NETWORKING
                     
                     player.GetComponent<InputSender>().ArchivedInputSets.RemoveAt(0);
                 }
-                
-                var temp = "";
-                foreach (var input in player.GetComponent<InputSender>().ArchivedInputSets)
-                {
-                    temp += $"({input.PacketNumber}, {input.LoopNumber}){Environment.NewLine}";
-                }
-                Debug.Log("ArchivedInputSets contains: " + temp);
             }
             
             int lastOrder = _steppables[0].Item1;
@@ -133,7 +110,6 @@ namespace NETWORKING
                         _steppables[j].Item2.GetComponent<InputSender>().ApplyArchivedInputSet(i);
                     }
 
-                    Debug.Log($"[STEPPED - {_steppables[j].Item1}]: {_steppables[j].Item2.GetType()}");
                     _steppables[j].Item2.ControlledStep();
                     
                     lastOrder = _steppables[j].Item1;
@@ -146,7 +122,6 @@ namespace NETWORKING
 
         public void SaveGameState(int frame)
         {
-            Debug.Log($"[SaveGameState] on: {P2PHandler.Instance.DataPacket.FrameCounter}, from: {frame}");
             _snapshots.Add(new KeyValuePair<int, List<Snapshot>>(frame, new List<Snapshot>()));
             foreach (var player in MatchStateManager.Instance.Players)
                 TakeSnapshot(player.GetComponent<NetworkIdentity>().Id, _snapshots.Count - 1, typeof(PlayerData),
