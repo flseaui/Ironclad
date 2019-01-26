@@ -14,7 +14,7 @@ namespace MANAGERS
         private List<ActionSet> _actionSets;
         [SerializeField] private GameObject[] _stagePrefabs;
 
-        private void Awake()
+        protected override void OnAwake()
         {
             _actionSets = new List<ActionSet>();
         }

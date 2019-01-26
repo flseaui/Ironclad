@@ -67,7 +67,7 @@ namespace MANAGERS
             MenuState = _previousMenuState;
         }
 
-        private void Awake()
+        protected override void OnAwake()
         {
             _menuState = _startingMenu;
             _previousMenuState = _startingMenu;

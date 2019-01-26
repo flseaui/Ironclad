@@ -24,7 +24,7 @@ namespace NETWORKING
             _steppables.Add((stepOrder, steppable));
         }
 
-        private void Awake()
+        protected override void OnAwake()
         {
             _snapshots = new  RollingList<KeyValuePair<int, List<Snapshot>>>(MAX_SNAPSHOTS);
             _steppables = new List<(int, Steppable)>();

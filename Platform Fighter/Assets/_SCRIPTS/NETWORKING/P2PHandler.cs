@@ -13,8 +13,14 @@ namespace NETWORKING
     [Serializable]
     public class P2PHandlerPacket
     {
-        public int FrameCounter = 1;
+        public int FrameCounter = 0;
         public int FrameCounterLoops = 0;
+
+        public void Initialize()
+        {
+            FrameCounter = 0;
+            FrameCounterLoops = 0;
+        }
     }
 
     public class P2PHandler : SettableSingleton<P2PHandler>
@@ -36,7 +42,7 @@ namespace NETWORKING
         public int InputPacketsReceived;
         [NonSerialized]
         public int InputPacketsSent;
-        [NonSerialized] 
+        [NonSerialized]
         public int InputPacketsSentLoops;
 
         [NonSerialized]
@@ -50,6 +56,14 @@ namespace NETWORKING
 
         [NonSerialized]
         public bool AllPlayersReady;
+
+        private int _lastPingTime = -1;
+        
+        protected override void OnAwake()
+        {
+            DataPacket.Initialize();
+            _previousDelay = Delay;
+        }
         
         private void Start()
         {
@@ -68,8 +82,7 @@ namespace NETWORKING
         {
             if (!AllPlayersReady)
                 return;
-            
-            //if (!ReceivedFirstInput) return;
+
             IncrementFrameCounter();
 
             _previousDelay = Delay;
@@ -85,12 +98,12 @@ namespace NETWORKING
 
         public void BeginTesting()
         {
-            InvokeRepeating(nameof(SendPing), 0, .5f);
+            InvokeRepeating(nameof(SendPing), 0, 2);
         }
         
         public void SendPing()
         {
-            Events.OnPingSent?.Invoke(DateTime.Now.Millisecond);
+            Events.OnPingSent?.Invoke((int) (Time.unscaledTime * 1000));
         }
         
         private void OnConnectionFailed(ulong steamid, Networking.SessionError error)
@@ -194,7 +207,16 @@ namespace NETWORKING
                 case P2PMessageKey.Ping:
                     var pingMessage = JsonUtility.FromJson<P2PPing>(msg.Body);
 
-                    var ping = DateTime.Now.Millisecond - pingMessage.SentTime;
+                    if (_lastPingTime == -1)
+                    {
+                        _lastPingTime = pingMessage.SentTime;
+                        return;
+                    }
+
+                    var ping = pingMessage.SentTime - _lastPingTime - 2000;
+                    
+                    _lastPingTime = pingMessage.SentTime;
+                    
                     Ping = ping;
                     Debug.Log("delay: " + Delay);
                     Events.OnPingCalculated?.Invoke(ping, senderID);
