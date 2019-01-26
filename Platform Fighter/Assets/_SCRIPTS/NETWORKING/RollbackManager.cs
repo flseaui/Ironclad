@@ -83,6 +83,8 @@ namespace NETWORKING
 
             var snapshotAge = Math.Abs(distance - P2PHandler.Instance.DataPacket.FrameCounter);
                         
+            Debug.Log($"ROLLED BACK TO ({P2PHandler.Instance.DataPacket.FrameCounter}, {P2PHandler.Instance.DataPacket.FrameCounterLoops})");
+            
             foreach (var player in MatchStateManager.Instance.Players)
             {
                 var sets = player.GetComponent<InputSender>().ArchivedInputSets;
@@ -122,6 +124,7 @@ namespace NETWORKING
 
         public void SaveGameState(int frame)
         {
+            Debug.Log($"[SaveGameState] on: {P2PHandler.Instance.DataPacket.FrameCounter}, from: {frame}");
             _snapshots.Add(new KeyValuePair<int, List<Snapshot>>(frame, new List<Snapshot>()));
             foreach (var player in MatchStateManager.Instance.Players)
                 TakeSnapshot(player.GetComponent<NetworkIdentity>().Id, _snapshots.Count - 1, typeof(PlayerData),

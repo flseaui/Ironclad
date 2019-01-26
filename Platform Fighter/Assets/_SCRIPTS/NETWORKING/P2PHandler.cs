@@ -28,7 +28,7 @@ namespace NETWORKING
         
         public P2PHandlerPacket DataPacket;
 
-        public int Delay => Ping / 100;
+        public int Delay => 0;//Ping / 100;
         
         [NonSerialized]
         public int InputPacketsProcessed;
@@ -180,6 +180,7 @@ namespace NETWORKING
 
                     ReceivedFirstInput = true;
 
+                    Debug.Log("sender: " + senderID);
                     player.GetComponent<NetworkInput>().GiveInputs(inputSet);
                     break;
                 case P2PMessageKey.GameStart:
@@ -193,6 +194,7 @@ namespace NETWORKING
 
                     var ping = DateTime.Now.Millisecond - pingMessage.SentTime;
                     Ping = ping;
+                    Debug.Log("delay: " + Delay);
                     Events.OnPingCalculated?.Invoke(ping, senderID);
                     break;
             }
@@ -205,17 +207,21 @@ namespace NETWORKING
 
         public void IncrementFrameCounter()
         {
+            if (!_initialSave)
+            {
+                RollbackManager.Instance.SaveGameState(0);
+            }
+            
             var prevFrameCount = DataPacket.FrameCounter;
             DataPacket.FrameCounter += 1 + (_previousDelay - Delay);
             DataPacket.FrameCounter %= 600;
             if (DataPacket.FrameCounter < prevFrameCount)
                 DataPacket.FrameCounterLoops = ++DataPacket.FrameCounterLoops % 600;
-
+            
             if (!_initialSave)
             {
-                DataPacket.FrameCounterLoops = 0;
-                RollbackManager.Instance.SaveGameState(0);
                 _initialSave = true;
+                DataPacket.FrameCounterLoops = 0;
             }
         }
         
