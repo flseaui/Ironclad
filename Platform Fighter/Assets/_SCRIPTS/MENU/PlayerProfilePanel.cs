@@ -52,6 +52,9 @@ namespace MENU
         public void SetPlayerProfilePing(int ping, ulong id)
         {
             var profile = _playerProfiles.FirstOrDefault(x => x.PlayerId == id);
+            
+            if (profile.Profile == null) return;
+            
             profile.Profile.transform.Find("PingText").GetComponent<TextMeshProUGUI>().text = ping.ToString();
         }
         

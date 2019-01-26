@@ -154,9 +154,9 @@ namespace PLAYER
                     if (_delayedInputSets.Count == P2PHandler.Instance.Delay)
                     {
                         ApplyDelayedInputSets();
-                        Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, _realTimeAngle, true);
-                        _delayedInputSets.Add(_lastInputSet);
                     }
+                    Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, _realTimeAngle, true);
+                    _delayedInputSets.Add(_lastInputSet);
                 }
                 else
                 {

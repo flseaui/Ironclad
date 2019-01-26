@@ -28,7 +28,7 @@ namespace NETWORKING
         
         public P2PHandlerPacket DataPacket;
 
-        public int Delay => 0;//Ping / 100;
+        public int Delay => 2;//Ping / 100;
         
         [NonSerialized]
         public int InputPacketsProcessed;
@@ -173,6 +173,8 @@ namespace NETWORKING
             switch (msg.Key)
             {
                 case P2PMessageKey.InputSet:
+                    if (!AllPlayersReady) return;
+                    
                     var player = MatchStateManager.Instance.GetPlayerBySteamId(msg.SteamId);
                     var inputSet = JsonUtility.FromJson<P2PInputSet>(msg.Body);
 
