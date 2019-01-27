@@ -117,5 +117,13 @@
         {
             TestStage
         }
+
+        public enum PauseType
+        {
+            Update,
+            FixedUpdate,
+            Both
+        }
+        
     }
 }

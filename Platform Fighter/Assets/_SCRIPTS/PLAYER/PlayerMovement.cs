@@ -1,5 +1,6 @@
 ﻿using ATTRIBUTES;
 using DATA;
+using MANAGERS;
 using MISC;
 using UnityEngine;
 using Types = DATA.Types;
@@ -16,16 +17,11 @@ namespace PLAYER
         
         protected sealed override void Step()
         {
+            if (TimeManager.Instance.FixedUpdatePaused) return;
+            
             CalculateVelocity();
-
-            if (Data.CurrentVelocity.x > 0)
-                ++Data.TotalMove.Item1;
-            
-            Debug.Log($"Moved for the {Data.TotalMove.Item1} time by {Data.CurrentVelocity.x}");
-            Data.TotalMove.Item2 += Data.CurrentVelocity.x;
-            
+         
             transform.Translate(Data.CurrentVelocity);
-
             Data.Position = transform.position;
         }
 
@@ -89,8 +85,6 @@ namespace PLAYER
                 //Perhaps decay X velocity if ignored, for now unknown
                 if (Data.VelocityModifier != ActionInfo.VelocityModifier.ModificationType.IgnoreY)
                 {
-                    if (Data.TargetVelocity.y == 99) Debug.Log("What the fuck is happening");
-
                     Data.CurrentVelocity.y = Data.TargetVelocity.y;
                 }
                 else
@@ -107,12 +101,7 @@ namespace PLAYER
                     Data.CurrentVelocity.y += gravity;
                 else
                     Data.CurrentVelocity.y = terminalVelocity;
-
-                Debug.Log("this is it buster: " + Data.CurrentVelocity.y);
             }
-
-            if (Data.CurrentAction == Types.ActionType.Jump)
-                Debug.Log("YEAH HERES SOME VELOCITY FAG " + Data.CurrentVelocity);
         }
     }
 }

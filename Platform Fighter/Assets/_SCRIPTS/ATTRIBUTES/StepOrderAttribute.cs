@@ -11,6 +11,6 @@ namespace ATTRIBUTES
             StepOrder = stepOrder;
         }
 
-        public int StepOrder { get; set; }
+        public int StepOrder { get; }
     }
 }

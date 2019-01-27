@@ -45,6 +45,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _persistent: 1
   DataPacket:
-    FrameCounter: 1
+    FrameCounter: 0
     FrameCounterLoops: 0
-  Delay: 2

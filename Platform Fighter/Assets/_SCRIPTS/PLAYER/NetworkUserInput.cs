@@ -144,29 +144,29 @@ namespace PLAYER
 
         private void FixedUpdate()
         {
+            if (TimeManager.Instance.FixedUpdatePaused) return;
+            
             if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && P2PHandler.Instance.AllPlayersReady)
             {
-                if (_delayedInputSets.Count == P2PHandler.Instance.Delay)
-                    ApplyDelayedInputSets();
-
                 var inputArray = _changedInputs.ToArray();
                 _lastInputSet = new P2PInputSet(inputArray, _realTimeAngle, P2PHandler.Instance.InputPacketsSent, P2PHandler.Instance.InputPacketsSentLoops);
-                Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, _realTimeAngle, true);
-                if (_lastInputSet.Inputs.Length > 0)
+
+                if (P2PHandler.Instance.Delay != 0)
                 {
-                    var temp =
-                        $"LOCALINPUT [{_lastInputSet.PacketNumber}] on {P2PHandler.Instance.DataPacket.FrameCounter} {Environment.NewLine}";
-                    foreach (var input in _lastInputSet.Inputs)
+                    if (_delayedInputSets.Count == P2PHandler.Instance.Delay)
                     {
-                        var state = input.State ? "Pressed" : "Released";
-                        temp += $"[{input.InputType}]->{state}{Environment.NewLine}";
+                        ApplyDelayedInputSets();
                     }
-
-                    Debug.Log(temp);
+                    Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, _realTimeAngle, true);
+                    _delayedInputSets.Add(_lastInputSet);
                 }
-
-                _delayedInputSets.Add(_lastInputSet);
-                Debug.Log($"[LOCALARCHIVED]: ({_lastInputSet.PacketNumber}, {_lastInputSet.LoopNumber}) on ({P2PHandler.Instance.DataPacket.FrameCounter}, {P2PHandler.Instance.DataPacket.FrameCounterLoops})");
+                else
+                {
+                    _delayedInputSets.Add(_lastInputSet);
+                    ApplyDelayedInputSets();
+                    Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, _realTimeAngle, true);
+                }
+                
                 ArchivedInputSets.Add(_lastInputSet);
             }
 
@@ -176,7 +176,6 @@ namespace PLAYER
         public void ApplyLastInputSet()
         {
             ArchivedInputSets.Add(_lastInputSet);
-            Debug.Log("APPLIED LAST INPUT SET: " + _lastInputSet.PacketNumber);
         }
     }
 }

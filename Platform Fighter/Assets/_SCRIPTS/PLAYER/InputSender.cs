@@ -65,22 +65,9 @@ namespace PLAYER
 
         public void ApplyArchivedInputSet(int index)
         {
-            Debug.Log(
-                $"[player{GetComponent<NetworkIdentity>().Id}] index: {index}, length: {ArchivedInputSets.Count}");
-            var temp = Environment.NewLine;
-            if (ArchivedInputSets[index].Inputs.Length > 0)
-            {
-                foreach (var input in ArchivedInputSets[index].Inputs)
-                {
-                    var state = input.State ? "Pressed" : "Released";
-                    temp += $"[{input.InputType}]->{state}{Environment.NewLine}";
-                }
-            }
-
+            Debug.Log($"archived index: {index}, count: {ArchivedInputSets.Count}");
             PlayerData.DataPacket.MovementStickAngle = ArchivedInputSets[index].Angle;
             foreach (var input in ArchivedInputSets[index].Inputs) Inputs[(int) input.InputType] = input.State;
-            
-            Debug.Log($"Applied ({ArchivedInputSets[index].PacketNumber}, {ArchivedInputSets[index].LoopNumber}) on ({P2PHandler.Instance.DataPacket.FrameCounter}, {P2PHandler.Instance.DataPacket.FrameCounterLoops}) containing {temp}");
             
             if (GetComponent<NetworkIdentity>().Id != MatchStateManager.Instance.ClientPlayerId)
                 if (ArchivedInputSets[index].PacketNumber > P2PHandler.Instance.InputPacketsProcessed)

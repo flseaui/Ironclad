@@ -20,18 +20,7 @@ namespace MENU
 
         private void Update()
         {
-            switch (MainMenuManager.Instance.GetCharacter(Id))
-            {
-                case Types.Character.TestCharacter:
-                    _image.overrideSprite = _testCharacterSprite;
-                    break;
-                case Types.Character.None:
-                    _image.overrideSprite = _noCharacterSprite;
-                    break;
-                default:
-                    _image.overrideSprite = null;
-                    break;
-            }
+            
         }
     }
 }

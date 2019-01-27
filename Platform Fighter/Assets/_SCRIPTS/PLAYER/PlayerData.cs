@@ -24,7 +24,6 @@ namespace PLAYER
             DataPacket.TerminalVelocity = newData.TerminalVelocity;
             DataPacket.Position = newData.Position;
             DataPacket.VelocityModifier = newData.VelocityModifier;
-            DataPacket.TotalMove = newData.TotalMove;
             transform.position = newData.Position;
         }
     }
@@ -32,7 +31,6 @@ namespace PLAYER
     [Serializable]
     public class PlayerDataPacket
     {
-        public (int, double) TotalMove;
         public enum PlayerLocation
         {
             Grounded,

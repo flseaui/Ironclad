@@ -42,6 +42,8 @@ namespace PLAYER
 
         protected sealed override void Step()
         {
+            if (TimeManager.Instance.FixedUpdatePaused) return;
+            
             ExecuteAction();
         }
 
@@ -76,27 +78,10 @@ namespace PLAYER
                 // if we just reset
                 if (GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ResetAction) == Types.FlagState.Pending)
                 {
-                    if (_currentAction != null)
-                        if (_currentAction.Type != _data.CurrentAction)
-                        {
-                            
-                            Debug.Log(
-                                $"CANCELLED {_currentAction.Type} into {_data.CurrentAction} on ActionFrame: {CurrentActionFrame} on frame: {P2PHandler.Instance.DataPacket.FrameCounter}");
-                            Debug.Log($"TotalMove: {_data.TotalMove.Item2} for {_data.TotalMove.Item1}");
-                        }
-
                     CurrentActionFrame = 0;
-                }
-                else
-                {
-                    if (_currentAction != null)
-                        if (_currentAction.Type != _data.CurrentAction)
-                            Debug.Log(
-                                $"SWITCHED FROM {_currentAction.Type} to {_data.CurrentAction} on ActionFrame: {CurrentActionFrame} on frame: {P2PHandler.Instance.DataPacket.FrameCounter}");
                 }
 
                 _currentAction = AssetManager.Instance.GetAction(Types.Character.TestCharacter, _data.CurrentAction);
-                //Debug.Log($"Player: {GetComponent<NetworkIdentity>().Id} started: {_currentAction.Name} on {P2PHandler.Instance.InputPacketsSent}");
                 _animator.SetInteger("CurrentAction", (int) _currentAction.Type);
                 OnActionBegin?.Invoke();
 

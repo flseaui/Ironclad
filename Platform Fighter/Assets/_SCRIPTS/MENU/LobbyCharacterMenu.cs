@@ -194,7 +194,7 @@ namespace MENU
 
         public void GoBack()
         {
-            Destroy(P2PHandler.Instance);
+            Destroy(P2PHandler.Instance.gameObject);
             _playerProfilerPanel.ClearPlayerProfiles();
             Client.Instance.Lobby.Leave();
             MenuManager.Instance.SwitchToPreviousMenu();
