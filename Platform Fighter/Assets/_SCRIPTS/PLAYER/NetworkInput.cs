@@ -75,7 +75,6 @@ namespace PLAYER
                     {
                         ParseInputs(_receivedInputSets[0]);
                         RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber);
-                        P2PHandler.Instance.OnInputPacketsProcessed();
                         ArchivedInputSets.Add(_receivedInputSets[0]);
                         _receivedInputSets.RemoveAt(0);
                         _queuePrediction = false;
@@ -121,7 +120,6 @@ namespace PLAYER
                             {
                                 ParseInputs(_receivedInputSets[0]);
                                 RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber);
-                                P2PHandler.Instance.OnInputPacketsProcessed();
                                 ArchivedInputSets.Add(_receivedInputSets[0]);
                                 _receivedInputSets.RemoveAt(0);
                             }
@@ -158,6 +156,23 @@ namespace PLAYER
             return new P2PInputSet(new InputChange[] { }, PlayerData.DataPacket.MovementStickAngle,Mod(_p2pHandler.FrameCounter, 600), -1);
         }
 
+        public new void ApplyArchivedInputSet(int index)
+        {
+            Debug.Log($"network archived index: {index}, count: {ArchivedInputSets.Count}");
+            if (ArchivedInputSets.Count <= index)
+            {
+                var prediction = PredictInputs();
+                Debug.Log("archived prediction");
+                PlayerData.DataPacket.MovementStickAngle = prediction.Angle;
+                foreach (var input in prediction.Inputs) Inputs[(int) input.InputType] = input.State;
+            }
+            else
+            {
+                PlayerData.DataPacket.MovementStickAngle = ArchivedInputSets[index].Angle;
+                foreach (var input in ArchivedInputSets[index].Inputs) Inputs[(int) input.InputType] = input.State;
+            }
+        }
+        
         public void ParseInputs(P2PInputSet inputSet)
         {
             PlayerData.DataPacket.MovementStickAngle = inputSet.Angle;

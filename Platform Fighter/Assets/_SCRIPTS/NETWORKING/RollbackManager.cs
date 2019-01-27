@@ -66,29 +66,17 @@ namespace NETWORKING
                     ((ISettable) MatchStateManager.Instance.GetPlayer(snapshotPiece.Player)
                         .GetComponent(snapshotPiece.BaseType)).SetData(packet);
             }
-            
-            //var snapshotAge = Mod(P2PHandler.Instance.InputPacketsSent - _age, 600) + 1;
-            /*var player0 = MatchStateManager.Instance.GetPlayer(0);
-            var snapshotAge = player0.GetComponent<NetworkInput>()
-                ? player0.GetComponent<NetworkInput>().ArchivedInputSets.Count
-                : player0.GetComponent<NetworkUserInput>().ArchivedInputSets.Count;
-            for (var index = 1; index < MatchStateManager.Instance.Players.Count; index++)
-            {
-                var player = MatchStateManager.Instance.Players[index];
-                var count = player.GetComponent<NetworkInput>()
-                    ? player.GetComponent<NetworkInput>().ArchivedInputSets.Count
-                    : player.GetComponent<NetworkUserInput>().ArchivedInputSets.Count;
-                if (count <= snapshotAge) snapshotAge = count;
-            }*/
 
             var snapshotAge = Math.Abs(distance - P2PHandler.Instance.DataPacket.FrameCounter);
                         
+            Debug.Log("snapshotAge: " + snapshotAge);
             Debug.Log($"ROLLED BACK TO ({P2PHandler.Instance.DataPacket.FrameCounter}, {P2PHandler.Instance.DataPacket.FrameCounterLoops})");
             
             foreach (var player in MatchStateManager.Instance.Players)
             {
                 var sets = player.GetComponent<InputSender>().ArchivedInputSets;
                 var setCount = sets.Count;
+                Debug.Log($"player: {player.name}, setCount: {setCount}");
                 for (var i = 0; i < setCount; i++)
                 {
                     if (sets[0].LoopNumber > P2PHandler.Instance.DataPacket.FrameCounterLoops)
@@ -102,14 +90,21 @@ namespace NETWORKING
                 }
             }
             
-            int lastOrder = _steppables[0].Item1;
+            var lastOrder = _steppables[0].Item1;
             for (var i = 0; i <= snapshotAge; ++i)
             {
                 for (var j = 0; j < _steppables.Count; j++)
                 {
                     if (_steppables[j].Item1 < lastOrder || _steppables[j].Item1 == 0)
                     {
-                        _steppables[j].Item2.GetComponent<InputSender>().ApplyArchivedInputSet(i);
+                        if (_steppables[j].Item2.GetComponent<NetworkInput>() != null)
+                        {
+                            _steppables[j].Item2.GetComponent<NetworkInput>().ApplyArchivedInputSet(i);
+                        }
+                        else
+                        {   
+                            _steppables[j].Item2.GetComponent<InputSender>().ApplyArchivedInputSet(i);
+                        }
                     }
 
                     _steppables[j].Item2.ControlledStep();

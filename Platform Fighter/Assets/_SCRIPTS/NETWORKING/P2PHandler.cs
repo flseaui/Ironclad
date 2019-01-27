@@ -26,8 +26,7 @@ namespace NETWORKING
     public class P2PHandler : SettableSingleton<P2PHandler>
     {
         public P2PHandlerPacket DataPacket;
-       
-        [NonSerialized] public int InputPacketsProcessed;
+
         [NonSerialized] public int InputPacketsReceived;
         [NonSerialized] public int InputPacketsSent;
         [NonSerialized] public int InputPacketsSentLoops;
@@ -246,8 +245,6 @@ namespace NETWORKING
                     InputPacketsReceived = ++InputPacketsReceived % 600;
 
                     ReceivedFirstInput = true;
-
-                    Debug.Log("sender: " + senderID);
                     
                     _remoteFrameLag = InputPacketsSent - (InputPacketsReceived < 250 && InputPacketsSent > 450
                                          ? InputPacketsReceived + 600
@@ -279,11 +276,6 @@ namespace NETWORKING
                     Events.OnPingCalculated?.Invoke(ping, senderID);
                     break;
             }
-        }
-
-        public void OnInputPacketsProcessed()
-        {
-            InputPacketsProcessed = ++InputPacketsProcessed % 600;
         }
 
         public void IncrementFrameCounter()
