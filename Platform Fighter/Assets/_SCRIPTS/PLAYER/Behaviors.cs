@@ -1,4 +1,5 @@
 ﻿using ATTRIBUTES;
+using MANAGERS;
 using MISC;
 using UnityEngine;
 
@@ -13,6 +14,9 @@ namespace PLAYER
 
         protected sealed override void Step()
         {
+            if (TimeManager.Instance.FixedUpdatePaused)
+                return;
+            
             RunAction();
         }
 

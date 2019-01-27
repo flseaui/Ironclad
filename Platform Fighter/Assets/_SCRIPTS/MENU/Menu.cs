@@ -9,10 +9,11 @@ namespace MENU
     [MenuType(Types.Menu.BlankMenu)]
     public abstract class Menu : MonoBehaviour
     {
-        public Types.Menu Type => GetType().GetCustomAttribute<MenuTypeAttribute>().MenuType;
+        public Types.Menu Type { get; private set; }
 
         protected void Awake()
         {
+            Type = GetType().GetCustomAttribute<MenuTypeAttribute>().MenuType;
             MenuManager.Instance.MenuStateChanged += SetupMenu;
             MenuManager.Instance.Menus.Add(Type, this);
         }

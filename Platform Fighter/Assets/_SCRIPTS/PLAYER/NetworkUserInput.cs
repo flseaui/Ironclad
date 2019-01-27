@@ -144,6 +144,8 @@ namespace PLAYER
 
         private void FixedUpdate()
         {
+            if (TimeManager.Instance.FixedUpdatePaused) return;
+            
             if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && P2PHandler.Instance.AllPlayersReady)
             {
                 var inputArray = _changedInputs.ToArray();

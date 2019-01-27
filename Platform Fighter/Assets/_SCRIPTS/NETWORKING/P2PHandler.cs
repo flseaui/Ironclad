@@ -80,6 +80,8 @@ namespace NETWORKING
         
         private void FixedUpdate()
         {
+            if (TimeManager.Instance.FixedUpdatePaused)
+                return;
             if (!AllPlayersReady)
                 return;
 

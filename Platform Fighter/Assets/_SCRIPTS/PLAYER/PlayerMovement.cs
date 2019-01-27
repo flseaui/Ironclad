@@ -1,5 +1,6 @@
 ﻿using ATTRIBUTES;
 using DATA;
+using MANAGERS;
 using MISC;
 using UnityEngine;
 using Types = DATA.Types;
@@ -16,6 +17,8 @@ namespace PLAYER
         
         protected sealed override void Step()
         {
+            if (TimeManager.Instance.FixedUpdatePaused) return;
+            
             CalculateVelocity();
          
             transform.Translate(Data.CurrentVelocity);

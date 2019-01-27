@@ -145,6 +145,8 @@ namespace PLAYER
 
         private void FixedUpdate()
         {
+            if (TimeManager.Instance.FixedUpdatePaused)
+                return;
             if (!P2PHandler.Instance.AllPlayersReady)
                 return;
             HandleInputs();
