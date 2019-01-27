@@ -7,10 +7,10 @@ namespace MANAGERS
 {
     public class TimeManager : Singleton<TimeManager>
     {
-        [NonSerialized] public int FramesLapsed;
+        public int FramesLapsed { get; private set; }
 
-        [NonSerialized] public bool UpdatePaused;
-        [NonSerialized] public bool FixedUpdatePaused;
+        public bool UpdatePaused { get; private set; }
+        public bool FixedUpdatePaused { get; private set; }
 
         private int _updatePauseTimer;
         private int _fixedUpdatePauseTimer;
@@ -40,7 +40,7 @@ namespace MANAGERS
                 }
             }
         }
-        
+
         public void PauseForFrames(int frames, Types.PauseType pauseType)
         {
             if (frames <= 0) return;
@@ -60,7 +60,7 @@ namespace MANAGERS
                 default:
                     throw new ArgumentOutOfRangeException(nameof(pauseType), pauseType, null);
             }
-            
+
             Pause(pauseType);
         }
 

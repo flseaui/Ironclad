@@ -25,39 +25,30 @@ namespace NETWORKING
 
     public class P2PHandler : SettableSingleton<P2PHandler>
     {
+        public P2PHandlerPacket DataPacket;
+       
+        [NonSerialized] public int InputPacketsProcessed;
+        [NonSerialized] public int InputPacketsReceived;
+        [NonSerialized] public int InputPacketsSent;
+        [NonSerialized] public int InputPacketsSentLoops;
+        [NonSerialized] public int Ping;
+        
+        [NonSerialized] public bool ReceivedFirstInput;
+        [NonSerialized] public bool GameStarted;
+        [NonSerialized] public bool AllPlayersReady;
+
         private int _playersJoined = 1;
-
         private int _previousDelay;
-
+        private int _lastPingTime = -1;     
+        private int _remoteFrameLag;
+        private int _localFrameLag;
+        private int _framesToStall;
+        private int _frameStallTimer;
+        
         private bool _started;
         private bool _initialSave;
         
-        public P2PHandlerPacket DataPacket;
-
-        public int Delay => 2;//Ping / 100;
-        
-        [NonSerialized]
-        public int InputPacketsProcessed;
-        [NonSerialized]
-        public int InputPacketsReceived;
-        [NonSerialized]
-        public int InputPacketsSent;
-        [NonSerialized]
-        public int InputPacketsSentLoops;
-
-        [NonSerialized]
-        public bool ReceivedFirstInput;
-        
-        [NonSerialized] 
-        public bool GameStarted;
-        
-        [NonSerialized]
-        public int Ping;
-
-        [NonSerialized]
-        public bool AllPlayersReady;
-
-        private int _lastPingTime = -1;
+        public int Delay => Ping / 100;
         
         protected override void OnAwake()
         {
@@ -77,7 +68,7 @@ namespace NETWORKING
         {
             GameStarted = true;
         }
-        
+
         private void FixedUpdate()
         {
             if (TimeManager.Instance.FixedUpdatePaused)
@@ -85,6 +76,24 @@ namespace NETWORKING
             if (!AllPlayersReady)
                 return;
 
+            if (_framesToStall > 0)
+            {
+                --_frameStallTimer;
+                if (_frameStallTimer == 0)
+                {
+                    StallFrame();
+                }
+            }
+
+            // calculate averaged frame advantage 
+            if (TimeManager.Instance.FramesLapsed % 100 == 0)
+            {
+                var inputFrameAdvantage = _localFrameLag / 100f - _remoteFrameLag / 100f;
+                DispersedInputAdvantagePause(inputFrameAdvantage);
+                _localFrameLag = 0;
+                _remoteFrameLag = 0;
+            }
+            
             IncrementFrameCounter();
 
             _previousDelay = Delay;
@@ -101,6 +110,43 @@ namespace NETWORKING
         public void BeginTesting()
         {
             InvokeRepeating(nameof(SendPing), 0, 2);
+        }
+        
+        private void DispersedInputAdvantagePause(float inputFrameAdvantage)
+        {
+            var simulationFrameAdvantage = .5f * inputFrameAdvantage;
+
+            _framesToStall = 0;
+            if (simulationFrameAdvantage >= .75f)
+            {
+                _framesToStall += Math.Max(1, (int)(simulationFrameAdvantage + .5f));
+            }
+
+            _frameStallTimer = CalculateStallCadence(_framesToStall);
+        }
+
+        private void StallFrame()
+        {
+            TimeManager.Instance.PauseForFrames(1, Types.PauseType.FixedUpdate);
+
+            _frameStallTimer = CalculateStallCadence(_framesToStall);
+        }
+
+        private int CalculateStallCadence(int framesToStall)
+        {
+            switch (framesToStall)
+            {
+                case 1: return 10;
+                case 2: return 9;
+                case 3: return 8;
+                case 4: return 7;
+                case 5: return 6;
+                case 6: return 5;
+                case 7: return 4;
+                case 8: return 3;
+                case 9: return 2;
+                default: return 1;
+            }
         }
         
         public void SendPing()
@@ -154,6 +200,10 @@ namespace NETWORKING
 
             SendP2PMessage(message);
 
+            _localFrameLag = InputPacketsReceived - (InputPacketsSent < 250 && InputPacketsReceived > 450
+                                 ? InputPacketsSent + 600
+                                 : InputPacketsSent) + Delay;
+
             if (InputPacketsSent == 599)
                 InputPacketsSentLoops = ++InputPacketsSentLoops % 600;
             InputPacketsSent = ++InputPacketsSent % 600;
@@ -198,6 +248,11 @@ namespace NETWORKING
                     ReceivedFirstInput = true;
 
                     Debug.Log("sender: " + senderID);
+                    
+                    _remoteFrameLag = InputPacketsSent - (InputPacketsReceived < 250 && InputPacketsSent > 450
+                                         ? InputPacketsReceived + 600
+                                         : InputPacketsReceived) + Delay;
+                    
                     player.GetComponent<NetworkInput>().GiveInputs(inputSet);
                     break;
                 case P2PMessageKey.GameStart:

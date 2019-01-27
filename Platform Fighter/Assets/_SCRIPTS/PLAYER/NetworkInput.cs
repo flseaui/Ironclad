@@ -149,6 +149,7 @@ namespace PLAYER
                 return;
             if (!P2PHandler.Instance.AllPlayersReady)
                 return;
+            
             HandleInputs();
         }
 
