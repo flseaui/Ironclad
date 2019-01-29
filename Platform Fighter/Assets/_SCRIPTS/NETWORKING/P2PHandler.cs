@@ -44,7 +44,7 @@ namespace NETWORKING
         private bool _started;
         private bool _initialSave;
 
-        public int Delay => Ping / 100;
+        public int Delay;
         
         protected override void OnAwake()
         {
@@ -263,12 +263,32 @@ namespace NETWORKING
                     _lastPingTime = pingMessage.SentTime;
                     
                     Ping = ping;
+                    Delay = CalcInputLagFrames(Delay, ping / 100);
                     Debug.Log("delay: " + Delay);
                     Events.OnPingCalculated?.Invoke(ping, senderID);
                     break;
             }
         }
 
+        private static int CalcInputLagFrames(int curInputLagFrames, int worstPeerFrameLag)
+        {
+            var newInputLagFrames = curInputLagFrames;
+
+            // increase lag
+            if (curInputLagFrames <= 0 && worstPeerFrameLag >= 2.0f) newInputLagFrames = 1;
+            if (curInputLagFrames <= 1 && worstPeerFrameLag >= 3.0f) newInputLagFrames = 2;
+            if (curInputLagFrames <= 2 && worstPeerFrameLag >= 6.0f) newInputLagFrames = 3;
+            if (curInputLagFrames <= 3 && worstPeerFrameLag >= 8.0f) newInputLagFrames = 4;
+
+            // reduce lag
+            if (curInputLagFrames >= 4 && worstPeerFrameLag <= 7.0f) newInputLagFrames = 3;
+            if (curInputLagFrames >= 3 && worstPeerFrameLag <= 5.0f) newInputLagFrames = 2;
+            if (curInputLagFrames >= 2 && worstPeerFrameLag <= 2.0f) newInputLagFrames = 1;
+            if (curInputLagFrames >= 1 && worstPeerFrameLag <= 1.0f) newInputLagFrames = 0;
+
+            return newInputLagFrames;
+        }
+        
         public void IncrementFrameCounter()
         {
             if (!_initialSave)
