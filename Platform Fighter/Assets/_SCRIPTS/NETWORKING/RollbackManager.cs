@@ -17,7 +17,7 @@ namespace NETWORKING
         
         private List<(int id, Steppable steppable)> _steppables;
 
-        private readonly int MAX_SNAPSHOTS = 20;
+        private readonly int MAX_SNAPSHOTS = 2;
 
         public void AddSteppable(Steppable steppable, int stepOrder)
         {

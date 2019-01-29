@@ -74,7 +74,7 @@ namespace PLAYER
                     if (receivedPacketNum == _p2pHandler.FrameCounter && !ParsedForFrame)
                     {
                         ParseInputs(_receivedInputSets[0]);
-                        RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber);
+                        //RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber);
                         ArchivedInputSets.Add(_receivedInputSets[0]);
                         _receivedInputSets.RemoveAt(0);
                         _queuePrediction = false;
@@ -118,7 +118,7 @@ namespace PLAYER
                             else
                             {
                                 ParseInputs(_receivedInputSets[0]);
-                                RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber);
+                                //RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber);
                                 ArchivedInputSets.Add(_receivedInputSets[0]);
                                 _receivedInputSets.RemoveAt(0);
                             }
@@ -138,6 +138,9 @@ namespace PLAYER
                 ParseInputs(predictedInputSet);
                 _queuePrediction = false;
             }
+            
+            if (P2PHandler.Instance.DataPacket.FrameCounter % 20 == 0)
+                RollbackManager.Instance.SaveGameState(P2PHandler.Instance.DataPacket.FrameCounter);
         }
 
         private void FixedUpdate()
