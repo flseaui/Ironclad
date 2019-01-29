@@ -46,8 +46,8 @@ namespace NETWORKING
         
         private bool _started;
         private bool _initialSave;
-        
-        public int Delay => Ping / 100;
+
+        public int Delay => 2;//Ping / 100;
         
         protected override void OnAwake()
         {
@@ -72,7 +72,7 @@ namespace NETWORKING
         {
             if (TimeManager.Instance.FixedUpdatePaused)
                 return;
-            if (!AllPlayersReady)
+            if (!AllPlayersReady || !GameStarted)
                 return;
 
             if (_framesToStall > 0)
@@ -282,7 +282,7 @@ namespace NETWORKING
         {
             if (!_initialSave)
             {
-                RollbackManager.Instance.SaveGameState(0);
+                RollbackManager.Instance.SaveGameState(0, 0);
             }
             
             var prevFrameCount = DataPacket.FrameCounter;

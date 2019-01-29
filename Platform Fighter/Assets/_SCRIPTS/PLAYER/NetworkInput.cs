@@ -74,7 +74,7 @@ namespace PLAYER
                     if (receivedPacketNum == _p2pHandler.FrameCounter && !ParsedForFrame)
                     {
                         ParseInputs(_receivedInputSets[0]);
-                        RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber);
+                        RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber, _receivedInputSets[0].LoopNumber);
                         ArchivedInputSets.Add(_receivedInputSets[0]);
                         _receivedInputSets.RemoveAt(0);
                         _queuePrediction = false;
@@ -101,11 +101,16 @@ namespace PLAYER
                                 else
                                 {
                                     var receivedInputSetsCount = _receivedInputSets.Count;
-                                    var distance = _receivedInputSets[0].PacketNumber;
+                                    var targetLoop = _receivedInputSets[0].LoopNumber;
+                                    var targetPacket = _receivedInputSets[0].PacketNumber;
                                     for (var i = 0; i < receivedInputSetsCount; i++)
                                     {
-                                        if (_receivedInputSets[0].PacketNumber > distance)
+                                        if (_receivedInputSets[0].LoopNumber > targetLoop)
                                             break;
+                                        
+                                        if (_receivedInputSets[0].LoopNumber == targetLoop)
+                                            if (_receivedInputSets[0].PacketNumber > targetPacket)
+                                                break;
 
                                         ArchivedInputSets.Add(_receivedInputSets[0]);
                                         _receivedInputSets.RemoveAt(0);
@@ -113,13 +118,13 @@ namespace PLAYER
                                         --numReceivedInputSets;
                                     }
 
-                                    RollbackManager.Instance.Rollback(distance);
+                                    RollbackManager.Instance.Rollback(targetPacket, targetLoop);
                                 }
                             }
                             else
                             {
                                 ParseInputs(_receivedInputSets[0]);
-                                RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber);
+                                RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber, _receivedInputSets[0].LoopNumber);
                                 ArchivedInputSets.Add(_receivedInputSets[0]);
                                 _receivedInputSets.RemoveAt(0);
                             }
@@ -158,19 +163,40 @@ namespace PLAYER
 
         public new void ApplyArchivedInputSet(int index)
         {
-            Debug.Log($"network archived index: {index}, count: {ArchivedInputSets.Count}");
+            Debug.Log(
+                $"networked [player{GetComponent<NetworkIdentity>().Id}] index: {index}, length: {ArchivedInputSets.Count}");
+            var temp = Environment.NewLine;
+
             if (ArchivedInputSets.Count <= index)
             {
                 var prediction = PredictInputs();
+                if (prediction.Inputs.Length > 0)
+                {
+                    foreach (var input in prediction.Inputs)
+                    {
+                        var state = input.State ? "Pressed" : "Released";
+                        temp += $"[{input.InputType}]->{state}{Environment.NewLine}";
+                    }
+                }
                 Debug.Log("archived prediction");
                 PlayerData.DataPacket.MovementStickAngle = prediction.Angle;
                 foreach (var input in prediction.Inputs) Inputs[(int) input.InputType] = input.State;
             }
             else
             {
+                if (ArchivedInputSets[index].Inputs.Length > 0)
+                {
+                    foreach (var input in ArchivedInputSets[index].Inputs)
+                    {
+                        var state = input.State ? "Pressed" : "Released";
+                        temp += $"[{input.InputType}]->{state}{Environment.NewLine}";
+                    }
+                }
                 PlayerData.DataPacket.MovementStickAngle = ArchivedInputSets[index].Angle;
                 foreach (var input in ArchivedInputSets[index].Inputs) Inputs[(int) input.InputType] = input.State;
             }
+            
+            Debug.Log($"Applied ({ArchivedInputSets[index].PacketNumber}, {ArchivedInputSets[index].LoopNumber}) on ({P2PHandler.Instance.DataPacket.FrameCounter}, {P2PHandler.Instance.DataPacket.FrameCounterLoops}) containing {temp}");
         }
         
         public void ParseInputs(P2PInputSet inputSet)
