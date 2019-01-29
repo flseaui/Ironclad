@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MANAGERS;
@@ -17,7 +18,7 @@ namespace NETWORKING
         
         private List<(int id, Steppable steppable)> _steppables;
 
-        private readonly int MAX_SNAPSHOTS = 2;
+        private readonly int MAX_SNAPSHOTS = 20;
 
         public void AddSteppable(Steppable steppable, int stepOrder)
         {
@@ -83,9 +84,9 @@ namespace NETWORKING
                 Debug.Log($"player: {player.name}, setCount: {setCount}");
                 for (var i = 0; i < setCount; i++)
                 {
-                    Debug.Log("sets packetnum: " + sets[0].PacketNumber);
+                    //Debug.Log("sets packetnum: " + sets[0].PacketNumber);
 
-                    if (sets[0].PacketNumber >= P2PHandler.Instance.DataPacket.FrameCounter)
+                    if (sets[0].PacketNumber > P2PHandler.Instance.DataPacket.FrameCounter)
                         break;
                     
                     player.GetComponent<InputSender>().ArchivedInputSets.RemoveAt(0);
@@ -121,14 +122,21 @@ namespace NETWORKING
 
         public void SaveGameState(int frame)
         {
-            Debug.Log($"[SaveGameState] on: ({P2PHandler.Instance.DataPacket.FrameCounter}), from: {frame}");
-            _snapshots.Add(new KeyValuePair<int, List<Snapshot>>(frame, new List<Snapshot>()));
-            foreach (var player in MatchStateManager.Instance.Players)
-                TakeSnapshot(player.GetComponent<NetworkIdentity>().Id, _snapshots.Count - 1, typeof(PlayerData),
-                    player.GetComponent<PlayerData>().DataPacket);
-            TakeSnapshot(-1, _snapshots.Count - 1, typeof(P2PHandler), P2PHandler.Instance.DataPacket);
+            StartCoroutine(InternalSaveGameState(frame));
         }
 
+        private IEnumerator InternalSaveGameState(int frame)
+        {
+             yield return new WaitForFixedUpdate();
+             
+             Debug.Log($"[SaveGameState] on: ({P2PHandler.Instance.DataPacket.FrameCounter}), from: {frame}");
+             _snapshots.Add(new KeyValuePair<int, List<Snapshot>>(frame, new List<Snapshot>()));
+             foreach (var player in MatchStateManager.Instance.Players)
+                 TakeSnapshot(player.GetComponent<NetworkIdentity>().Id, _snapshots.Count - 1, typeof(PlayerData),
+                     player.GetComponent<PlayerData>().DataPacket);
+             TakeSnapshot(-1, _snapshots.Count - 1, typeof(P2PHandler), P2PHandler.Instance.DataPacket);
+        }
+        
         public void TakeSnapshot<T>(int player, int depth, Type baseType, T structure)
         {
             var json = JsonUtility.ToJson(structure);

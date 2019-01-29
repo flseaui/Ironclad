@@ -123,6 +123,7 @@ namespace NETWORKING
 
         private void StallFrame()
         {
+            Debug.Log("STALLLLLLLLLLLLL!!!!!!!!!!!!! on " + DataPacket.FrameCounter);
             TimeManager.Instance.PauseForFrames(1, Types.PauseType.FixedUpdate);
 
             _frameStallTimer = CalculateStallCadence(_framesToStall);
