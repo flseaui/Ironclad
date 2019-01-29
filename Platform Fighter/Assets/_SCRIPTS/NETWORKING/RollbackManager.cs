@@ -13,7 +13,7 @@ namespace NETWORKING
     public class RollbackManager : Singleton<RollbackManager>
     {
         private int _age;
-        private RollingList<KeyValuePair<(int frame, int loop), List<Snapshot>>> _snapshots;
+        private RollingList<KeyValuePair<int, List<Snapshot>>> _snapshots;
         
         private List<(int id, Steppable steppable)> _steppables;
 
@@ -26,7 +26,7 @@ namespace NETWORKING
 
         protected override void OnAwake()
         {
-            _snapshots = new  RollingList<KeyValuePair<(int, int), List<Snapshot>>>(MAX_SNAPSHOTS);
+            _snapshots = new  RollingList<KeyValuePair<int, List<Snapshot>>>(MAX_SNAPSHOTS);
             _steppables = new List<(int, Steppable)>();
         }
 
@@ -38,71 +38,30 @@ namespace NETWORKING
         /// <summary>
         ///     Rollback the game state to a previous iteration
         /// </summary>
-        public void Rollback(int targetFrame, int targetLoop)
+        public void Rollback(int targetFrame)
         {
             Debug.Log($"index: {_snapshots.Count - 1}, count: {_snapshots.Count}");
-            var closestFrame = _snapshots[0].Key;
+            var closestFrame = _snapshots[_snapshots.Count - 1].Key;
 
-            for (var i = _snapshots.Count - 1; i >= 0; i--)
+            if (closestFrame > targetFrame)
             {
-                var snapshot = _snapshots[i];
-                
-                if (snapshot.Key.loop > targetLoop)
-                    continue;
-                if (snapshot.Key.loop < targetLoop)
-                    closestFrame = snapshot.Key;
-                else if (snapshot.Key.loop == targetLoop)
+                for (var i = _snapshots.Count - 1; i >= 0; i--)
                 {
-                    if (snapshot.Key.frame > targetFrame)
-                        continue;
+                    var snapshot = _snapshots[i];
+                 
+                    Debug.Log($"[SnapshotFrame]: {snapshot.Key}");
+                    
+                    if (snapshot.Key > targetFrame) continue;
+
                     closestFrame = snapshot.Key;
                     break;
                 }
             }
+
+            var snapshotAge = P2PHandler.Instance.DataPacket.FrameCounter - closestFrame;
             
-            var targetFrameDiff = 0;
-            var currentFrameDiff = 0;
-            var targetLoopDiff = 0;
-            var currentLoopDiff = 0;
-            if (closestFrame.frame > 600 / 2)
-            {
-                targetFrameDiff = 600 - closestFrame.frame;
-                targetLoopDiff = closestFrame.loop + 1;
-            }
-            else
-            {
-                targetFrameDiff = closestFrame.frame;
-                targetLoopDiff = closestFrame.loop - 1;
-            }
-
-            if (P2PHandler.Instance.DataPacket.FrameCounter > 600 / 2)
-            {
-                currentFrameDiff = 600 - closestFrame.frame;
-                currentLoopDiff = P2PHandler.Instance.DataPacket.FrameCounterLoops + 1;
-            }
-            else
-            {
-                currentFrameDiff = closestFrame.frame;
-                currentLoopDiff = P2PHandler.Instance.DataPacket.FrameCounterLoops - 1;
-            }
-
-            var loopDiff = targetLoopDiff - currentLoopDiff;
-            var loopedFrames = 0;
-            if (loopDiff != -1)
-            {
-                loopDiff = Math.Abs(loopDiff);
-                if (loopDiff == 0)
-                    loopedFrames = 600;
-                else
-                    loopedFrames = 600 * loopDiff;
-            }
-
-            var snapshotAge = currentFrameDiff + targetFrameDiff + loopedFrames;
+            Debug.Log($"Rolling back from ({P2PHandler.Instance.DataPacket.FrameCounter})");
             
-            // 500 - 1, 100 - 2    200    100 + 100
-            // 500 - 1, 100 - 3    800    100 + 100 + 600
-            // 400 - 2, 50  - 6    1450   200 + 50 + (600 * 2)
-            // 20  - 0, 500 - 2    1680
             foreach (var snapshotPiece in _snapshots.FirstOrDefault(x => x.Key == closestFrame).Value)
             {
                 var packet = JsonUtility.FromJson(snapshotPiece.JsonData, snapshotPiece.Type);
@@ -115,7 +74,7 @@ namespace NETWORKING
             }
 
             Debug.Log("snapshotAge: " + snapshotAge);
-            Debug.Log($"ROLLED BACK TO ({P2PHandler.Instance.DataPacket.FrameCounter}, {P2PHandler.Instance.DataPacket.FrameCounterLoops})");
+            Debug.Log($"ROLLED BACK TO ({P2PHandler.Instance.DataPacket.FrameCounter})");
             
             foreach (var player in MatchStateManager.Instance.Players)
             {
@@ -124,20 +83,17 @@ namespace NETWORKING
                 Debug.Log($"player: {player.name}, setCount: {setCount}");
                 for (var i = 0; i < setCount; i++)
                 {
-                    Debug.Log("sets packetnum: " + sets[0].PacketNumber + ", " + sets[0].LoopNumber);
-                    if (sets[0].LoopNumber > P2PHandler.Instance.DataPacket.FrameCounterLoops)
+                    Debug.Log("sets packetnum: " + sets[0].PacketNumber);
+
+                    if (sets[0].PacketNumber >= P2PHandler.Instance.DataPacket.FrameCounter)
                         break;
-                    
-                    if (sets[0].LoopNumber == P2PHandler.Instance.DataPacket.FrameCounterLoops)
-                        if (sets[0].PacketNumber >= P2PHandler.Instance.DataPacket.FrameCounter)
-                            break;
                     
                     player.GetComponent<InputSender>().ArchivedInputSets.RemoveAt(0);
                 }
             }
             
             var lastOrder = _steppables[0].id;
-            for (var i = 0; i <= snapshotAge; ++i)
+            for (var i = 0; i < snapshotAge; ++i)
             {
                 for (var j = 0; j < _steppables.Count; j++)
                 {
@@ -163,10 +119,10 @@ namespace NETWORKING
             }
         }
 
-        public void SaveGameState(int frame, int loop)
+        public void SaveGameState(int frame)
         {
-            Debug.Log($"[SaveGameState] on: {P2PHandler.Instance.DataPacket.FrameCounter}, from: {frame}");
-            _snapshots.Add(new KeyValuePair<(int, int), List<Snapshot>>((frame, loop), new List<Snapshot>()));
+            Debug.Log($"[SaveGameState] on: ({P2PHandler.Instance.DataPacket.FrameCounter}), from: {frame}");
+            _snapshots.Add(new KeyValuePair<int, List<Snapshot>>(frame, new List<Snapshot>()));
             foreach (var player in MatchStateManager.Instance.Players)
                 TakeSnapshot(player.GetComponent<NetworkIdentity>().Id, _snapshots.Count - 1, typeof(PlayerData),
                     player.GetComponent<PlayerData>().DataPacket);

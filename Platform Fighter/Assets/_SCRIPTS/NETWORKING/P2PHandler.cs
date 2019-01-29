@@ -14,12 +14,10 @@ namespace NETWORKING
     public class P2PHandlerPacket
     {
         public int FrameCounter = 0;
-        public int FrameCounterLoops = 0;
 
         public void Initialize()
         {
             FrameCounter = 0;
-            FrameCounterLoops = 0;
         }
     }
 
@@ -29,7 +27,6 @@ namespace NETWORKING
 
         [NonSerialized] public int InputPacketsReceived;
         [NonSerialized] public int InputPacketsSent;
-        [NonSerialized] public int InputPacketsSentLoops;
         [NonSerialized] public int Ping;
         
         [NonSerialized] public bool ReceivedFirstInput;
@@ -47,7 +44,7 @@ namespace NETWORKING
         private bool _started;
         private bool _initialSave;
 
-        public int Delay => 2;//Ping / 100;
+        public int Delay => Ping / 100;
         
         protected override void OnAwake()
         {
@@ -108,7 +105,7 @@ namespace NETWORKING
 
         public void BeginTesting()
         {
-            InvokeRepeating(nameof(SendPing), 0, 2);
+            InvokeRepeating(nameof(SendPing), 0, 1);
         }
         
         private void DispersedInputAdvantagePause(float inputFrameAdvantage)
@@ -194,18 +191,14 @@ namespace NETWORKING
         {
             if (!sendNetworkAction) return;
 
-            var body = new P2PInputSet(inputs, angle, InputPacketsSent, InputPacketsSentLoops);
+            var body = new P2PInputSet(inputs, angle, InputPacketsSent);
             var message = new P2PMessage(networkIdentity.SteamId, P2PMessageKey.InputSet, body.Serialize());
 
             SendP2PMessage(message);
 
-            _localFrameLag = InputPacketsReceived - (InputPacketsSent < 250 && InputPacketsReceived > 450
-                                 ? InputPacketsSent + 600
-                                 : InputPacketsSent) + Delay;
+            _localFrameLag = InputPacketsReceived - InputPacketsSent + Delay;
 
-            if (InputPacketsSent == 599)
-                InputPacketsSentLoops = ++InputPacketsSentLoops % 600;
-            InputPacketsSent = ++InputPacketsSent % 600;
+            InputPacketsSent = ++InputPacketsSent;
         }
 
         public void SendP2PMessage(P2PMessage message)
@@ -242,13 +235,11 @@ namespace NETWORKING
                     var player = MatchStateManager.Instance.GetPlayerBySteamId(msg.SteamId);
                     var inputSet = JsonUtility.FromJson<P2PInputSet>(msg.Body);
 
-                    InputPacketsReceived = ++InputPacketsReceived % 600;
+                    InputPacketsReceived = ++InputPacketsReceived;
 
                     ReceivedFirstInput = true;
                     
-                    _remoteFrameLag = InputPacketsSent - (InputPacketsReceived < 250 && InputPacketsSent > 450
-                                         ? InputPacketsReceived + 600
-                                         : InputPacketsReceived) + Delay;
+                    _remoteFrameLag = InputPacketsSent - InputPacketsReceived + Delay;
                     
                     player.GetComponent<NetworkInput>().GiveInputs(inputSet);
                     break;
@@ -267,7 +258,7 @@ namespace NETWORKING
                         return;
                     }
 
-                    var ping = pingMessage.SentTime - _lastPingTime - 2000;
+                    var ping = pingMessage.SentTime - _lastPingTime - 1000;
                     
                     _lastPingTime = pingMessage.SentTime;
                     
@@ -282,20 +273,11 @@ namespace NETWORKING
         {
             if (!_initialSave)
             {
-                RollbackManager.Instance.SaveGameState(0, 0);
-            }
-            
-            var prevFrameCount = DataPacket.FrameCounter;
-            DataPacket.FrameCounter += 1 + (_previousDelay - Delay);
-            DataPacket.FrameCounter %= 600;
-            if (DataPacket.FrameCounter < prevFrameCount)
-                DataPacket.FrameCounterLoops = ++DataPacket.FrameCounterLoops % 600;
-            
-            if (!_initialSave)
-            {
+                RollbackManager.Instance.SaveGameState(0);
                 _initialSave = true;
-                DataPacket.FrameCounterLoops = 0;
             }
+            
+            DataPacket.FrameCounter += 1 + (_previousDelay - Delay);
         }
         
         public override void SetData(object newData)
@@ -303,7 +285,6 @@ namespace NETWORKING
             var data = (P2PHandlerPacket) newData;
 
             DataPacket.FrameCounter = data.FrameCounter;
-            DataPacket.FrameCounterLoops = data.FrameCounterLoops;
         }
     }
 }

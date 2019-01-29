@@ -80,7 +80,7 @@ namespace PLAYER
             PlayerData.DataPacket.MovementStickAngle = ArchivedInputSets[index].Angle;
             foreach (var input in ArchivedInputSets[index].Inputs) Inputs[(int) input.InputType] = input.State;
             
-            Debug.Log($"Applied ({ArchivedInputSets[index].PacketNumber}, {ArchivedInputSets[index].LoopNumber}) on ({P2PHandler.Instance.DataPacket.FrameCounter}, {P2PHandler.Instance.DataPacket.FrameCounterLoops}) containing {temp}");
+            Debug.Log($"Applied ({ArchivedInputSets[index].PacketNumber}) on ({P2PHandler.Instance.DataPacket.FrameCounter}) containing {temp}");
         }
 
         // called after PrevInputs reset, before InputFramesHeld increased

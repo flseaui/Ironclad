@@ -16,8 +16,8 @@ namespace MANAGERS
         private int _fixedUpdatePauseTimer;
         
         private void Update()
-        {         
-            FramesLapsed = ++FramesLapsed % 600;
+        {
+            FramesLapsed = ++FramesLapsed;
             
             if (UpdatePaused)
             {

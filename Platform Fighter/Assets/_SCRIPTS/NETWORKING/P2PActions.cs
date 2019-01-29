@@ -32,13 +32,12 @@ namespace NETWORKING
 
         public Vector2 Angle;
         
-        public int PacketNumber, LoopNumber;
+        public int PacketNumber;
 
-        public P2PInputSet(InputChange[] inputs, Vector2 angle, int packetNumber, int loopNumber)
+        public P2PInputSet(InputChange[] inputs, Vector2 angle, int packetNumber)
         {
             Inputs = inputs;
             PacketNumber = packetNumber;
-            LoopNumber = loopNumber;
             Angle = angle;
         }
 

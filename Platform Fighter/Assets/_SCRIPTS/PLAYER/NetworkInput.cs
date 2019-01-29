@@ -67,14 +67,14 @@ namespace PLAYER
 
                 for (var index = 0; index < numReceivedInputSets; index++)
                 {
-                    var receivedPacketNum = Mod(_receivedInputSets[0].PacketNumber, 600);
+                    var receivedPacketNum =_receivedInputSets[0].PacketNumber;
 
                     var numPredictedInputSets = _predictedInputSets.Count;
 
                     if (receivedPacketNum == _p2pHandler.FrameCounter && !ParsedForFrame)
                     {
                         ParseInputs(_receivedInputSets[0]);
-                        RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber, _receivedInputSets[0].LoopNumber);
+                        RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber);
                         ArchivedInputSets.Add(_receivedInputSets[0]);
                         _receivedInputSets.RemoveAt(0);
                         _queuePrediction = false;
@@ -82,8 +82,7 @@ namespace PLAYER
                     }
                     else
                     {
-                        if (receivedPacketNum > _p2pHandler.FrameCounter ||
-                            receivedPacketNum < 250 && _p2pHandler.FrameCounter > 450)
+                        if (receivedPacketNum > _p2pHandler.FrameCounter)
                         {
                             _queuedInputSets.Add(_receivedInputSets[0]);
                             _receivedInputSets.RemoveAt(0);
@@ -101,16 +100,11 @@ namespace PLAYER
                                 else
                                 {
                                     var receivedInputSetsCount = _receivedInputSets.Count;
-                                    var targetLoop = _receivedInputSets[0].LoopNumber;
                                     var targetPacket = _receivedInputSets[0].PacketNumber;
                                     for (var i = 0; i < receivedInputSetsCount; i++)
                                     {
-                                        if (_receivedInputSets[0].LoopNumber > targetLoop)
+                                        if (_receivedInputSets[0].PacketNumber > targetPacket)
                                             break;
-                                        
-                                        if (_receivedInputSets[0].LoopNumber == targetLoop)
-                                            if (_receivedInputSets[0].PacketNumber > targetPacket)
-                                                break;
 
                                         ArchivedInputSets.Add(_receivedInputSets[0]);
                                         _receivedInputSets.RemoveAt(0);
@@ -118,13 +112,13 @@ namespace PLAYER
                                         --numReceivedInputSets;
                                     }
 
-                                    RollbackManager.Instance.Rollback(targetPacket, targetLoop);
+                                    RollbackManager.Instance.Rollback(targetPacket);
                                 }
                             }
                             else
                             {
                                 ParseInputs(_receivedInputSets[0]);
-                                RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber, _receivedInputSets[0].LoopNumber);
+                                RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber);
                                 ArchivedInputSets.Add(_receivedInputSets[0]);
                                 _receivedInputSets.RemoveAt(0);
                             }
@@ -158,7 +152,7 @@ namespace PLAYER
 
         private P2PInputSet PredictInputs()
         {
-            return new P2PInputSet(new InputChange[] { }, PlayerData.DataPacket.MovementStickAngle,Mod(_p2pHandler.FrameCounter, 600), -1);
+            return new P2PInputSet(new InputChange[] { }, PlayerData.DataPacket.MovementStickAngle,_p2pHandler.FrameCounter);
         }
 
         public new void ApplyArchivedInputSet(int index)
@@ -181,6 +175,8 @@ namespace PLAYER
                 Debug.Log("archived prediction");
                 PlayerData.DataPacket.MovementStickAngle = prediction.Angle;
                 foreach (var input in prediction.Inputs) Inputs[(int) input.InputType] = input.State;
+                
+                Debug.Log($"predict Applied ({prediction.PacketNumber}) on ({P2PHandler.Instance.DataPacket.FrameCounter}) containing {temp}");
             }
             else
             {
@@ -194,9 +190,9 @@ namespace PLAYER
                 }
                 PlayerData.DataPacket.MovementStickAngle = ArchivedInputSets[index].Angle;
                 foreach (var input in ArchivedInputSets[index].Inputs) Inputs[(int) input.InputType] = input.State;
+
+                Debug.Log($"Applied ({ArchivedInputSets[index].PacketNumber}) on ({P2PHandler.Instance.DataPacket.FrameCounter}) containing {temp}");
             }
-            
-            Debug.Log($"Applied ({ArchivedInputSets[index].PacketNumber}, {ArchivedInputSets[index].LoopNumber}) on ({P2PHandler.Instance.DataPacket.FrameCounter}, {P2PHandler.Instance.DataPacket.FrameCounterLoops}) containing {temp}");
         }
         
         public void ParseInputs(P2PInputSet inputSet)

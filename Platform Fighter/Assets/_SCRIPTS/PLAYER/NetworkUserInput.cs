@@ -149,7 +149,7 @@ namespace PLAYER
             if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && P2PHandler.Instance.AllPlayersReady)
             {
                 var inputArray = _changedInputs.ToArray();
-                _lastInputSet = new P2PInputSet(inputArray, _realTimeAngle, P2PHandler.Instance.InputPacketsSent, P2PHandler.Instance.InputPacketsSentLoops);
+                _lastInputSet = new P2PInputSet(inputArray, _realTimeAngle, P2PHandler.Instance.InputPacketsSent);
 
                 if (P2PHandler.Instance.Delay != 0)
                 {
