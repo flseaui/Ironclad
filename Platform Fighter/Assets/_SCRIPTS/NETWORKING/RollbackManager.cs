@@ -41,7 +41,6 @@ namespace NETWORKING
         /// </summary>
         public void Rollback(int targetFrame)
         {
-            Debug.Log($"index: {_snapshots.Count - 1}, count: {_snapshots.Count}");
             var closestFrame = _snapshots[_snapshots.Count - 1].Key;
 
             if (closestFrame > targetFrame)
@@ -59,7 +58,9 @@ namespace NETWORKING
                 }
             }
 
-            var snapshotAge = P2PHandler.Instance.DataPacket.FrameCounter - closestFrame;
+            var snapshotAge = P2PHandler.Instance.DataPacket.FrameCounter - (closestFrame + 1);
+            
+            Debug.Log($"targetFrame: {targetFrame}, closestFrame: {closestFrame}");
             
             Debug.Log($"Rolling back from ({P2PHandler.Instance.DataPacket.FrameCounter})");
             

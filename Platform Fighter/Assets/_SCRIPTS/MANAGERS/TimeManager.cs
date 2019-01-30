@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using DATA;
 using MISC;
+using UnityEngine;
+using Types = DATA.Types;
 
 namespace MANAGERS
 {
@@ -24,7 +26,7 @@ namespace MANAGERS
                 --_updatePauseTimer;
                 if (_updatePauseTimer == 0)
                 {
-                    UnPause(Types.PauseType.Update);
+                    PauseToggle(Types.PauseType.Update, false);
                 }
             }
         }
@@ -36,7 +38,7 @@ namespace MANAGERS
                 --_fixedUpdatePauseTimer;
                 if (_fixedUpdatePauseTimer == 0)
                 {
-                    UnPause(Types.PauseType.FixedUpdate);
+                    PauseToggle(Types.PauseType.FixedUpdate, false);
                 }
             }
         }
@@ -61,10 +63,10 @@ namespace MANAGERS
                     throw new ArgumentOutOfRangeException(nameof(pauseType), pauseType, null);
             }
 
-            Pause(pauseType);
+            PauseToggle(pauseType, true);
         }
 
-        public void Pause(Types.PauseType pauseType)
+        public void PauseToggle(Types.PauseType pauseType, bool paused)
         {
             switch (pauseType)
             {
@@ -72,31 +74,22 @@ namespace MANAGERS
                     UpdatePaused = true;
                     break;
                 case Types.PauseType.FixedUpdate:
-                    FixedUpdatePaused = true;
+                    StartCoroutine(InternalFixedPauseToggle(paused));
                     break;
                 case Types.PauseType.Both:
                     UpdatePaused = true;
-                    FixedUpdatePaused = true;
+                    StartCoroutine(InternalFixedPauseToggle(paused));
                     break;
             }
         }
 
-        public void UnPause(Types.PauseType pauseType)
+        private IEnumerator InternalFixedPauseToggle(bool paused)
         {
-            switch (pauseType)
-            {
-                case Types.PauseType.Update:
-                    UpdatePaused = false;
-                    break;
-                case Types.PauseType.FixedUpdate:
-                    FixedUpdatePaused = false;
-                    break;
-                case Types.PauseType.Both:
-                    UpdatePaused = false;
-                    FixedUpdatePaused = false;
-                    break;
-            }
+            yield return new WaitForFixedUpdate();
+            
+            FixedUpdatePaused = paused;
         }
+
 
     }
 }

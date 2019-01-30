@@ -84,7 +84,7 @@ namespace NETWORKING
             // calculate averaged frame advantage 
             if (TimeManager.Instance.FramesLapsed % 100 == 0)
             {
-                var inputFrameAdvantage = _localFrameLag / 100f - _remoteFrameLag / 100f;
+                var inputFrameAdvantage = Math.Max(0, _localFrameLag / 100f - _remoteFrameLag / 100f);
                 DispersedInputAdvantagePause(inputFrameAdvantage);
                 _localFrameLag = 0;
                 _remoteFrameLag = 0;
@@ -112,12 +112,16 @@ namespace NETWORKING
         {
             var simulationFrameAdvantage = .5f * inputFrameAdvantage;
 
+            Debug.Log($"simFrameAdv: {simulationFrameAdvantage}");
+            
             _framesToStall = 0;
             if (simulationFrameAdvantage >= .75f)
             {
                 _framesToStall += Math.Max(1, (int)(simulationFrameAdvantage + .5f));
             }
 
+            Debug.Log($"framesToStall: {_framesToStall}");
+            
             _frameStallTimer = CalculateStallCadence(_framesToStall);
         }
 
@@ -197,7 +201,7 @@ namespace NETWORKING
 
             SendP2PMessage(message);
 
-            _localFrameLag = InputPacketsReceived - InputPacketsSent + Delay;
+            _localFrameLag += InputPacketsReceived - InputPacketsSent + Delay;
 
             InputPacketsSent = ++InputPacketsSent;
         }
@@ -240,7 +244,7 @@ namespace NETWORKING
 
                     ReceivedFirstInput = true;
                     
-                    _remoteFrameLag = InputPacketsSent - InputPacketsReceived + Delay;
+                    _remoteFrameLag += InputPacketsSent - InputPacketsReceived + Delay;
                     
                     player.GetComponent<NetworkInput>().GiveInputs(inputSet);
                     break;
