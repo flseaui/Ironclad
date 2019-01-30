@@ -3,6 +3,7 @@
 ###
 [Aa]ssets/AssetStoreTools*
 [Bb]uild/
+[Bb]uilds/
 [Ll]ibrary/
 [Ll]ocal[Cc]ache/
 [Oo]bj/
@@ -12,6 +13,7 @@
 sysinfo.txt
 # Unity3D generated meta files
 *.pidb.meta
+*.pdb.meta
 
 ###
 # VS/MD solution and project files
@@ -180,3 +182,5 @@ _UpgradeReport_Files/
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+Assets/Plugins/Editor/Jetbrains/

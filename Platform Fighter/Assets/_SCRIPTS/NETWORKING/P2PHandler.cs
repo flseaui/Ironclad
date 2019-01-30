@@ -294,7 +294,7 @@ namespace NETWORKING
         {
             if (!_initialSave)
             {
-                RollbackManager.Instance.SaveGameState(0);
+                RollbackManager.Instance.SaveGameState(0, true);
                 _initialSave = true;
             }
             

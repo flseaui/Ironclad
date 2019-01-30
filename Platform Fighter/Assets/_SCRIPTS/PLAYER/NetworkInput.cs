@@ -74,7 +74,7 @@ namespace PLAYER
                     if (receivedPacketNum == _p2pHandler.FrameCounter && !ParsedForFrame)
                     {
                         ParseInputs(_receivedInputSets[0]);
-                        RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber);
+                        RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber, false);
                         ArchivedInputSets.Add(_receivedInputSets[0]);
                         _receivedInputSets.RemoveAt(0);
                         _queuePrediction = false;
@@ -118,7 +118,7 @@ namespace PLAYER
                             else
                             {
                                 ParseInputs(_receivedInputSets[0]);
-                                RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber);
+                                RollbackManager.Instance.SaveGameState(_receivedInputSets[0].PacketNumber, false);
                                 ArchivedInputSets.Add(_receivedInputSets[0]);
                                 _receivedInputSets.RemoveAt(0);
                             }

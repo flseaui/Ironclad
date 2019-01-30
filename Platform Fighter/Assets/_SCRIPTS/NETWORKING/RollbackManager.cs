@@ -120,15 +120,22 @@ namespace NETWORKING
             }
         }
 
-        public void SaveGameState(int frame)
+        public void SaveGameState(int frame, bool force)
         {
-            StartCoroutine(InternalSaveGameState(frame));
+            if (force)
+                InternalSaveGameState(frame);
+            else
+                StartCoroutine(ScheduleSaveGameState(frame));
         }
 
-        private IEnumerator InternalSaveGameState(int frame)
+        private IEnumerator ScheduleSaveGameState(int frame)
         {
-             yield return new WaitForFixedUpdate();
-             
+            yield return new WaitForFixedUpdate();
+            InternalSaveGameState(frame);
+        }
+        
+        private void InternalSaveGameState(int frame)
+        {
              Debug.Log($"[SaveGameState] on: ({P2PHandler.Instance.DataPacket.FrameCounter}), from: {frame}");
              _snapshots.Add(new KeyValuePair<int, List<Snapshot>>(frame, new List<Snapshot>()));
              foreach (var player in MatchStateManager.Instance.Players)
