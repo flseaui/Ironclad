@@ -201,7 +201,7 @@ namespace NETWORKING
 
             SendP2PMessage(message);
 
-            _localFrameLag += InputPacketsReceived - InputPacketsSent + Delay;
+            _localFrameLag += InputPacketsSent - InputPacketsReceived;
 
             InputPacketsSent = ++InputPacketsSent;
         }
@@ -244,7 +244,7 @@ namespace NETWORKING
 
                     ReceivedFirstInput = true;
                     
-                    _remoteFrameLag += InputPacketsSent - InputPacketsReceived + Delay;
+                    _remoteFrameLag += InputPacketsReceived - InputPacketsSent + Delay;
                     
                     player.GetComponent<NetworkInput>().GiveInputs(inputSet);
                     break;
