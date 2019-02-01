@@ -35,7 +35,7 @@ namespace NETWORKING
 
         private int _playersJoined = 1;
         private int _previousDelay;
-        private int _lastPingTime = -1;     
+        private float _lastPingTime = -1;     
         private int _remoteFrameLag;
         private int _localFrameLag;
         private int _framesToStall;
@@ -259,18 +259,18 @@ namespace NETWORKING
 
                     if (_lastPingTime == -1)
                     {
-                        _lastPingTime = pingMessage.SentTime;
+                        _lastPingTime = TimeManager.Instance.GameTime;
                         return;
                     }
 
-                    var ping = pingMessage.SentTime - _lastPingTime - 1000;
+                    var ping = TimeManager.Instance.GameTime - _lastPingTime - 1000;
                     
                     _lastPingTime = pingMessage.SentTime;
                     
-                    Ping = ping;
-                    Delay = CalcInputLagFrames(Delay, ping / 100);
+                    Ping = (int) (ping * 1000);
+                    Delay = CalcInputLagFrames(Delay, Ping / 100);
                     Debug.Log("delay: " + Delay);
-                    Events.OnPingCalculated?.Invoke(ping, senderID);
+                    Events.OnPingCalculated?.Invoke(Ping, senderID);
                     break;
             }
         }
