@@ -152,7 +152,7 @@ namespace NETWORKING
         
         public void SendPing()
         {
-            Events.OnPingSent?.Invoke((int) (Time.unscaledTime * 1000));
+            Events.OnPingSent?.Invoke((int) TimeManager.Instance.GameTime * 100);
         }
         
         private void OnConnectionFailed(ulong steamid, Networking.SessionError error)

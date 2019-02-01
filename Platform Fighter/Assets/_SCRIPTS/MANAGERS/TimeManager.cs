@@ -11,6 +11,8 @@ namespace MANAGERS
     {
         public int FramesLapsed { get; private set; }
 
+        public float GameTime { get; private set; }
+
         public bool UpdatePaused { get; private set; }
         public bool FixedUpdatePaused { get; private set; }
 
@@ -19,6 +21,7 @@ namespace MANAGERS
         
         private void Update()
         {
+            GameTime += Time.unscaledDeltaTime;
             FramesLapsed = ++FramesLapsed;
             
             if (UpdatePaused)
