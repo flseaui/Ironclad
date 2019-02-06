@@ -22,6 +22,7 @@ namespace NETWORKING
     {
         InputSet,
         Ping,
+        Pong,
         GameStart
     }
 }

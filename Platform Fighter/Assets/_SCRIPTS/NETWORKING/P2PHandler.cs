@@ -54,7 +54,6 @@ namespace NETWORKING
         
         private void Start()
         {
-            Events.OnPingSent += SendP2PPing;
             Events.OnInputsChanged += SendP2PInputSet;
             Events.OnGameStarted += SendP2PGameStart;
             SubscribeToP2PEvents();
@@ -152,7 +151,13 @@ namespace NETWORKING
         
         public void SendPing()
         {
-            Events.OnPingSent?.Invoke((int) TimeManager.Instance.GameTime * 100);
+            SendP2PPing((int) TimeManager.Instance.GameTime * 100, true);
+            _lastPingTime = TimeManager.Instance.GameTime;
+        }
+       
+        public void SendPong()
+        {
+            SendP2PPing((int) TimeManager.Instance.GameTime * 100, false);
         }
         
         private void OnConnectionFailed(ulong steamid, Networking.SessionError error)
@@ -175,10 +180,10 @@ namespace NETWORKING
             ParseP2PMessage(sender, serializedMessage);
         }
 
-        private void SendP2PPing(int sentTime)
+        private void SendP2PPing(int sentTime, bool pingOrPong)
         {
             var body = new P2PPing(sentTime);
-            var message = new P2PMessage(Client.Instance.SteamId, P2PMessageKey.Ping, body.Serialize());
+            var message = new P2PMessage(Client.Instance.SteamId, pingOrPong ? P2PMessageKey.Ping : P2PMessageKey.Pong, body.Serialize());
 
             SendP2PMessage(message);
         }
@@ -257,17 +262,18 @@ namespace NETWORKING
                 case P2PMessageKey.Ping:
                     var pingMessage = JsonUtility.FromJson<P2PPing>(msg.Body);
 
-                    if (_lastPingTime == -1)
-                    {
-                        _lastPingTime = TimeManager.Instance.GameTime;
-                        return;
-                    }
+                    SendPong();
 
+                    
+                   
+                    break;
+                case P2PMessageKey.Pong:
                     var ping = TimeManager.Instance.GameTime - _lastPingTime;
-                    _lastPingTime = TimeManager.Instance.GameTime;                   
-                    Ping = Mathf.CeilToInt(ping * 1000);
-                    Delay = CalcInputLagFrames(Delay, Ping / 100);
-                    Debug.Log("delay: " + Delay);
+                    Ping = Mathf.CeilToInt(ping * 100);
+                    
+                    Debug.Log("Ping: " + Ping);
+                    Delay = CalcInputLagFrames(Delay, Ping / 2);
+                    Debug.Log("Delay: " + Delay);
                     Events.OnPingCalculated?.Invoke(Ping, senderID);
                     break;
             }
