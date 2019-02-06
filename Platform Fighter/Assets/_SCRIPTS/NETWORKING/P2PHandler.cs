@@ -88,6 +88,8 @@ namespace NETWORKING
                 _localFrameLag = 0;
                 _remoteFrameLag = 0;
             }
+
+            if (TimeManager.Instance.FixedUpdatePaused) return;
             
             IncrementFrameCounter();
 
@@ -261,11 +263,8 @@ namespace NETWORKING
                     break;
                 case P2PMessageKey.Ping:
                     var pingMessage = JsonUtility.FromJson<P2PPing>(msg.Body);
-
-                    SendPong();
-
                     
-                   
+                    SendPong();                  
                     break;
                 case P2PMessageKey.Pong:
                     var ping = TimeManager.Instance.GameTime - _lastPingTime;
