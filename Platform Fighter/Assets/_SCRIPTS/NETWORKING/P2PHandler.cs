@@ -263,11 +263,9 @@ namespace NETWORKING
                         return;
                     }
 
-                    var ping = TimeManager.Instance.GameTime - _lastPingTime - 1000;
-                    
-                    _lastPingTime = pingMessage.SentTime;
-                    
-                    Ping = (int) (ping * 1000);
+                    var ping = TimeManager.Instance.GameTime - _lastPingTime;
+                    _lastPingTime = TimeManager.Instance.GameTime;                   
+                    Ping = Mathf.CeilToInt(ping * 1000);
                     Delay = CalcInputLagFrames(Delay, Ping / 100);
                     Debug.Log("delay: " + Delay);
                     Events.OnPingCalculated?.Invoke(Ping, senderID);
