@@ -148,7 +148,7 @@ namespace NETWORKING
                 case 7: return 4;
                 case 8: return 3;
                 case 9: return 2;
-                default: return 0;
+                default: return 1;
             }
         }
         
@@ -274,7 +274,7 @@ namespace NETWORKING
                     Ping = Mathf.CeilToInt(ping * 100);
                     
                     Debug.Log("Ping: " + Ping);
-                    Delay = CalcInputLagFrames(Delay, Ping / 2);
+                    Delay = 2;//CalcInputLagFrames(Delay, Ping / 2);
                     Debug.Log("Delay: " + Delay);
                     Events.OnPingCalculated?.Invoke(Ping, senderID);
                     break;

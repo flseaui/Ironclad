@@ -35,6 +35,8 @@ namespace PLAYER
         {
             if (!P2PHandler.Instance.AllPlayersReady)
                 return;
+            if (TimeManager.Instance.FixedUpdatePaused)
+                return;
             
             RealTimeInputs.CopyTo(_prevInputs, 0);
 

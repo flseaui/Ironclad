@@ -14,6 +14,7 @@ namespace PLAYER
     {
         private List<InputChange> _changedInputs;
 
+        [SerializeField]
         private List<P2PInputSet> _delayedInputSets;
 
         private int _jumpFramesHeld;
