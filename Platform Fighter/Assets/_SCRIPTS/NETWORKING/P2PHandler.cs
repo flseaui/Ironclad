@@ -35,11 +35,13 @@ namespace NETWORKING
 
         private int _playersJoined = 1;
         private int _previousDelay;
-        private float _lastPingTime = -1;     
-        private int _remoteFrameLag;
-        private int _localFrameLag;
         private int _framesToStall;
         private int _frameStallTimer;
+        
+        private float _lastPingTime = -1;    
+        
+        private (int messages, int lag) _remoteFrameLag;
+        private (int messages, int lag) _localFrameLag;
         
         private bool _started;
         private bool _initialSave;
@@ -66,8 +68,6 @@ namespace NETWORKING
 
         private void FixedUpdate()
         {
-            if (TimeManager.Instance.FixedUpdatePaused)
-                return;
             if (!AllPlayersReady || !GameStarted)
                 return;
 
@@ -83,10 +83,10 @@ namespace NETWORKING
             // calculate averaged frame advantage 
             if (TimeManager.Instance.FramesLapsed % 100 == 0)
             {
-                var inputFrameAdvantage = Math.Max(0, _localFrameLag / 100f - _remoteFrameLag / 100f);
+                var inputFrameAdvantage = Math.Max(0, _localFrameLag.lag / _localFrameLag.messages - _remoteFrameLag.lag / _remoteFrameLag.messages);
                 DispersedInputAdvantagePause(inputFrameAdvantage);
-                _localFrameLag = 0;
-                _remoteFrameLag = 0;
+                _localFrameLag = (0, 0);
+                _remoteFrameLag = (0, 0);
             }
 
             if (TimeManager.Instance.FixedUpdatePaused) return;
@@ -148,7 +148,7 @@ namespace NETWORKING
                 case 7: return 4;
                 case 8: return 3;
                 case 9: return 2;
-                default: return 1;
+                default: return 0;
             }
         }
         
@@ -209,8 +209,9 @@ namespace NETWORKING
 
             SendP2PMessage(message);
 
-            _localFrameLag += InputPacketsSent - InputPacketsReceived;
-
+            _localFrameLag.lag += InputPacketsSent - InputPacketsReceived;
+            ++_localFrameLag.messages;
+            
             InputPacketsSent = ++InputPacketsSent;
         }
 
@@ -252,7 +253,8 @@ namespace NETWORKING
 
                     ReceivedFirstInput = true;
                     
-                    _remoteFrameLag += InputPacketsReceived - InputPacketsSent + Delay;
+                    _remoteFrameLag.lag += InputPacketsReceived - InputPacketsSent + Delay;
+                    ++_remoteFrameLag.messages;
                     
                     player.GetComponent<NetworkInput>().GiveInputs(inputSet);
                     break;
