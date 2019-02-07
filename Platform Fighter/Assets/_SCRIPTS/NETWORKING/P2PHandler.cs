@@ -66,6 +66,22 @@ namespace NETWORKING
             GameStarted = true;
         }
 
+        private void Update()
+        {
+            if (!AllPlayersReady || !GameStarted)
+                return;
+            
+            // calculate averaged frame advantage 
+            if (TimeManager.Instance.FramesLapsed % 100 == 0)
+            {
+                var inputFrameAdvantage = Math.Max(0, _localFrameLag.lag / _localFrameLag.messages - _remoteFrameLag.lag / _remoteFrameLag.messages);
+                DispersedInputAdvantagePause(inputFrameAdvantage);
+                _localFrameLag = (0, 0);
+                _remoteFrameLag = (0, 0);
+            }
+
+        }
+        
         private void FixedUpdate()
         {
             if (!AllPlayersReady || !GameStarted)
@@ -78,15 +94,6 @@ namespace NETWORKING
                 {
                     StallFrame();
                 }
-            }
-
-            // calculate averaged frame advantage 
-            if (TimeManager.Instance.FramesLapsed % 100 == 0)
-            {
-                var inputFrameAdvantage = Math.Max(0, _localFrameLag.lag / _localFrameLag.messages - _remoteFrameLag.lag / _remoteFrameLag.messages);
-                DispersedInputAdvantagePause(inputFrameAdvantage);
-                _localFrameLag = (0, 0);
-                _remoteFrameLag = (0, 0);
             }
 
             if (TimeManager.Instance.FixedUpdatePaused) return;
