@@ -55,7 +55,7 @@ namespace PLAYER
             UpdatePlayerInput();
         }
 
-        private void ApplyDelayedInputSets()
+        private void ApplyDelayedInputSet()
         {
             PlayerData.DataPacket.MovementStickAngle = _delayedInputSets.First().Angle;
             foreach (var input in _delayedInputSets.First().Inputs) Inputs[(int) input.InputType] = input.State;
@@ -154,17 +154,24 @@ namespace PLAYER
 
                 if (P2PHandler.Instance.Delay != 0)
                 {
-                    if (_delayedInputSets.Count == P2PHandler.Instance.Delay)
+                    while (_delayedInputSets.Count >= P2PHandler.Instance.Delay)
                     {
-                        ApplyDelayedInputSets();
+                        ApplyDelayedInputSet();
                     }
                     Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, _realTimeAngle, true);
                     _delayedInputSets.Add(_lastInputSet);
                 }
                 else
                 {
+                    if (_delayedInputSets.Count > 0)
+                    {
+                        while (_delayedInputSets.Count > 0)
+                        {
+                            ApplyDelayedInputSet();
+                        }
+                    }
                     _delayedInputSets.Add(_lastInputSet);
-                    ApplyDelayedInputSets();
+                    ApplyDelayedInputSet();
                     Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, _realTimeAngle, true);
                 }
                 
