@@ -131,9 +131,9 @@ namespace PLAYER
                     return Types.ActionType.Jump;
                 if (CurrentActionFrame > 7)
                 {
-                    if (GetComponent<PlayerFlags>().GetFlagState(Types.Flags.FullHop) == Types.FlagState.Pending)
+                    if (GetComponent<PlayerFlags>().GetFlagState(Types.PlayerFlags.FullHop) == Types.FlagState.Pending)
                     {
-                        GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ResetAction, Types.FlagState.Pending);
+                        GetComponent<PlayerFlags>().SetFlagState(Types.PlayerFlags.ResetAction, Types.FlagState.Pending);
                         return Types.ActionType.Jump;
                     }
 
@@ -144,7 +144,7 @@ namespace PLAYER
                 }
                 //Frame 7
 
-                if (GetComponent<PlayerFlags>().GetFlagState(Types.Flags.FullHop) == Types.FlagState.Pending)
+                if (GetComponent<PlayerFlags>().GetFlagState(Types.PlayerFlags.FullHop) == Types.FlagState.Pending)
                     return Types.ActionType.Jump;
 
                 return Types.ActionType.Fall;

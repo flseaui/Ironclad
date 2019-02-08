@@ -72,15 +72,15 @@ namespace PLAYER
 
             if (Inputs[(int) Types.Input.Jump])
             {
-                if (_jumpFramesHeld == 0 && GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ShortHop) !=
+                if (_jumpFramesHeld == 0 && GetComponent<PlayerFlags>().GetFlagState(Types.PlayerFlags.ShortHop) !=
                     Types.FlagState.Pending)
-                    GetComponent<PlayerFlags>().SetFlagState(Types.Flags.FullHop, Types.FlagState.Pending);
+                    GetComponent<PlayerFlags>().SetFlagState(Types.PlayerFlags.FullHop, Types.FlagState.Pending);
 
-                if (_jumpFramesHeld < 7 && GetComponent<PlayerFlags>().GetFlagState(Types.Flags.FullHop) !=
+                if (_jumpFramesHeld < 7 && GetComponent<PlayerFlags>().GetFlagState(Types.PlayerFlags.FullHop) !=
                     Types.FlagState.Pending)
                 {
-                    GetComponent<PlayerFlags>().SetFlagState(Types.Flags.FullHop, Types.FlagState.Resolved);
-                    GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ShortHop, Types.FlagState.Pending);
+                    GetComponent<PlayerFlags>().SetFlagState(Types.PlayerFlags.FullHop, Types.FlagState.Resolved);
+                    GetComponent<PlayerFlags>().SetFlagState(Types.PlayerFlags.ShortHop, Types.FlagState.Pending);
                 }
 
                 ++_jumpFramesHeld;

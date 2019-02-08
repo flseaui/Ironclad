@@ -5,10 +5,8 @@ namespace NETWORKING
 {
     public static class Events
     {
-        public static Action<NetworkIdentity, InputChange[], Vector2, bool> OnInputsChanged;
-        public static Action<NetworkIdentity> OnGameStarted;
-
-        public static Action<int> OnPingSent;
-        public static Action<int, ulong> OnPingCalculated;
+        public static Action<NetworkIdentity, InputChange[], Vector2, bool> InputsChanged;
+        public static Action<NetworkIdentity> GameStarted;
+        public static Action<int, ulong> PingCalculated;
     }
 }

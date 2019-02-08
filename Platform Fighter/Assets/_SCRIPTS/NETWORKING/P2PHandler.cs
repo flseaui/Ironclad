@@ -56,8 +56,8 @@ namespace NETWORKING
         
         private void Start()
         {
-            Events.OnInputsChanged += SendP2PInputSet;
-            Events.OnGameStarted += SendP2PGameStart;
+            Events.InputsChanged += SendP2PInputSet;
+            Events.GameStarted += SendP2PGameStart;
             SubscribeToP2PEvents();
         }
         
@@ -76,6 +76,14 @@ namespace NETWORKING
             {
                 var inputFrameAdvantage = Math.Max(0, _localFrameLag.lag / _localFrameLag.messages - _remoteFrameLag.lag / _remoteFrameLag.messages);
                 Delay = CalcInputLagFrames(Delay, _remoteFrameLag.lag / _remoteFrameLag.messages);
+                if (Delay > _previousDelay)
+                {
+                   TimeManager.Instance.PauseForFrames(Delay - _previousDelay, Types.PauseType.FixedUpdate);
+                }
+                else if (Delay < _previousDelay)
+                {
+                    GameFlags.Instance.SetFlagState(Types.GameFlags.DelayDecreased, Types.FlagState.Pending);
+                }
                 Debug.Log("Delay: " + Delay);
                 DispersedInputAdvantagePause(inputFrameAdvantage);
                 _localFrameLag = (0, 0);
@@ -302,7 +310,7 @@ namespace NETWORKING
                     
                     Debug.Log("Ping: " + Ping);
 
-                    Events.OnPingCalculated?.Invoke(Ping, senderID);
+                    Events.PingCalculated?.Invoke(Ping, senderID);
                     break;
             }
         }

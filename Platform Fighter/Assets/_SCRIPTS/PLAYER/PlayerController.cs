@@ -72,11 +72,11 @@ namespace PLAYER
         private void ExecuteAction()
         {
             // first frame of action
-            if (CurrentActionFrame == 0 || GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ResetAction) ==
+            if (CurrentActionFrame == 0 || GetComponent<PlayerFlags>().GetFlagState(Types.PlayerFlags.ResetAction) ==
                 Types.FlagState.Pending)
             {
                 // if we just reset
-                if (GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ResetAction) == Types.FlagState.Pending)
+                if (GetComponent<PlayerFlags>().GetFlagState(Types.PlayerFlags.ResetAction) == Types.FlagState.Pending)
                 {
                     CurrentActionFrame = 0;
                 }
@@ -85,8 +85,8 @@ namespace PLAYER
                 _animator.SetInteger("CurrentAction", (int) _currentAction.Type);
                 OnActionBegin?.Invoke();
 
-                if (GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ResetAction) == Types.FlagState.Pending)
-                    GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ResetAction, Types.FlagState.Resolved);
+                if (GetComponent<PlayerFlags>().GetFlagState(Types.PlayerFlags.ResetAction) == Types.FlagState.Pending)
+                    GetComponent<PlayerFlags>().SetFlagState(Types.PlayerFlags.ResetAction, Types.FlagState.Resolved);
             }
 
             UpdateBoxes(CurrentActionFrame);

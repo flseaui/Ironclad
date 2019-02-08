@@ -59,13 +59,18 @@
             Right
         }
 
-        public enum Flags
+        public enum PlayerFlags
         {
             ShortHop,
             FullHop,
             ResetAction
         }
 
+        public enum GameFlags
+        {
+            DelayDecreased
+        }
+        
         public enum FlagState
         {
             Inactive,

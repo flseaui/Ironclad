@@ -39,7 +39,7 @@ namespace MENU
             }
 
             GameManager.Instance.MatchType = Types.MatchType.OnlineMultiplayer;
-            Events.OnPingCalculated += _playerProfilerPanel.SetPlayerProfilePing;
+            Events.PingCalculated += _playerProfilerPanel.SetPlayerProfilePing;
         }
         
         private void OnCreated(bool success)
@@ -115,7 +115,7 @@ namespace MENU
                             tempCharacterArray.Add(
                                 CharacterStringToId(Client.Instance.Lobby.GetMemberData(id, "character")));
 
-                        Events.OnPingCalculated -= _playerProfilerPanel.SetPlayerProfilePing;
+                        Events.PingCalculated -= _playerProfilerPanel.SetPlayerProfilePing;
                         GameManager.Instance.Characters = tempCharacterArray.ToArray();
 
                         MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;

@@ -26,19 +26,22 @@ namespace PLAYER
         private Player _player;
         public int Id { get; set; }
 
-        private void Start()
+        protected override void Awake()
         {
             base.Awake();
             _changedInputs = new List<InputChange>();
             _delayedInputSets = new List<P2PInputSet>();
             _player = ReInput.players.GetPlayer(Id);
+        }
 
+        private void Start()
+        {
             _player.controllers.maps.SetMapsEnabled(false, "Menu");
             _player.controllers.maps.SetMapsEnabled(true, "Default");
 
-            Events.OnGameStarted?.Invoke(GetComponent<NetworkIdentity>());
+            Events.GameStarted?.Invoke(GetComponent<NetworkIdentity>());
         }
-
+        
         protected override void PressEvent(int index)
         {
             _changedInputs.Add(new InputChange((Types.Input) index, RealTimeInputs[index]));
@@ -63,15 +66,15 @@ namespace PLAYER
 
             if (Inputs[(int) Types.Input.Jump])
             {
-                if (_jumpFramesHeld == 0 && GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ShortHop) !=
+                if (_jumpFramesHeld == 0 && GetComponent<PlayerFlags>().GetFlagState(Types.PlayerFlags.ShortHop) !=
                     Types.FlagState.Pending)
-                    GetComponent<PlayerFlags>().SetFlagState(Types.Flags.FullHop, Types.FlagState.Pending);
+                    GetComponent<PlayerFlags>().SetFlagState(Types.PlayerFlags.FullHop, Types.FlagState.Pending);
 
-                if (_jumpFramesHeld < 7 && GetComponent<PlayerFlags>().GetFlagState(Types.Flags.FullHop) !=
+                if (_jumpFramesHeld < 7 && GetComponent<PlayerFlags>().GetFlagState(Types.PlayerFlags.FullHop) !=
                     Types.FlagState.Pending)
                 {
-                    GetComponent<PlayerFlags>().SetFlagState(Types.Flags.FullHop, Types.FlagState.Resolved);
-                    GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ShortHop, Types.FlagState.Pending);
+                    GetComponent<PlayerFlags>().SetFlagState(Types.PlayerFlags.FullHop, Types.FlagState.Resolved);
+                    GetComponent<PlayerFlags>().SetFlagState(Types.PlayerFlags.ShortHop, Types.FlagState.Pending);
                 }
 
                 ++_jumpFramesHeld;
@@ -152,27 +155,26 @@ namespace PLAYER
                 var inputArray = _changedInputs.ToArray();
                 _lastInputSet = new P2PInputSet(inputArray, _realTimeAngle, P2PHandler.Instance.InputPacketsSent);
 
+                if (GameFlags.Instance.GetFlagState(Types.GameFlags.DelayDecreased) == Types.FlagState.Pending)
+                {
+                    GameFlags.Instance.SetFlagState(Types.GameFlags.DelayDecreased, Types.FlagState.Resolved);
+                    OnDelayDecreased();
+                }
+                
                 if (P2PHandler.Instance.Delay != 0)
                 {
-                    while (_delayedInputSets.Count >= P2PHandler.Instance.Delay)
+                    if (_delayedInputSets.Count == P2PHandler.Instance.Delay)
                     {
                         ApplyDelayedInputSet();
                     }
-                    Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, _realTimeAngle, true);
+                    Events.InputsChanged(GetComponent<NetworkIdentity>(), inputArray, _realTimeAngle, true);
                     _delayedInputSets.Add(_lastInputSet);
                 }
                 else
                 {
-                    if (_delayedInputSets.Count > 0)
-                    {
-                        while (_delayedInputSets.Count > 0)
-                        {
-                            ApplyDelayedInputSet();
-                        }
-                    }
                     _delayedInputSets.Add(_lastInputSet);
                     ApplyDelayedInputSet();
-                    Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, _realTimeAngle, true);
+                    Events.InputsChanged(GetComponent<NetworkIdentity>(), inputArray, _realTimeAngle, true);
                 }
                 
                 ArchivedInputSets.Add(_lastInputSet);
@@ -181,6 +183,14 @@ namespace PLAYER
             _changedInputs.Clear();
         }
 
+        private void OnDelayDecreased()
+        {
+            while (_delayedInputSets.Count > P2PHandler.Instance.Delay)
+            {
+                ApplyDelayedInputSet();
+            }
+        }
+        
         public void ApplyLastInputSet()
         {
             ArchivedInputSets.Add(_lastInputSet);
