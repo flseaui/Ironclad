@@ -64,36 +64,29 @@ namespace PLAYER
         private void Start()
         {
             _data.Direction = Types.Direction.Right;
-            var Position = PlayerDataPacket.PlayerLocation.Grounded;
+            _data.RelativeLocation = PlayerDataPacket.PlayerLocation.Grounded;
 
             PoolBoxes();
         }
-
+        
         private void ExecuteAction()
         {
-            // first frame of action
-            if (CurrentActionFrame == 0 || GetComponent<PlayerFlags>().GetFlagState(Types.PlayerFlags.ResetAction) ==
-                Types.FlagState.Pending)
+            void StartAction()
             {
-                // if we just reset
-                if (GetComponent<PlayerFlags>().GetFlagState(Types.PlayerFlags.ResetAction) == Types.FlagState.Pending)
-                {
-                    CurrentActionFrame = 0;
-                }
-
+                CurrentActionFrame = 0;
                 _currentAction = AssetManager.Instance.GetAction(Types.Character.TestCharacter, _data.CurrentAction);
                 _animator.SetInteger("CurrentAction", (int) _currentAction.Type);
                 OnActionBegin?.Invoke();
-
-                if (GetComponent<PlayerFlags>().GetFlagState(Types.PlayerFlags.ResetAction) == Types.FlagState.Pending)
-                    GetComponent<PlayerFlags>().SetFlagState(Types.PlayerFlags.ResetAction, Types.FlagState.Resolved);
             }
+
+            if(!GetComponent<PlayerFlags>().CheckFlag(Types.PlayerFlags.ResetAction, StartAction))
+                if (CurrentActionFrame == 0)
+                    StartAction();
 
             UpdateBoxes(CurrentActionFrame);
 
             UpdateSprite();
             ++CurrentActionFrame;
-
 
             // last frame of action
             if (CurrentActionFrame >= _currentAction.FrameCount - 1)

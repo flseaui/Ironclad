@@ -10,14 +10,12 @@ namespace PLAYER
     public class InputSender : MonoBehaviour
     {
         private bool[] _prevInputs;
-
-        public List<P2PInputSet> ArchivedInputSets;
-
-        [NonSerialized] protected int[] InputFramesHeld;
-
-        [NonSerialized] public bool[] Inputs;
-
+        
+        [NonSerialized] protected bool[] Inputs;  
         [NonSerialized] protected bool[] RealTimeInputs;
+        [NonSerialized] protected int[] InputFramesHeld;
+        
+        public List<P2PInputSet> ArchivedInputSets;
 
         protected PlayerData PlayerData { get; private set; }
 
@@ -85,6 +83,16 @@ namespace PLAYER
             Debug.Log($"Applied ({ArchivedInputSets[index].PacketNumber}) on ({P2PHandler.Instance.DataPacket.FrameCounter}) containing {temp}");
         }
 
+        public bool InputState(Types.Input input)
+        {
+            return Inputs[(int) input];
+        }
+
+        public int FramesHeld(Types.Input input)
+        {
+            return InputFramesHeld[(int) input];
+        }
+        
         // called after PrevInputs reset, before InputFramesHeld increased
         protected virtual void InputUpdate()
         {

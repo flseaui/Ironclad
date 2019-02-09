@@ -8,10 +8,6 @@ namespace PLAYER
 {
     public class UserInput : InputSender
     {
-        private List<InputChange> _changedInputs;
-
-        private int _jumpFramesHeld;
-
         private P2PInputSet _lastInputSet;
 
         private Player _player;
@@ -20,7 +16,6 @@ namespace PLAYER
         private void Start()
         {
             base.Awake();
-            _changedInputs = new List<InputChange>();
             _player = ReInput.players.GetPlayer(Id);
             _player.controllers.maps.SetMapsEnabled(false, "Menu");
             _player.controllers.maps.SetMapsEnabled(true, "Default");
@@ -68,26 +63,6 @@ namespace PLAYER
                     Inputs[(int) Types.Input.Down] = true;
                 else if (_player.GetAxis("Crouch") > GameSettings.Instance.upThreshold)
                     Inputs[(int) Types.Input.Up] = true;
-            }
-
-            if (Inputs[(int) Types.Input.Jump])
-            {
-                if (_jumpFramesHeld == 0 && GetComponent<PlayerFlags>().GetFlagState(Types.PlayerFlags.ShortHop) !=
-                    Types.FlagState.Pending)
-                    GetComponent<PlayerFlags>().SetFlagState(Types.PlayerFlags.FullHop, Types.FlagState.Pending);
-
-                if (_jumpFramesHeld < 7 && GetComponent<PlayerFlags>().GetFlagState(Types.PlayerFlags.FullHop) !=
-                    Types.FlagState.Pending)
-                {
-                    GetComponent<PlayerFlags>().SetFlagState(Types.PlayerFlags.FullHop, Types.FlagState.Resolved);
-                    GetComponent<PlayerFlags>().SetFlagState(Types.PlayerFlags.ShortHop, Types.FlagState.Pending);
-                }
-
-                ++_jumpFramesHeld;
-            }
-            else
-            {
-                _jumpFramesHeld = 0;
             }
 
             if (_player.GetButton("Hop"))

@@ -74,6 +74,7 @@ namespace NETWORKING
             // calculate averaged frame advantage 
             if (TimeManager.Instance.FramesLapsed % 100 == 0)
             {
+                Debug.Log($"[{_localFrameLag.lag}, {_localFrameLag.messages}], [{_remoteFrameLag.lag}, {_remoteFrameLag.messages}]");
                 var inputFrameAdvantage = Math.Max(0, _localFrameLag.lag / _localFrameLag.messages - _remoteFrameLag.lag / _remoteFrameLag.messages);
                 Delay = CalcInputLagFrames(Delay, _remoteFrameLag.lag / _remoteFrameLag.messages);
                 if (Delay > _previousDelay)
@@ -82,7 +83,7 @@ namespace NETWORKING
                 }
                 else if (Delay < _previousDelay)
                 {
-                    GameFlags.Instance.SetFlagState(Types.GameFlags.DelayDecreased, Types.FlagState.Pending);
+                    GameFlags.Instance.RaiseFlag(Types.GameFlags.DelayDecreased);
                 }
                 Debug.Log("Delay: " + Delay);
                 DispersedInputAdvantagePause(inputFrameAdvantage);

@@ -14,17 +14,24 @@ namespace PLAYER
         {
             _flags = new Dictionary<Types.PlayerFlags, Types.FlagState>();
             foreach (var flag in Enum.GetValues(typeof(Types.PlayerFlags)).Cast<Types.PlayerFlags>())
-                _flags.Add(flag, Types.FlagState.Inactive);
+                _flags.Add(flag, Types.FlagState.Resolved);
         }
 
-        public Types.FlagState GetFlagState(Types.PlayerFlags flag)
+        public bool CheckFlag(Types.PlayerFlags flag, Action action)
         {
-            return _flags[flag];
+            if (_flags[flag] == Types.FlagState.Pending)
+            {
+                _flags[flag] = Types.FlagState.Resolved;
+                action();
+                return true;
+            }
+
+            return false;
         }
 
-        public void SetFlagState(Types.PlayerFlags flag, Types.FlagState flagState)
+        public void RaiseFlag(Types.PlayerFlags flag)
         {
-            _flags[flag] = flagState;
+            _flags[flag] = Types.FlagState.Pending;
         }
     }
 }

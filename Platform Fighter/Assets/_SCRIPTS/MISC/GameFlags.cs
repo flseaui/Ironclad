@@ -17,17 +17,24 @@ namespace MISC
         {
             _flags = new Dictionary<Types.GameFlags, Types.FlagState>();
             foreach (var flag in Enum.GetValues(typeof(Types.GameFlags)).Cast<Types.GameFlags>())
-                _flags.Add(flag, Types.FlagState.Inactive);
+                _flags.Add(flag, Types.FlagState.Resolved);
         }
 
-        public Types.FlagState GetFlagState(Types.GameFlags flag)
+        public bool CheckFlag(Types.GameFlags flag, Action action)
         {
-            return _flags[flag];
+            if (_flags[flag] == Types.FlagState.Pending)
+            {
+                _flags[flag] = Types.FlagState.Resolved;
+                action();
+                return true;
+            }
+
+            return false;
         }
 
-        public void SetFlagState(Types.GameFlags flag, Types.FlagState flagState)
+        public void RaiseFlag(Types.GameFlags flag)
         {
-            _flags[flag] = flagState;
+            _flags[flag] = Types.FlagState.Pending;
         }
     }
 }

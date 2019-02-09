@@ -17,8 +17,6 @@ namespace PLAYER
         [SerializeField]
         private List<P2PInputSet> _delayedInputSets;
 
-        private int _jumpFramesHeld;
-
         private P2PInputSet _lastInputSet;
 
         private Vector2 _realTimeAngle;
@@ -63,26 +61,6 @@ namespace PLAYER
             PlayerData.DataPacket.MovementStickAngle = _delayedInputSets.First().Angle;
             foreach (var input in _delayedInputSets.First().Inputs) Inputs[(int) input.InputType] = input.State;
             _delayedInputSets.RemoveAt(0);
-
-            if (Inputs[(int) Types.Input.Jump])
-            {
-                if (_jumpFramesHeld == 0 && GetComponent<PlayerFlags>().GetFlagState(Types.PlayerFlags.ShortHop) !=
-                    Types.FlagState.Pending)
-                    GetComponent<PlayerFlags>().SetFlagState(Types.PlayerFlags.FullHop, Types.FlagState.Pending);
-
-                if (_jumpFramesHeld < 7 && GetComponent<PlayerFlags>().GetFlagState(Types.PlayerFlags.FullHop) !=
-                    Types.FlagState.Pending)
-                {
-                    GetComponent<PlayerFlags>().SetFlagState(Types.PlayerFlags.FullHop, Types.FlagState.Resolved);
-                    GetComponent<PlayerFlags>().SetFlagState(Types.PlayerFlags.ShortHop, Types.FlagState.Pending);
-                }
-
-                ++_jumpFramesHeld;
-            }
-            else
-            {
-                _jumpFramesHeld = 0;
-            }
         }
 
         private void UpdatePlayerInput()
@@ -155,11 +133,7 @@ namespace PLAYER
                 var inputArray = _changedInputs.ToArray();
                 _lastInputSet = new P2PInputSet(inputArray, _realTimeAngle, P2PHandler.Instance.InputPacketsSent);
 
-                if (GameFlags.Instance.GetFlagState(Types.GameFlags.DelayDecreased) == Types.FlagState.Pending)
-                {
-                    GameFlags.Instance.SetFlagState(Types.GameFlags.DelayDecreased, Types.FlagState.Resolved);
-                    OnDelayDecreased();
-                }
+                GameFlags.Instance.CheckFlag(Types.GameFlags.DelayDecreased, OnDelayDecreased);
                 
                 if (P2PHandler.Instance.Delay != 0)
                 {
