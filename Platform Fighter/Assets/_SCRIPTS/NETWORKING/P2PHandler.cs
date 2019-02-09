@@ -64,8 +64,15 @@ namespace NETWORKING
         public void StartGame()
         {
             GameStarted = true;
+            CalculateInitialDelay();
         }
 
+        private void CalculateInitialDelay()
+        {
+            _previousDelay = 2;
+            Delay = 2;
+        }
+        
         private void Update()
         {
             if (!AllPlayersReady || !GameStarted)
@@ -76,7 +83,7 @@ namespace NETWORKING
             {
                 Debug.Log($"[{_localFrameLag.lag}, {_localFrameLag.messages}], [{_remoteFrameLag.lag}, {_remoteFrameLag.messages}]");
                 var inputFrameAdvantage = Math.Max(0, _localFrameLag.lag / _localFrameLag.messages - _remoteFrameLag.lag / _remoteFrameLag.messages);
-                Delay = CalcInputLagFrames(Delay, _remoteFrameLag.lag / _remoteFrameLag.messages);
+                Delay = 2;//CalcInputLagFrames(Delay, _remoteFrameLag.lag / _remoteFrameLag.messages);
                 if (Delay > _previousDelay)
                 {
                    TimeManager.Instance.PauseForFrames(Delay - _previousDelay, Types.PauseType.FixedUpdate);
