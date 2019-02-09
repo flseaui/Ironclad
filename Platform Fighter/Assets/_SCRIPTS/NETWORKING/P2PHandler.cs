@@ -33,10 +33,15 @@ namespace NETWORKING
         [NonSerialized] public bool GameStarted;
         [NonSerialized] public bool AllPlayersReady;
 
+        [SerializeField] private GameObject _networkStarvationSpinnerPrefab;
+
+        private GameObject _networkStarvationSpinner;
+        
         private int _playersJoined = 1;
         private int _previousDelay;
         private int _framesToStall;
         private int _frameStallTimer;
+        private int _lastPacketFrame;
         
         private float _lastPingTime = -1;    
         
@@ -45,7 +50,8 @@ namespace NETWORKING
         
         private bool _started;
         private bool _initialSave;
-
+        private bool _networkStarvation;
+        
         public int Delay;
         
         protected override void OnAwake()
@@ -104,6 +110,22 @@ namespace NETWORKING
             if (!AllPlayersReady || !GameStarted)
                 return;
 
+            if (DataPacket.FrameCounter - _lastPacketFrame > 20)
+            {
+                if (!_networkStarvation)
+                {
+                    _networkStarvation = true;
+                    TimeManager.Instance.PauseToggle(Types.PauseType.FixedUpdate, true);
+                    _networkStarvationSpinner = Instantiate(_networkStarvationSpinnerPrefab, GameObject.Find("Canvas").transform);
+                }
+            }
+            else if (_networkStarvation)
+            {
+                Destroy(_networkStarvationSpinner);
+                TimeManager.Instance.PauseToggle(Types.PauseType.FixedUpdate, false);
+                _networkStarvation = false;
+            }
+            
             if (_framesToStall > 0)
             {
                 --_frameStallTimer;
@@ -223,6 +245,8 @@ namespace NETWORKING
             // deserialize the message
             var serializedMessage = JsonUtility.FromJson<P2PMessage>(str);
 
+            _lastPacketFrame = DataPacket.FrameCounter;
+            
             ParseP2PMessage(sender, serializedMessage);
         }
 

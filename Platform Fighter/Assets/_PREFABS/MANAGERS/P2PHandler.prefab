@@ -46,4 +46,6 @@ MonoBehaviour:
   _persistent: 1
   DataPacket:
     FrameCounter: 0
-    FrameCounterLoops: 0
+  _networkStarvationSpinnerPrefab: {fileID: 2268856500445769646, guid: fbac10ec2088e39ec8b5d23d4e646ef5,
+    type: 3}
+  Delay: 0
