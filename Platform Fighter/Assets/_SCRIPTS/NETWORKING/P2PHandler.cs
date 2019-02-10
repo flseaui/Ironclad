@@ -14,41 +14,45 @@ namespace NETWORKING
     public class P2PHandlerPacket
     {
         public int FrameCounter = 0;
-        public int FrameCounterLoops = 0;
 
         public void Initialize()
         {
             FrameCounter = 0;
-            FrameCounterLoops = 0;
         }
     }
 
     public class P2PHandler : SettableSingleton<P2PHandler>
     {
         public P2PHandlerPacket DataPacket;
-       
-        [NonSerialized] public int InputPacketsProcessed;
+
         [NonSerialized] public int InputPacketsReceived;
         [NonSerialized] public int InputPacketsSent;
-        [NonSerialized] public int InputPacketsSentLoops;
         [NonSerialized] public int Ping;
         
         [NonSerialized] public bool ReceivedFirstInput;
         [NonSerialized] public bool GameStarted;
         [NonSerialized] public bool AllPlayersReady;
 
+        [SerializeField] private GameObject _networkStarvationSpinnerPrefab;
+
+        private GameObject _networkStarvationSpinner;
+        
         private int _playersJoined = 1;
         private int _previousDelay;
-        private int _lastPingTime = -1;     
-        private int _remoteFrameLag;
-        private int _localFrameLag;
         private int _framesToStall;
         private int _frameStallTimer;
+        private int _lastPacketFrame;
+        
+        private float _lastPingTime = -1;    
+        
+        private (int messages, int lag) _remoteFrameLag;
+        private (int messages, int lag) _localFrameLag;
         
         private bool _started;
         private bool _initialSave;
+        private bool _networkStarvation;
         
-        public int Delay => Ping / 100;
+        public int Delay;
         
         protected override void OnAwake()
         {
@@ -58,24 +62,70 @@ namespace NETWORKING
         
         private void Start()
         {
-            Events.OnPingSent += SendP2PPing;
-            Events.OnInputsChanged += SendP2PInputSet;
-            Events.OnGameStarted += SendP2PGameStart;
+            Events.InputsChanged += SendP2PInputSet;
+            Events.GameStarted += SendP2PGameStart;
             SubscribeToP2PEvents();
         }
         
         public void StartGame()
         {
             GameStarted = true;
+            CalculateInitialDelay();
         }
 
+        private void CalculateInitialDelay()
+        {
+            _previousDelay = 2;
+            Delay = 2;
+        }
+        
+        private void Update()
+        {
+            if (!AllPlayersReady || !GameStarted)
+                return;
+            
+            // calculate averaged frame advantage 
+            if (TimeManager.Instance.FramesLapsed % 100 == 0)
+            {
+                Debug.Log($"[{_localFrameLag.lag}, {_localFrameLag.messages}], [{_remoteFrameLag.lag}, {_remoteFrameLag.messages}]");
+                var inputFrameAdvantage = Math.Max(0, _localFrameLag.lag / _localFrameLag.messages - _remoteFrameLag.lag / _remoteFrameLag.messages);
+                Delay = 2;//CalcInputLagFrames(Delay, _remoteFrameLag.lag / _remoteFrameLag.messages);
+                if (Delay > _previousDelay)
+                {
+                   TimeManager.Instance.PauseForFrames(Delay - _previousDelay, Types.PauseType.FixedUpdate);
+                }
+                else if (Delay < _previousDelay)
+                {
+                    GameFlags.Instance.RaiseFlag(Types.GameFlags.DelayDecreased);
+                }
+                Debug.Log("Delay: " + Delay);
+                DispersedInputAdvantagePause(inputFrameAdvantage);
+                _localFrameLag = (0, 0);
+                _remoteFrameLag = (0, 0);
+            }
+        }
+        
         private void FixedUpdate()
         {
-            if (TimeManager.Instance.FixedUpdatePaused)
-                return;
-            if (!AllPlayersReady)
+            if (!AllPlayersReady || !GameStarted)
                 return;
 
+            if (DataPacket.FrameCounter - _lastPacketFrame > 20)
+            {
+                if (!_networkStarvation)
+                {
+                    _networkStarvation = true;
+                    TimeManager.Instance.PauseToggle(Types.PauseType.FixedUpdate, true);
+                    _networkStarvationSpinner = Instantiate(_networkStarvationSpinnerPrefab, GameObject.Find("Canvas").transform);
+                }
+            }
+            else if (_networkStarvation)
+            {
+                Destroy(_networkStarvationSpinner);
+                TimeManager.Instance.PauseToggle(Types.PauseType.FixedUpdate, false);
+                _networkStarvation = false;
+            }
+            
             if (_framesToStall > 0)
             {
                 --_frameStallTimer;
@@ -85,14 +135,7 @@ namespace NETWORKING
                 }
             }
 
-            // calculate averaged frame advantage 
-            if (TimeManager.Instance.FramesLapsed % 100 == 0)
-            {
-                var inputFrameAdvantage = _localFrameLag / 100f - _remoteFrameLag / 100f;
-                DispersedInputAdvantagePause(inputFrameAdvantage);
-                _localFrameLag = 0;
-                _remoteFrameLag = 0;
-            }
+            if (TimeManager.Instance.FixedUpdatePaused) return;
             
             IncrementFrameCounter();
 
@@ -109,26 +152,32 @@ namespace NETWORKING
 
         public void BeginTesting()
         {
-            InvokeRepeating(nameof(SendPing), 0, 2);
+            InvokeRepeating(nameof(SendPing), 0, 1);
         }
         
         private void DispersedInputAdvantagePause(float inputFrameAdvantage)
         {
             var simulationFrameAdvantage = .5f * inputFrameAdvantage;
 
+            Debug.Log($"simFrameAdv: {simulationFrameAdvantage}");
+            
             _framesToStall = 0;
             if (simulationFrameAdvantage >= .75f)
             {
                 _framesToStall += Math.Max(1, (int)(simulationFrameAdvantage + .5f));
             }
 
+            Debug.Log($"framesToStall: {_framesToStall}");
+            
             _frameStallTimer = CalculateStallCadence(_framesToStall);
         }
 
         private void StallFrame()
         {
+            Debug.Log("STALLLLLLLLLLLLL!!!!!!!!!!!!! on " + DataPacket.FrameCounter);
             TimeManager.Instance.PauseForFrames(1, Types.PauseType.FixedUpdate);
 
+            --_framesToStall;
             _frameStallTimer = CalculateStallCadence(_framesToStall);
         }
 
@@ -149,9 +198,34 @@ namespace NETWORKING
             }
         }
         
+        private static int CalcInputLagFrames(int curInputLagFrames, int worstPeerFrameLag)
+        {
+            var newInputLagFrames = curInputLagFrames;
+        
+            // increase lag
+            if (curInputLagFrames <= 0 && worstPeerFrameLag >= 2.0f) newInputLagFrames = 1;
+            if (curInputLagFrames <= 1 && worstPeerFrameLag >= 3.0f) newInputLagFrames = 2;
+            if (curInputLagFrames <= 2 && worstPeerFrameLag >= 6.0f) newInputLagFrames = 3;
+            if (curInputLagFrames <= 3 && worstPeerFrameLag >= 8.0f) newInputLagFrames = 4;
+        
+            // reduce lag
+            if (curInputLagFrames >= 4 && worstPeerFrameLag <= 7.0f) newInputLagFrames = 3;
+            if (curInputLagFrames >= 3 && worstPeerFrameLag <= 5.0f) newInputLagFrames = 2;
+            if (curInputLagFrames >= 2 && worstPeerFrameLag <= 2.0f) newInputLagFrames = 1;
+            if (curInputLagFrames >= 1 && worstPeerFrameLag <= 1.0f) newInputLagFrames = 0;
+        
+            return newInputLagFrames;
+        }
+        
         public void SendPing()
         {
-            Events.OnPingSent?.Invoke((int) (Time.unscaledTime * 1000));
+            SendP2PPing((int) TimeManager.Instance.GameTime * 100, true);
+            _lastPingTime = TimeManager.Instance.GameTime;
+        }
+       
+        public void SendPong()
+        {
+            SendP2PPing((int) TimeManager.Instance.GameTime * 100, false);
         }
         
         private void OnConnectionFailed(ulong steamid, Networking.SessionError error)
@@ -171,13 +245,15 @@ namespace NETWORKING
             // deserialize the message
             var serializedMessage = JsonUtility.FromJson<P2PMessage>(str);
 
+            _lastPacketFrame = DataPacket.FrameCounter;
+            
             ParseP2PMessage(sender, serializedMessage);
         }
 
-        private void SendP2PPing(int sentTime)
+        private void SendP2PPing(int sentTime, bool pingOrPong)
         {
             var body = new P2PPing(sentTime);
-            var message = new P2PMessage(Client.Instance.SteamId, P2PMessageKey.Ping, body.Serialize());
+            var message = new P2PMessage(Client.Instance.SteamId, pingOrPong ? P2PMessageKey.Ping : P2PMessageKey.Pong, body.Serialize());
 
             SendP2PMessage(message);
         }
@@ -195,18 +271,15 @@ namespace NETWORKING
         {
             if (!sendNetworkAction) return;
 
-            var body = new P2PInputSet(inputs, angle, InputPacketsSent, InputPacketsSentLoops);
+            var body = new P2PInputSet(inputs, angle, InputPacketsSent);
             var message = new P2PMessage(networkIdentity.SteamId, P2PMessageKey.InputSet, body.Serialize());
 
             SendP2PMessage(message);
 
-            _localFrameLag = InputPacketsReceived - (InputPacketsSent < 250 && InputPacketsReceived > 450
-                                 ? InputPacketsSent + 600
-                                 : InputPacketsSent) + Delay;
-
-            if (InputPacketsSent == 599)
-                InputPacketsSentLoops = ++InputPacketsSentLoops % 600;
-            InputPacketsSent = ++InputPacketsSent % 600;
+            _localFrameLag.lag += InputPacketsSent - InputPacketsReceived;
+            ++_localFrameLag.messages;
+            
+            InputPacketsSent = ++InputPacketsSent;
         }
 
         public void SendP2PMessage(P2PMessage message)
@@ -243,15 +316,12 @@ namespace NETWORKING
                     var player = MatchStateManager.Instance.GetPlayerBySteamId(msg.SteamId);
                     var inputSet = JsonUtility.FromJson<P2PInputSet>(msg.Body);
 
-                    InputPacketsReceived = ++InputPacketsReceived % 600;
+                    InputPacketsReceived = ++InputPacketsReceived;
 
                     ReceivedFirstInput = true;
-
-                    Debug.Log("sender: " + senderID);
                     
-                    _remoteFrameLag = InputPacketsSent - (InputPacketsReceived < 250 && InputPacketsSent > 450
-                                         ? InputPacketsReceived + 600
-                                         : InputPacketsReceived) + Delay;
+                    _remoteFrameLag.lag += InputPacketsReceived - InputPacketsSent + Delay;
+                    ++_remoteFrameLag.messages;
                     
                     player.GetComponent<NetworkInput>().GiveInputs(inputSet);
                     break;
@@ -263,47 +333,29 @@ namespace NETWORKING
                     break;
                 case P2PMessageKey.Ping:
                     var pingMessage = JsonUtility.FromJson<P2PPing>(msg.Body);
-
-                    if (_lastPingTime == -1)
-                    {
-                        _lastPingTime = pingMessage.SentTime;
-                        return;
-                    }
-
-                    var ping = pingMessage.SentTime - _lastPingTime - 2000;
                     
-                    _lastPingTime = pingMessage.SentTime;
+                    SendPong();                  
+                    break;
+                case P2PMessageKey.Pong:
+                    var ping = TimeManager.Instance.GameTime - _lastPingTime;
+                    Ping = Mathf.CeilToInt(ping * 100);
                     
-                    Ping = ping;
-                    Debug.Log("delay: " + Delay);
-                    Events.OnPingCalculated?.Invoke(ping, senderID);
+                    Debug.Log("Ping: " + Ping);
+
+                    Events.PingCalculated?.Invoke(Ping, senderID);
                     break;
             }
         }
-
-        public void OnInputPacketsProcessed()
-        {
-            InputPacketsProcessed = ++InputPacketsProcessed % 600;
-        }
-
+                   
         public void IncrementFrameCounter()
         {
             if (!_initialSave)
             {
-                RollbackManager.Instance.SaveGameState(0);
-            }
-            
-            var prevFrameCount = DataPacket.FrameCounter;
-            DataPacket.FrameCounter += 1 + (_previousDelay - Delay);
-            DataPacket.FrameCounter %= 600;
-            if (DataPacket.FrameCounter < prevFrameCount)
-                DataPacket.FrameCounterLoops = ++DataPacket.FrameCounterLoops % 600;
-            
-            if (!_initialSave)
-            {
+                RollbackManager.Instance.SaveGameState(0, true);
                 _initialSave = true;
-                DataPacket.FrameCounterLoops = 0;
             }
+
+            DataPacket.FrameCounter += 1;
         }
         
         public override void SetData(object newData)
@@ -311,7 +363,6 @@ namespace NETWORKING
             var data = (P2PHandlerPacket) newData;
 
             DataPacket.FrameCounter = data.FrameCounter;
-            DataPacket.FrameCounterLoops = data.FrameCounterLoops;
         }
     }
 }

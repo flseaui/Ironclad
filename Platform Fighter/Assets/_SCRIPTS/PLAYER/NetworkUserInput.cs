@@ -14,9 +14,8 @@ namespace PLAYER
     {
         private List<InputChange> _changedInputs;
 
+        [SerializeField]
         private List<P2PInputSet> _delayedInputSets;
-
-        private int _jumpFramesHeld;
 
         private P2PInputSet _lastInputSet;
 
@@ -25,19 +24,22 @@ namespace PLAYER
         private Player _player;
         public int Id { get; set; }
 
-        private void Start()
+        protected override void Awake()
         {
             base.Awake();
             _changedInputs = new List<InputChange>();
             _delayedInputSets = new List<P2PInputSet>();
             _player = ReInput.players.GetPlayer(Id);
+        }
 
+        private void Start()
+        {
             _player.controllers.maps.SetMapsEnabled(false, "Menu");
             _player.controllers.maps.SetMapsEnabled(true, "Default");
 
-            Events.OnGameStarted?.Invoke(GetComponent<NetworkIdentity>());
+            Events.GameStarted?.Invoke(GetComponent<NetworkIdentity>());
         }
-
+        
         protected override void PressEvent(int index)
         {
             _changedInputs.Add(new InputChange((Types.Input) index, RealTimeInputs[index]));
@@ -51,34 +53,17 @@ namespace PLAYER
 
         protected override void InputUpdate()
         {
+            if (!P2PHandler.Instance.AllPlayersReady)
+                return;
+            
             UpdatePlayerInput();
         }
 
-        private void ApplyDelayedInputSets()
+        private void ApplyDelayedInputSet()
         {
             PlayerData.DataPacket.MovementStickAngle = _delayedInputSets.First().Angle;
             foreach (var input in _delayedInputSets.First().Inputs) Inputs[(int) input.InputType] = input.State;
             _delayedInputSets.RemoveAt(0);
-
-            if (Inputs[(int) Types.Input.Jump])
-            {
-                if (_jumpFramesHeld == 0 && GetComponent<PlayerFlags>().GetFlagState(Types.Flags.ShortHop) !=
-                    Types.FlagState.Pending)
-                    GetComponent<PlayerFlags>().SetFlagState(Types.Flags.FullHop, Types.FlagState.Pending);
-
-                if (_jumpFramesHeld < 7 && GetComponent<PlayerFlags>().GetFlagState(Types.Flags.FullHop) !=
-                    Types.FlagState.Pending)
-                {
-                    GetComponent<PlayerFlags>().SetFlagState(Types.Flags.FullHop, Types.FlagState.Resolved);
-                    GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ShortHop, Types.FlagState.Pending);
-                }
-
-                ++_jumpFramesHeld;
-            }
-            else
-            {
-                _jumpFramesHeld = 0;
-            }
         }
 
         private void UpdatePlayerInput()
@@ -149,22 +134,24 @@ namespace PLAYER
             if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer && P2PHandler.Instance.AllPlayersReady)
             {
                 var inputArray = _changedInputs.ToArray();
-                _lastInputSet = new P2PInputSet(inputArray, _realTimeAngle, P2PHandler.Instance.InputPacketsSent, P2PHandler.Instance.InputPacketsSentLoops);
+                _lastInputSet = new P2PInputSet(inputArray, _realTimeAngle, P2PHandler.Instance.InputPacketsSent);
 
+                GameFlags.Instance.CheckFlag(Types.GameFlags.DelayDecreased, OnDelayDecreased);
+                
                 if (P2PHandler.Instance.Delay != 0)
                 {
                     if (_delayedInputSets.Count == P2PHandler.Instance.Delay)
                     {
-                        ApplyDelayedInputSets();
+                        ApplyDelayedInputSet();
                     }
-                    Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, _realTimeAngle, true);
+                    Events.InputsChanged(GetComponent<NetworkIdentity>(), inputArray, _realTimeAngle, true);
                     _delayedInputSets.Add(_lastInputSet);
                 }
                 else
                 {
                     _delayedInputSets.Add(_lastInputSet);
-                    ApplyDelayedInputSets();
-                    Events.OnInputsChanged(GetComponent<NetworkIdentity>(), inputArray, _realTimeAngle, true);
+                    ApplyDelayedInputSet();
+                    Events.InputsChanged(GetComponent<NetworkIdentity>(), inputArray, _realTimeAngle, true);
                 }
                 
                 ArchivedInputSets.Add(_lastInputSet);
@@ -173,6 +160,14 @@ namespace PLAYER
             _changedInputs.Clear();
         }
 
+        private void OnDelayDecreased()
+        {
+            while (_delayedInputSets.Count > P2PHandler.Instance.Delay)
+            {
+                ApplyDelayedInputSet();
+            }
+        }
+        
         public void ApplyLastInputSet()
         {
             ArchivedInputSets.Add(_lastInputSet);

@@ -7,6 +7,7 @@ using MISC;
 using NETWORKING;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Types = DATA.Types;
 
 namespace MENU
@@ -17,6 +18,7 @@ namespace MENU
         [SerializeField] private PlayerProfilePanel _playerProfilerPanel;
         
         [SerializeField] private GameObject _p2pHandlerPrefab;
+        [SerializeField] private Button _readyButton;
         
         [SerializeField] private int _playerReady;
         
@@ -39,9 +41,15 @@ namespace MENU
             }
 
             GameManager.Instance.MatchType = Types.MatchType.OnlineMultiplayer;
-            Events.OnPingCalculated += _playerProfilerPanel.SetPlayerProfilePing;
+            Events.PingCalculated += UnlockReadyButton;
+            Events.PingCalculated += _playerProfilerPanel.SetPlayerProfilePing;
         }
-        
+
+        private void UnlockReadyButton(int ping, ulong id)
+        {
+            _readyButton.interactable = true;
+        }
+
         private void OnCreated(bool success)
         {
             if (!success) return;
@@ -115,7 +123,7 @@ namespace MENU
                             tempCharacterArray.Add(
                                 CharacterStringToId(Client.Instance.Lobby.GetMemberData(id, "character")));
 
-                        Events.OnPingCalculated -= _playerProfilerPanel.SetPlayerProfilePing;
+                        Events.PingCalculated -= _playerProfilerPanel.SetPlayerProfilePing;
                         GameManager.Instance.Characters = tempCharacterArray.ToArray();
 
                         MenuManager.Instance.MenuState = Types.Menu.GameStartMenu;

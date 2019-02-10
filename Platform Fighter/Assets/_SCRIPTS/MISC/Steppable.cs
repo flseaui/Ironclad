@@ -1,7 +1,9 @@
 using System.Reflection;
 using ATTRIBUTES;
+using MANAGERS;
 using NETWORKING;
 using UnityEngine;
+using Types = DATA.Types;
 
 namespace MISC
 {
@@ -21,7 +23,8 @@ namespace MISC
 
         private void Awake()
         {
-            RollbackManager.Instance.AddSteppable(this, GetType().GetCustomAttribute<StepOrderAttribute>()?.StepOrder ?? 999);
+            if (GameManager.Instance.MatchType == Types.MatchType.OnlineMultiplayer)
+                RollbackManager.Instance.AddSteppable(this, GetType().GetCustomAttribute<StepOrderAttribute>()?.StepOrder ?? 999);
             LateAwake();
         }
 

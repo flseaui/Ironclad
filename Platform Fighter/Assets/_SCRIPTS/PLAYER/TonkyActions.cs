@@ -1,4 +1,7 @@
 using DATA;
+using static DATA.Types.Input;
+using static DATA.Types.Direction;
+using static DATA.Types.ActionType;
 
 namespace PLAYER
 {
@@ -14,82 +17,79 @@ namespace PLAYER
 
         protected override Types.ActionType GetCurrentAction()
         {
-            //Debug.Log($"Right is {Input.Inputs[(int) Types.Input.LightRight]} on {P2PHandler.Instance.InputPacketsSent}");
             var inputRight =
-                Input.Inputs[(int) Types.Input.LightRight] || Input.Inputs[(int) Types.Input.StrongRight] ? true :
-                Input.Inputs[(int) Types.Input.LightLeft] || Input.Inputs[(int) Types.Input.StrongLeft] ? false :
-                Data
-                    .Direction ==
-                Types.Direction
-                    .Right;
+                Input.InputState(LightRight) ||
+                Input.InputState(StrongRight) ||
+                !Input.InputState(LightLeft) &&
+                !Input.InputState(StrongLeft) &&
+                Data.Direction == Right;
 
             //If on the Ground
-
             if (Data.RelativeLocation == PlayerDataPacket.PlayerLocation.Grounded)
             {
-                if (Input.Inputs[(int) Types.Input.Jump])
+                if (Input.InputState(Types.Input.Jump))
                 {
-                    Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
+                    Data.Direction = inputRight ? Right : Left;
                     return Types.ActionType.Jump;
                 }
 
-                if (Input.Inputs[(int) Types.Input.Neutral])
+                if (Input.InputState(Neutral))
                 {
-                    if (Input.Inputs[(int) Types.Input.Up]) return Types.ActionType.Utilt;
-                    if (Input.Inputs[(int) Types.Input.Down]) return Types.ActionType.Dtilt;
+                    if (Input.InputState(Up)) return Utilt;
+                    if (Input.InputState(Down)) return Dtilt;
 
-                    if (Input.Inputs[(int) Types.Input.LightRight] || Input.Inputs[(int) Types.Input.StrongRight] ||
-                        Input.Inputs[(int) Types.Input.LightLeft] || Input.Inputs[(int) Types.Input.StrongLeft])
+                    if (Input.InputState(LightRight) || Input.InputState(StrongRight) ||
+                        Input.InputState(LightLeft) || Input.InputState(StrongLeft))
                     {
-                        Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
-                        return Types.ActionType.Ftilt;
+                        Data.Direction = inputRight ? Right : Left;
+                        return Ftilt;
                     }
 
-                    return Types.ActionType.Jab;
+                    return Jab;
                 }
 
-                if (Input.Inputs[(int) Types.Input.Strong])
+                if (Input.InputState(Strong))
                 {
-                    if (Input.Inputs[(int) Types.Input.Up]) return Types.ActionType.Ustrong;
-                    if (Input.Inputs[(int) Types.Input.Down]) return Types.ActionType.Dstrong;
+                    if (Input.InputState(Up)) return Ustrong;
+                    if (Input.InputState(Down)) return Dstrong;
 
-                    if (Input.Inputs[(int) Types.Input.LightRight] || Input.Inputs[(int) Types.Input.StrongRight] ||
-                        Input.Inputs[(int) Types.Input.LightLeft] || Input.Inputs[(int) Types.Input.StrongLeft])
+                    if (Input.InputState(LightRight) || Input.InputState(StrongRight) ||
+                        Input.InputState(LightLeft) || Input.InputState(StrongLeft))
                     {
-                        Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
-                        return Types.ActionType.Fstrong;
+                        Data.Direction = inputRight ? Right : Left;
+                        return Fstrong;
                     }
 
-                    return Types.ActionType.Nstrong;
+                    return Nstrong;
                 }
 
-                if (Input.Inputs[(int) Types.Input.Special])
+                if (Input.InputState(Special))
                 {
-                    if (Input.Inputs[(int) Types.Input.Up]) return Types.ActionType.Uspecial;
-                    if (Input.Inputs[(int) Types.Input.Down]) return Types.ActionType.Dspecial;
+                    if (Input.InputState(Up)) return Uspecial;
+                    if (Input.InputState(Down)) return Dspecial;
 
-                    if (Input.Inputs[(int) Types.Input.LightRight] || Input.Inputs[(int) Types.Input.StrongRight] ||
-                        Input.Inputs[(int) Types.Input.LightLeft] || Input.Inputs[(int) Types.Input.StrongLeft])
+                    if (Input.InputState(LightRight) || Input.InputState(StrongRight) ||
+                        Input.InputState(LightLeft) || Input.InputState(StrongLeft))
                     {
-                        Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
-                        return Types.ActionType.Fstrong;
+                        Data.Direction = inputRight ? Right : Left;
+                        return Fstrong;
                     }
 
-                    return Types.ActionType.Nstrong;
+                    return Nstrong;
                 }
 
-                if (Input.Inputs[(int) Types.Input.LightRight] || Input.Inputs[(int) Types.Input.LightLeft])
+                if (Input.InputState(LightRight) || Input.InputState(LightLeft))
                 {
-                    if (Data.Direction == (inputRight ? Types.Direction.Right : Types.Direction.Left))
-                        return Types.ActionType.Walk;
+                    if (Data.Direction == (inputRight ? Right : Left))
+                        return Walk;
 
-                    Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
+                    Data.Direction = inputRight ? Right : Left;
 
                     //return Types.ActionType.Turn;
                 }
 
                 /*
-                if (Input.Inputs[(int) Types.Input.StrongRight] || Input.Inputs[(int) Types.Input.StrongLeft])
+                if (Input.InputState(Types.Input.StrongRight) || Input.InputState(Types.Input.StrongLeft))
                 {
                     if (Data.Direction == (inputRight ? Types.Direction.Right : Types.Direction.Left)) return Types.ActionType.Run;
 
@@ -97,60 +97,49 @@ namespace PLAYER
                     return Types.ActionType.Turn;
                 } 
                 */
-                return Types.ActionType.Idle;
+                return Idle;
             }
             // if in the air
 
-            Data.Direction = inputRight ? Types.Direction.Right : Types.Direction.Left;
+            Data.Direction = inputRight ? Right : Left;
 
-            if (Input.Inputs[(int) Types.Input.Neutral])
+            if (Input.InputState(Neutral))
             {
-                if (Input.Inputs[(int) Types.Input.Up]) return Types.ActionType.Uair;
-                if (Input.Inputs[(int) Types.Input.Down]) return Types.ActionType.Dair;
+                if (Input.InputState(Up)) return Uair;
+                if (Input.InputState(Down)) return Dair;
 
-                if (Input.Inputs[(int) Types.Input.LightRight] || Input.Inputs[(int) Types.Input.StrongRight] ||
-                    Input.Inputs[(int) Types.Input.LightLeft] || Input.Inputs[(int) Types.Input.StrongLeft])
-                    return Types.ActionType.Fair;
-                return Types.ActionType.Nair;
+                if (Input.InputState(LightRight) || Input.InputState(StrongRight) ||
+                    Input.InputState(LightLeft) || Input.InputState(StrongLeft))
+                    return Fair;
+                return Nair;
             }
 
-            if (Input.Inputs[(int) Types.Input.Special])
+            if (Input.InputState(Special))
             {
-                if (Input.Inputs[(int) Types.Input.Up]) return Types.ActionType.Uspecial;
-                if (Input.Inputs[(int) Types.Input.Down]) return Types.ActionType.Dspecial;
+                if (Input.InputState(Up)) return Uspecial;
+                if (Input.InputState(Down)) return Dspecial;
 
-                if (Input.Inputs[(int) Types.Input.LightRight] || Input.Inputs[(int) Types.Input.StrongRight] ||
-                    Input.Inputs[(int) Types.Input.LightLeft] || Input.Inputs[(int) Types.Input.StrongLeft])
-                    return Types.ActionType.Fstrong;
-                return Types.ActionType.Nstrong;
+                if (Input.InputState(LightRight) || Input.InputState(StrongRight) ||
+                    Input.InputState(LightLeft) || Input.InputState(StrongLeft))
+                    return Fstrong;
+                return Nstrong;
             }
 
             if (Data.CurrentAction == Types.ActionType.Jump)
-            {
+            {                
                 if (CurrentActionFrame < 7)
                     return Types.ActionType.Jump;
-                if (CurrentActionFrame > 7)
-                {
-                    if (GetComponent<PlayerFlags>().GetFlagState(Types.Flags.FullHop) == Types.FlagState.Pending)
-                    {
-                        GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ResetAction, Types.FlagState.Pending);
-                        return Types.ActionType.Jump;
-                    }
-
-                    if (Data.CurrentVelocity.y >= 0)
-                        return Types.ActionType.Jump;
-
-                    return Types.ActionType.Fall;
-                }
-                //Frame 7
-
-                if (GetComponent<PlayerFlags>().GetFlagState(Types.Flags.FullHop) == Types.FlagState.Pending)
+                
+                if (Data.CurrentVelocity.y >= 0)
+                    return Types.ActionType.Jump;
+             
+                if (Input.InputState(Types.Input.Jump))
                     return Types.ActionType.Jump;
 
-                return Types.ActionType.Fall;
+                return Fall;
             }
 
-            return Types.ActionType.Fall;
+            return Fall;
         }
     }
 }

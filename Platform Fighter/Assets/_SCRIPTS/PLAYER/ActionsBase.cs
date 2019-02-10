@@ -24,7 +24,7 @@ namespace PLAYER
             
             var newAction = GetCurrentAction();
             if (Data.CurrentAction != newAction)
-                GetComponent<PlayerFlags>().SetFlagState(Types.Flags.ResetAction, Types.FlagState.Pending);
+                GetComponent<PlayerFlags>().RaiseFlag(Types.PlayerFlags.ResetAction);
 
             Data.CurrentAction = newAction;
         }

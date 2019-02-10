@@ -10,14 +10,12 @@ namespace PLAYER
     public class InputSender : MonoBehaviour
     {
         private bool[] _prevInputs;
-
-        public List<P2PInputSet> ArchivedInputSets;
-
-        [NonSerialized] protected int[] InputFramesHeld;
-
-        [NonSerialized] public bool[] Inputs;
-
+        
+        [NonSerialized] protected bool[] Inputs;  
         [NonSerialized] protected bool[] RealTimeInputs;
+        [NonSerialized] protected int[] InputFramesHeld;
+        
+        public List<P2PInputSet> ArchivedInputSets;
 
         protected PlayerData PlayerData { get; private set; }
 
@@ -33,7 +31,7 @@ namespace PLAYER
 
         private void Update()
         {
-            if (!P2PHandler.Instance.AllPlayersReady)
+            if (TimeManager.Instance.FixedUpdatePaused)
                 return;
             
             RealTimeInputs.CopyTo(_prevInputs, 0);
@@ -65,15 +63,34 @@ namespace PLAYER
 
         public void ApplyArchivedInputSet(int index)
         {
-            Debug.Log($"archived index: {index}, count: {ArchivedInputSets.Count}");
+            Debug.Log(
+                $"[player{GetComponent<NetworkIdentity>().Id}] index: {index}, length: {ArchivedInputSets.Count}");
+            var temp = Environment.NewLine;
+            if (ArchivedInputSets[index].Inputs.Length > 0)
+            {
+                foreach (var input in ArchivedInputSets[index].Inputs)
+                {
+                    var state = input.State ? "Pressed" : "Released";
+                    temp += $"[{input.InputType}]->{state}{Environment.NewLine}";
+                }
+            }
+
             PlayerData.DataPacket.MovementStickAngle = ArchivedInputSets[index].Angle;
             foreach (var input in ArchivedInputSets[index].Inputs) Inputs[(int) input.InputType] = input.State;
             
-            if (GetComponent<NetworkIdentity>().Id != MatchStateManager.Instance.ClientPlayerId)
-                if (ArchivedInputSets[index].PacketNumber > P2PHandler.Instance.InputPacketsProcessed)
-                    P2PHandler.Instance.OnInputPacketsProcessed();
+            Debug.Log($"Applied ({ArchivedInputSets[index].PacketNumber}) on ({P2PHandler.Instance.DataPacket.FrameCounter}) containing {temp}");
         }
 
+        public bool InputState(Types.Input input)
+        {
+            return Inputs[(int) input];
+        }
+
+        public int FramesHeld(Types.Input input)
+        {
+            return InputFramesHeld[(int) input];
+        }
+        
         // called after PrevInputs reset, before InputFramesHeld increased
         protected virtual void InputUpdate()
         {
