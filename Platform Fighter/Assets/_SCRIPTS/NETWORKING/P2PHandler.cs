@@ -354,8 +354,8 @@ namespace NETWORKING
                 RollbackManager.Instance.SaveGameState(0, true);
                 _initialSave = true;
             }
-            
-            DataPacket.FrameCounter += 1 + (_previousDelay - Delay);
+
+            DataPacket.FrameCounter += 1;
         }
         
         public override void SetData(object newData)
