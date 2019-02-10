@@ -31,8 +31,6 @@ namespace PLAYER
 
         private void Update()
         {
-            if (!P2PHandler.Instance.AllPlayersReady)
-                return;
             if (TimeManager.Instance.FixedUpdatePaused)
                 return;
             

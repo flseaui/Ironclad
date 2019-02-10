@@ -53,6 +53,9 @@ namespace PLAYER
 
         protected override void InputUpdate()
         {
+            if (!P2PHandler.Instance.AllPlayersReady)
+                return;
+            
             UpdatePlayerInput();
         }
 
